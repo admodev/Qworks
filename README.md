@@ -31,4 +31,4 @@ Este proyecto está bajo la Licencia (End User License) - mira el archivo [LICEN
 
 - Comenta a otros sobre este proyecto 📢
 - Da las gracias públicamente 🤓.
-- Unite! ➕
+- Unete! ➕
