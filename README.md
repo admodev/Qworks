@@ -1,4 +1,4 @@
-# QueDeOficios!
+# QuedeOficios!
 
 QueDeOficios es una aplicación móvil para android & iOS desarrollada en React Native, a la par de Java, C y PHP para complementar código personalizado que nos ayudó a desarrollar API's y a crear la base de datos en MySQL para almacenar todos los datos que se requieren para registrarse y loguearse en la app, así como anunciarse, e.t.c.
 
