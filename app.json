@@ -1,0 +1,63 @@
+{
+  "expo": {
+    "name": "quedeoficios",
+    "slug": "quedeoficios",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "cover",
+      "backgroundColor": "#654F6F",
+      "firebase": {
+        "apiKey": "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
+        "authDomain": "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
+        "databaseURL": "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
+        "projectId": "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
+        "storageBucket": "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
+        "messagingSenderId": "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
+        "appId": "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
+        "measurementId": "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+      },
+      "googleMaps": {
+        "apiKey": "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+      },
+      "facebookScheme": "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
+      "facebookAppId": "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
+      "facebookDisplayName": "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+    },
+    "updates": {
+      "fallbackToCacheTimeout": 0
+    },
+    "assetBundlePatterns": ["**/*"],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.admodev.quedeoficios"
+    },
+    "android": {
+      "versionCode": 1,
+      "package": "com.admodev.quedeoficios"
+    },
+    "web": {
+      "favicon": "./assets/favicon.png",
+      "config": {
+        "firebase": {
+          "apiKey": "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
+          "authDomain": "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
+          "databaseURL": "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
+          "projectId": "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
+          "storageBucket": "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
+          "messagingSenderId": "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
+          "appId": "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
+          "measurementId": "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+        },
+        "googleMaps": {
+          "apiKey": "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+        },
+        "facebookScheme": "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
+        "facebookAppId": "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
+        "facebookDisplayName": "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+      }
+    }
+  }
+}
