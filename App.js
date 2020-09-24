@@ -7,6 +7,9 @@ import { createMaterialTopTabNavigator } from "@react-navigation/material-top-ta
 import OnboardingPage from "./pages/OnboardingPage";
 import LoginPage from "./pages/LoginPage";
 import ChatPage from "./pages/ChatPage";
+import RegisterPage from "./pages/RegisterPage";
+import EmailLoginPage from "./pages/EmailLoginPage";
+import SearchPage from "./pages/SearchPage";
 
 const Stack = createStackNavigator();
 const Tab = createMaterialTopTabNavigator();
@@ -32,13 +35,17 @@ function App() {
         }}
       >
         <Tab.Screen
+          name="SearchPage"
+          component={SearchPage}
+          options={{
+            tabBarLabel: "Buscar",
+          }}
+        />
+        <Tab.Screen
           name="OnboardingPage"
           component={OnboardingPage}
           options={{
             tabBarLabel: "Inicio",
-            // tabBarIcon: ({ color, size }) => (
-            //   <MaterialCommunityIcons name="home" color={color} size={size} />
-            // ),
           }}
         />
         <Tab.Screen
@@ -46,9 +53,6 @@ function App() {
           component={LoginPage}
           options={{
             tabBarLabel: "Ingresar",
-            // tabBarIcon: ({ color, size }) => (
-            //   <MaterialCommunityIcons name="settings" color={color} size={size} />
-            // ),
           }}
         />
         <Tab.Screen
@@ -77,8 +81,23 @@ function App() {
           options={{ title: "QuedeOficios!" }}
         />
         <Stack.Screen
+          name="SearchPage"
+          component={SearchPage}
+          options={{ title: "QuedeOficios!" }}
+        />
+        <Stack.Screen
           name="ChatPage"
           component={ChatPage}
+          options={{ title: "QuedeOficios!" }}
+        />
+        <Stack.Screen
+          name="RegisterPage"
+          component={RegisterPage}
+          options={{ title: "QuedeOficios!" }}
+        />
+        <Stack.Screen
+          name="EmailLoginPage"
+          component={EmailLoginPage}
           options={{ title: "QuedeOficios!" }}
         />
       </Stack.Navigator>

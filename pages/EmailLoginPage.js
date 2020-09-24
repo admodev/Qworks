@@ -5,7 +5,6 @@ import * as FirebaseCore from "expo-firebase-core";
 import * as Google from "expo-google-app-auth";
 import * as Facebook from "expo-facebook";
 import * as Location from "expo-location";
-import { TouchableHighlight } from "react-native-gesture-handler";
 
 async function signInWithGoogleAsync() {
   try {
@@ -60,7 +59,7 @@ const signInWithFacebook = () => {
   logInWithFacebook();
 };
 
-const RegisterPage = ({ navigation }) => {
+const EmailLoginPage = ({ navigation }) => {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View
@@ -90,7 +89,8 @@ const RegisterPage = ({ navigation }) => {
               paddingLeft: 80,
               borderRadius: 25,
             }}
-            title="Registrarme"
+            onPress={() => navigation.navigate("EmailRegisterPage")}
+            title="Iniciar Sesión"
           />
         </View>
         <View style={{ width: "70%", top: 80, bottom: 0 }}>
@@ -109,15 +109,6 @@ const RegisterPage = ({ navigation }) => {
             onPress={() => signInWithFacebook()}
           />
         </View>
-        <View style={{ width: "70%", top: 90, bottom: 0 }}>
-          <TouchableHighlight onPress={() => navigation.navigate("LoginPage")}>
-            <Text
-              style={{ color: "#fff", marginLeft: "auto", marginRight: "auto" }}
-            >
-              Ya tienes cuenta? INGRESA
-            </Text>
-          </TouchableHighlight>
-        </View>
       </View>
     </SafeAreaView>
   );
@@ -133,4 +124,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default RegisterPage;
+export default EmailLoginPage;

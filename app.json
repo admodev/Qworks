@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "quedeoficios",
-    "slug": "quedeoficios",
+    "name": "quedeoficiosfinal",
+    "slug": "quedeoficiosfinal",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -10,53 +10,52 @@
       "resizeMode": "cover",
       "backgroundColor": "#654F6F",
       "firebase": {
-        "apiKey": "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
-        "authDomain": "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
-        "databaseURL": "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
-        "projectId": "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
-        "storageBucket": "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
-        "messagingSenderId": "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
-        "appId": "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
-        "measurementId": "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+        "apiKey": "AIzaSyADf1sCZ72YNWPMsEuCmBkc_gns7UHwDdA",
+        "authDomain": "qdo2020-1da7b.firebaseapp.com",
+        "databaseURL": "https://qdo2020-1da7b.firebaseio.com",
+        "projectId": "qdo2020-1da7b",
+        "storageBucket": "qdo2020-1da7b.appspot.com",
+        "messagingSenderId": "224428348880",
+        "appId": "1:224428348880:web:e591820528fc39409c95d5",
+        "measurementId": "G-SJQ1XCSD66"
       },
       "googleMaps": {
-        "apiKey": "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+        "apiKey": "AIzaSyAv01lBcj4QItbqcoACgdv1nkkUTJfXBuk"
       },
-      "facebookScheme": "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
-      "facebookAppId": "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
-      "facebookDisplayName": "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+      "facebookScheme": "fb791075094961301",
+      "facebookAppId": "791075094961301",
+      "facebookDisplayName": "qdo2020"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
-      "supportsTablet": true,
-      "bundleIdentifier": "com.admodev.quedeoficios"
+      "supportsTablet": true
     },
     "android": {
       "versionCode": 1,
-      "package": "com.admodev.quedeoficios"
+      "useNextNotificationsApi": true
     },
     "web": {
       "favicon": "./assets/favicon.png",
       "config": {
         "firebase": {
-          "apiKey": "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
-          "authDomain": "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
-          "databaseURL": "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
-          "projectId": "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
-          "storageBucket": "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
-          "messagingSenderId": "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
-          "appId": "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
-          "measurementId": "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+          "apiKey": "AIzaSyADf1sCZ72YNWPMsEuCmBkc_gns7UHwDdA",
+          "authDomain": "qdo2020-1da7b.firebaseapp.com",
+          "databaseURL": "https://qdo2020-1da7b.firebaseio.com",
+          "projectId": "qdo2020-1da7b",
+          "storageBucket": "qdo2020-1da7b.appspot.com",
+          "messagingSenderId": "224428348880",
+          "appId": "1:224428348880:web:e591820528fc39409c95d5",
+          "measurementId": "G-SJQ1XCSD66"
         },
         "googleMaps": {
-          "apiKey": "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+          "apiKey": "AIzaSyAv01lBcj4QItbqcoACgdv1nkkUTJfXBuk"
         },
-        "facebookScheme": "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
-        "facebookAppId": "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
-        "facebookDisplayName": "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+        "facebookScheme": "fb791075094961301",
+        "facebookAppId": "791075094961301",
+        "facebookDisplayName": "qdo2020"
       }
     }
   }
