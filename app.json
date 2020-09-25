@@ -31,11 +31,13 @@
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.admodev.quedeoficios"
     },
     "android": {
       "versionCode": 1,
-      "useNextNotificationsApi": true
+      "useNextNotificationsApi": true,
+      "package": "com.admodev.qdo2020"
     },
     "web": {
       "favicon": "./assets/favicon.png",
