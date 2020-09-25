@@ -6,108 +6,107 @@ import * as Google from "expo-google-app-auth";
 import * as Facebook from "expo-facebook";
 import * as Location from "expo-location";
 
-async function signInWithGoogleAsync() {
-  try {
-    const result = await Google.logInAsync({
-      androidClientId: `195588211075-0kc4192v9lu24af5nic1jnlc82ri3ukc.apps.googleusercontent.com`,
-      iosClientId: `195588211075-447b690on13phnr40ovggmc0mau4qau3.apps.googleusercontent.com`,
-      scopes: ["profile", "email"],
-    });
-
-    if (result.type === "success") {
-      return result.accessToken;
-    } else {
-      return { cancelled: true };
-    }
-  } catch (e) {
-    return { error: true };
-  }
-}
-const signInWithGoogle = () => {
-  signInWithGoogleAsync();
-};
-
-async function logInWithFacebook() {
-  try {
-    await Facebook.initializeAsync({
-      appId: "791075094961301",
-    });
-    const {
-      type,
-      token,
-      expirationDate,
-      permissions,
-      declinedPermissions,
-    } = await Facebook.logInWithReadPermissionsAsync({
-      permissions: ["public_profile"],
-    });
-    if (type === "success") {
-      // Get the user's name using Facebook's Graph API
-      const response = await fetch(
-        `https://graph.facebook.com/me?access_token=${token}`
-      );
-      Alert.alert("Logged in!", `Hi ${(await response.json()).name}!`);
-    } else {
-      // type === 'cancel'
-    }
-  } catch ({ message }) {
-    alert(`Facebook Login Error: ${message}`);
-  }
-}
-
-const signInWithFacebook = () => {
-  logInWithFacebook();
-};
-
 const EmailLoginPage = ({ navigation }) => {
+  const database = SQLite.openDatabase("quedeoficios", 3);
+
+  let [userName, setUserName] = useState("");
+  let [userEmail, setUserEmail] = useState("");
+  let [userPassword, setUserPassword] = useState("");
+
+  let register_user = () => {
+    console.log(userName, userEmail, userPassword);
+
+    if (!userName) {
+      alert("Por favor rellena todos los campos.");
+      return;
+    }
+    if (!userEmail) {
+      alert("Por favor rellena todos los campos.");
+      return;
+    }
+    if (!userPassword) {
+      alert("Por favor rellena todos los campos.");
+      return;
+    }
+
+    database.transaction(function (tx) {
+      tx.executeSql(
+        "INSERT INTO table_user (user_name, user_email, user_password) VALUES (?,?,?)",
+        [userName, userEmail, userPassword],
+        (tx, results) => {
+          console.log("Results", results.rowsAffected);
+          if (results.rowsAffected > 0) {
+            Alert.alert(
+              "Éxito!",
+              "Iniciaste Sesión",
+              [
+                {
+                  text: "Okay",
+                  onPress: () => navigation.navigate("ProfilePage"),
+                },
+              ],
+              { cancelable: false }
+            );
+          } else alert("Tu ingreso falló!");
+        }
+      );
+    });
+  };
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <View
-        style={{
-          flex: 1,
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-      >
-        <Image
-          source={require("../assets/loginBackground.jpg")}
-          style={{
-            flex: 1,
-            position: "absolute",
-            resizeMode: "stretch",
-            width: "100%",
-            height: "100%",
-          }}
-        />
-        <View style={{ width: "70%", top: 70, bottom: 0 }}>
-          <Button
-            buttonStyle={{
-              backgroundColor: "#F4743B",
-              paddingTop: 12,
-              paddingRight: 80,
-              paddingBottom: 12,
-              paddingLeft: 80,
-              borderRadius: 25,
+      <View style={{ flex: 1, backgroundColor: "white" }}>
+        <View style={{ flex: 1 }}>
+          <Image
+            source={require("../assets/gradients/20x20.png")}
+            style={{
+              flex: 1,
+              position: "absolute",
+              resizeMode: "cover",
+              width: "100%",
+              height: "100%",
             }}
-            onPress={() => navigation.navigate("EmailRegisterPage")}
-            title="Iniciar Sesión"
           />
-        </View>
-        <View style={{ width: "70%", top: 80, bottom: 0 }}>
-          <SocialIcon
-            button
-            title="Ingresar con Google"
-            type="google"
-            onPress={() => signInWithGoogle()}
-          />
-        </View>
-        <View style={{ width: "70%", top: 85, bottom: 0 }}>
-          <SocialIcon
-            button
-            title="Ingresar con Facebook"
-            type="facebook"
-            onPress={() => signInWithFacebook()}
-          />
+          <ScrollView keyboardShouldPersistTaps="handled">
+            <KeyboardAvoidingView
+              behavior="padding"
+              style={{ flex: 1, justifyContent: "space-between" }}
+            >
+              <Image
+                source={require("../assets/gradients/20x20.png")}
+                style={{
+                  flex: 1,
+                  position: "absolute",
+                  resizeMode: "cover",
+                  width: "100%",
+                  height: "100%",
+                }}
+              />
+              <Input
+                placeholder="Correo Electrónico"
+                leftIcon={<Icon name="envelope-o" size={24} color="white" />}
+                onChangeText={props.onChangeText}
+                onChangeText={(userEmail) => setUserEmail(userEmail)}
+                value={props.value}
+              />
+              <Input
+                placeholder="Contraseña"
+                leftIcon={<Icon name="lock" size={24} color="white" />}
+                secureTextEntry={true}
+                onChangeText={(userPassword) => setUserPassword(userPassword)}
+                value={props.value}
+              />
+              <Button
+                buttonStyle={{
+                  backgroundColor: "#F4743B",
+                  paddingLeft: 40,
+                  paddingRight: 40,
+                  borderRadius: 20,
+                }}
+                onPress={register_user}
+                title="Registrarme"
+              />
+            </KeyboardAvoidingView>
+          </ScrollView>
         </View>
       </View>
     </SafeAreaView>

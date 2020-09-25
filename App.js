@@ -12,6 +12,8 @@ import EmailLoginPage from "./pages/EmailLoginPage";
 import EmailRegisterPage from "./pages/EmailRegisterPage";
 import SearchPage from "./pages/SearchPage";
 import ProfilePage from "./pages/ProfilePage";
+import AnunciatePage from "./pages/AnunciatePage";
+import PagosPage from "./pages/PagosPage";
 
 const Stack = createStackNavigator();
 const Tab = createMaterialTopTabNavigator();
@@ -110,6 +112,16 @@ function App() {
         <Stack.Screen
           name="ProfilePage"
           component={ProfilePage}
+          options={{ title: "QuedeOficios!" }}
+        />
+        <Stack.Screen
+          name="AnunciatePage"
+          component={AnunciatePage}
+          options={{ title: "QuedeOficios!" }}
+        />
+        <Stack.Screen
+          name="PagosPage"
+          component={PagosPage}
           options={{ title: "QuedeOficios!" }}
         />
       </Stack.Navigator>

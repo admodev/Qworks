@@ -8,10 +8,11 @@ import {
   SafeAreaView,
   StyleSheet,
   Text,
+  TouchableOpacity,
   View,
 } from "react-native";
 import { Button, SocialIcon } from "react-native-elements";
-import * as FirebaseCore from "expo-firebase-core";
+import Icon from "react-native-vector-icons/FontAwesome";
 import * as Location from "expo-location";
 import * as SQLite from "expo-sqlite";
 import { ScrollView } from "react-native-gesture-handler";
@@ -19,7 +20,7 @@ import { ScrollView } from "react-native-gesture-handler";
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
     shouldShowAlert: true,
-    shouldPlaySound: false,
+    shouldPlaySound: true,
     shouldSetBadge: false,
   }),
 });
@@ -109,50 +110,151 @@ const ProfilePage = ({ navigation }) => {
             height: "100%",
           }}
         />
-        <ScrollView
+        <Image
+          source={require("../assets/icon.png")}
           style={{
-            flex: 1,
-          }}
-        >
-          <Image
-            source={require("../assets/icon.png")}
-            style={{
-              width: 100,
-              height: 100,
-              marginTop: 50,
-            }}
-          />
-          <View style={{ flex: 1 }}>
-            <FlatList
-              data={flatListItems}
-              ItemSeparatorComponent={listViewItemSeparator}
-              keyExtractor={(item, index) => index.toString()}
-              renderItem={({ item }) => listItemView(item)}
-            />
-          </View>
-        </ScrollView>
-        <Text>
-          Title: {notification && notification.request.content.title}{" "}
-        </Text>
-        <Text>Body: {notification && notification.request.content.body}</Text>
-        <Text>
-          Data:{" "}
-          {notification && JSON.stringify(notification.request.content.data)}
-        </Text>
-        <Button
-          buttonStyle={{
-            backgroundColor: "orange",
-            width: 300,
-            height: 50,
-            marginTop: 10,
+            width: 100,
+            height: 100,
+            marginTop: 50,
             marginLeft: "auto",
             marginRight: "auto",
           }}
-          title="Presiona para enviar una notificación"
-          onPress={async () => {
-            await schedulePushNotification();
-          }}
         />
+        <ScrollView
+          style={{
+            flex: 1,
+            marginTop: 10,
+          }}
+          showsVerticalScrollIndicator={false}
+        >
+          <View style={styles.containerBottom}>
+            <TouchableOpacity>
+              <Text
+                style={{
+                  marginLeft: "auto",
+                  marginRight: "auto",
+                  marginBottom: 10,
+                  fontSize: 18,
+                  color: "#fff",
+                }}
+              >
+                Cambiar contraseña
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => navigation.navigate("ChatPage")}>
+              <Text
+                style={{
+                  marginLeft: "auto",
+                  marginRight: "auto",
+                  marginBottom: 10,
+                  fontSize: 18,
+                  color: "#fff",
+                }}
+              >
+                Consultas Hechas
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => navigation.navigate("ChatPage")}>
+              <Text
+                style={{
+                  marginLeft: "auto",
+                  marginRight: "auto",
+                  marginBottom: 10,
+                  fontSize: 18,
+                  color: "#fff",
+                }}
+              >
+                Consultas Recibidas
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity>
+              <Text
+                style={{
+                  marginLeft: "auto",
+                  marginRight: "auto",
+                  marginBottom: 10,
+                  fontSize: 18,
+                  color: "#fff",
+                }}
+              >
+                Mis Comentarios
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity>
+              <Text
+                style={{
+                  marginLeft: "auto",
+                  marginRight: "auto",
+                  marginBottom: 10,
+                  fontSize: 18,
+                  color: "#fff",
+                }}
+              >
+                Mis Favoritos
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity>
+              <Text
+                style={{
+                  marginLeft: "auto",
+                  marginRight: "auto",
+                  marginBottom: 10,
+                  fontSize: 18,
+                  color: "#fff",
+                }}
+              >
+                Mis Recomendaciones
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => navigation.navigate("AnunciatePage")}
+            >
+              <Text
+                style={{
+                  marginLeft: "auto",
+                  marginRight: "auto",
+                  marginBottom: 10,
+                  fontSize: 18,
+                  color: "#fff",
+                }}
+              >
+                Anunciarme
+              </Text>
+            </TouchableOpacity>
+          </View>
+          <View
+            style={{
+              flex: 1,
+              marginTop: 10,
+              marginLeft: "auto",
+              marginRight: "auto",
+              marginBottom: 25,
+            }}
+          >
+            <Button
+              buttonStyle={{
+                backgroundColor: "orange",
+                width: 300,
+                height: 50,
+                marginTop: 10,
+                marginLeft: "auto",
+                marginRight: "auto",
+              }}
+              title="Presiona para enviar una notificación"
+              onPress={async () => {
+                await schedulePushNotification();
+              }}
+            />
+          </View>
+        </ScrollView>
+        <View style={{ flex: 1 }}>
+          <FlatList
+            data={flatListItems}
+            ItemSeparatorComponent={listViewItemSeparator}
+            keyExtractor={(item, index) => index.toString()}
+            renderItem={({ item }) => listItemView(item)}
+          />
+        </View>
       </View>
     </SafeAreaView>
   );
@@ -161,9 +263,9 @@ const ProfilePage = ({ navigation }) => {
 async function schedulePushNotification() {
   await Notifications.scheduleNotificationAsync({
     content: {
-      title: "You've got mail! 📬",
-      body: "Here is the notification body",
-      data: { data: "goes here" },
+      title: "¡Tienes una nueva notificación de QuedeOficios!",
+      body: "Ingresa y echale un vistazo.",
+      data: { data: "Nuevo Mensaje" },
     },
     trigger: { seconds: 2 },
   });
@@ -199,8 +301,21 @@ async function registerForPushNotificationsAsync() {
     });
   }
 
+  if (Platform.OS === "ios") {
+    Notifications.setNotificationChannelAsync("default", {
+      name: "default",
+      shouldPlaySound: true,
+      vibrationPattern: [0, 250, 250, 250],
+      lightColor: "#FF231F7C",
+    });
+  }
+
   return token;
 }
+
+const requestPermissionForNotifications = () => {
+  registerForPushNotificationsAsync();
+};
 
 const styles = StyleSheet.create({
   button: {

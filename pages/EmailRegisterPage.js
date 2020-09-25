@@ -109,12 +109,13 @@ const EmailRegisterPage = ({ navigation }, props) => {
               <Input
                 placeholder="Contraseña"
                 leftIcon={<Icon name="lock" size={24} color="white" />}
+                secureTextEntry={true}
                 onChangeText={(userPassword) => setUserPassword(userPassword)}
                 value={props.value}
               />
               <Button
                 buttonStyle={{
-                  backgroundColor: "orange",
+                  backgroundColor: "#F4743B",
                   paddingLeft: 40,
                   paddingRight: 40,
                   borderRadius: 20,
