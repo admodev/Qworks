@@ -90,6 +90,7 @@ const RegisterPage = ({ navigation }) => {
               paddingLeft: 80,
               borderRadius: 25,
             }}
+            onPress={() => navigation.navigate("EmailRegisterPage")}
             title="Registrarme"
           />
         </View>

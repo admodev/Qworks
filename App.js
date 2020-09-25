@@ -9,7 +9,9 @@ import LoginPage from "./pages/LoginPage";
 import ChatPage from "./pages/ChatPage";
 import RegisterPage from "./pages/RegisterPage";
 import EmailLoginPage from "./pages/EmailLoginPage";
+import EmailRegisterPage from "./pages/EmailRegisterPage";
 import SearchPage from "./pages/SearchPage";
+import ProfilePage from "./pages/ProfilePage";
 
 const Stack = createStackNavigator();
 const Tab = createMaterialTopTabNavigator();
@@ -56,10 +58,10 @@ function App() {
           }}
         />
         <Tab.Screen
-          name="ChatPage"
-          component={ChatPage}
+          name="ProfilePage"
+          component={ProfilePage}
           options={{
-            tabBarLabel: "Chat",
+            tabBarLabel: "Mi Perfil",
           }}
         />
       </Tab.Navigator>
@@ -98,6 +100,16 @@ function App() {
         <Stack.Screen
           name="EmailLoginPage"
           component={EmailLoginPage}
+          options={{ title: "QuedeOficios!" }}
+        />
+        <Stack.Screen
+          name="EmailRegisterPage"
+          component={EmailRegisterPage}
+          options={{ title: "QuedeOficios!" }}
+        />
+        <Stack.Screen
+          name="ProfilePage"
+          component={ProfilePage}
           options={{ title: "QuedeOficios!" }}
         />
       </Stack.Navigator>
