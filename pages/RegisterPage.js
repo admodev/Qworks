@@ -6,12 +6,13 @@ import * as Google from "expo-google-app-auth";
 import * as Facebook from "expo-facebook";
 import * as Location from "expo-location";
 import { TouchableHighlight } from "react-native-gesture-handler";
+import { GOOGLE_LOGIN_ANDROID_CLIENT_ID, GOOGLE_LOGIN_IOS_CLIENT_ID } from "@env";
 
 async function signInWithGoogleAsync() {
   try {
     const result = await Google.logInAsync({
-      androidClientId: `195588211075-0kc4192v9lu24af5nic1jnlc82ri3ukc.apps.googleusercontent.com`,
-      iosClientId: `195588211075-447b690on13phnr40ovggmc0mau4qau3.apps.googleusercontent.com`,
+      androidClientId: `${GOOGLE_LOGIN_ANDROID_CLIENT_ID}`,
+      iosClientId: `${GOOGLE_LOGIN_IOS_CLIENT_ID}`,
       scopes: ["profile", "email"],
     });
 
