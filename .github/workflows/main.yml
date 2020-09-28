@@ -6,19 +6,19 @@ jobs:
     steps:
       - name: Test
         run: |
-            echo "Secret keys stored successfully."
-        env: 
-          FACEBOOK_APP_ID: ${{ secrets.FACEBOOK_APP_ID }}
-          FACEBOOK_DISPLAY_NAME: ${{ secrets.FACEBOOK_DISPLAY_NAME }}
-          FACEBOOK_SCHEME: ${{ secrets.FACEBOOK_SCHEME }}
-          FIREBASE_API_KEY: ${{ secrets.FIREBASE_API_KEY }}
-          FIRBASE_APP_ID: ${{ secrets.FIREBASE_APP_ID }}
-          FIREBASE_AUTH_DOMAIN: ${{ secrets.FIREBASE_AUTH_DOMAIN }}
-          FIREBASE_DATABASE_URL: ${{ secrets.FIREBASE_DATABASE_URL }}
-          FIRBASE_MEASUREMENT_ID: ${{ secrets.FIREBASE_MEASUREMENT_ID }}
-          FIREBASE_MESSAGING_SENDER_ID: ${{ secrets.FIREBASE_MESSAGING_SENDER_ID }}
-          FIRBASE_PROJECT_ID: ${{ secrets.FIREBASE_PROJECT_ID }}
-          FIREBASE_STORAGE_BUCKET: ${{ secrets.FIREBASE_STORAGE_BUCKET }}
-          GOOGLE_LOGIN_ANDROID_CLIENT_ID: ${{ secrets.GOOGLE_LOGIN_ANDROID_CLIENT_ID }}
-          GOOGLE_LOGIN_IOS_CLIENT_ID: ${{ secrets.GOOGLE_LOGIN_IOS_CLIENT_ID }}
-          GOOGLE_MAPS_API_KEY: ${{ secrets.GOOGLE_MAPS_API_KEY }}
+          echo "Secret keys stored successfully."
+        env:
+          FACEBOOK_APP_ID: '${{ secrets.FACEBOOK_APP_ID }}'
+          FACEBOOK_DISPLAY_NAME: '${{ secrets.FACEBOOK_DISPLAY_NAME }}'
+          FACEBOOK_SCHEME: '${{ secrets.FACEBOOK_SCHEME }}'
+          FIREBASE_API_KEY: '${{ secrets.FIREBASE_API_KEY }}'
+          FIRBASE_APP_ID: '${{ secrets.FIREBASE_APP_ID }}'
+          FIREBASE_AUTH_DOMAIN: '${{ secrets.FIREBASE_AUTH_DOMAIN }}'
+          FIREBASE_DATABASE_URL: '${{ secrets.FIREBASE_DATABASE_URL }}'
+          FIRBASE_MEASUREMENT_ID: '${{ secrets.FIREBASE_MEASUREMENT_ID }}'
+          FIREBASE_MESSAGING_SENDER_ID: '${{ secrets.FIREBASE_MESSAGING_SENDER_ID }}'
+          FIRBASE_PROJECT_ID: '${{ secrets.FIREBASE_PROJECT_ID }}'
+          FIREBASE_STORAGE_BUCKET: '${{ secrets.FIREBASE_STORAGE_BUCKET }}'
+          GOOGLE_LOGIN_ANDROID_CLIENT_ID: '${{ secrets.GOOGLE_LOGIN_ANDROID_CLIENT_ID }}'
+          GOOGLE_LOGIN_IOS_CLIENT_ID: '${{ secrets.GOOGLE_LOGIN_IOS_CLIENT_ID }}'
+          GOOGLE_MAPS_API_KEY: '${{ secrets.GOOGLE_MAPS_API_KEY }}'
