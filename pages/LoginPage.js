@@ -6,7 +6,7 @@ import * as Google from "expo-google-app-auth";
 import * as Facebook from "expo-facebook";
 import * as Location from "expo-location";
 import { TouchableHighlight } from "react-native-gesture-handler";
-import { GOOGLE_LOGIN_ANDROID_CLIENT_ID, GOOGLE_LOGIN_IOS_CLIENT_ID } from "@env";
+import { GOOGLE_LOGIN_ANDROID_CLIENT_ID, GOOGLE_LOGIN_IOS_CLIENT_ID, FACEBOOK_APP_ID } from "@env";
 
 async function signInWithGoogleAsync() {
   try {
@@ -32,7 +32,7 @@ const signInWithGoogle = () => {
 async function logInWithFacebook() {
   try {
     await Facebook.initializeAsync({
-      appId: "791075094961301",
+      appId: `${FACEBOOK_APP_ID}`,
     });
     const {
       type,

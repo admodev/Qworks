@@ -1,4 +1,4 @@
-{
+{ 
   "expo": {
     "name": "quedeoficiosfinal",
     "slug": "quedeoficiosfinal",
@@ -10,7 +10,7 @@
       "resizeMode": "cover",
       "backgroundColor": "#654F6F",
       "firebase": {
-        "apiKey": "${ FIREBASE_API_KEY }",
+        "apiKey": "${ FIREBASE_AUTH_DOMAIN }",
         "authDomain": "${ FIREBASE_AUTH_DOMAIN }",
         "databaseURL": "${ FIREBASE_DATABASE_URL }",
         "projectId": "${ FIREBASE_PROJECT_ID }",

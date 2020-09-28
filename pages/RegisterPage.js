@@ -32,7 +32,7 @@ const signInWithGoogle = () => {
 async function logInWithFacebook() {
   try {
     await Facebook.initializeAsync({
-      appId: "791075094961301",
+      appId: `${FACEBOOK_APP_ID}`,
     });
     const {
       type,
