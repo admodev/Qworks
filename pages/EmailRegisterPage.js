@@ -16,119 +16,112 @@ import * as Google from "expo-google-app-auth";
 import * as Facebook from "expo-facebook";
 import * as Location from "expo-location";
 import { TouchableHighlight } from "react-native-gesture-handler";
-import * as SQLite from "expo-sqlite";
+import * as firebase from "firebase";
+import 'firebase/firestore';
+import { FIREBASE_API_KEY, FIREBASE_AUTH_DOMAIN, FIREBASE_DATABASE_URL, FIREBASE_PROJECT_ID, FIREBASE_STORAGE_BUCKET, FIREBASE_MESSAGING_SENDER_ID } from "@env";
 
 const EmailRegisterPage = ({ navigation }, props) => {
-  const database = SQLite.openDatabase("quedeoficios", 3);
+    try {
+        firebase.initializeApp({
+            apiKey: `${FIREBASE_API_KEY}`,
+            authDomain: `${FIREBASE_AUTH_DOMAIN}`,
+            databaseURL: `${FIREBASE_DATABASE_URL}`,
+            projectId: `${FIREBASE_PROJECT_ID}`,
+            storageBucket: `${FIREBASE_STORAGE_BUCKET}`,
+            messagingSenderId: `${FIREBASE_MESSAGING_SENDER_ID}`
+        })
 
-  let [userName, setUserName] = useState("");
-  let [userEmail, setUserEmail] = useState("");
-  let [userPassword, setUserPassword] = useState("");
+    } catch (err) {
+        if (!/already exists/.test(err.message)) {
+            console.error('Firebase initialization error raised', err.stack)
+        }}
 
-  let register_user = () => {
-    console.log(userName, userEmail, userPassword);
+    const firebaseApp= firebase;
 
-    if (!userName) {
-      alert("Por favor rellena todos los campos.");
-      return;
+    let [email, setUserEmail] = useState("");
+    let [password, setUserPassword] = useState("");
+
+    let db = firebase.firestore();
+
+    function registrarUsuario() {
+        try {
+                                        db.collection("usuarios").add({
+                                            email: email,
+                                            password: password
+                                        })
+                                            .then(function(docRef) {
+                                                console.log("Document written with ID: ", docRef.id);
+                                            })
+                                            .catch(function(error) {
+                                                console.error("Error adding document: ", error);
+                                            });
+                                    }  catch (err) {
+                                        if (email === '' || password === '') {
+                                            alert("Debes completar todos los campos para registrarte!", err) 
+                                        } 
+                                    } finally {
+                                        () => navigation.navigate('ProfilePage');
+                                    }
     }
-    if (!userEmail) {
-      alert("Por favor rellena todos los campos.");
-      return;
-    }
-    if (!userPassword) {
-      alert("Por favor rellena todos los campos.");
-      return;
-    }
 
-    database.transaction(function (tx) {
-      tx.executeSql(
-        "INSERT INTO table_user (user_name, user_email, user_password) VALUES (?,?,?)",
-        [userName, userEmail, userPassword],
-        (tx, results) => {
-          console.log("Results", results.rowsAffected);
-          if (results.rowsAffected > 0) {
-            Alert.alert(
-              "Éxito!",
-              "Te registraste",
-              [
-                {
-                  text: "Okay",
-                  onPress: () => navigation.navigate("ProfilePage"),
-                },
-              ],
-              { cancelable: false }
-            );
-          } else alert("Tu registro falló!");
-        }
-      );
-    });
-  };
-  return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <View style={{ flex: 1, backgroundColor: "white" }}>
-        <View style={{ flex: 1 }}>
-          <Image
-            source={require("../assets/gradients/20x20.png")}
-            style={{
-              flex: 1,
-              position: "absolute",
-              resizeMode: "cover",
-              width: "100%",
-              height: "100%",
-            }}
-          />
-          <ScrollView keyboardShouldPersistTaps="handled">
-            <KeyboardAvoidingView
-              behavior="padding"
-              style={{ flex: 1, justifyContent: "space-between" }}
-            >
-              <Image
-                source={require("../assets/gradients/20x20.png")}
-                style={{
-                  flex: 1,
-                  position: "absolute",
-                  resizeMode: "cover",
-                  width: "100%",
-                  height: "100%",
-                }}
-              />
-              <Input
-                placeholder="Nombre de Usuario"
-                leftIcon={<Icon name="user" size={24} color="white" />}
-                onChangeText={(userName) => setUserName(userName)}
-                value={props.value}
-              />
-              <Input
-                placeholder="Correo Electrónico"
-                leftIcon={<Icon name="envelope-o" size={24} color="white" />}
-                onChangeText={props.onChangeText}
-                onChangeText={(userEmail) => setUserEmail(userEmail)}
-                value={props.value}
-              />
-              <Input
-                placeholder="Contraseña"
-                leftIcon={<Icon name="lock" size={24} color="white" />}
-                secureTextEntry={true}
-                onChangeText={(userPassword) => setUserPassword(userPassword)}
-                value={props.value}
-              />
-              <Button
-                buttonStyle={{
-                  backgroundColor: "#F4743B",
-                  paddingLeft: 40,
-                  paddingRight: 40,
-                  borderRadius: 20,
-                }}
-                onPress={register_user}
-                title="Registrarme"
-              />
-            </KeyboardAvoidingView>
-          </ScrollView>
-        </View>
-      </View>
-    </SafeAreaView>
-  );
+    return (
+        <SafeAreaView style={{ flex: 1 }}>
+            <View style={{ flex: 1, backgroundColor: "white" }}>
+                <View style={{ flex: 1 }}>
+                    <Image
+                        source={require("../assets/gradients/20x20.png")}
+                        style={{
+                            flex: 1,
+                            position: "absolute",
+                            resizeMode: "cover",
+                            width: "100%",
+                            height: "100%",
+                        }}
+                    />
+                    <ScrollView keyboardShouldPersistTaps="handled">
+                        <KeyboardAvoidingView
+                            behavior="padding"
+                            style={{ flex: 1, justifyContent: "space-between" }}
+                        >
+                            <Image
+                                source={require("../assets/gradients/20x20.png")}
+                                style={{
+                                    flex: 1,
+                                    position: "absolute",
+                                    resizeMode: "cover",
+                                    width: "100%",
+                                    height: "100%",
+                                }}
+                            />
+                            <Input
+                                placeholder="Correo Electrónico"
+                                leftIcon={<Icon name="envelope-o" size={24} color="white" />}
+                                onChangeText={(email) => setUserEmail(email)}
+                                value={props.value}
+                            />
+                            <Input
+                                placeholder="Contraseña"
+                                leftIcon={<Icon name="lock" size={24} color="white" />}
+                                secureTextEntry={true}
+                                onChangeText={(password) => setUserPassword(password)}
+                                value={props.value}
+                            />
+                            <Button
+                                buttonStyle={{
+                                    backgroundColor: "#F4743B",
+                                    paddingLeft: 40,
+                                    paddingRight: 40,
+                                    borderRadius: 20,
+                                }}
+                                onPress={() => registrarUsuario()}
+                                title="Registrarme"
+                            />
+                        </KeyboardAvoidingView>
+                    </ScrollView>
+                </View>
+            </View>
+        </SafeAreaView>
+    );
 };
 
 const styles = StyleSheet.create({
