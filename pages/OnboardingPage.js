@@ -25,6 +25,27 @@ const OnboardingPage = ({ navigation }) => {
       />
       <ScrollView showsVerticalScrollIndicator={false}>
         <Card containerStyle={styles.card}>
+<Image
+        source={require("../assets/patron.jpg")}
+        style={{
+          flex: 1,
+          position: "absolute",
+          resizeMode: "cover",
+          width: "100%",
+          height: "100%",
+        }}
+      />
+<Image
+        source={require("../assets/gradients/20x20.png")}
+        style={{
+          flex: 1,
+          position: "absolute",
+          resizeMode: "cover",
+          width: "100%",
+          height: "100%",
+          opacity: 0.9
+        }}
+      />
           <Card.Image
             source={{
               uri:

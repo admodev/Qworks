@@ -1,14 +1,24 @@
-import * as React from "react";
-import { Image, SafeAreaView, StyleSheet, Text, View } from "react-native";
-import { Button, SocialIcon } from "react-native-elements";
+import React, { Component, useState, setState, useEffect } from "react";
+import Icon from "react-native-vector-icons/FontAwesome";
+import {
+  KeyboardAvoidingView,
+  Alert,
+  Image,
+  SafeAreaView,
+  StyleSheet,
+  ScrollView,
+  Text,
+  View,
+} from "react-native";
+import { Button, Input, SocialIcon } from "react-native-elements";
 import * as FirebaseCore from "expo-firebase-core";
 import * as Google from "expo-google-app-auth";
 import * as Facebook from "expo-facebook";
 import * as Location from "expo-location";
+import { TouchableHighlight } from "react-native-gesture-handler";
 import * as firebase from "firebase";
 import 'firebase/auth';
 import { FIREBASE_API_KEY, FIREBASE_AUTH_DOMAIN, FIREBASE_DATABASE_URL, FIREBASE_PROJECT_ID, FIREBASE_STORAGE_BUCKET, FIREBASE_MESSAGING_SENDER_ID, FIREBASE_APP_ID, FIREBASE_MEASUREMENT_ID } from "@env";
-import firebaseKeys from "../keys.js";
 
 const EmailLoginPage = ({ navigation }) => {
   let [email, setUserEmail] = useState("");
@@ -36,7 +46,7 @@ const EmailLoginPage = ({ navigation }) => {
             }}
           />
           <ScrollView keyboardShouldPersistTaps="handled">
-            <KeyboardAvoidingView
+              <View
               behavior="padding"
               style={{ flex: 1, justifyContent: "space-between" }}
             >
@@ -53,16 +63,15 @@ const EmailLoginPage = ({ navigation }) => {
               <Input
                 placeholder="Correo Electrónico"
                 leftIcon={<Icon name="envelope-o" size={24} color="white" />}
-                onChangeText={props.onChangeText}
                 onChangeText={(email) => setUserEmail(email)}
-                value={props.value}
+                value={email}
               />
               <Input
                 placeholder="Contraseña"
                 leftIcon={<Icon name="lock" size={24} color="white" />}
                 secureTextEntry={true}
                 onChangeText={(password) => setUserPassword(password)}
-                value={props.value}
+                value={password}
               />
               <Button
                 buttonStyle={{
@@ -74,7 +83,7 @@ const EmailLoginPage = ({ navigation }) => {
                 onPress={loguearUsuarios}
                 title="Iniciar Sesión"
               />
-            </KeyboardAvoidingView>
+            </View>
           </ScrollView>
         </View>
       </View>

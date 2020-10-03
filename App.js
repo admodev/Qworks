@@ -21,123 +21,73 @@ const Stack = createStackNavigator();
 const Tab = createMaterialTopTabNavigator();
 
 function App() {
-  function TabStack() {
     return (
-      <Tab.Navigator
-        initialRouteName="OnboardingPage"
-        tabBarOptions={{
-          activeTintColor: "#FFFFFF",
-          inactiveTintColor: "#F8F8F8",
-          style: {
-            backgroundColor: "#633689",
-          },
-          labelStyle: {
-            textAlign: "center",
-          },
-          indicatorStyle: {
-            borderBottomColor: "#87B56A",
-            borderBottomWidth: 2,
-          },
-        }}
-      >
-        <Tab.Screen
-          name="SearchPage"
-          component={SearchPage}
-          options={{
-            tabBarLabel: "Buscar",
-          }}
-        />
-        <Tab.Screen
-          name="OnboardingPage"
-          component={OnboardingPage}
-          options={{
-            tabBarLabel: "Inicio",
-          }}
-        />
-        <Tab.Screen
-          name="LoginPage"
-          component={LoginPage}
-          options={{
-            tabBarLabel: "Ingresar",
-          }}
-        />
-        <Tab.Screen
-          name="ProfilePage"
-          component={ProfilePage}
-          options={{
-            tabBarLabel: "Mi Perfil",
-          }}
-        />
-      </Tab.Navigator>
+        <NavigationContainer>
+            <Stack.Navigator
+                initialRouteName="OnboardingPage"
+                screenOptions={{
+                    headerStyle: { backgroundColor: "#633689" },
+                    headerTintColor: "#fff",
+                    headerTitleStyle: { fontWeight: "bold" },
+                }}
+            >
+                <Stack.Screen
+                    name="OnboardingPage"
+                    component={OnboardingPage}
+                    options={{ title: "QueDeOficios!", headerShown: false }}
+                />
+                <Stack.Screen
+                    name="SearchPage"
+                    component={SearchPage}
+                    options={{ title: "QuedeOficios!", headerShown: false }}
+                />
+                <Stack.Screen
+                    name="ChatPage"
+                    component={ChatPage}
+                    options={{ title: "QuedeOficios!", headerShown: false }}
+                />
+                <Stack.Screen
+                    name="RegisterPage"
+                    component={RegisterPage}
+                    options={{ title: "QuedeOficios!", headerShown: false }}
+                />
+                <Stack.Screen
+                    name="EmailLoginPage"
+                    component={EmailLoginPage}
+                    options={{ title: "QuedeOficios!", headerShown: false }}
+                />
+                <Stack.Screen
+                    name="EmailRegisterPage"
+                    component={EmailRegisterPage}
+                    options={{ title: "QuedeOficios!", headerShown: false }}
+                />
+                <Stack.Screen
+                    name="ProfilePage"
+                    component={ProfilePage}
+                    options={{ title: "QuedeOficios!", headerShown: false }}
+                />
+                <Stack.Screen
+                    name="AnunciatePage"
+                    component={AnunciatePage}
+                    options={{ title: "QuedeOficios!", headerShown: false }}
+                />
+                <Stack.Screen
+                    name="PagosPage"
+                    component={PagosPage}
+                    options={{ title: "QuedeOficios!", headerShown: false }}
+                />
+            </Stack.Navigator>
+        </NavigationContainer>
     );
-  }
-  return (
-    <NavigationContainer>
-      <Stack.Navigator
-        initialRouteName="OnboardingPage"
-        screenOptions={{
-          headerStyle: { backgroundColor: "#633689" },
-          headerTintColor: "#fff",
-          headerTitleStyle: { fontWeight: "bold" },
-        }}
-      >
-        <Stack.Screen
-          name="TabStack"
-          component={TabStack}
-          options={{ title: "QuedeOficios!" }}
-        />
-        <Stack.Screen
-          name="SearchPage"
-          component={SearchPage}
-          options={{ title: "QuedeOficios!" }}
-        />
-        <Stack.Screen
-          name="ChatPage"
-          component={ChatPage}
-          options={{ title: "QuedeOficios!" }}
-        />
-        <Stack.Screen
-          name="RegisterPage"
-          component={RegisterPage}
-          options={{ title: "QuedeOficios!" }}
-        />
-        <Stack.Screen
-          name="EmailLoginPage"
-          component={EmailLoginPage}
-          options={{ title: "QuedeOficios!" }}
-        />
-        <Stack.Screen
-          name="EmailRegisterPage"
-          component={EmailRegisterPage}
-          options={{ title: "QuedeOficios!" }}
-        />
-        <Stack.Screen
-          name="ProfilePage"
-          component={ProfilePage}
-          options={{ title: "QuedeOficios!" }}
-        />
-        <Stack.Screen
-          name="AnunciatePage"
-          component={AnunciatePage}
-          options={{ title: "QuedeOficios!" }}
-        />
-        <Stack.Screen
-          name="PagosPage"
-          component={PagosPage}
-          options={{ title: "QuedeOficios!" }}
-        />
-      </Stack.Navigator>
-    </NavigationContainer>
-  );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
+    container: {
+        flex: 1,
+        backgroundColor: "#fff",
+        alignItems: "center",
+        justifyContent: "center",
+    },
 });
 
 export default App;
