@@ -26,6 +26,24 @@ Notifications.setNotificationHandler({
 });
 
 const ProfilePage = ({ navigation }) => {
+    const cerrarSesion = () => {
+        firebase.auth().signOut()
+            .catch(function (err) {
+                alert(err);
+            }); 
+    }
+
+    const userObserver = () => {
+        firebase.auth().onAuthStateChanged(function(user) {
+            window.user = user;
+        });
+        return user;
+    }
+
+    const resetPassword = () => {
+        currentUser.sendPasswordResetEmail(user.email);
+    }
+
   const [expoPushToken, setExpoPushToken] = useState("");
   const [notification, setNotification] = useState(false);
   const notificationListener = useRef();
@@ -54,20 +72,7 @@ const ProfilePage = ({ navigation }) => {
     };
   }, []);
 
-  const database = SQLite.openDatabase("quedeoficios", 3);
-
   let [flatListItems, setFlatListItems] = useState([]);
-
-  useEffect(() => {
-    database.transaction((tx) => {
-      tx.executeSql("SELECT * FROM table_user", [], (tx, results) => {
-        var temp = [];
-        for (let i = 0; i < results.rows.length; ++i)
-          temp.push(results.rows.item(i));
-        setFlatListItems(temp);
-      });
-    });
-  }, []);
 
   let listViewItemSeparator = () => {
     return (
@@ -91,173 +96,188 @@ const ProfilePage = ({ navigation }) => {
     );
   };
 
-  return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <View
-        style={{
-          flex: 1,
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-      >
-        <Image
-          source={require("../assets/gradients/20x20.png")}
-          style={{
-            flex: 1,
-            position: "absolute",
-            resizeMode: "cover",
-            width: "100%",
-            height: "100%",
-          }}
-        />
-        <Image
-          source={require("../assets/icon.png")}
-          style={{
-            width: 100,
-            height: 100,
-            marginTop: 50,
-            marginLeft: "auto",
-            marginRight: "auto",
-          }}
-        />
-        <ScrollView
-          style={{
-            flex: 1,
-            marginTop: 10,
-          }}
-          showsVerticalScrollIndicator={false}
-        >
-          <View style={styles.containerBottom}>
-            <TouchableOpacity>
-              <Text
+    return (
+        <SafeAreaView style={{ flex: 1 }}>
+            <View
                 style={{
-                  marginLeft: "auto",
-                  marginRight: "auto",
-                  marginBottom: 10,
-                  fontSize: 18,
-                  color: "#fff",
+                    flex: 1,
+                    alignItems: "center",
+                    justifyContent: "center",
                 }}
-              >
-                Cambiar contraseña
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => navigation.navigate("ChatPage")}>
-              <Text
-                style={{
-                  marginLeft: "auto",
-                  marginRight: "auto",
-                  marginBottom: 10,
-                  fontSize: 18,
-                  color: "#fff",
-                }}
-              >
-                Consultas Hechas
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => navigation.navigate("ChatPage")}>
-              <Text
-                style={{
-                  marginLeft: "auto",
-                  marginRight: "auto",
-                  marginBottom: 10,
-                  fontSize: 18,
-                  color: "#fff",
-                }}
-              >
-                Consultas Recibidas
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity>
-              <Text
-                style={{
-                  marginLeft: "auto",
-                  marginRight: "auto",
-                  marginBottom: 10,
-                  fontSize: 18,
-                  color: "#fff",
-                }}
-              >
-                Mis Comentarios
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity>
-              <Text
-                style={{
-                  marginLeft: "auto",
-                  marginRight: "auto",
-                  marginBottom: 10,
-                  fontSize: 18,
-                  color: "#fff",
-                }}
-              >
-                Mis Favoritos
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity>
-              <Text
-                style={{
-                  marginLeft: "auto",
-                  marginRight: "auto",
-                  marginBottom: 10,
-                  fontSize: 18,
-                  color: "#fff",
-                }}
-              >
-                Mis Recomendaciones
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => navigation.navigate("AnunciatePage")}
             >
-              <Text
-                style={{
-                  marginLeft: "auto",
-                  marginRight: "auto",
-                  marginBottom: 10,
-                  fontSize: 18,
-                  color: "#fff",
-                }}
-              >
-                Anunciarme
-              </Text>
-            </TouchableOpacity>
-          </View>
-          <View
-            style={{
-              flex: 1,
-              marginTop: 10,
-              marginLeft: "auto",
-              marginRight: "auto",
-              marginBottom: 25,
-            }}
-          >
-            <Button
-              buttonStyle={{
-                backgroundColor: "orange",
-                width: 300,
-                height: 50,
-                marginTop: 10,
-                marginLeft: "auto",
-                marginRight: "auto",
-              }}
-              title="Presiona para enviar una notificación"
-              onPress={async () => {
-                await schedulePushNotification();
-              }}
-            />
-          </View>
-        </ScrollView>
-        <View style={{ flex: 1 }}>
-          <FlatList
-            data={flatListItems}
-            ItemSeparatorComponent={listViewItemSeparator}
-            keyExtractor={(item, index) => index.toString()}
-            renderItem={({ item }) => listItemView(item)}
-          />
-        </View>
-      </View>
-    </SafeAreaView>
-  );
+                <Image
+                    source={require("../assets/gradients/20x20.png")}
+                    style={{
+                        flex: 1,
+                        position: "absolute",
+                        resizeMode: "cover",
+                        width: "100%",
+                        height: "100%",
+                    }}
+                />
+                <Image
+                    source={require("../assets/icon.png")}
+                    style={{
+                        width: 100,
+                        height: 100,
+                        marginTop: 50,
+                        marginLeft: "auto",
+                        marginRight: "auto",
+                    }}
+                />
+                <ScrollView
+                    style={{
+                        flex: 1,
+                        marginTop: 10,
+                    }}
+                    showsVerticalScrollIndicator={false}
+                >
+                    <View style={styles.containerBottom}>
+                        <TouchableOpacity>
+                            <Text
+                                style={{
+                                    marginLeft: "auto",
+                                    marginRight: "auto",
+                                    marginBottom: 10,
+                                    fontSize: 18,
+                                    color: "#fff",
+                                }}
+                            >
+                                Cambiar contraseña
+                            </Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={() => navigation.navigate("ChatPage")}>
+                            <Text
+                                style={{
+                                    marginLeft: "auto",
+                                    marginRight: "auto",
+                                    marginBottom: 10,
+                                    fontSize: 18,
+                                    color: "#fff",
+                                }}
+                            >
+                                Consultas Hechas
+                            </Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={() => navigation.navigate("ChatPage")}>
+                            <Text
+                                style={{
+                                    marginLeft: "auto",
+                                    marginRight: "auto",
+                                    marginBottom: 10,
+                                    fontSize: 18,
+                                    color: "#fff",
+                                }}
+                            >
+                                Consultas Recibidas
+                            </Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity>
+                            <Text
+                                style={{
+                                    marginLeft: "auto",
+                                    marginRight: "auto",
+                                    marginBottom: 10,
+                                    fontSize: 18,
+                                    color: "#fff",
+                                }}
+                            >
+                                Mis Comentarios
+                            </Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity>
+                            <Text
+                                style={{
+                                    marginLeft: "auto",
+                                    marginRight: "auto",
+                                    marginBottom: 10,
+                                    fontSize: 18,
+                                    color: "#fff",
+                                }}
+                            >
+                                Mis Favoritos
+                            </Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity>
+                            <Text
+                                style={{
+                                    marginLeft: "auto",
+                                    marginRight: "auto",
+                                    marginBottom: 10,
+                                    fontSize: 18,
+                                    color: "#fff",
+                                }}
+                            >
+                                Mis Recomendaciones
+                            </Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            onPress={() => navigation.navigate("AnunciatePage")}
+                        >
+                            <Text
+                                style={{
+                                    marginLeft: "auto",
+                                    marginRight: "auto",
+                                    marginBottom: 10,
+                                    fontSize: 18,
+                                    color: "#fff",
+                                }}
+                            >
+                                Anunciarme
+                            </Text>
+                        </TouchableOpacity>
+                    </View>
+                    <View
+                        style={{
+                            flex: 1,
+                            marginTop: 10,
+                            marginLeft: "auto",
+                            marginRight: "auto",
+                            marginBottom: 25,
+                        }}
+                    >
+                        <Button
+                            buttonStyle={{
+                                backgroundColor: "orange",
+                                width: 300,
+                                height: 50,
+                                marginTop: 10,
+                                marginLeft: "auto",
+                                marginRight: "auto"
+                            }}
+                            title="Cerrar Sesión"
+                            onPress={resetPassword}
+                        />
+                        <Button
+                            buttonStyle={{
+                                backgroundColor: "orange",
+                                width: 300,
+                                height: 50,
+                                marginTop: 10,
+                                marginLeft: "auto",
+                                marginRight: "auto",
+                            }}
+                            title="Presiona para enviar una notificación"
+                            onPress={async () => {
+                                await schedulePushNotification();
+                            }}
+                        />
+                    </View>
+                </ScrollView>
+                <View style={{ flex: 1, alignItems: "center", justifyContent: "center"}}>
+                    <Text>{userObserver}</Text>
+                </View>
+                <View style={{ flex: 1 }}>
+                    <FlatList
+                        data={flatListItems}
+                        ItemSeparatorComponent={listViewItemSeparator}
+                        keyExtractor={(item, index) => index.toString()}
+                        renderItem={({ item }) => listItemView(item)}
+                    />
+                </View>
+            </View>
+        </SafeAreaView>
+    );
 };
 
 async function schedulePushNotification() {

@@ -10,21 +10,21 @@
       "resizeMode": "cover",
       "backgroundColor": "#654F6F",
       "firebase": {
-        "apiKey": "${ FIREBASE_AUTH_DOMAIN }",
-        "authDomain": "${ FIREBASE_AUTH_DOMAIN }",
-        "databaseURL": "${ FIREBASE_DATABASE_URL }",
-        "projectId": "${ FIREBASE_PROJECT_ID }",
-        "storageBucket": "${ FIREBASE_STORAGE_BUCKET }",
-        "messagingSenderId": "${ FIREBASE_MESSAGING_SENDER_ID }",
-        "appId": "${ FIREBASE_APP_ID }",
-        "measurementId": "${ FIREBASE_MEASUREMENT_ID }"
+        "apiKey": "AIzaSyADf1sCZ72YNWPMsEuCmBkc_gns7UHwDdA",
+        "authDomain": "qdo2020-1da7b.firebaseapp.com",
+        "databaseURL": "https://qdo2020-1da7b.firebaseio.com",
+        "projectId": "qdo2020-1da7b",
+        "storageBucket": "qdo2020-1da7b.appspot.com",
+        "messagingSenderId": "224428348880",
+        "appId": "1:224428348880:web:e591820528fc39409c95d5",
+        "measurementId": "1:224428348880:web:e591820528fc39409c95d5"
       },
       "googleMaps": {
-        "apiKey": "${ GOOGLE_MAPS_API_KEY}"
+        "apiKey": "AIzaSyAv01lBcj4QItbqcoACgdv1nkkUTJfXBuk"
       },
-      "facebookScheme": "${ FACEBOOK_SCHEME }",
-      "facebookAppId": "${ FACEBOOK_APP_ID }",
-      "facebookDisplayName": "${ FACEBOOK_DISPLAY_NAME }"
+      "facebookScheme": "fb791075094961301",
+      "facebookAppId": "791075094961301",
+      "facebookDisplayName": "qdo2020"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
@@ -43,21 +43,21 @@
       "favicon": "./assets/favicon.png",
       "config": {
         "firebase": {
-          "apiKey": "${ FIREBASE_API_KEY }",
-          "authDomain": "${ FIREBASE_AUTH_DOMAIN }",
-          "databaseURL": "${ FIREBASE_DATABASE_URL }",
-          "projectId": "${ FIREBASE_PROJECT_ID }",
-          "storageBucket": "${ FIREBASE_STORAGE_BUCKET }",
-          "messagingSenderId": "${ FIREBASE_MESSAGING_SENDER_ID }",
-          "appId": "${ FIREBASE_APP_ID }",
-          "measurementId": "${ FIREBASE_MEASUREMENT_ID }"
+          "apiKey": "AIzaSyADf1sCZ72YNWPMsEuCmBkc_gns7UHwDdA",
+          "authDomain": "qdo2020-1da7b.firebaseapp.com",
+          "databaseURL": "https://qdo2020-1da7b.firebaseio.com",
+          "projectId": "qdo2020-1da7b",
+          "storageBucket": "qdo2020-1da7b.appspot.com",
+          "messagingSenderId": "224428348880",
+          "appId": "1:224428348880:web:e591820528fc39409c95d5",
+          "measurementId": "1:224428348880:web:e591820528fc39409c95d5"
         },
         "googleMaps": {
-          "apiKey": "${ GOOGLE_MAPS_API_KEY}"
+          "apiKey": "AIzaSyAv01lBcj4QItbqcoACgdv1nkkUTJfXBuk"
         },
-        "facebookScheme": "${ FACEBOOK_SCHEME }",
-        "facebookAppId": "${ FACEBOOK_APP_ID }",
-        "facebookDisplayName": "${ FACEBOOK_DISPLAY_NAME }"
+        "facebookScheme": "fb791075094961301",
+        "facebookAppId": "791075094961301",
+        "facebookDisplayName": "qdo2020"
       }
     }
   }

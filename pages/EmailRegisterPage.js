@@ -17,51 +17,38 @@ import * as Facebook from "expo-facebook";
 import * as Location from "expo-location";
 import { TouchableHighlight } from "react-native-gesture-handler";
 import * as firebase from "firebase";
-import 'firebase/firestore';
-import { FIREBASE_API_KEY, FIREBASE_AUTH_DOMAIN, FIREBASE_DATABASE_URL, FIREBASE_PROJECT_ID, FIREBASE_STORAGE_BUCKET, FIREBASE_MESSAGING_SENDER_ID } from "@env";
+import 'firebase/auth';
+import { FIREBASE_API_KEY, FIREBASE_AUTH_DOMAIN, FIREBASE_DATABASE_URL, FIREBASE_PROJECT_ID, FIREBASE_STORAGE_BUCKET, FIREBASE_MESSAGING_SENDER_ID, FIREBASE_APP_ID, FIREBASE_MEASUREMENT_ID } from "@env";
+import firebaseKeys from "../keys.js";
+
+try {
+    firebase.initializeApp({
+        "apiKey": `${ FIREBASE_API_KEY }`,
+        "authDomain": `${ FIREBASE_AUTH_DOMAIN }`,
+        "databaseURL": `${ FIREBASE_DATABASE_URL }`,
+        "projectId": `${ FIREBASE_PROJECT_ID }`,
+        "storageBucket": `${ FIREBASE_STORAGE_BUCKET }`,
+        "messagingSenderId": `${ FIREBASE_MESSAGING_SENDER_ID }`,
+        "appId": `${ FIREBASE_APP_ID }`,
+        "measurementId": `${ FIREBASE_MEASUREMENT_ID }`
+    })
+
+} catch (err) {
+    if (!/already exists/.test(err.message)) {
+        console.error('Firebase initialization error raised', err.stack)
+    }}
+
+const firebaseApp= firebase;
 
 const EmailRegisterPage = ({ navigation }, props) => {
-    try {
-        firebase.initializeApp({
-            apiKey: `${FIREBASE_API_KEY}`,
-            authDomain: `${FIREBASE_AUTH_DOMAIN}`,
-            databaseURL: `${FIREBASE_DATABASE_URL}`,
-            projectId: `${FIREBASE_PROJECT_ID}`,
-            storageBucket: `${FIREBASE_STORAGE_BUCKET}`,
-            messagingSenderId: `${FIREBASE_MESSAGING_SENDER_ID}`
-        })
-
-    } catch (err) {
-        if (!/already exists/.test(err.message)) {
-            console.error('Firebase initialization error raised', err.stack)
-        }}
-
-    const firebaseApp= firebase;
-
     let [email, setUserEmail] = useState("");
     let [password, setUserPassword] = useState("");
 
-    let db = firebase.firestore();
-
-    function registrarUsuario() {
-        try {
-                                        db.collection("usuarios").add({
-                                            email: email,
-                                            password: password
-                                        })
-                                            .then(function(docRef) {
-                                                console.log("Document written with ID: ", docRef.id);
-                                            })
-                                            .catch(function(error) {
-                                                console.error("Error adding document: ", error);
-                                            });
-                                    }  catch (err) {
-                                        if (email === '' || password === '') {
-                                            alert("Debes completar todos los campos para registrarte!", err) 
-                                        } 
-                                    } finally {
-                                        () => navigation.navigate('ProfilePage');
-                                    }
+    const registrarUsuarios = () => {
+        firebase.auth().createUserWithEmailAndPassword(email, password)
+            .catch(function (err) {
+                alert(err);
+            });
     }
 
     return (
@@ -113,7 +100,7 @@ const EmailRegisterPage = ({ navigation }, props) => {
                                     paddingRight: 40,
                                     borderRadius: 20,
                                 }}
-                                onPress={() => registrarUsuario()}
+                                onPress={registrarUsuarios}
                                 title="Registrarme"
                             />
                         </KeyboardAvoidingView>

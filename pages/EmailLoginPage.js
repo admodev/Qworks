@@ -5,53 +5,22 @@ import * as FirebaseCore from "expo-firebase-core";
 import * as Google from "expo-google-app-auth";
 import * as Facebook from "expo-facebook";
 import * as Location from "expo-location";
+import * as firebase from "firebase";
+import 'firebase/auth';
+import { FIREBASE_API_KEY, FIREBASE_AUTH_DOMAIN, FIREBASE_DATABASE_URL, FIREBASE_PROJECT_ID, FIREBASE_STORAGE_BUCKET, FIREBASE_MESSAGING_SENDER_ID, FIREBASE_APP_ID, FIREBASE_MEASUREMENT_ID } from "@env";
+import firebaseKeys from "../keys.js";
 
 const EmailLoginPage = ({ navigation }) => {
-  const database = SQLite.openDatabase("quedeoficios", 3);
+  let [email, setUserEmail] = useState("");
+  let [password, setUserPassword] = useState("");
 
-  let [userName, setUserName] = useState("");
-  let [userEmail, setUserEmail] = useState("");
-  let [userPassword, setUserPassword] = useState("");
-
-  let register_user = () => {
-    console.log(userName, userEmail, userPassword);
-
-    if (!userName) {
-      alert("Por favor rellena todos los campos.");
-      return;
-    }
-    if (!userEmail) {
-      alert("Por favor rellena todos los campos.");
-      return;
-    }
-    if (!userPassword) {
-      alert("Por favor rellena todos los campos.");
-      return;
+    const loguearUsuarios = () => {
+        firebase.auth().signInWithEmailAndPassword(email, password)
+            .catch(function(err) {
+                alert(err);
+            });
     }
 
-    database.transaction(function (tx) {
-      tx.executeSql(
-        "INSERT INTO table_user (user_name, user_email, user_password) VALUES (?,?,?)",
-        [userName, userEmail, userPassword],
-        (tx, results) => {
-          console.log("Results", results.rowsAffected);
-          if (results.rowsAffected > 0) {
-            Alert.alert(
-              "Éxito!",
-              "Iniciaste Sesión",
-              [
-                {
-                  text: "Okay",
-                  onPress: () => navigation.navigate("ProfilePage"),
-                },
-              ],
-              { cancelable: false }
-            );
-          } else alert("Tu ingreso falló!");
-        }
-      );
-    });
-  };
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View style={{ flex: 1, backgroundColor: "white" }}>
@@ -85,14 +54,14 @@ const EmailLoginPage = ({ navigation }) => {
                 placeholder="Correo Electrónico"
                 leftIcon={<Icon name="envelope-o" size={24} color="white" />}
                 onChangeText={props.onChangeText}
-                onChangeText={(userEmail) => setUserEmail(userEmail)}
+                onChangeText={(email) => setUserEmail(email)}
                 value={props.value}
               />
               <Input
                 placeholder="Contraseña"
                 leftIcon={<Icon name="lock" size={24} color="white" />}
                 secureTextEntry={true}
-                onChangeText={(userPassword) => setUserPassword(userPassword)}
+                onChangeText={(password) => setUserPassword(password)}
                 value={props.value}
               />
               <Button
@@ -102,8 +71,8 @@ const EmailLoginPage = ({ navigation }) => {
                   paddingRight: 40,
                   borderRadius: 20,
                 }}
-                onPress={register_user}
-                title="Registrarme"
+                onPress={loguearUsuarios}
+                title="Iniciar Sesión"
               />
             </KeyboardAvoidingView>
           </ScrollView>
