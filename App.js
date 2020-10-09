@@ -3,7 +3,7 @@ import * as React from "react";
 import { AppRegistry, StyleSheet, View } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
-import { BottomNavigation, Text } from "react-native-paper";
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import OnboardingPage from "./pages/OnboardingPage";
 import LoginPage from "./pages/LoginPage";
 import ChatPage from "./pages/ChatPage";
@@ -15,112 +15,127 @@ import ProfilePage from "./pages/ProfilePage";
 import AnunciatePage from "./pages/AnunciatePage";
 import PagosPage from "./pages/PagosPage";
 import {
-  FIREBASE_API_KEY,
-  FIREBASE_AUTH_DOMAIN,
-  FIREBASE_DATABASE_URL,
-  FIREBASE_PROJECT_ID,
-  FIREBASE_STORAGE_BUCKET,
-  FIREBASE_MESSAGING_SENDER_ID,
+    FIREBASE_API_KEY,
+    FIREBASE_AUTH_DOMAIN,
+    FIREBASE_DATABASE_URL,
+    FIREBASE_PROJECT_ID,
+    FIREBASE_STORAGE_BUCKET,
+    FIREBASE_MESSAGING_SENDER_ID,
 } from "@env";
 import * as firebase from "firebase";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
 const Stack = createStackNavigator();
+const Tabs = createBottomTabNavigator();
 
-function App() {
-  function TabsNav() {
-    const ChatPage = () => <Text>Chat</Text>;
-
-    const AlbumsRoute = () => <Text>Albums</Text>;
-
-    const RecentsRoute = () => <Text>Recents</Text>;
-
-    const [index, setIndex] = React.useState(0);
-    const [routes] = React.useState([
-      { key: "ChatPage", title: "ChatPage", icon: "queue-music" },
-      { key: "albums", title: "Albums", icon: "album" },
-      { key: "recents", title: "Recents", icon: "history" },
-    ]);
-
-    const renderScene = BottomNavigation.SceneMap({
-      ChatPage: ChatPage,
-      albums: AlbumsRoute,
-      recents: RecentsRoute,
-    });
-    return (
-      <BottomNavigation
-        navigationState={{ index, routes }}
-        onIndexChange={setIndex}
-        renderScene={renderScene}
-      />
-    );
-  }
-  return (
-    <NavigationContainer>
-      <Stack.Navigator
+const StackNav = () => {
+    <Stack.Navigator
         initialRouteName="OnboardingPage"
         screenOptions={{
-          headerStyle: { backgroundColor: "#633689" },
-          headerTintColor: "#fff",
-          headerTitleStyle: { fontWeight: "bold" },
+            headerStyle: { backgroundColor: "#633689" },
+            headerTintColor: "#fff",
+            headerTitleStyle: { fontWeight: "bold" },
         }}
-      >
+    >
+        <Stack.Screen name="BottomNav" component={BottomNav} />
         <Stack.Screen
-          name="OnboardingPage"
-          component={OnboardingPage}
-          options={{ title: "QueDeOficios!", headerShown: false }}
+            name="OnboardingPage"
+            component={OnboardingPage}
+            options={{ title: "QueDeOficios!", headerShown: false }}
         />
         <Stack.Screen
-          name="SearchPage"
-          component={SearchPage}
-          options={{ title: "QuedeOficios!", headerShown: false }}
+            name="SearchPage"
+            component={SearchPage}
+            options={{ title: "QuedeOficios!", headerShown: false }}
         />
         <Stack.Screen
-          name="ChatPage"
-          component={ChatPage}
-          options={{ title: "QuedeOficios!", headerShown: false }}
+            name="ChatPage"
+            component={ChatPage}
+            options={{ title: "QuedeOficios!", headerShown: false }}
         />
         <Stack.Screen
-          name="RegisterPage"
-          component={RegisterPage}
-          options={{ title: "QuedeOficios!", headerShown: false }}
+            name="RegisterPage"
+            component={RegisterPage}
+            options={{ title: "QuedeOficios!", headerShown: false }}
         />
         <Stack.Screen
-          name="EmailLoginPage"
-          component={EmailLoginPage}
-          options={{ title: "QuedeOficios!", headerShown: false }}
+            name="EmailLoginPage"
+            component={EmailLoginPage}
+            options={{ title: "QuedeOficios!", headerShown: false }}
         />
         <Stack.Screen
-          name="EmailRegisterPage"
-          component={EmailRegisterPage}
-          options={{ title: "QuedeOficios!", headerShown: false }}
+            name="EmailRegisterPage"
+            component={EmailRegisterPage}
+            options={{ title: "QuedeOficios!", headerShown: false }}
         />
         <Stack.Screen
-          name="ProfilePage"
-          component={ProfilePage}
-          options={{ title: "QuedeOficios!", headerShown: false }}
+            name="ProfilePage"
+            component={ProfilePage}
+            options={{ title: "QuedeOficios!", headerShown: false }}
         />
         <Stack.Screen
-          name="AnunciatePage"
-          component={AnunciatePage}
-          options={{ title: "QuedeOficios!", headerShown: false }}
+            name="AnunciatePage"
+            component={AnunciatePage}
+            options={{ title: "QuedeOficios!", headerShown: false }}
         />
         <Stack.Screen
-          name="PagosPage"
-          component={PagosPage}
-          options={{ title: "QuedeOficios!", headerShown: false }}
+            name="PagosPage"
+            component={PagosPage}
+            options={{ title: "QuedeOficios!", headerShown: false }}
         />
-      </Stack.Navigator>
-    </NavigationContainer>
-  );
+    </Stack.Navigator>
+
+}
+
+function App() {
+    return (
+        <NavigationContainer>
+            <Tabs.Navigator>
+                <Tabs.Screen name="OnboardingPage"
+                    component={OnboardingPage}
+                    options={{
+                        tabBarLabel: 'Inicio',
+                        tabBarIcon: ({ color, size }) => (
+                            <MaterialCommunityIcons name="home" color={color} size={size} />
+                        ),
+                    }} />
+                <Tabs.Screen name="SearchPage" component={SearchPage}
+                    options={{
+                        tabBarLabel: 'Buscar',
+                        tabBarIcon: ({ color, size }) => (
+                            <MaterialCommunityIcons name="magnify" color={color} size={size} />
+                        ),
+                    }}
+                />
+                <Tabs.Screen name="ChatPage"
+                    component={ChatPage}
+                    options={{
+                        tabBarLabel: 'Mensajes',
+                        tabBarIcon: ({ color, size }) => (
+                            <MaterialCommunityIcons name="message" color={color} size={size} />
+                        ),
+                    }}
+                />
+                <Tabs.Screen name="ProfilePage" component={ProfilePage}
+                    options={{
+                        tabBarLabel: 'Mi Perfil',
+                        tabBarIcon: ({ color, size }) => (
+                            <MaterialCommunityIcons name="face" color={color} size={size} />
+                        ),
+                    }}
+                />
+            </Tabs.Navigator>
+        </NavigationContainer>
+    );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
+    container: {
+        flex: 1,
+        backgroundColor: "#fff",
+        alignItems: "center",
+        justifyContent: "center",
+    },
 });
 
 export default App;

@@ -1004,6 +1004,11 @@
     lodash "^4.17.19"
     to-fast-properties "^2.0.0"
 
+"@blackbox-vision/react-native-mercadopago-px@^0.6.2":
+  version "0.6.2"
+  resolved "https://registry.yarnpkg.com/@blackbox-vision/react-native-mercadopago-px/-/react-native-mercadopago-px-0.6.2.tgz#54871caeb5300a35f52cb29af189d2bf25abd18e"
+  integrity sha512-cerV6Ors62IycVmCRQl3mM27DGRUW/q/7ng4MVjKahXmU22Q1VkbDR1h8zaynvhJRTJQywRKesNODNrAoSKvuA==
+
 "@callstack/react-theme-provider@^3.0.5":
   version "3.0.5"
   resolved "https://registry.yarnpkg.com/@callstack/react-theme-provider/-/react-theme-provider-3.0.5.tgz#a173e455e9603c9c45357a3b6ace1273086527ca"

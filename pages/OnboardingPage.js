@@ -192,14 +192,6 @@ const OnboardingPage = ({ navigation }) => {
                     </TouchableOpacity>
                 </Card>
             </ScrollView>
-            <View style={{ flex: 1, position: "absolute", flexDirection: "row", bottom: 0 }}>
-                <Button title="Inicio" 
-                    onPress={() => navigation.navigate('OnboardingPage')}
-                />
-                <Button title="Buscar" />
-                <Button title="Mensajes" onPress={() => navigation.navigate('ChatPage')} />
-                <Button title="Perfil" onPress={() => navigation.navigate('PerfilPage')} />
-            </View>
             <View
                 style={{
                     flex: 1,
