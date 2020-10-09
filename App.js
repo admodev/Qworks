@@ -28,7 +28,7 @@ const Stack = createStackNavigator();
 
 function App() {
   function TabsNav() {
-    const MusicRoute = () => <Text>Music</Text>;
+    const ChatPage = () => <Text>Chat</Text>;
 
     const AlbumsRoute = () => <Text>Albums</Text>;
 
@@ -36,13 +36,13 @@ function App() {
 
     const [index, setIndex] = React.useState(0);
     const [routes] = React.useState([
-      { key: "music", title: "Music", icon: "queue-music" },
+      { key: "ChatPage", title: "ChatPage", icon: "queue-music" },
       { key: "albums", title: "Albums", icon: "album" },
       { key: "recents", title: "Recents", icon: "history" },
     ]);
 
     const renderScene = BottomNavigation.SceneMap({
-      music: MusicRoute,
+      ChatPage: ChatPage,
       albums: AlbumsRoute,
       recents: RecentsRoute,
     });
