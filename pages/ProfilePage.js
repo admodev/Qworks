@@ -13,6 +13,7 @@ import {
 } from "react-native";
 import { Button, SocialIcon } from "react-native-elements";
 import Icon from "react-native-vector-icons/FontAwesome";
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import * as Location from "expo-location";
 import * as SQLite from "expo-sqlite";
 import { ScrollView } from "react-native-gesture-handler";
@@ -43,7 +44,7 @@ const ProfilePage = () => {
                         height: "100%",
                     }}
                 />
-                <View style={{ flex: 1, justifyContent: "flex-start", flexDirection: "row", top: 50, marginLeft: 25 }}>
+                <View style={{ flex: 1, justifyContent: "flex-start", flexDirection: "row", marginTop: 50, marginLeft: 15 }}>
                     <Image source={require("../assets/icon.png")}
                         style={{
                             width: 50,
@@ -51,8 +52,8 @@ const ProfilePage = () => {
                         }}
                     />
                     <View style={{ flex: 1, flexDirection: "column" }}>
-                    <Text style={{ color: "#fff", fontSize: 14, marginLeft: 20 }}>Nombre</Text>
-                    <Text style={{ color: "#fff", fontSize: 14, marginLeft: 20 }}>Correo Electrónico</Text>
+                        <Text style={{ color: "#fff", fontSize: 14, marginLeft: 20 }}>Nombre</Text>
+                        <Text style={{ color: "#fff", fontSize: 14, marginLeft: 20 }}>Correo Electrónico</Text>
                     </View>
                     <Button
                         title="Anunciarte"
@@ -63,10 +64,48 @@ const ProfilePage = () => {
                         }}
                     />
                 </View>
+                <View style={{ flex: 1, flexDirection: "column", justifyContent: "flex-start", bottom: 50 }} >
+                    <TouchableOpacity onPress={() => navigation.navigate('ChatPage')}>
+                        <Text style={{ color: "#fff", fontSize: 25, marginLeft: 20 }}><MaterialCommunityIcons name="comment-text" color={"#fff"} size={20} /> Mensajes</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={() => navigation.navigate('MisComentariosPage')}>
+                        <Text style={{ color: "#fff", fontSize: 25, marginLeft: 20 }}><MaterialCommunityIcons name="comment" color={"#fff"} size={20} /> Comentarios</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={() => navigation.navigate('MisRecomendadosPage')}>
+                        <Text style={{ color: "#fff", fontSize: 25, marginLeft: 20 }}><MaterialCommunityIcons name="heart" color={"#fff"} size={20} /> Recomendados</Text>
+                    </TouchableOpacity>
+                </View>
+                <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+                    <Button title="Cerrar Sesión" buttonStyle={{
+                        backgroundColor: "orange",
+                        borderRadius: 12,
+                        marginBottom: 80,
+                        fontWeight: "bold",
+                        padding: 10,
+                    }} />
+                </View>
             </SafeAreaView>
         );
     } else {
-        () => navigation.navigate('LoginPage');
+        return(
+            <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+                <Image
+                    source={require("../assets/gradients/20x20.png")}
+                    style={{
+                        flex: 1,
+                        position: "absolute",
+                        resizeMode: "cover",
+                        width: "100%",
+                        height: "100%",
+                    }}
+                />
+                <TouchableOpacity
+                    onPress={() => navigation.navigate('LoginPage')}
+                >
+                    <Text style={{ color: "#fff", fontSize: 16, fontWeight: "bold", margin: 25, textAlign: "center" }}>Por favor inicia sesión para ingresar a tu perfil!</Text>
+                </TouchableOpacity>
+            </View>
+        );
     }
 }
 
