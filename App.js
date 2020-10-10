@@ -14,6 +14,7 @@ import SearchPage from "./pages/SearchPage";
 import ProfilePage from "./pages/ProfilePage";
 import AnunciatePage from "./pages/AnunciatePage";
 import PagosPage from "./pages/PagosPage";
+import ShopPage from "./pages/ShopPage";
 import {
     FIREBASE_API_KEY,
     FIREBASE_AUTH_DOMAIN,
@@ -90,6 +91,11 @@ const StackNav = () => {
             component={PagosPage}
             options={{ title: "QuedeOficios!", headerShown: false }}
         />
+        <Stack.Screen
+            name="ShopPage"
+            component={ShopPage}
+            options={{ title: "QuedeOficios!", headerShown: false }}
+        />
     </Stack.Navigator>
 
 }
@@ -128,6 +134,14 @@ function App() {
                         tabBarLabel: 'Mi Perfil',
                         tabBarIcon: ({ color, size }) => (
                             <MaterialCommunityIcons name="face" color={color} size={size} />
+                        ),
+                    }}
+                />
+                <Tabs.Screen name="ShopPage" component={ShopPage}
+                    options={{
+                        tabBarLabel: 'Shop',
+                        tabBarIcon: ({ color, size }) => (
+                            <MaterialCommunityIcons name="shopping" color={color} size={size} />
                         ),
                     }}
                 />

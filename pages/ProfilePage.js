@@ -15,7 +15,6 @@ import { Button, SocialIcon } from "react-native-elements";
 import Icon from "react-native-vector-icons/FontAwesome";
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import * as Location from "expo-location";
-import * as SQLite from "expo-sqlite";
 import { ScrollView } from "react-native-gesture-handler";
 import * as firebase from "firebase";
 import 'firebase/storage';

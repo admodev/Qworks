@@ -20,7 +20,29 @@ const OnboardingPage = ({ navigation }) => {
         title: '',
     };
     return (
-        <SafeAreaView style={{ flex: 1, backgroundColor: "beige" }}>
+        <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>                     
+            <Image
+                source={require("../assets/white.jpg")}
+                style={{
+                    flex: 1,
+                    position: "absolute",
+                    resizeMode: "cover",
+                    width: "100%",
+                    height: "100%",
+                    opacity: 0.9,
+                    borderRadius: 10,
+                }}
+            />
+            <Image
+                source={require("../assets/gradients/20x20.png")}
+                style={{
+                    flex: 1,
+                    position: "absolute",
+                    resizeMode: "cover",
+                    width: "100%",
+                    height: "5%",
+                }}
+            />
             <ScrollView
                 showsVerticalScrollIndicator={false}
                 style={{ position: "relative", marginTop: 103 }}

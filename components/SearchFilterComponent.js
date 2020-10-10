@@ -10,9 +10,8 @@ import {
 } from "react-native";
 import { Button, SocialIcon } from "react-native-elements";
 import SearchInput, { createFilter } from "react-native-search-filter";
-import users from "../userData/Users";
 
-const KEYS_TO_FILTERS = ["user.name", "user.profession"];
+const KEYS_TO_FILTERS = ["u.name", "u.profession"];
 
 export default class SearchFilterComponent extends Component {
     constructor(props) {
