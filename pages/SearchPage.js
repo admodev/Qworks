@@ -2,9 +2,12 @@ import React from "react";
 import { Image, SafeAreaView, StyleSheet, Text, View } from "react-native";
 import { Button, SocialIcon } from "react-native-elements";
 import SearchFilterComponent from "../components/SearchFilterComponent";
+import CardsUsuarios from "../components/Cards";
 
 const SearchPage = ({ navigation }) => {
-  return <SearchFilterComponent />;
+  return(
+      <CardsUsuarios />
+  );
 };
 
 export default SearchPage;

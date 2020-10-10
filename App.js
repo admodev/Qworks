@@ -24,6 +24,8 @@ import {
 } from "@env";
 import * as firebase from "firebase";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import CardsUsuarios from "./components/Cards";
+import { navigationRef } from './RootNavigation';
 
 const Stack = createStackNavigator();
 const Tabs = createBottomTabNavigator();
@@ -42,6 +44,11 @@ const StackNav = () => {
             name="OnboardingPage"
             component={OnboardingPage}
             options={{ title: "QueDeOficios!", headerShown: false }}
+        />
+        <Stack.Screen
+            name="CardsUsuarios"
+            component={CardsUsuarios}
+            options={{ title: "QuedeOficios!", headerShown: false }}
         />
         <Stack.Screen
             name="SearchPage"
@@ -89,7 +96,7 @@ const StackNav = () => {
 
 function App() {
     return (
-        <NavigationContainer>
+        <NavigationContainer ref={navigationRef}>
             <Tabs.Navigator>
                 <Tabs.Screen name="OnboardingPage"
                     component={OnboardingPage}
