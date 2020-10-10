@@ -74,7 +74,7 @@ const OnboardingPage = ({ navigation }) => {
                                 }}
                             />
                         }
-                        inputStyle={{ marginLeft: 10 }}
+                        inputStyle={{ marginLeft: 30 }}
                     />
                 </TouchableOpacity>
             </View>

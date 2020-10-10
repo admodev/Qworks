@@ -125,7 +125,7 @@ function App() {
                     options={{
                         tabBarLabel: 'Mensajes',
                         tabBarIcon: ({ color, size }) => (
-                            <MaterialCommunityIcons name="message" color={color} size={size} />
+                            <MaterialCommunityIcons name="message" color={color} size={35} />
                         ),
                     }}
                 />
