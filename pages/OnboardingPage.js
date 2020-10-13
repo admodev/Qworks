@@ -55,9 +55,8 @@ const OnboardingPage = ({ navigation }) => {
         />
         <ScrollView
           showsVerticalScrollIndicator={false}
-          style={{ position: "relative", marginTop: 103 }}
+          style={{ position: "relative", marginTop: 130 }}
         >
-          <Button title="abrirmenu" onPress={openControlPanel} />
           <CardsUsuarios />
         </ScrollView>
         <View
@@ -88,6 +87,12 @@ const OnboardingPage = ({ navigation }) => {
               inputStyle={{ marginLeft: 30 }}
             />
           </TouchableOpacity>
+          <Button
+            title="< Filtro de búsqueda"
+            buttonStyle={{ backgroundColor: "transparent", bottom: 12 }}
+            titleStyle={{ color: "#000000", fontWeight: "bold" }}
+            onPress={openControlPanel}
+          />
         </View>
       </SafeAreaView>
     </Drawer>

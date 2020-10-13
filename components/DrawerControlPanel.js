@@ -8,11 +8,18 @@ class ControlPanel extends React.Component {
       _drawer.close();
     };
     return (
-      <SafeAreaView
-        style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
-      >
-        <Text>Funciona!</Text>
-        <Button title="Cerrar menú" onPress={closeControlPanel} />
+      <SafeAreaView style={{ flex: 1 }}>
+        <Button
+          title=">"
+          buttonStyle={{
+            backgroundColor: "transparent",
+            justifyContent: "flex-end",
+            marginTop: 15,
+            marginRight: 35,
+          }}
+          titleStyle={{ color: "#000000", fontSize: 28 }}
+          onPress={closeControlPanel}
+        />
       </SafeAreaView>
     );
   }
