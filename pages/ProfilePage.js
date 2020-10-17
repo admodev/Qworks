@@ -20,6 +20,8 @@ import * as firebase from "firebase";
 import "firebase/storage";
 import * as ImagePicker from "expo-image-picker";
 import * as RootNavigation from "../RootNavigation.js";
+import * as LoginPageData from "./LoginPage";
+import LoginPage from "./LoginPage";
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -30,8 +32,7 @@ Notifications.setNotificationHandler({
 });
 
 const ProfilePage = () => {
-  let user = true;
-  if (user) {
+  if (LoginPageData.user) {
     return (
       <SafeAreaView style={{ flex: 1 }}>
         <Image
@@ -128,7 +129,11 @@ const ProfilePage = () => {
         >
           <Button
             title="Cerrar Sesión"
-            onPress={() => RootNavigation.navigate('ProfilePage', { screen: 'EmailLoginPage' })}
+            onPress={() =>
+              RootNavigation.navigate("ProfilePage", {
+                screen: "EmailLoginPage",
+              })
+            }
             buttonStyle={{
               backgroundColor: "orange",
               borderRadius: 12,
@@ -141,33 +146,7 @@ const ProfilePage = () => {
       </SafeAreaView>
     );
   } else {
-    return (
-      <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-        <Image
-          source={require("../assets/gradients/20x20.png")}
-          style={{
-            flex: 1,
-            position: "absolute",
-            resizeMode: "cover",
-            width: "100%",
-            height: "100%",
-          }}
-        />
-        <TouchableOpacity onPress={() => navigation.navigate("LoginPage")}>
-          <Text
-            style={{
-              color: "#fff",
-              fontSize: 16,
-              fontWeight: "bold",
-              margin: 25,
-              textAlign: "center",
-            }}
-          >
-            Por favor inicia sesión para ingresar a tu perfil!
-          </Text>
-        </TouchableOpacity>
-      </View>
-    );
+    return <LoginPage />;
   }
 };
 

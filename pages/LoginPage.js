@@ -93,9 +93,24 @@ const LoginPage = ({ navigation }) => {
     firebase
       .auth()
       .signInWithEmailAndPassword(email, password)
-      .catch(function (err) {
-        alert(err);
+      .catch(function (error) {
+        alert(error);
+      })
+      .then(function ({ navigation }) {
+        () => navigation.navigate("ProfilePage");
       });
+  };
+
+  const userIsLoggedIn = () => {
+    firebase.auth().onAuthStateChanged(function (user) {
+      if (user) {
+        var email = user.email;
+        var uid = user.uid;
+        var providerData = user.providerData;
+      } else {
+        user == null;
+      }
+    });
   };
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
@@ -136,6 +151,7 @@ const LoginPage = ({ navigation }) => {
             >
               <Input
                 placeholder="Correo Electrónico"
+                keyboardType="email-address"
                 leftIcon={<Icon name="envelope-o" size={24} color="white" />}
                 onChangeText={(email) => setUserEmail(email)}
                 value={email}
