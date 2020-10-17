@@ -75,7 +75,9 @@ async function logInWithFacebook() {
       );
       Alert.alert("Ingresaste!", `Hola ${(await response.json()).name}!`);
     } else {
-      Alert.alert("Tienes que permitir el acceso a tu cuenta para que puedas iniciar sesión con Facebook.");
+      Alert.alert(
+        "Tienes que permitir el acceso a tu cuenta para que puedas iniciar sesión con Facebook."
+      );
     }
   } catch ({ message }) {
     alert(`Facebook Login Error: ${message}`);
@@ -97,7 +99,9 @@ const LoginPage = ({ navigation }) => {
       .signInWithEmailAndPassword(email, password)
       .catch(function (error) {
         if (password != user.password) {
-          alert("Ingreso una contraseña erronea, intentelo nuevamente por favor.");
+          alert(
+            "Ingreso una contraseña erronea, intentelo nuevamente por favor."
+          );
         }
       })
       .then(function ({ navigation }) {
@@ -116,7 +120,7 @@ const LoginPage = ({ navigation }) => {
 
   const cambiarEstado = () => {
     let isChecked = true;
-  }
+  };
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
       <SafeAreaView style={{ flex: 1 }} keyboardShouldPersistTaps="handled">
@@ -154,52 +158,75 @@ const LoginPage = ({ navigation }) => {
             <KeyboardAvoidingView
               behavior={Platform.OS == "ios" ? "padding" : "height"}
             >
-<Input
+              <Input
                 placeholder="Correo Electrónico"
                 keyboardType="email-address"
-                inputContainerStyle={{ marginBottom: 10 }}
-                style={{ color: "#ffffff" }}
-                leftIcon={<Icon name="envelope-o" size={20} color="white" />}
+                inputContainerStyle={{ marginTop: 100 }}
+                style={{ color: "#ffffff", fontSize: 16 }}
+                leftIcon={<Icon name="envelope-o" size={18} color="white" />}
                 onChangeText={(email) => setUserEmail(email)}
                 value={email}
               />
               <Input
                 placeholder="Contraseña"
-                inputContainerStyle={{ marginBottom: 25 }}
+                inputContainerStyle={{}}
                 leftIcon={<Icon name="lock" size={20} color="white" />}
-                style={{ color: "#ffffff" }}
+                style={{ color: "#ffffff", fontSize: 16 }}
                 secureTextEntry={true}
                 onChangeText={(password) => setUserPassword(password)}
                 value={password}
                 onEndEditing={() => loguearUsuarios()}
               />
               <CheckBox
-  title='Recordar Usuario'
-  containerStyle={{ backgroundColor: "transparent", borderColor: "transparent", borderWidth: 0, marginTop: -40, marginLeft: 0 }}
-  textStyle={{ color: "#ffffff" }}
-  checkedColor={"white"}
-  onPress={() => cambiarEstado()}
-  checked={isChecked}
-/>
+                title="Recordar Correo"
+                containerStyle={{
+                  backgroundColor: "transparent",
+                  borderColor: "transparent",
+                  borderWidth: 0,
+                  marginTop: -20,
+                  marginLeft: 0,
+                }}
+                textStyle={{ color: "#ffffff" }}
+                checkedColor={"white"}
+                onPress={() => cambiarEstado()}
+                checked={isChecked}
+              />
             </KeyboardAvoidingView>
           </View>
-          <View style={{ width: "70%", top: 80, bottom: 0 }}>
-            <SocialIcon
-              button
-              title="Ingresar con Google"
-              type="google"
-              onPress={() => signInWithGoogle()}
-            />
+          <View style={{ top: 100 }}>
+            <Text style={{ color: "#ffffff", fontWeight: "bold" }}>
+              Ingresar con...
+            </Text>
           </View>
-          <View style={{ width: "70%", top: 85, bottom: 0 }}>
-            <SocialIcon
-              button
-              title="Ingresar con Facebook"
-              type="facebook"
-              onPress={() => signInWithFacebook()}
-            />
+          <View
+            style={{
+              flex: 1,
+              flexDirection: "row",
+              top: 120,
+              bottom: 0,
+            }}
+          >
+            <View>
+              <SocialIcon
+                button
+                type="google"
+                style={{ padding: 25 }}
+                onPress={() => signInWithGoogle()}
+              />
+            </View>
+            <View>
+              <Text style={{ color: "#ffffff", top: 25 }}>O</Text>
+            </View>
+            <View>
+              <SocialIcon
+                button
+                type="facebook"
+                style={{ padding: 30 }}
+                onPress={() => signInWithFacebook()}
+              />
+            </View>
           </View>
-          <View style={{ width: "70%", top: 90, bottom: 0 }}>
+          <View style={{ width: "70%", bottom: 50 }}>
             <TouchableHighlight
               onPress={() => navigation.navigate("RegisterPage")}
             >
