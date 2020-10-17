@@ -86,7 +86,7 @@ const ProfilePage = () => {
                 marginTop: 10,
               }}
             >
-              Correo Electrónico
+              {user.email}
             </Text>
           </View>
           <Button
@@ -106,7 +106,7 @@ const ProfilePage = () => {
             bottom: 50,
           }}
         >
-          <TouchableOpacity onPress={() => navigation.navigate("ChatPage")}>
+          <TouchableOpacity onPress={() => RootNavigation.navigate("ChatMessages")}>
             <Text style={{ color: "#000000", fontSize: 20, margin: 15 }}>
               <MaterialCommunityIcons
                 name="comment-text"
