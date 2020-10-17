@@ -60,6 +60,32 @@ class Chat extends React.Component {
   }
 
   render() {
+    let nombre = "prueba";
+    const storeMessages = () => {
+      db.collection("chats")
+        .add({
+          conversationId: conversationId,
+          messageFrom: nombre,
+          content: messages,
+        })
+        .then(function (docRef) {
+          console.log("Document written with ID: ", docRef.id);
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    };
+
+    const showMessages = () => {
+      db.collection("chats")
+        .get()
+        .then((querySnapshot) => {
+          querySnapshot.forEach((doc) => {
+            console.log(`${doc.id} => ${doc.data()}`);
+          });
+        });
+    };
+
     return (
       <SafeAreaView>
         <TouchableOpacity
@@ -78,7 +104,7 @@ class Chat extends React.Component {
         </TouchableOpacity>
         <GiftedChat
           messages={this.state.messages}
-          onSend={firebase.send}
+          onSend={storeMessages}
           user={this.user}
         />
       </SafeAreaView>

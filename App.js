@@ -8,7 +8,6 @@ import OnboardingPage from "./pages/OnboardingPage";
 import LoginPage from "./pages/LoginPage";
 import ChatPage from "./pages/ChatPage";
 import RegisterPage from "./pages/RegisterPage";
-import EmailLoginPage from "./pages/EmailLoginPage";
 import EmailRegisterPage from "./pages/EmailRegisterPage";
 import SearchPage from "./pages/SearchPage";
 import ProfilePage from "./pages/ProfilePage";
@@ -65,11 +64,6 @@ const StackNav = () => {
     <Stack.Screen
       name="RegisterPage"
       component={RegisterPage}
-      options={{ title: "QuedeOficios!", headerShown: false }}
-    />
-    <Stack.Screen
-      name="EmailLoginPage"
-      component={EmailLoginPage}
       options={{ title: "QuedeOficios!", headerShown: false }}
     />
     <Stack.Screen
