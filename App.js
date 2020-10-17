@@ -27,6 +27,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import CardsUsuarios from "./components/Cards";
 import { navigationRef } from "./RootNavigation";
 import { Badge } from "react-native-elements";
+import Messages from "./pages/ChatMessages";
 
 const Stack = createStackNavigator();
 const Tabs = createBottomTabNavigator();
@@ -89,6 +90,11 @@ const StackNav = ({ navigation }) => {
     <Stack.Screen
       name="ShopPage"
       component={ShopPage}
+      options={{ title: "QuedeOficios!", headerShown: false }}
+    />
+    <Stack.Screen
+      name="Messages"
+      component={Messages}
       options={{ title: "QuedeOficios!", headerShown: false }}
     />
   </Stack.Navigator>;
