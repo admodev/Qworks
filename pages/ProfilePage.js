@@ -38,7 +38,7 @@ const ProfilePage = () => {
       .auth()
       .signOut()
       .then(function () {
-        alert("Cerraste Sesión.");
+        () => RootNavigation.navigate('LoginPage');
       })
       .catch(function (error) {
         alert(error);

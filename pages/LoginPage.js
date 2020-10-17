@@ -31,6 +31,7 @@ import {
   FIREBASE_APP_ID,
   FIREBASE_MEASUREMENT_ID,
 } from "@env";
+import * as RootNavigation from "../RootNavigation.js";
 
 async function signInWithGoogleAsync() {
   try {
@@ -72,7 +73,7 @@ async function logInWithFacebook() {
       const response = await fetch(
         `https://graph.facebook.com/me?access_token=${token}`
       );
-      Alert.alert("Logged in!", `Hi ${(await response.json()).name}!`);
+      Alert.alert("Ingresaste!", `Hola ${(await response.json()).name}!`);
     } else {
       // type === 'cancel'
     }
@@ -97,7 +98,7 @@ const LoginPage = ({ navigation }) => {
         alert(error);
       })
       .then(function ({ navigation }) {
-        () => navigation.navigate("ProfilePage");
+        () => RootNavigation.navigate("ProfilePage");
       });
   };
   firebase.auth().onAuthStateChanged(function (user) {
@@ -168,7 +169,7 @@ const LoginPage = ({ navigation }) => {
                   paddingRight: 40,
                   borderRadius: 20,
                 }}
-                onPress={loguearUsuarios}
+                onPress={() => loguearUsuarios()}
                 title="Iniciar Sesión"
               />
             </KeyboardAvoidingView>
