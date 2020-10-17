@@ -100,18 +100,15 @@ const LoginPage = ({ navigation }) => {
         () => navigation.navigate("ProfilePage");
       });
   };
-
-  const userIsLoggedIn = () => {
-    firebase.auth().onAuthStateChanged(function (user) {
-      if (user) {
-        var email = user.email;
-        var uid = user.uid;
-        var providerData = user.providerData;
-      } else {
-        user == null;
-      }
-    });
-  };
+  firebase.auth().onAuthStateChanged(function (user) {
+    if (user) {
+      var email = user.email;
+      var uid = user.uid;
+      var providerData = user.providerData;
+    } else {
+      user == null;
+    }
+  });
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
       <SafeAreaView style={{ flex: 1 }} keyboardShouldPersistTaps="handled">
@@ -152,6 +149,7 @@ const LoginPage = ({ navigation }) => {
               <Input
                 placeholder="Correo Electrónico"
                 keyboardType="email-address"
+                style={{ color: "#ffffff" }}
                 leftIcon={<Icon name="envelope-o" size={24} color="white" />}
                 onChangeText={(email) => setUserEmail(email)}
                 value={email}
@@ -222,4 +220,5 @@ const styles = StyleSheet.create({
   },
 });
 
+export var user;
 export default LoginPage;

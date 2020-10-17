@@ -32,7 +32,20 @@ Notifications.setNotificationHandler({
 });
 
 const ProfilePage = () => {
-  if (LoginPageData.user) {
+  var user = firebase.auth().currentUser;
+  const signUserOut = () => {
+    firebase
+      .auth()
+      .signOut()
+      .then(function () {
+        alert("Cerraste Sesión.");
+      })
+      .catch(function (error) {
+        alert(error);
+      });
+  };
+
+  if (user) {
     return (
       <SafeAreaView style={{ flex: 1 }}>
         <Image
@@ -129,11 +142,7 @@ const ProfilePage = () => {
         >
           <Button
             title="Cerrar Sesión"
-            onPress={() =>
-              RootNavigation.navigate("ProfilePage", {
-                screen: "EmailLoginPage",
-              })
-            }
+            onPress={() => signUserOut()}
             buttonStyle={{
               backgroundColor: "orange",
               borderRadius: 12,
