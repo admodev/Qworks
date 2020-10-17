@@ -31,7 +31,7 @@ import { Badge } from "react-native-elements";
 const Stack = createStackNavigator();
 const Tabs = createBottomTabNavigator();
 
-const StackNav = () => {
+const StackNav = ({ navigation }) => {
   <Stack.Navigator
     initialRouteName="OnboardingPage"
     screenOptions={{

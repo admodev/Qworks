@@ -13,6 +13,7 @@ import SearchInput, { createFilter } from "react-native-search-filter";
 import * as firebase from "firebase";
 import "firebase/firestore";
 import "firebase/database";
+import "firebase/auth";
 import * as RootNavigation from "../RootNavigation.js";
 
 const KEYS_TO_FILTERS = ["u.name", "u.profesion"];
@@ -50,8 +51,26 @@ class CardsUsuarios extends React.Component {
           console.log("title*" + itms.title);
         });
       });
+    firebase.auth().onAuthStateChanged(function (user) {
+      if (user) {
+        var email = user.email;
+        var uid = user.uid;
+        var providerData = user.providerData;
+      } else {
+        user == null;
+      }
+    });
   }
   render() {
+    const that = this;
+    var user = firebase.auth().currentUser;
+    const userCheckForChat = () => {
+      if (user) {
+        RootNavigation.navigate("ChatPage");
+      } else {
+        RootNavigation.navigate("LoginPage");
+      }
+    };
     return (
       <Card
         style={styles.card}
@@ -121,7 +140,7 @@ class CardsUsuarios extends React.Component {
                 {u.profesion}
               </Text>
               <TouchableOpacity
-                onPress={() => RootNavigation.navigate("ChatPage")}
+                onPress={() => userCheckForChat()}
                 style={{
                   borderRadius: 0,
                   marginLeft: 0,
