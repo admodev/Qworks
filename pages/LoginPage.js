@@ -10,7 +10,7 @@ import {
   TouchableWithoutFeedback,
   View,
 } from "react-native";
-import { Button, Input, SocialIcon } from "react-native-elements";
+import { Button, CheckBox, Input, SocialIcon } from "react-native-elements";
 import * as FirebaseCore from "expo-firebase-core";
 import * as Google from "expo-google-app-auth";
 import * as Facebook from "expo-facebook";
@@ -75,7 +75,7 @@ async function logInWithFacebook() {
       );
       Alert.alert("Ingresaste!", `Hola ${(await response.json()).name}!`);
     } else {
-      // type === 'cancel'
+      Alert.alert("Tienes que permitir el acceso a tu cuenta para que puedas iniciar sesión con Facebook.");
     }
   } catch ({ message }) {
     alert(`Facebook Login Error: ${message}`);
@@ -89,13 +89,16 @@ const signInWithFacebook = () => {
 const LoginPage = ({ navigation }) => {
   let [email, setUserEmail] = useState("");
   let [password, setUserPassword] = useState("");
+  let [isChecked, setIsChecked] = useState("");
 
   const loguearUsuarios = () => {
     firebase
       .auth()
       .signInWithEmailAndPassword(email, password)
       .catch(function (error) {
-        alert(error);
+        if (password != user.password) {
+          alert("Ingreso una contraseña erronea, intentelo nuevamente por favor.");
+        }
       })
       .then(function ({ navigation }) {
         () => RootNavigation.navigate("ProfilePage");
@@ -147,31 +150,30 @@ const LoginPage = ({ navigation }) => {
             <KeyboardAvoidingView
               behavior={Platform.OS == "ios" ? "padding" : "height"}
             >
-              <Input
+<Input
                 placeholder="Correo Electrónico"
                 keyboardType="email-address"
+                inputContainerStyle={{ marginBottom: 10 }}
                 style={{ color: "#ffffff" }}
-                leftIcon={<Icon name="envelope-o" size={24} color="white" />}
+                leftIcon={<Icon name="envelope-o" size={20} color="white" />}
                 onChangeText={(email) => setUserEmail(email)}
                 value={email}
               />
               <Input
                 placeholder="Contraseña"
-                leftIcon={<Icon name="lock" size={24} color="white" />}
+                inputContainerStyle={{ marginBottom: 25 }}
+                leftIcon={<Icon name="lock" size={20} color="white" />}
+                style={{ color: "#ffffff" }}
                 secureTextEntry={true}
                 onChangeText={(password) => setUserPassword(password)}
                 value={password}
+                onEndEditing={() => loguearUsuarios()}
               />
-              <Button
-                buttonStyle={{
-                  backgroundColor: "#F4743B",
-                  paddingLeft: 40,
-                  paddingRight: 40,
-                  borderRadius: 20,
-                }}
-                onPress={() => loguearUsuarios()}
-                title="Iniciar Sesión"
-              />
+              <CheckBox
+  title='Recordar Usuario'
+  onPress={setIsChecked}
+  checked={isChecked}
+/>
             </KeyboardAvoidingView>
           </View>
           <View style={{ width: "70%", top: 80, bottom: 0 }}>
