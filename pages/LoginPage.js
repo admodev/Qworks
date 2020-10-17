@@ -89,7 +89,7 @@ const signInWithFacebook = () => {
 const LoginPage = ({ navigation }) => {
   let [email, setUserEmail] = useState("");
   let [password, setUserPassword] = useState("");
-  let [isChecked, setIsChecked] = useState("");
+  let [isChecked] = useState("false");
 
   const loguearUsuarios = () => {
     firebase
@@ -113,6 +113,10 @@ const LoginPage = ({ navigation }) => {
       user == null;
     }
   });
+
+  const cambiarEstado = () => {
+    let isChecked = true;
+  }
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
       <SafeAreaView style={{ flex: 1 }} keyboardShouldPersistTaps="handled">
@@ -144,7 +148,7 @@ const LoginPage = ({ navigation }) => {
             }}
           />
           <View
-            style={{ width: "70%", top: 70, bottom: 0 }}
+            style={{ width: "80%", top: 70, bottom: 0 }}
             keyboardShouldPersistTaps="handled"
           >
             <KeyboardAvoidingView
@@ -171,7 +175,10 @@ const LoginPage = ({ navigation }) => {
               />
               <CheckBox
   title='Recordar Usuario'
-  onPress={setIsChecked}
+  containerStyle={{ backgroundColor: "transparent", borderColor: "transparent", borderWidth: 0, marginTop: -40, marginLeft: 0 }}
+  textStyle={{ color: "#ffffff" }}
+  checkedColor={"white"}
+  onPress={() => cambiarEstado()}
   checked={isChecked}
 />
             </KeyboardAvoidingView>
