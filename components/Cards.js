@@ -14,6 +14,7 @@ import "firebase/firestore";
 import "firebase/database";
 import "firebase/auth";
 import * as RootNavigation from "../RootNavigation.js";
+import { StackActions } from '@react-navigation/native';
 
 var itm = [];
 
@@ -37,6 +38,8 @@ class CardsUsuarios extends React.Component {
             nombre: child.val().nombre,
             apellido: child.val().apellido,
             profesion: child.val().profesion,
+            email: child.val().email,
+            id: child.val().id
           });
         });
         itm = items;
@@ -61,9 +64,9 @@ class CardsUsuarios extends React.Component {
     var user = firebase.auth().currentUser;
     const userCheckForChat = () => {
       if (user) {
-        RootNavigation.navigate("ChatPage");
+        RootNavigation.navigate('ChatPage');
       } else {
-        RootNavigation.navigate("LoginPage");
+        RootNavigation.navigate('LoginPage');
       }
     };
     return (
