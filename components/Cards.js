@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, setState } from "react";
 import {
   TouchableOpacity,
   StyleSheet,
@@ -9,14 +9,11 @@ import {
   Text,
 } from "react-native";
 import { Button, Card, Icon, Input } from "react-native-elements";
-import SearchInput, { createFilter } from "react-native-search-filter";
 import * as firebase from "firebase";
 import "firebase/firestore";
 import "firebase/database";
 import "firebase/auth";
 import * as RootNavigation from "../RootNavigation.js";
-
-const KEYS_TO_FILTERS = ["u.name", "u.profesion"];
 
 var itm = [];
 
@@ -26,18 +23,17 @@ class CardsUsuarios extends React.Component {
 
     this.state = {
       items: [],
-      searchTerm: "",
     };
   }
   componentDidMount() {
-    firebase
+   firebase
       .database()
-      .ref("/usuarios")
+      .ref("usuarios/")
       .on("value", (snap) => {
         let items = [];
         snap.forEach((child) => {
           items.push({
-            foto: child.val().foto,
+            fotoPerfil: child.val().fotoPerfil,
             nombre: child.val().nombre,
             apellido: child.val().apellido,
             profesion: child.val().profesion,
@@ -50,7 +46,7 @@ class CardsUsuarios extends React.Component {
         itm.forEach((itms) => {
           console.log("title*" + itms.title);
         });
-      });
+      }); 
     firebase.auth().onAuthStateChanged(function (user) {
       if (user) {
         var email = user.email;
@@ -62,7 +58,6 @@ class CardsUsuarios extends React.Component {
     });
   }
   render() {
-    const that = this;
     var user = firebase.auth().currentUser;
     const userCheckForChat = () => {
       if (user) {
@@ -107,7 +102,7 @@ class CardsUsuarios extends React.Component {
                 }}
               />
               <Card.Image
-                source={{ uri: u.foto }}
+                source={{ uri: u.fotoPerfil }}
                 style={{
                   borderRadius: 50,
                   marginTop: 10,
