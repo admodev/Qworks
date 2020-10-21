@@ -67,32 +67,26 @@ const OnboardingPage = ({ navigation }) => {
             justifyContent: "center",
             marginTop: 25,
             marginLeft: 5,
-            width: "95%",
+            width: "80%",
           }}
         >
-          <TouchableOpacity
-            style={{ flex: 1, flexDirection: "row", marginTop: 30 }}
+        <View style={{ flex: 1, flexDirection: "row", marginTop: 30 }}>
+          <TouchableOpacity onPress={openControlPanel}
           >
-            <Input
-              placeholder="Buscar en  ¡QuedeOficios!"
-              leftIcon={
-                <Image
+          <Image
                   source={require("../assets/icon.png")}
                   style={{
                     width: 35,
                     height: 35,
+                    marginTop: 5,
                   }}
                 />
-              }
-              inputStyle={{ marginLeft: 30 }}
-            />
           </TouchableOpacity>
-          <Button
-            title="< Filtro de búsqueda"
-            buttonStyle={{ backgroundColor: "transparent", bottom: 12 }}
-            titleStyle={{ color: "#000000", fontWeight: "bold" }}
-            onPress={openControlPanel}
-          />
+            <Input
+              placeholder="Buscar en  ¡QuedeOficios!"
+              inputStyle={{ justifyContent: "center", marginLeft: 20 }}
+            />
+            </View>
         </View>
       </SafeAreaView>
     </Drawer>
