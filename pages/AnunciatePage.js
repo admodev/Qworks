@@ -1,6 +1,7 @@
 import React, { useState, useEffect, setState } from "react";
 import { Image, View, Platform, ScrollView, TextInput } from "react-native";
 import {
+  Badge,
   Button,
   CheckBox,
   Input,
