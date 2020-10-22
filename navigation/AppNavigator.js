@@ -105,7 +105,7 @@ export function MainTabNavigator({ navigation }) {
 
 function MainStackNavigator({ navigation }) {
 	return(
-	<NavigationContainer>
+	<NavigationContainer ref={navigationRef}>
       <Stack.Navigator 
       screenOptions={{
       headerStyle: { backgroundColor: "#633689" },

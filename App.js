@@ -5,12 +5,9 @@ import MainStackNavigator from "./navigation/AppNavigator.js";
 import { Badge } from "react-native-elements";
 import { navigationRef } from "./RootNavigation";
 
-function App() {
+export default function App() {
     return(
       <MainStackNavigator />
       );
 }
 
-export default App;
-
-AppRegistry.registerComponent("main", () => "App");

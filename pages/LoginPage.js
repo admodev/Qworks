@@ -32,6 +32,7 @@ import {
   FIREBASE_MEASUREMENT_ID,
 } from "@env";
 import * as RootNavigation from "../RootNavigation.js";
+import RegisterPage from "./RegisterPage";
 
 async function signInWithGoogleAsync() {
   try {
@@ -228,7 +229,7 @@ const LoginPage = ({ navigation }) => {
           </View>
           <View style={{ width: "70%", bottom: 50 }}>
             <TouchableHighlight
-              onPress={() => navigation.navigate("RegisterPage")}
+              onPress={() => RootNavigation.navigate("RegisterPage")}
             >
               <Text
                 style={{
