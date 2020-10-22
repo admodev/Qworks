@@ -51,20 +51,29 @@ class ControlPanel extends React.Component {
           titleStyle={{ color: "#000000", fontSize: 28 }}
           onPress={closeControlPanel}
         />
-        <View
-          style={{
-            flex: 1,
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
-          <CheckBox
-            title="Click Here"
-            titleStyle={{ color: "#000000" }}
-            checked={true}
-          />
-        </View>
-        <ScrollView style={{ marginTop: 150 }}>
+          <View style={{ maxWidth: "90%", marginLeft: "auto", marginRight: "auto" }}>
+          <Button
+  title="Filtrar por ubicación"
+  type="outline"
+  buttonStyle={{ width: "100%", marginTop: 10 }}
+/>
+<Button
+  title="Filtrar por recomendaciones"
+  type="outline"
+  buttonStyle={{ width: "100%", marginTop: 10 }}
+/>
+<Button
+  title="Filtrar por comentarios"
+  type="outline"
+  buttonStyle={{ width: "100%", marginTop: 10 }}
+/>
+<Button
+  title="Mis favoritos"
+  type="outline"
+  buttonStyle={{ width: "100%", marginTop: 10 }}
+/>
+</View>
+        <ScrollView style={{ marginTop: 50 }}>
           <CardsUsuarios />
         </ScrollView>
       </SafeAreaView>

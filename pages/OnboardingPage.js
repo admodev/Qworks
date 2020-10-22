@@ -78,7 +78,8 @@ const OnboardingPage = ({ navigation }) => {
                   style={{
                     width: 35,
                     height: 35,
-                    marginTop: 5,
+                    marginTop: 2,
+                    marginLeft: 15,
                   }}
                 />
           </TouchableOpacity>
