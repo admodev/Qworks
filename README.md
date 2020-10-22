@@ -10,6 +10,8 @@ Puedes descargar la app desde la [AppStore](https://www.apple.com/ios/app-store/
 
 [![CodeFactor](https://www.codefactor.io/repository/github/admodev/quedeoficios/badge)](https://www.codefactor.io/repository/github/admodev/quedeoficios)
 
+[![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
+
 ### Contribuyendo 🖇️
 
 Por favor lee [CONTRIBUTING.md](https://gist.github.com/admodev/contributingtoquedeoficios) para detalles de nuestro código de conducta, y el proceso para enviarnos pull requests.
