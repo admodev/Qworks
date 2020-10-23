@@ -63,8 +63,9 @@ export function MainTabNavigator({ navigation }) {
                     height: 15,
                     borderRadius: 100,
                     position: "absolute",
+                    backgroundColor: "orange",
                   }}
-                  containerStyle={{ position: "absolute", top: -4, right: -4 }}
+                  containerStyle={{ position: "absolute", top: -4, left: -4 }}
                 />
                 <MaterialCommunityIcons
                   name="message"
@@ -72,16 +73,6 @@ export function MainTabNavigator({ navigation }) {
                   size={35}
                 />
               </View>
-            ),
-          }}
-        />
-        <Tab.Screen
-          name="ProfilePage"
-          component={ProfilePage}
-          options={{
-            tabBarLabel: "Mi Perfil",
-            tabBarIcon: ({ color, size }) => (
-              <MaterialCommunityIcons name="face" color={color} size={size} />
             ),
           }}
         />
@@ -96,6 +87,16 @@ export function MainTabNavigator({ navigation }) {
                 color={color}
                 size={size}
               />
+            ),
+          }}
+        />
+<Tab.Screen
+          name="ProfilePage"
+          component={ProfilePage}
+          options={{
+            tabBarLabel: "Mi Perfil",
+            tabBarIcon: ({ color, size }) => (
+              <MaterialCommunityIcons name="face" color={color} size={size} />
             ),
           }}
         />
