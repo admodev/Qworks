@@ -7,6 +7,8 @@ import * as Facebook from "expo-facebook";
 import * as Location from "expo-location";
 import { TouchableHighlight } from "react-native-gesture-handler";
 import { GOOGLE_LOGIN_ANDROID_CLIENT_ID, GOOGLE_LOGIN_IOS_CLIENT_ID } from "@env";
+import * as RootNavigation from "../RootNavigation.js";
+import LoginPage from "./LoginPage";
 
 async function signInWithGoogleAsync() {
   try {

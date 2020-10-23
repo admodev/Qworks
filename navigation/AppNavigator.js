@@ -23,159 +23,164 @@ const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
 export function MainTabNavigator({ navigation }) {
-  return(
-    <Tab.Navigator>
+    return(
+        <Tab.Navigator>
         <Tab.Screen
-          name="OnboardingPage"
-          component={OnboardingPage}
-          options={{
+        name="OnboardingPage"
+        component={OnboardingPage}
+        options={{
             tabBarLabel: "Inicio",
-            tabBarIcon: ({ color, size }) => (
-              <MaterialCommunityIcons name="home" color={color} size={size} />
-            ),
-          }}
+                tabBarIcon: ({ color, size }) => (
+                    <MaterialCommunityIcons name="home" color={color} size={size} />
+                ),
+        }}
         />
         <Tab.Screen
-          name="SearchPage"
-          component={SearchPage}
-          options={{
+        name="SearchPage"
+        component={SearchPage}
+        options={{
             tabBarLabel: "Buscar",
-            tabBarIcon: ({ color, size }) => (
-              <MaterialCommunityIcons
-                name="magnify"
-                color={color}
-                size={size}
-              />
-            ),
-          }}
+                tabBarIcon: ({ color, size }) => (
+                    <MaterialCommunityIcons
+                    name="magnify"
+                    color={color}
+                    size={size}
+                    />
+                ),
+        }}
         />
         <Tab.Screen
-          name="ChatPage"
-          component={ChatPage}
-          options={{
+        name="ChatPage"
+        component={ChatPage}
+        options={{
             tabBarLabel: "Mensajes",
-            tabBarIcon: ({ color, size }) => (
-              <View>
-                <Badge
-                  status="primary"
-                  badgeStyle={{
-                    width: 15,
-                    height: 15,
-                    borderRadius: 100,
-                    position: "absolute",
-                    backgroundColor: "orange",
-                  }}
-                  containerStyle={{ position: "absolute", top: -4, left: -4 }}
-                />
-                <MaterialCommunityIcons
-                  name="message"
-                  color={color}
-                  size={35}
-                />
-              </View>
-            ),
-          }}
+                tabBarIcon: ({ color, size }) => (
+                    <View>
+                    <Badge
+                    status="primary"
+                    badgeStyle={{
+                        width: 15,
+                            height: 15,
+                            borderRadius: 100,
+                            position: "absolute",
+                            backgroundColor: "orange",
+                    }}
+                    containerStyle={{ position: "absolute", top: -4, left: -4 }}
+                    />
+                    <MaterialCommunityIcons
+                    name="message"
+                    color={color}
+                    size={35}
+                    />
+                    </View>
+                ),
+        }}
         />
         <Tab.Screen
-          name="ShopPage"
-          component={ShopPage}
-          options={{
+        name="ShopPage"
+        component={ShopPage}
+        options={{
             tabBarLabel: "Shop",
-            tabBarIcon: ({ color, size }) => (
-              <MaterialCommunityIcons
-                name="shopping"
-                color={color}
-                size={size}
-              />
-            ),
-          }}
+                tabBarIcon: ({ color, size }) => (
+                    <MaterialCommunityIcons
+                    name="shopping"
+                    color={color}
+                    size={size}
+                    />
+                ),
+        }}
         />
-<Tab.Screen
-          name="ProfilePage"
-          component={ProfilePage}
-          options={{
+        <Tab.Screen
+        name="ProfilePage"
+        component={ProfilePage}
+        options={{
             tabBarLabel: "Mi Perfil",
-            tabBarIcon: ({ color, size }) => (
-              <MaterialCommunityIcons name="face" color={color} size={size} />
-            ),
-          }}
+                tabBarIcon: ({ color, size }) => (
+                    <MaterialCommunityIcons name="face" color={color} size={size} />
+                ),
+        }}
         />
-      </Tab.Navigator>
+        </Tab.Navigator>
     );
 }
 
 function MainStackNavigator({ navigation }) {
-	return(
-	<NavigationContainer ref={navigationRef}>
-      <Stack.Navigator 
-      screenOptions={{
-      headerStyle: { backgroundColor: "#633689" },
-      headerTintColor: "#fff",
-      headerTitleStyle: { fontWeight: "bold" },
-    }}>
-    <Stack.Screen
-      name="Home"
-      component={MainTabNavigator}
-      options={{ headerShown: false }}
-      />
-    <Stack.Screen
-      name="OnboardingPage"
-      component={OnboardingPage}
-      options={{ title: "QueDeOficios!", headerShown: false }}
-    />
-    <Stack.Screen
-      name="CardsUsuarios"
-      component={CardsUsuarios}
-      options={{ title: "QuedeOficios!", headerShown: false }}
-    />
-    <Stack.Screen
-      name="SearchPage"
-      component={SearchPage}
-      options={{ title: "QuedeOficios!", headerShown: false }}
-    />
-    <Stack.Screen
-      name="ChatPage"
-      component={ChatPage}
-      options={{ title: "QuedeOficios!", headerShown: false }}
-    />
-    <Stack.Screen
-      name="RegisterPage"
-      component={RegisterPage}
-      options={{ title: "QuedeOficios!", headerShown: false }}
-    />
-    <Stack.Screen
-      name="EmailRegisterPage"
-      component={EmailRegisterPage}
-      options={{ title: "QuedeOficios!", headerShown: false }}
-    />
-    <Stack.Screen
-      name="ProfilePage"
-      component={ProfilePage}
-      options={{ title: "QuedeOficios!", headerShown: false }}
-    />
-    <Stack.Screen
-      name="AnunciatePage"
-      component={AnunciatePage}
-      options={{ title: "QuedeOficios!", headerShown: false }}
-    />
-    <Stack.Screen
-      name="PagosPage"
-      component={PagosPage}
-      options={{ title: "QuedeOficios!", headerShown: false }}
-    />
-    <Stack.Screen
-      name="ShopPage"
-      component={ShopPage}
-      options={{ title: "QuedeOficios!", headerShown: false }}
-    />
-    <Stack.Screen
-      name="Messages"
-      component={Messages}
-      options={{ title: "QuedeOficios!", headerShown: false }}
-    />
-  </Stack.Navigator>
-    </NavigationContainer>
-	);
+    return(
+        <NavigationContainer ref={navigationRef}>
+        <Stack.Navigator 
+        screenOptions={{
+            headerStyle: { backgroundColor: "#633689" },
+                headerTintColor: "#fff",
+                headerTitleStyle: { fontWeight: "bold" },
+        }}>
+        <Stack.Screen
+        name="Home"
+        component={MainTabNavigator}
+        options={{ headerShown: false }}
+        />
+        <Stack.Screen
+        name="OnboardingPage"
+        component={OnboardingPage}
+        options={{ title: "QueDeOficios!", headerShown: false }}
+        />
+        <Stack.Screen
+        name="CardsUsuarios"
+        component={CardsUsuarios}
+        options={{ title: "QuedeOficios!", headerShown: false }}
+        />
+        <Stack.Screen
+        name="SearchPage"
+        component={SearchPage}
+        options={{ title: "QuedeOficios!", headerShown: false }}
+        />
+        <Stack.Screen
+        name="ChatPage"
+        component={ChatPage}
+        options={{ title: "QuedeOficios!", headerShown: false }}
+        />
+        <Stack.Screen
+        name="LoginPage"
+        component={LoginPage}
+        options={{ title: "QuedeOficios!", headerShown: false }}
+        />
+        <Stack.Screen
+        name="RegisterPage"
+        component={RegisterPage}
+        options={{ title: "QuedeOficios!", headerShown: false }}
+        />
+        <Stack.Screen
+        name="EmailRegisterPage"
+        component={EmailRegisterPage}
+        options={{ title: "QuedeOficios!", headerShown: false }}
+        />
+        <Stack.Screen
+        name="ProfilePage"
+        component={ProfilePage}
+        options={{ title: "QuedeOficios!", headerShown: false }}
+        />
+        <Stack.Screen
+        name="AnunciatePage"
+        component={AnunciatePage}
+        options={{ title: "QuedeOficios!", headerShown: false }}
+        />
+        <Stack.Screen
+        name="PagosPage"
+        component={PagosPage}
+        options={{ title: "QuedeOficios!", headerShown: false }}
+        />
+        <Stack.Screen
+        name="ShopPage"
+        component={ShopPage}
+        options={{ title: "QuedeOficios!", headerShown: false }}
+        />
+        <Stack.Screen
+        name="Messages"
+        component={Messages}
+        options={{ title: "QuedeOficios!", headerShown: false }}
+        />
+        </Stack.Navigator>
+        </NavigationContainer>
+    );
 }
 
 export default MainStackNavigator;
