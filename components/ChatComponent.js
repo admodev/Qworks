@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import { GiftedChat } from 'react-native-gifted-chat'
 import AsyncStorage from '@react-native-community/async-storage'
-import { StyleSheet, TextInput, View, YellowBox, Button } from 'react-native'
+import { StyleSheet, TextInput, View, LogBox, Button } from 'react-native'
 import {
     FIREBASE_API_KEY,
     FIREBASE_AUTH_DOMAIN,
@@ -17,6 +17,7 @@ import {
 import * as firebase from 'firebase'
 import 'firebase/auth'
 import 'firebase/firestore'
+import * as RootNavigation from "../RootNavigation.js";
 
 if (firebase.apps.length === 0) {
     try {
@@ -37,7 +38,7 @@ if (firebase.apps.length === 0) {
 }
 }
 
-YellowBox.ignoreWarnings(['Setting a timer for a long period of time'])
+LogBox.ignoreWarnings(['Setting a timer for a long period of time'])
 
 const db = firebase.firestore()
 const chatsRef = db.collection('chats')
@@ -92,12 +93,7 @@ export default function Chat() {
     }
 
     if (!user) {
-        return (
-            <View style={styles.container}>
-                <TextInput style={styles.input} placeholder="Enter your name" value={name} onChangeText={setName} />
-                <Button onPress={handlePress} title="Enter the chat" />
-            </View>
-        )
+        () => RootNavigation.navigate("LoginPage");
     }
     return <GiftedChat messages={messages} user={user} onSend={handleSend} />
 }
