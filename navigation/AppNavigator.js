@@ -22,6 +22,25 @@ import { navigationRef } from "../RootNavigation";
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
+const unreadMessagesIcon = () => {
+    var user = null;
+    if (user) {
+        return(
+            <Badge
+                    status="primary"
+                    badgeStyle={{
+                        width: 15,
+                            height: 15,
+                            borderRadius: 100,
+                            position: "absolute",
+                            backgroundColor: "orange",
+                    }}
+                    containerStyle={{ position: "absolute", top: -4, left: -4 }}
+                    />
+        );
+    }
+}
+
 export function MainTabNavigator({ navigation }) {
     return(
         <Tab.Navigator>
@@ -56,17 +75,7 @@ export function MainTabNavigator({ navigation }) {
             tabBarLabel: "Mensajes",
                 tabBarIcon: ({ color, size }) => (
                     <View>
-                    <Badge
-                    status="primary"
-                    badgeStyle={{
-                        width: 15,
-                            height: 15,
-                            borderRadius: 100,
-                            position: "absolute",
-                            backgroundColor: "orange",
-                    }}
-                    containerStyle={{ position: "absolute", top: -4, left: -4 }}
-                    />
+                    {unreadMessagesIcon()}
                     <MaterialCommunityIcons
                     name="message"
                     color={color}

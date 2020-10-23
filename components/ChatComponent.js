@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import { GiftedChat } from 'react-native-gifted-chat'
 import AsyncStorage from '@react-native-community/async-storage'
-import { StyleSheet, TextInput, View, LogBox, Button } from 'react-native'
+import { StyleSheet, TextInput, View, Button } from 'react-native'
 import {
     FIREBASE_API_KEY,
     FIREBASE_AUTH_DOMAIN,
@@ -37,8 +37,6 @@ if (firebase.apps.length === 0) {
     }
 }
 }
-
-LogBox.ignoreWarnings(['Setting a timer for a long period of time'])
 
 const db = firebase.firestore()
 const chatsRef = db.collection('chats')
