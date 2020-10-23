@@ -33,6 +33,8 @@ import {
 } from "@env";
 import * as RootNavigation from "../RootNavigation.js";
 import RegisterPage from "./RegisterPage";
+import ProfilePage from "./ProfilePage";
+import { StackActions } from '@react-navigation/native';
 
 async function signInWithGoogleAsync() {
     try {
@@ -95,6 +97,17 @@ const LoginPage = ({ navigation }) => {
     var [isChecked, setChecked] = useState(false);
     const toggle = React.useCallback(() => setChecked(!isChecked));
 
+    if (isChecked == true) {
+        firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION)
+            .then(function() {
+                return firebase.auth().signInWithEmailAndPassword(email, password);
+            })
+            .catch(function(error) {
+                var errorCode = error.code;
+                var errorMessage = error.message;
+            });
+    }
+
     const loguearUsuarios = () => {
         firebase
             .auth()
@@ -105,9 +118,12 @@ const LoginPage = ({ navigation }) => {
                         "Ingreso una contraseña erronea, intentelo nuevamente por favor."
                     );
                 }
+                if (password == null) {
+                    alert("Ingresa tu contraseña para continuar, por favor.");
+                }
             })
             .then(function ({ navigation }) {
-                () => RootNavigation.navigate("ProfilePage");
+                RootNavigation.navigate("ProfilePage");
             });
     };
     firebase.auth().onAuthStateChanged(function (user) {
@@ -159,6 +175,7 @@ const LoginPage = ({ navigation }) => {
         <Input
         placeholder="Correo Electrónico"
         keyboardType="email-address"
+        autoCapitalize = 'none'
         inputContainerStyle={{ marginTop: 100 }}
         style={{ color: "#ffffff", fontSize: 16 }}
         leftIcon={<Icon name="envelope-o" size={18} color="white" />}
@@ -174,6 +191,7 @@ const LoginPage = ({ navigation }) => {
         onChangeText={(password) => setUserPassword(password)}
         value={password}
         onEndEditing={() => loguearUsuarios()}
+        onSubmitEditing={() => loguearUsuarios()}
         />
         <CheckBox
         title="Recordar Correo"

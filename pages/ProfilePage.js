@@ -31,19 +31,19 @@ Notifications.setNotificationHandler({
   }),
 });
 
-const ProfilePage = () => {
-  var user = firebase.auth().currentUser;
-  const signUserOut = () => {
-    firebase
-      .auth()
-      .signOut()
-      .then(function () {
-        () => RootNavigation.navigate('LoginPage');
-      })
-      .catch(function (error) {
-        alert(error);
-      });
-  };
+const ProfilePage = ({ navigation }) => { 
+    var user = firebase.auth().currentUser;
+    const signUserOut = () => {
+        firebase
+            .auth()
+            .signOut()
+            .catch(function (error) {
+                alert(error);
+            })
+            .then(function () {
+                navigation.replace("LoginPage");
+            });
+    };
 
   if (user) {
     return (
