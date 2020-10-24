@@ -18,13 +18,13 @@ import Messages from "../pages/ChatMessages";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { Badge } from "react-native-elements";
 import { navigationRef } from "../RootNavigation";
+import * as Chat from "../components/ChatComponent";
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
 const unreadMessagesIcon = () => {
-    var user = null;
-    if (user) {
+    if (Chat.messages) {
         return(
             <Badge
                     status="primary"

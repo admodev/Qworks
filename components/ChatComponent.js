@@ -1,5 +1,5 @@
 // @refresh reset
-
+//
 import React, { useState, useEffect, useCallback } from 'react'
 import { GiftedChat } from 'react-native-gifted-chat'
 import AsyncStorage from '@react-native-community/async-storage'
@@ -21,21 +21,21 @@ import * as RootNavigation from "../RootNavigation.js";
 
 if (firebase.apps.length === 0) {
     try {
-    firebase.initializeApp({
-        apiKey: `${FIREBASE_API_KEY}`,
-        authDomain: `${FIREBASE_AUTH_DOMAIN}`,
-        databaseURL: `${FIREBASE_DATABASE_URL}`,
-        projectId: `${FIREBASE_PROJECT_ID}`,
-        storageBucket: `${FIREBASE_STORAGE_BUCKET}`,
-        messagingSenderId: `${FIREBASE_MESSAGING_SENDER_ID}`,
-        appId: `${FIREBASE_APP_ID}`,
-        measurementId: `${FIREBASE_MEASUREMENT_ID}`,
-    });
-} catch (err) {
-    if (!/already exists/.test(err.message)) {
-        console.error("Firebase initialization error raised", err.stack);
+        firebase.initializeApp({
+            apiKey: `${FIREBASE_API_KEY}`,
+            authDomain: `${FIREBASE_AUTH_DOMAIN}`,
+            databaseURL: `${FIREBASE_DATABASE_URL}`,
+            projectId: `${FIREBASE_PROJECT_ID}`,
+            storageBucket: `${FIREBASE_STORAGE_BUCKET}`,
+            messagingSenderId: `${FIREBASE_MESSAGING_SENDER_ID}`,
+            appId: `${FIREBASE_APP_ID}`,
+            measurementId: `${FIREBASE_MEASUREMENT_ID}`,
+        });
+    } catch (err) {
+        if (!/already exists/.test(err.message)) {
+            console.error("Firebase initialization error raised", err.stack);
+        }
     }
-}
 }
 
 const db = firebase.firestore()
@@ -45,7 +45,6 @@ export default function Chat() {
     const [user, setUser] = useState(null)
     const [name, setName] = useState('')
     const [messages, setMessages] = useState([])
-
     const currentUser = firebase.auth().currentUser;
 
     useEffect(() => {
