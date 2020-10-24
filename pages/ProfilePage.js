@@ -137,6 +137,14 @@ const ProfilePage = ({ navigation }) => {
               Recomendados
             </Text>
           </TouchableOpacity>
+<TouchableOpacity
+            onPress={() => navigation.navigate("MisFavoritos")}
+          >
+            <Text style={{ color: "#000000", fontSize: 20, margin: 15 }}>
+              <MaterialCommunityIcons name="book-open" color={"orange"} size={20} />{" "}
+              Favoritos
+            </Text>
+          </TouchableOpacity>
         </View>
         <View
           style={{ flex: 1, alignItems: "center", justifyContent: "center" }}

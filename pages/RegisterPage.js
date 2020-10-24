@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Image, SafeAreaView, StyleSheet, Text, View } from "react-native";
-import { Button, SocialIcon } from "react-native-elements";
+import { Button, SocialIcon, Input } from "react-native-elements";
 import * as FirebaseCore from "expo-firebase-core";
 import * as Google from "expo-google-app-auth";
 import * as Facebook from "expo-facebook";
@@ -96,6 +96,7 @@ const RegisterPage = ({ navigation }) => {
             onPress={() => navigation.navigate("EmailRegisterPage")}
             title="Registrarme"
           />
+        
         </View>
         <View style={{ width: "70%", top: 80, bottom: 0 }}>
           <SocialIcon

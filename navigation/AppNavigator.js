@@ -105,7 +105,7 @@ export function MainTabNavigator({ navigation }) {
         options={{
             tabBarLabel: "Mi Perfil",
                 tabBarIcon: ({ color, size }) => (
-                    <MaterialCommunityIcons name="face" color={color} size={size} />
+                    <MaterialCommunityIcons name="account" color={color} size={size} />
                 ),
         }}
         />

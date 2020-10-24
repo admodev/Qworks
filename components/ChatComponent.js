@@ -92,7 +92,13 @@ export default function Chat() {
     if (!user) {
         () => RootNavigation.navigate("LoginPage");
     }
-    return <GiftedChat messages={messages} user={user} onSend={handleSend} />
+
+    const secondUser = "CBlLQIfFijbs1Hh7jWWEhkKfIkN2";
+
+    return <GiftedChat messages={messages} user={{
+        user,
+        secondUser
+    }} onSend={handleSend} />
 }
 
 const styles = StyleSheet.create({
