@@ -91,6 +91,7 @@ const ProfilePage = ({ navigation }) => {
           </View>
           <Button
             title="Anunciarte"
+            onPress={() => navigation.navigate("AnunciatePage")}
             buttonStyle={{
               backgroundColor: "orange",
               marginRight: 15,

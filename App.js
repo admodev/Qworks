@@ -8,6 +8,7 @@ import MainStackNavigator from "./navigation/AppNavigator.js";
 import { Badge } from "react-native-elements";
 import { navigationRef } from "./RootNavigation";
 import * as Chat from "./components/ChatComponent";
+import AuthStateHook from "./hooks/HookEstadoDeAuth";
 
 Notifications.setNotificationHandler({
     handleNotification: async () => ({
