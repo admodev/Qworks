@@ -138,7 +138,7 @@ class CardsUsuarios extends React.Component {
                 {u.profesion}
               </Text>
               <TouchableOpacity
-                onPress={() => userCheckForChat()}
+                onPress={() => RootNavigation.navigate("AnunciatePage")}
                 style={{
                   borderRadius: 0,
                   marginLeft: 0,
@@ -156,7 +156,7 @@ class CardsUsuarios extends React.Component {
                     marginBottom: 10,
                   }}
                 >
-                  Contratar
+                  Previsualizar
                 </Text>
               </TouchableOpacity>
             </View>
