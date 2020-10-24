@@ -10,10 +10,22 @@ import {
     Text,
 } from "react-native-elements";
 import * as firebase from "firebase";
+import 'firebase/auth';
 import 'firebase/database';
 import * as ImagePicker from "expo-image-picker";
 
 var database = firebase.database();
+var user = firebase.auth().currentUser;
+
+firebase.auth().onAuthStateChanged(function (user) {
+        if (user) {
+            var email = user.email;
+            var uid = user.uid;
+            var providerData = user.providerData;
+        } else {
+            user == null;
+        }
+    });
 
 const AnunciatePage = ({ navigation }) => {
     const [image, setImage] = useState(null);
@@ -59,6 +71,14 @@ const AnunciatePage = ({ navigation }) => {
     const toggleSabadoChecked = React.useCallback(() => setSabadoChecked(!sabadoChecked));
     const [domingoChecked, setDomingoChecked] = useState(false);
     const toggleDomingoChecked = React.useCallback(() => setDomingoChecked(!domingoChecked));
+    const [desdeAmChecked, setDesdeAmChecked] = useState(false);
+    const toggleDesdeAmChecked = React.useCallback(() => setDesdeAmChecked(!desdeAmChecked));
+    const [desdePmChecked, setDesdePmChecked] = useState(false);
+    const toggleDesdePmChecked = React.useCallback(() => setDesdePmChecked(!desdePmChecked));
+    const [hastaAmChecked, setHastaAmChecked] = useState(false);
+    const toggleHastaAmChecked = React.useCallback(() => setHastaAmChecked(!hastaAmChecked));
+    const [hastaPmChecked, setHastaPmChecked] = useState(false);
+    const toggleHastaPmChecked = React.useCallback(() => setHastaPmChecked(!hastaPmChecked));
 
     function concatLunes() {
         setDiasHorarios(diasHorarios.concat("Lunes"));
@@ -124,6 +144,7 @@ const AnunciatePage = ({ navigation }) => {
             hasta: hasta,
             terminos: terminos
         });
+        navigation.navigate("PagosPage");
     }
 
     useEffect(() => {
@@ -228,7 +249,7 @@ const AnunciatePage = ({ navigation }) => {
         value={pisoDptoCasa}
         />
         <Input placeholder="CUIL / CUIT" style={{ color: "#ffffff", fontSize: 16 }} 
-        onChangeText={(cuitCuil) => setCuilCuit(cuitCuil)}
+        onChangeText={(cuitCuil) => setCuitCuil(cuitCuil)}
         value={cuitCuil}
         />
         </View>
@@ -238,9 +259,12 @@ const AnunciatePage = ({ navigation }) => {
                 alignItems: "center",
                 justifyContent: "center",
                 marginTop: 25,
+                width: "90%",
+                marginLeft: "auto",
+                marginRight: "auto",
         }}
         >
-        <Text h3 style={{ color: "#fff" }}>
+        <Text h3 style={{ color: "#fff", margintop: 10, marginBottom: 25 }}>
         Información Laboral
         </Text>
         <Input placeholder="Actividad" 
@@ -284,11 +308,11 @@ const AnunciatePage = ({ navigation }) => {
         value={nombreDeLaEmpresa}
         />
         <Input placeholder="Matrícula" 
-        onChangeText={(matricula)}
+        onChangeText={(matricula) => setMatricula(matricula)}
         value={matricula}
         />
         <Input placeholder="Número de matrícula" 
-        onChangeText={(numeroDeMatricula) => setNumeroDeMatricula}
+        onChangeText={(numeroDeMatricula) => setNumeroDeMatricula(numeroDeMatricula)}
         value={numeroDeMatricula}
         />
         <Input placeholder="Email laboral" 
@@ -317,17 +341,23 @@ const AnunciatePage = ({ navigation }) => {
                 marginTop: 25,
         }}
         >
-        <Text h3 style={{ color: "#fff" }}>
+        <Text h3 style={{ color: "#fff", margintop: 10, marginBottom: 25 }}>
         Descripcion / Resumen Personal
         </Text>
         <TextInput
+        placeholder="Ingrese una descripción personal..."
+        placeholderTextColor={"white"}
         style={{
-            height: 80,
-                borderColor: "gray",
+            height: 200,
+                width: "80%",
+                borderColor: "#ffffff",
                 borderWidth: 1,
-                placeholderTextColor: "gray",
+                borderRadius: 15,
+                color: "#ffffff",
+                margin: 10,
+                textAlignVertical: "top",
         }}
-        placeholder="Resumen Personal"
+        multiline={true}
         onChangeText={(descripcionPersonal) => setDescripcionPersonal(descripcionPersonal)}
         value={descripcionPersonal}
         />
@@ -338,9 +368,12 @@ const AnunciatePage = ({ navigation }) => {
                 alignItems: "center",
                 justifyContent: "center",
                 marginTop: 25,
+                width: "95%",
+                marginLeft: "auto",
+                marginRight: "auto",
         }}
         >
-        <Text h3 style={{ color: "#fff" }}>
+        <Text h3 style={{ color: "#fff", margintop: 10, marginBottom: 25 }}>
         Dias y horarios de atención
         </Text>
         <View style={{ flex: 1, flexDirection: "row" }}>
@@ -438,7 +471,8 @@ const AnunciatePage = ({ navigation }) => {
         }}
         textStyle={{ color: "#ffffff" }}
         checkedColor={"white"}/>
-        <Input placeholder="Desde" containerStyle={{
+        <View style={{ width: "80%" }}>
+        <Input placeholder="Desde ... hs" containerStyle={{
             backgroundColor: "transparent",
                 borderColor: "transparent",
                 borderWidth: 0,
@@ -447,8 +481,8 @@ const AnunciatePage = ({ navigation }) => {
                 marginRight: "auto",
         }}
         textStyle={{ color: "#ffffff" }}
-        checkedColor={"white"}/>
-        <Input placeholder="Hasta" containerStyle={{
+        /> 
+        <Input placeholder="Hasta ... hs" containerStyle={{
             backgroundColor: "transparent",
                 borderColor: "transparent",
                 borderWidth: 0,
@@ -457,7 +491,8 @@ const AnunciatePage = ({ navigation }) => {
                 marginRight: "auto",
         }}
         textStyle={{ color: "#ffffff" }}
-        checkedColor={"white"}/>
+        />
+        </View>
         </View>
         <View
         style={{
@@ -495,7 +530,7 @@ const AnunciatePage = ({ navigation }) => {
         }}
         >
         <Button
-        onPress={() => navigation.navigate("PagosPage")}
+        onPress={() => writeUserData()}
         title="Continuar"
         buttonStyle={{
             backgroundColor: "#F4743B",
