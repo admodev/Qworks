@@ -42,6 +42,45 @@ const AnunciatePage = ({ navigation }) => {
     const [desde, setDesde] = useState("");
     const [hasta, setHasta] = useState("");
     const [terminos, setTerminos] = useState(false);
+    // Pasar valores booleanos (por ejemplo: tengoWhatsapp de falso a verdadero y viceversa.
+    const toggleWhatsapp = React.useCallback(() => setTengoWhatsapp(!tengoWhatsapp));
+    const toggleTerminos = React.useCallback(() => setTerminos(!terminos));
+
+    function concatLunes() {
+        setDiasHorarios(diasHorarios.concat("Lunes"));
+        checked = true;
+    }
+
+    function writeUserData(image, nombre, apellido, emailPersonal, domicilio, pisoDptoCasa, cuitCuil, actividad, telefono, celular, provincia, localidad, local, empresa, factura, direccionDelLocal, nombreDeLaEmpresa, matricula, numeroDeMatricula, emailLaboral, tengoWhatsapp, descripcionPersonal, diasHorarios, desde, hasta, terminos) {
+        firebase.database().ref('anuncios/' + userId).set({
+            image: image,
+            nombre: nombre,
+            apellido: apellido,
+            emailPersonal: emailPersonal,
+            domicilio: domicilio,
+            pisoDptoCasa: pisoDptoCasa,
+            cuitCuil: cuitCuil,
+            actividad: actividad,
+            telefono: telefono,
+            celular: celular,
+            provincia: provincia,
+            localidad: localidad,
+            local: local,
+            empresa: empresa,
+            factura: factura,
+            direccionDelLocal: direccionDelLocal,
+            nombreDeLaEmpresa: nombreDeLaEmpresa,
+            matricula: matricula,
+            numeroDeMatricula: numeroDeMatricula,
+            emailLaboral: emailLaboral,
+            tengoWhatsapp: tengoWhatsapp,
+            descripcionPersonal: descripcionPersonal,
+            diasHorarios: diasHorarios,
+            desde: desde,
+            hasta: hasta,
+            terminos: terminos
+        });
+    }
 
     useEffect(() => {
         (async () => {
@@ -98,10 +137,10 @@ const AnunciatePage = ({ navigation }) => {
         </Text>
         {image && (
             <Avatar
-  rounded
-  source={{ uri: image }}
-  size="xlarge"
-/>
+            rounded
+            source={{ uri: image }}
+            size="xlarge"
+            />
         )}
         {image == null && (
             <Button
@@ -127,12 +166,27 @@ const AnunciatePage = ({ navigation }) => {
         </Text>
         <Input placeholder="Nombre"
         style={{ color: "#ffffff", fontSize: 16 }}
+        onChangeText={(nombre) => setNombre(nombre)}
+        value={nombre}
         />
-        <Input placeholder="Apellido" style={{ color: "#ffffff", fontSize: 16 }} />
-        <Input placeholder="Email Personal" style={{ color: "#ffffff", fontSize: 16 }}/>
-        <Input placeholder="Domicilio" style={{ color: "#ffffff", fontSize: 16 }}/>
-        <Input placeholder="Piso / Dpto / Casa" style={{ color: "#ffffff", fontSize: 16 }}/>
-        <Input placeholder="CUIL / CUIT" style={{ color: "#ffffff", fontSize: 16 }}/>
+        <Input placeholder="Apellido" style={{ color: "#ffffff", fontSize: 16 }} onChangeText={(apellido) => setApellido(apellido)}
+        value={apellido} />
+        <Input placeholder="Email Personal" style={{ color: "#ffffff", fontSize: 16 }} 
+        onChangeText={(emailPersonal) => setEmailPersonal(emailPersonal)}
+        value={emailPersonal}
+        />
+        <Input placeholder="Domicilio" style={{ color: "#ffffff", fontSize: 16 }} 
+        onChangeText={(domicilio) => setDomicilio(domicilio)}
+        value={domicilio}
+        />
+        <Input placeholder="Piso / Dpto / Casa" style={{ color: "#ffffff", fontSize: 16 }} 
+        onChangeText={(pisoDptoCasa) => setPisoDptoCasa(pisoDptoCasa)}
+        value={pisoDptoCasa}
+        />
+        <Input placeholder="CUIL / CUIT" style={{ color: "#ffffff", fontSize: 16 }} 
+        onChangeText={(cuitCuil) => setCuilCuit(cuitCuil)}
+        value={cuitCuil}
+        />
         </View>
         <View
         style={{
@@ -145,21 +199,71 @@ const AnunciatePage = ({ navigation }) => {
         <Text h3 style={{ color: "#fff" }}>
         Información Laboral
         </Text>
-        <Input placeholder="Actividad" />
-        <Input placeholder="Teléfono (Linea 1)" />
-        <Input placeholder="Teléfono (Linea 2)" />
-        <Input placeholder="Celular" />
-        <Input placeholder="Provincia" />
-        <Input placeholder="Localidad" />
-        <Input placeholder="Local" />
-        <Input placeholder="Empresa" />
-        <Input placeholder="Factura" />
-        <Input placeholder="Dirección del local" />
-        <Input placeholder="Nombre de la empresa" />
-        <Input placeholder="Matrícula" />
-        <Input placeholder="Número de matrícula" />
-        <Input placeholder="Email laboral" />
-        <CheckBox title="Tengo WhatsApp" />
+        <Input placeholder="Actividad" 
+        onChangeText={(actividad) => setActividad(actividad)}
+        value={actividad}
+        />
+        <Input placeholder="Teléfono" 
+        onChangeText={(telefono) => setTelefono(telefono)}
+        value={telefono}
+        />
+        <Input placeholder="Celular" 
+        onChangeText={(celular) => setCelular(celular)}
+        value={celular}
+        />
+        <Input placeholder="Provincia" 
+        onChangeText={(provincia) => setProvincia(provincia)}
+        value={provincia}
+        />
+        <Input placeholder="Localidad"
+        onChangeText={(localidad) => setLocalidad(localidad)}
+        value={localidad}
+        />
+        <Input placeholder="Local" 
+        onChangeText={(local) => setLocal(local)}
+        value={local}
+        />
+        <Input placeholder="Empresa" 
+        onChangeText={(empresa) => setEmpresa(empresa)}
+        value={empresa}
+        />
+        <Input placeholder="Factura" 
+        onChangeText={(factura) => setFactura(factura)}
+        value={factura}
+        />
+        <Input placeholder="Dirección del local" 
+        onChangeText={(direccionDelLocal) => setDireccionDelLocal(direccionDelLocal)}
+        value={direccionDelLocal}
+        />
+        <Input placeholder="Nombre de la empresa" 
+        onChangeText={(nombreDeLaEmpresa) => setNombreDeLaEmpresa(nombreDeLaEmpresa)}
+        value={nombreDeLaEmpresa}
+        />
+        <Input placeholder="Matrícula" 
+        onChangeText={(matricula)}
+        value={matricula}
+        />
+        <Input placeholder="Número de matrícula" 
+        onChangeText={(numeroDeMatricula) => setNumeroDeMatricula}
+        value={numeroDeMatricula}
+        />
+        <Input placeholder="Email laboral" 
+        onChangeText={(emailLaboral) => setEmailLaboral(emailLaboral)}
+        value={emailLaboral}
+        />
+        <CheckBox title="Tengo WhatsApp"
+        containerStyle={{
+            backgroundColor: "transparent",
+                borderColor: "transparent",
+                borderWidth: 0,
+                marginLeft: "auto",
+                marginRight: "auto",
+        }}
+        textStyle={{ color: "#ffffff" }}
+        checkedColor={"white"}
+        onPress={toggleWhatsapp}
+        checked={tengoWhatsapp}
+        />
         </View>
         <View
         style={{
@@ -180,6 +284,8 @@ const AnunciatePage = ({ navigation }) => {
                 placeholderTextColor: "gray",
         }}
         placeholder="Resumen Personal"
+        onChangeText={(descripcionPersonal) => setDescripcionPersonal(descripcionPersonal)}
+        value={descripcionPersonal}
         />
         </View>
         <View
@@ -193,15 +299,102 @@ const AnunciatePage = ({ navigation }) => {
         <Text h3 style={{ color: "#fff" }}>
         Dias y horarios de atención
         </Text>
-        <CheckBox title="Lunes" />
-        <CheckBox title="Martes" />
-        <CheckBox title="Miercoles" />
-        <CheckBox title="Jueves" />
-        <CheckBox title="Viernes" />
-        <CheckBox title="Sábado" />
-        <CheckBox title="Domingo" />
-        <Input placeholder="Desde" />
-        <Input placeholder="Hasta" />
+        <View style={{ flex: 1, flexDirection: "row" }}>
+        <CheckBox title="Lunes"
+        onPress={() => concatLunes()}
+        containerStyle={{
+            backgroundColor: "transparent",
+                borderColor: "transparent",
+                borderWidth: 0,
+                marginTop: 15,
+                marginLeft: "auto",
+                marginRight: "auto",
+        }}
+        textStyle={{ color: "#ffffff" }}
+        checkedColor={"white"}/>
+        <CheckBox title="Martes" containerStyle={{
+            backgroundColor: "transparent",
+                borderColor: "transparent",
+                borderWidth: 0,
+                marginTop: 15,
+                marginLeft: "auto",
+                marginRight: "auto",
+        }}
+        textStyle={{ color: "#ffffff" }}
+        checkedColor={"white"}/>
+        <CheckBox title="Miercoles" containerStyle={{
+            backgroundColor: "transparent",
+                borderColor: "transparent",
+                borderWidth: 0,
+                marginTop: 15,
+                marginLeft: "auto",
+                marginRight: "auto",
+        }}
+        textStyle={{ color: "#ffffff" }}
+        checkedColor={"white"}/>
+        </View>
+        <View style={{ flex: 1, flexDirection: "row" }}>
+        <CheckBox title="Jueves" containerStyle={{
+            backgroundColor: "transparent",
+                borderColor: "transparent",
+                borderWidth: 0,
+                marginTop: 15,
+                marginLeft: "auto",
+                marginRight: "auto",
+        }}
+        textStyle={{ color: "#ffffff" }}
+        checkedColor={"white"}/>
+        <CheckBox title="Viernes" containerStyle={{
+            backgroundColor: "transparent",
+                borderColor: "transparent",
+                borderWidth: 0,
+                marginTop: 15,
+                marginLeft: "auto",
+                marginRight: "auto",
+        }}
+        textStyle={{ color: "#ffffff" }}
+        checkedColor={"white"}/>
+        <CheckBox title="Sábado" containerStyle={{
+            backgroundColor: "transparent",
+                borderColor: "transparent",
+                borderWidth: 0,
+                marginTop: 15,
+                marginLeft: "auto",
+                marginRight: "auto",
+        }}
+        textStyle={{ color: "#ffffff" }}
+        checkedColor={"white"}/>
+        </View>
+        <CheckBox title="Domingo" containerStyle={{
+            backgroundColor: "transparent",
+                borderColor: "transparent",
+                borderWidth: 0,
+                marginTop: 15,
+                marginLeft: "auto",
+                marginRight: "auto",
+        }}
+        textStyle={{ color: "#ffffff" }}
+        checkedColor={"white"}/>
+        <Input placeholder="Desde" containerStyle={{
+            backgroundColor: "transparent",
+                borderColor: "transparent",
+                borderWidth: 0,
+                marginTop: 15,
+                marginLeft: "auto",
+                marginRight: "auto",
+        }}
+        textStyle={{ color: "#ffffff" }}
+        checkedColor={"white"}/>
+        <Input placeholder="Hasta" containerStyle={{
+            backgroundColor: "transparent",
+                borderColor: "transparent",
+                borderWidth: 0,
+                marginTop: 15,
+                marginLeft: "auto",
+                marginRight: "auto",
+        }}
+        textStyle={{ color: "#ffffff" }}
+        checkedColor={"white"}/>
         </View>
         <View
         style={{
@@ -214,7 +407,20 @@ const AnunciatePage = ({ navigation }) => {
         <Text h3 style={{ color: "#fff" }}>
         Términos y condiciones
         </Text>
-        <CheckBox title="Acepto los términos y condiciones y la política de privacidad" />
+        <CheckBox title="Acepto los términos y condiciones y la política de privacidad" 
+        containerStyle={{
+            backgroundColor: "transparent",
+                borderColor: "transparent",
+                borderWidth: 0,
+                marginTop: 15,
+                marginLeft: "auto",
+                marginRight: "auto",
+        }}
+        textStyle={{ color: "#ffffff" }}
+        checkedColor={"white"}
+        onPress={toggleTerminos}
+        checked={terminos}
+        />
         </View>
         <View
         style={{
@@ -222,14 +428,14 @@ const AnunciatePage = ({ navigation }) => {
                 alignItems: "center",
                 justifyContent: "center",
                 marginTop: 25,
+                marginBottom: 30,
         }}
         >
         <Button
         onPress={() => navigation.navigate("PagosPage")}
         title="Continuar"
         buttonStyle={{
-            marginTop: 10,
-                backgroundColor: "#F4743B",
+            backgroundColor: "#F4743B",
         }}
         />
         </View>
