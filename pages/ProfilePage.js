@@ -3,13 +3,13 @@ import * as Notifications from "expo-notifications";
 import * as Permissions from "expo-permissions";
 import React, { useState, useEffect, useRef } from "react";
 import {
-  Image,
-  FlatList,
-  SafeAreaView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
+    Image,
+    FlatList,
+    SafeAreaView,
+    StyleSheet,
+    Text,
+    TouchableOpacity,
+    View,
 } from "react-native";
 import { Button, SocialIcon } from "react-native-elements";
 import Icon from "react-native-vector-icons/FontAwesome";
@@ -24,11 +24,11 @@ import * as LoginPageData from "./LoginPage";
 import LoginPage from "./LoginPage";
 
 Notifications.setNotificationHandler({
-  handleNotification: async () => ({
-    shouldShowAlert: true,
-    shouldPlaySound: true,
-    shouldSetBadge: false,
-  }),
+    handleNotification: async () => ({
+        shouldShowAlert: true,
+        shouldPlaySound: true,
+        shouldSetBadge: false,
+    }),
 });
 
 const ProfilePage = ({ navigation }) => { 
@@ -45,137 +45,145 @@ const ProfilePage = ({ navigation }) => {
             });
     };
 
-  if (user) {
-    return (
-      <SafeAreaView style={{ flex: 1 }}>
-        <Image
-          source={require("../assets/gradients/20x20.png")}
-          style={{
-            flex: 1,
-            position: "absolute",
-            resizeMode: "cover",
-            width: "100%",
-            height: "5%",
-          }}
-        />
-        <View
-          style={{
-            flex: 1,
-            justifyContent: "flex-start",
-            flexDirection: "row",
-            marginTop: 70,
-            marginLeft: 15,
-          }}
-        >
-          <Image
+    if (user) {
+        return (
+            <SafeAreaView style={{ flex: 1 }}>
+            <Image
+            source={require("../assets/gradients/20x20.png")}
+            style={{
+                flex: 1,
+                    position: "absolute",
+                    resizeMode: "cover",
+                    width: "100%",
+                    height: "5%",
+            }}
+            />
+            <View
+            style={{
+                flex: 1,
+                    justifyContent: "flex-start",
+                    flexDirection: "row",
+                    marginTop: 70,
+                    marginLeft: 15,
+            }}
+            >
+            <Image
             source={require("../assets/icon.png")}
             style={{
-              width: 50,
-              height: 50,
+                width: 50,
+                    height: 50,
             }}
-          />
-          <View style={{ flex: 1, flexDirection: "column" }}>
+            />
+            <View style={{ flex: 1, flexDirection: "column" }}>
             <Text style={{ color: "#000000", fontSize: 14, marginLeft: 20 }}>
-              Nombre
+            Nombre
             </Text>
             <Text
-              style={{
+            style={{
                 color: "#000000",
-                fontSize: 14,
-                marginLeft: 20,
-                marginTop: 10,
-              }}
+                    fontSize: 14,
+                    marginLeft: 20,
+                    marginTop: 10,
+            }}
             >
-              {user.email}
+            {user.email}
             </Text>
-          </View>
-          <Button
+            </View>
+            <Button
             title="Anunciarte"
             onPress={() => navigation.navigate("AnunciatePage")}
             buttonStyle={{
-              backgroundColor: "orange",
-              marginRight: 15,
-              borderRadius: 5,
+                backgroundColor: "orange",
+                    marginRight: 15,
+                    borderRadius: 5,
             }}
-          />
-        </View>
-        <View
-          style={{
-            flex: 1,
-            flexDirection: "column",
-            justifyContent: "flex-start",
-            bottom: 50,
-          }}
-        >
-          <TouchableOpacity onPress={() => RootNavigation.navigate("ChatMessages")}>
+            />
+            </View>
+            <View
+            style={{
+                flex: 1,
+                    flexDirection: "column",
+                    justifyContent: "flex-start",
+                    bottom: 50,
+            }}
+            >
+            <TouchableOpacity onPress={() => RootNavigation.navigate("ChatMessages")}>
             <Text style={{ color: "#000000", fontSize: 20, margin: 15 }}>
-              <MaterialCommunityIcons
-                name="comment-text"
-                color={"orange"}
-                size={20}
-              />{" "}
-              Mensajes
+            <MaterialCommunityIcons
+            name="comment-text"
+            color={"orange"}
+            size={20}
+            />{" "}
+            Mensajes
             </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
+            </TouchableOpacity>
+            <TouchableOpacity
             onPress={() => navigation.navigate("MisComentariosPage")}
-          >
+            >
             <Text style={{ color: "#000000", fontSize: 20, margin: 15 }}>
-              <MaterialCommunityIcons
-                name="comment"
-                color={"orange"}
-                size={20}
-              />{" "}
-              Comentarios
+            <MaterialCommunityIcons
+            name="comment"
+            color={"orange"}
+            size={20}
+            />{" "}
+            Comentarios
             </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
+            </TouchableOpacity>
+            <TouchableOpacity
             onPress={() => navigation.navigate("MisRecomendadosPage")}
-          >
+            >
             <Text style={{ color: "#000000", fontSize: 20, margin: 15 }}>
-              <MaterialCommunityIcons name="heart" color={"orange"} size={20} />{" "}
-              Recomendados
+            <MaterialCommunityIcons name="heart" color={"orange"} size={20} />{" "}
+            Recomendados
             </Text>
-          </TouchableOpacity>
-<TouchableOpacity
+            </TouchableOpacity>
+            <TouchableOpacity
             onPress={() => navigation.navigate("MisFavoritos")}
-          >
+            >
             <Text style={{ color: "#000000", fontSize: 20, margin: 15 }}>
-              <MaterialCommunityIcons name="book-open" color={"orange"} size={20} />{" "}
-              Favoritos
+            <MaterialCommunityIcons name="book-open" color={"orange"} size={20} />{" "}
+            Favoritos
             </Text>
-          </TouchableOpacity>
-        </View>
-        <View
-          style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
-        >
-          <Button
+            </TouchableOpacity>
+            <TouchableOpacity
+            onPress={() => navigation.navigate("MisAnunciosPage")}
+            >
+            <Text style={{ color: "#000000", fontSize: 20, margin: 15 }}>
+            <MaterialCommunityIcons name="bullhorn" color={"orange"} size={20} />{" "}
+            Mis Anuncios
+            </Text>
+            </TouchableOpacity>
+            </View>
+            <View
+            style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
+            >
+            <Button
             title="Cerrar Sesión"
             onPress={() => signUserOut()}
             buttonStyle={{
-              backgroundColor: "orange",
-              borderRadius: 12,
-              fontWeight: "bold",
-              padding: 10,
-              marginTop: 50,
+                backgroundColor: "orange",
+                    borderRadius: 12,
+                    fontWeight: "bold",
+                    padding: 10,
+                    marginTop: 50,
             }}
-          />
-        </View>
-      </SafeAreaView>
-    );
-  } else {
-    return <LoginPage />;
-  }
+            />
+            </View>
+            </SafeAreaView>
+        );
+    } else {
+        return <LoginPage />;
+    }
 };
 
 const styles = StyleSheet.create({
-  button: {
-    alignItems: "center",
-    backgroundColor: "#DDDDDD",
-    padding: 10,
-    width: 300,
-    marginTop: 16,
-  },
+    button: {
+        alignItems: "center",
+        backgroundColor: "#DDDDDD",
+        padding: 10,
+        width: 300,
+        marginTop: 16,
+    },
 });
 
 export default ProfilePage;

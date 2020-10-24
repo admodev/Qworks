@@ -9,6 +9,7 @@ import { Badge } from "react-native-elements";
 import { navigationRef } from "./RootNavigation";
 import * as Chat from "./components/ChatComponent";
 import AuthStateHook from "./hooks/HookEstadoDeAuth";
+import * as Location from 'expo-location';
 
 Notifications.setNotificationHandler({
     handleNotification: async () => ({
@@ -19,6 +20,28 @@ Notifications.setNotificationHandler({
 });
 
 export default function App() {
+    const [location, setLocation] = React.useState(null);
+    const [errorMsg, setErrorMsg] = React.useState(null);
+
+    React.useEffect(() => {
+        (async () => {
+            let { status } = await Location.requestPermissionsAsync();
+            if (status !== 'granted') {
+                setErrorMsg('Por favor permita el acceso a la ubicacion para acceder al funcionamiento completo de la app.');
+            }
+
+            let location = await Location.getCurrentPositionAsync({});
+            setLocation(location);
+        })();
+    }, []);
+
+    let text = 'Cargando...';
+    if (errorMsg) {
+        text = errorMsg;
+    } else if (location) {
+        text = JSON.stringify(location);
+    }
+
     const [expoPushToken, setExpoPushToken] = React.useState('');
     const [notification, setNotification] = React.useState(false);
     const notificationListener = React.useRef();
