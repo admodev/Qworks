@@ -146,7 +146,7 @@ const ProfilePage = ({ navigation }) => {
             </Text>
             </TouchableOpacity>
             <TouchableOpacity
-            onPress={() => navigation.navigate("MisAnunciosPage")}
+            onPress={() => navigation.navigate("Anuncios")}
             >
             <Text style={{ color: "#000000", fontSize: 20, margin: 15 }}>
             <MaterialCommunityIcons name="bullhorn" color={"orange"} size={20} />{" "}

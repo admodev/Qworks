@@ -6,7 +6,7 @@ class PlanBlue extends React.Component {
         super(props);
         this.state = ({
             duracion: "6 meses",
-            conversaciones: 17,
+            conversaciones: 21,
             compraDeConversaciones: "multiplos de 4, 7 y 11",            
             recomendar: true,
             calificar: true,

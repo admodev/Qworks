@@ -19,6 +19,7 @@ import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityI
 import { Badge } from "react-native-elements";
 import { navigationRef } from "../RootNavigation";
 import * as Chat from "../components/ChatComponent";
+import AnunciosPage from "../components/Anuncios.js";
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -185,6 +186,11 @@ function MainStackNavigator({ navigation }) {
         <Stack.Screen
         name="Messages"
         component={Messages}
+        options={{ title: "QuedeOficios!", headerShown: false }}
+        />
+        <Stack.Screen
+        name="Anuncios"
+        component={AnunciosPage}
         options={{ title: "QuedeOficios!", headerShown: false }}
         />
         </Stack.Navigator>

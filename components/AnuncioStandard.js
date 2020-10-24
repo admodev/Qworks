@@ -9,7 +9,7 @@ class PlanStandard extends React.Component {
             conversaciones: 3,
             compraDeConversaciones: "multiplos de 3",
             recomendar: false,
-            calificar: false,
+            calificar: true,
             comentar: false,
             compartir: true,
             subirFoto: true,
