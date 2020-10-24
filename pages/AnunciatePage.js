@@ -45,10 +45,54 @@ const AnunciatePage = ({ navigation }) => {
     // Pasar valores booleanos (por ejemplo: tengoWhatsapp de falso a verdadero y viceversa.
     const toggleWhatsapp = React.useCallback(() => setTengoWhatsapp(!tengoWhatsapp));
     const toggleTerminos = React.useCallback(() => setTerminos(!terminos));
+    const [lunesChecked, setLunesChecked] = useState(false);
+    const toggleLunesChecked = React.useCallback(() => setLunesChecked(!lunesChecked));
+    const [martesChecked, setMartesChecked] = useState(false);
+    const toggleMartesChecked = React.useCallback(() => setMartesChecked(!martesChecked));
+    const [miercolesChecked, setMiercolesChecked] = useState(false);
+    const toggleMiercolesChecked = React.useCallback(() => setMiercolesChecked(!miercolesChecked));
+    const [juevesChecked, setJuevesChecked] = useState(false);
+    const toggleJuevesChecked = React.useCallback(() => setJuevesChecked(!juevesChecked));
+    const [viernesChecked, setViernesChecked] = useState(false);
+    const toggleViernesChecked = React.useCallback(() => setViernesChecked(!viernesChecked));
+    const [sabadoChecked, setSabadoChecked] = useState(false);
+    const toggleSabadoChecked = React.useCallback(() => setSabadoChecked(!sabadoChecked));
+    const [domingoChecked, setDomingoChecked] = useState(false);
+    const toggleDomingoChecked = React.useCallback(() => setDomingoChecked(!domingoChecked));
 
     function concatLunes() {
         setDiasHorarios(diasHorarios.concat("Lunes"));
-        checked = true;
+        toggleLunesChecked();
+    }
+
+    function concatMartes() {
+        setDiasHorarios(diasHorarios.concat("Martes"));
+        toggleMartesChecked();
+    }
+
+    function concatMiercoles() {
+        setDiasHorarios(diasHorarios.concat("Miercoles"));
+        toggleMiercolesChecked();
+    }
+
+    function concatJueves() {
+        setDiasHorarios(diasHorarios.concat("Jueves"));
+        toggleJuevesChecked();
+    }
+
+    function concatViernes() {
+        setDiasHorarios(diasHorarios.concat("Viernes"));
+        toggleViernesChecked();
+    }
+
+    function concatSabado() {
+        setDiasHorarios(diasHorarios.concat("Sabado"));
+        toggleSabadoChecked();
+    }
+
+    function concatDomingo() {
+        setDiasHorarios(diasHorarios.concat("Domingo"));
+        toggleDomingoChecked();
     }
 
     function writeUserData(image, nombre, apellido, emailPersonal, domicilio, pisoDptoCasa, cuitCuil, actividad, telefono, celular, provincia, localidad, local, empresa, factura, direccionDelLocal, nombreDeLaEmpresa, matricula, numeroDeMatricula, emailLaboral, tengoWhatsapp, descripcionPersonal, diasHorarios, desde, hasta, terminos) {
@@ -302,6 +346,7 @@ const AnunciatePage = ({ navigation }) => {
         <View style={{ flex: 1, flexDirection: "row" }}>
         <CheckBox title="Lunes"
         onPress={() => concatLunes()}
+        checked={lunesChecked}
         containerStyle={{
             backgroundColor: "transparent",
                 borderColor: "transparent",
@@ -312,7 +357,10 @@ const AnunciatePage = ({ navigation }) => {
         }}
         textStyle={{ color: "#ffffff" }}
         checkedColor={"white"}/>
-        <CheckBox title="Martes" containerStyle={{
+        <CheckBox title="Martes"
+        onPress={() => concatMartes()}
+        checked={martesChecked}
+        containerStyle={{
             backgroundColor: "transparent",
                 borderColor: "transparent",
                 borderWidth: 0,
@@ -322,7 +370,10 @@ const AnunciatePage = ({ navigation }) => {
         }}
         textStyle={{ color: "#ffffff" }}
         checkedColor={"white"}/>
-        <CheckBox title="Miercoles" containerStyle={{
+        <CheckBox title="Miercoles" 
+        onPress={() => concatMiercoles()}
+        checked={miercolesChecked}
+        containerStyle={{
             backgroundColor: "transparent",
                 borderColor: "transparent",
                 borderWidth: 0,
@@ -334,7 +385,10 @@ const AnunciatePage = ({ navigation }) => {
         checkedColor={"white"}/>
         </View>
         <View style={{ flex: 1, flexDirection: "row" }}>
-        <CheckBox title="Jueves" containerStyle={{
+        <CheckBox title="Jueves" 
+        onPress={() => concatJueves()}
+        checked={juevesChecked}
+        containerStyle={{
             backgroundColor: "transparent",
                 borderColor: "transparent",
                 borderWidth: 0,
@@ -344,7 +398,10 @@ const AnunciatePage = ({ navigation }) => {
         }}
         textStyle={{ color: "#ffffff" }}
         checkedColor={"white"}/>
-        <CheckBox title="Viernes" containerStyle={{
+        <CheckBox title="Viernes" 
+        onPress={() => concatViernes()}
+        checked={viernesChecked}
+        containerStyle={{
             backgroundColor: "transparent",
                 borderColor: "transparent",
                 borderWidth: 0,
@@ -354,7 +411,10 @@ const AnunciatePage = ({ navigation }) => {
         }}
         textStyle={{ color: "#ffffff" }}
         checkedColor={"white"}/>
-        <CheckBox title="Sábado" containerStyle={{
+        <CheckBox title="Sábado" 
+        onPress={() => concatSabado()}
+        checked={sabadoChecked}
+        containerStyle={{
             backgroundColor: "transparent",
                 borderColor: "transparent",
                 borderWidth: 0,
@@ -365,7 +425,10 @@ const AnunciatePage = ({ navigation }) => {
         textStyle={{ color: "#ffffff" }}
         checkedColor={"white"}/>
         </View>
-        <CheckBox title="Domingo" containerStyle={{
+        <CheckBox title="Domingo" 
+        onPress={() => concatDomingo()}
+        checked={domingoChecked}
+        containerStyle={{
             backgroundColor: "transparent",
                 borderColor: "transparent",
                 borderWidth: 0,
