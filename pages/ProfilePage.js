@@ -44,9 +44,19 @@ const ProfilePage = ({ navigation }) => {
                 navigation.replace("LoginPage");
             });
     };
-
-    if (user) {
-        return (
+    return(
+        <SafeAreaView style={{ flex: 1 }}>
+        <Image
+        source={require("../assets/gradients/20x20.png")}
+        style={{
+            flex: 1,
+                position: "absolute",
+                resizeMode: "cover",
+                width: "100%",
+                height: "5%",
+        }}
+        />
+        {user ? (
             <SafeAreaView style={{ flex: 1 }}>
             <Image
             source={require("../assets/gradients/20x20.png")}
@@ -170,10 +180,11 @@ const ProfilePage = ({ navigation }) => {
             />
             </View>
             </SafeAreaView>
-        );
-    } else {
-        return <LoginPage />;
-    }
+        ) : (
+            <LoginPage />
+        )}
+        </SafeAreaView>
+    );
 };
 
 const styles = StyleSheet.create({

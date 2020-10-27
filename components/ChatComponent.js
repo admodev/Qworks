@@ -95,10 +95,14 @@ export default function Chat() {
 
     const secondUser = "CBlLQIfFijbs1Hh7jWWEhkKfIkN2";
 
-    return <GiftedChat messages={messages} user={{
+    return <GiftedChat messages={messages} 
+    user={{
         user,
-        secondUser
-    }} onSend={handleSend} />
+            secondUser
+    }} 
+    onSend={handleSend}
+    showUserAvatar={true}
+        />
 }
 
 const styles = StyleSheet.create({
