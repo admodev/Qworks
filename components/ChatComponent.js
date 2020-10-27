@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import { GiftedChat } from 'react-native-gifted-chat'
 import AsyncStorage from '@react-native-community/async-storage'
-import { StyleSheet, TextInput, View, Button } from 'react-native'
+import { SafeAreaView, StyleSheet, TextInput, View, Button } from 'react-native'
 import {
     FIREBASE_API_KEY,
     FIREBASE_AUTH_DOMAIN,
@@ -17,7 +17,9 @@ import {
 import * as firebase from 'firebase'
 import 'firebase/auth'
 import 'firebase/firestore'
-import * as RootNavigation from "../RootNavigation.js";
+import 'firebase/database'
+import * as RootNavigation from "../RootNavigation.js"
+import LoginPage from "../pages/LoginPage"
 
 if (firebase.apps.length === 0) {
     try {
@@ -40,10 +42,21 @@ if (firebase.apps.length === 0) {
 
 const db = firebase.firestore()
 const chatsRef = db.collection('chats')
+const database = firebase.database();
+const storage = firebase.storage();
+const storageRef = storage.ref();
+const defaultImageRef = storageRef.child('icon.png');
+const image = storageRef.child('userImages/uid');
+
+if (image == null) {
+    image = defaultImageRef;
+}
 
 export default function Chat() {
     const [user, setUser] = useState(null)
-    const [name, setName] = useState('')
+    const nombre = firebase.database().ref('/users/' + 'id').once('value').then(function(snapshot) {
+        var nombre = (snapshot.val() && snapshot.val().nombre);
+    });
     const [messages, setMessages] = useState([])
     const currentUser = firebase.auth().currentUser;
 
@@ -80,7 +93,7 @@ export default function Chat() {
     }
     async function handlePress() {
         const _id = Math.random().toString(36).substring(7)
-        const user = { _id, name }
+        const user = { _id, nombre }
         await AsyncStorage.setItem('user', JSON.stringify(user))
         setUser(user)
     }
@@ -89,20 +102,27 @@ export default function Chat() {
         await Promise.all(writes)
     }
 
-    if (!user) {
-        () => RootNavigation.navigate("LoginPage");
-    }
-
     const secondUser = "CBlLQIfFijbs1Hh7jWWEhkKfIkN2";
 
-    return <GiftedChat messages={messages} 
-    user={{
-        user,
-            secondUser
-    }} 
-    onSend={handleSend}
-    showUserAvatar={true}
+    if (messages >= 1) {
+        schedulePushNotification(); 
+    }
+
+    if (!user) {
+        () => RootNavigation.navigate('LoginPage');
+    }
+
+    return(
+        <GiftedChat messages={messages} 
+        user={{
+            user,
+                secondUser,
+                avatar: image
+        }} 
+        onSend={handleSend}
+        showUserAvatar={true}
         />
+    );
 }
 
 const styles = StyleSheet.create({

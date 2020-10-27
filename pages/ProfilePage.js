@@ -31,7 +31,14 @@ Notifications.setNotificationHandler({
     }),
 });
 
+const database = firebase.database();
+
+firebase.database().ref('/users/uid/nombre').once('value').then(function(snapshot) {
+    let nombre = (snapshot.val() && snapshot.val().nombre);
+});
+
 const ProfilePage = ({ navigation }) => { 
+    const [nombre, actualizarNombre] = useState(nombre);
     var user = firebase.auth().currentUser;
     const signUserOut = () => {
         firebase
@@ -44,6 +51,9 @@ const ProfilePage = ({ navigation }) => {
                 navigation.replace("LoginPage");
             });
     };
+    if (nombre == null) {
+        let nombre = "Nombre";
+    }
     return(
         <SafeAreaView style={{ flex: 1 }}>
         <Image
@@ -86,7 +96,7 @@ const ProfilePage = ({ navigation }) => {
             />
             <View style={{ flex: 1, flexDirection: "column" }}>
             <Text style={{ color: "#000000", fontSize: 14, marginLeft: 20 }}>
-            Nombre
+            {nombre == null ? <Text>Nombre</Text> : nombre}
             </Text>
             <Text
             style={{
@@ -117,7 +127,7 @@ const ProfilePage = ({ navigation }) => {
                     bottom: 50,
             }}
             >
-            <TouchableOpacity onPress={() => RootNavigation.navigate("ChatMessages")}>
+            <TouchableOpacity onPress={() => RootNavigation.navigate("ChatComponent")}>
             <Text style={{ color: "#000000", fontSize: 20, margin: 15 }}>
             <MaterialCommunityIcons
             name="comment-text"

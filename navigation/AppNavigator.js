@@ -18,8 +18,8 @@ import Messages from "../pages/ChatMessages";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { Badge } from "react-native-elements";
 import { navigationRef } from "../RootNavigation";
-import * as Chat from "../components/ChatComponent";
 import AnunciosPage from "../components/Anuncios.js";
+import Chat from "../components/ChatComponent";
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -146,6 +146,11 @@ function MainStackNavigator({ navigation }) {
         <Stack.Screen
         name="ChatPage"
         component={ChatPage}
+        options={{ title: "QuedeOficios!", headerShown: false }}
+        />
+        <Stack.Screen
+        name="ChatComponent"
+        component={Chat}
         options={{ title: "QuedeOficios!", headerShown: false }}
         />
         <Stack.Screen
