@@ -32,8 +32,6 @@ import {
     FIREBASE_MEASUREMENT_ID,
 } from "@env";
 import * as RootNavigation from "../RootNavigation.js";
-import RegisterPage from "./RegisterPage";
-import ProfilePage from "./ProfilePage";
 import { StackActions } from '@react-navigation/native';
 
 async function signInWithGoogleAsync() {
