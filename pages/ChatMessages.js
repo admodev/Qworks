@@ -35,7 +35,7 @@ class Messages extends React.Component {
       messages: [],
     };
   }
-  componentDidMount() {
+  componentWillMount() {
     firebaseFirestore
       .collection("chats")
       .get()
