@@ -1,140 +1,256 @@
-import * as React from "react";
-import { Image, SafeAreaView, StyleSheet, Text, View } from "react-native";
-import { Button, SocialIcon, Input } from "react-native-elements";
+import React, { Component, useState, setState, useEffect } from "react";
+import Icon from "react-native-vector-icons/FontAwesome";
+import {
+    Image,
+    Keyboard,
+    KeyboardAvoidingView,
+    SafeAreaView,
+    StyleSheet,
+    Text,
+    TouchableWithoutFeedback,
+    View,
+} from "react-native";
+import { Button, CheckBox, Input, SocialIcon } from "react-native-elements";
 import * as FirebaseCore from "expo-firebase-core";
 import * as Google from "expo-google-app-auth";
 import * as Facebook from "expo-facebook";
 import * as Location from "expo-location";
 import { TouchableHighlight } from "react-native-gesture-handler";
-import { GOOGLE_LOGIN_ANDROID_CLIENT_ID, GOOGLE_LOGIN_IOS_CLIENT_ID } from "@env";
+import * as firebase from "firebase";
+import "firebase/auth";
+import {
+    GOOGLE_LOGIN_ANDROID_CLIENT_ID,
+    GOOGLE_LOGIN_IOS_CLIENT_ID,
+    FACEBOOK_APP_ID,
+    FIREBASE_API_KEY,
+    FIREBASE_AUTH_DOMAIN,
+    FIREBASE_DATABASE_URL,
+    FIREBASE_PROJECT_ID,
+    FIREBASE_STORAGE_BUCKET,
+    FIREBASE_MESSAGING_SENDER_ID,
+    FIREBASE_APP_ID,
+    FIREBASE_MEASUREMENT_ID,
+} from "@env";
 import * as RootNavigation from "../RootNavigation.js";
+import { StackActions } from '@react-navigation/native';
 
 async function signInWithGoogleAsync() {
-  try {
-    const result = await Google.logInAsync({
-      androidClientId: `${GOOGLE_LOGIN_ANDROID_CLIENT_ID}`,
-      iosClientId: `${GOOGLE_LOGIN_IOS_CLIENT_ID}`,
-      scopes: ["profile", "email"],
-    });
+    try {
+        const result = await Google.logInAsync({
+            androidClientId: `${GOOGLE_LOGIN_ANDROID_CLIENT_ID}`,
+            iosClientId: `${GOOGLE_LOGIN_IOS_CLIENT_ID}`,
+            scopes: ["profile", "email"],
+        });
 
-    if (result.type === "success") {
-      return result.accessToken;
-    } else {
-      return { cancelled: true };
+        if (result.type === "success") {
+            return result.accessToken;
+        } else {
+            return { cancelled: true };
+        }
+    } catch (e) {
+        return { error: true };
     }
-  } catch (e) {
-    return { error: true };
-  }
 }
 const signInWithGoogle = () => {
-  signInWithGoogleAsync();
+    signInWithGoogleAsync();
 };
 
 async function logInWithFacebook() {
-  try {
-    await Facebook.initializeAsync({
-      appId: `${FACEBOOK_APP_ID}`,
-    });
-    const {
-      type,
-      token,
-      expirationDate,
-      permissions,
-      declinedPermissions,
-    } = await Facebook.logInWithReadPermissionsAsync({
-      permissions: ["public_profile"],
-    });
-    if (type === "success") {
-      // Get the user's name using Facebook's Graph API
-      const response = await fetch(
-        `https://graph.facebook.com/me?access_token=${token}`
-      );
-      Alert.alert("Logged in!", `Hi ${(await response.json()).name}!`);
-    } else {
-      // type === 'cancel'
+    try {
+        await Facebook.initializeAsync({
+            appId: `${FACEBOOK_APP_ID}`,
+        });
+        const {
+            type,
+            token,
+            expirationDate,
+            permissions,
+            declinedPermissions,
+        } = await Facebook.logInWithReadPermissionsAsync({
+            permissions: ["public_profile"],
+        });
+        if (type === "success") {
+            // Get the user's name using Facebook's Graph API
+            const response = await fetch(
+                `https://graph.facebook.com/me?access_token=${token}`
+            );
+            Alert.alert("Ingresaste!", `Hola ${(await response.json()).name}!`);
+        } else {
+            Alert.alert(
+                "Tienes que permitir el acceso a tu cuenta para que puedas iniciar sesión con Facebook."
+            );
+        }
+    } catch ({ message }) {
+        alert(`Facebook Login Error: ${message}`);
     }
-  } catch ({ message }) {
-    alert(`Facebook Login Error: ${message}`);
-  }
 }
 
 const signInWithFacebook = () => {
-  logInWithFacebook();
+    logInWithFacebook();
 };
 
-const RegisterPage = ({ navigation }) => {
-  return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <View
-        style={{
-          flex: 1,
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-      >
+export default function RegisterPage({ navigation }) {
+    let [email, setUserEmail] = useState("");
+    let [password, setUserPassword] = useState("");
+    var [isChecked, setChecked] = useState(false);
+    const toggle = React.useCallback(() => setChecked(!isChecked));
+
+    if (isChecked == true) {
+        firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION)
+            .then(function() {
+                return firebase.auth().signInWithEmailAndPassword(email, password);
+            })
+            .catch(function(error) {
+                var errorCode = error.code;
+                var errorMessage = error.message;
+            });
+    }
+    const RegistrarUsuarios = () => {
+        firebase.auth().createUserWithEmailAndPassword(email, password)
+            .catch(function(error) {
+                var errorCode = error.code;
+                var errorMessage = error.message;
+            });
+    };
+    firebase.auth().onAuthStateChanged(function (user) {
+        if (user) {
+            var email = user.email;
+            var uid = user.uid;
+            var providerData = user.providerData;
+        } else {
+            user == null;
+        }
+    });
+    return (
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+        <SafeAreaView style={{ flex: 1 }} keyboardShouldPersistTaps="handled">
         <Image
-          source={require("../assets/loginBackground.jpg")}
-          style={{
+        source={require("../assets/gradients/20x20.png")}
+        style={{
             flex: 1,
-            position: "absolute",
-            resizeMode: "stretch",
-            width: "100%",
-            height: "100%",
-          }}
+                position: "absolute",
+                resizeMode: "cover",
+                width: "100%",
+                height: "5%",
+        }}
         />
-        <View style={{ width: "70%", top: 70, bottom: 0 }}>
-          <Button
-            buttonStyle={{
-              backgroundColor: "#F4743B",
-              paddingTop: 12,
-              paddingRight: 80,
-              paddingBottom: 12,
-              paddingLeft: 80,
-              borderRadius: 25,
-            }}
-            onPress={() => navigation.navigate("EmailRegisterPage")}
-            title="Registrarme"
-          />
-        
+        <View
+        style={{
+            flex: 1,
+                alignItems: "center",
+                justifyContent: "center",
+        }}
+        >
+        <Image
+        source={require("../assets/loginBackground.jpg")}
+        style={{
+            flex: 1,
+                position: "absolute",
+                resizeMode: "stretch",
+                width: "100%",
+                height: "100%",
+        }}
+        />
+        <View
+        style={{ width: "80%", marginTop: 70, bottom: 0 }}
+        keyboardShouldPersistTaps="handled"
+        >
+        <KeyboardAvoidingView
+        behavior={Platform.OS == "ios" ? "padding" : "height"}
+        >
+        <Input
+        placeholder="Correo Electrónico"
+        keyboardType="email-address"
+        autoCapitalize = 'none'
+        inputContainerStyle={{ marginTop: 100 }}
+        style={{ color: "#ffffff", fontSize: 16 }}
+        leftIcon={<Icon name="envelope-o" size={18} color="white" />}
+        onChangeText={(email) => setUserEmail(email)}
+        value={email}
+        />
+        <Input
+        placeholder="Contraseña"
+        inputContainerStyle={{}}
+        leftIcon={<Icon name="lock" size={20} color="white" />}
+        style={{ color: "#ffffff", fontSize: 16 }}
+        secureTextEntry={true}
+        onChangeText={(password) => setUserPassword(password)}
+        value={password}
+        />
+       <Button title="Registrarme"
+        onPress={() => RegistrarUsuarios}
+        buttonStyle={{
+            backgroundColor: "orange",
+            borderRadius: 25,
+            width: "70%",
+            alignSelf: "center",
+            marginTop: 10,
+        }}
+        />
+        </KeyboardAvoidingView>
         </View>
-        <View style={{ width: "70%", top: 80, bottom: 0 }}>
-          <SocialIcon
-            button
-            title="Ingresar con Google"
-            type="google"
-            onPress={() => signInWithGoogle()}
-          />
+        <View style={{ marginTop: 50 }}>
+        <Text style={{ color: "#ffffff", fontWeight: "bold" }}>
+        Ingresar con...
+        </Text>
         </View>
-        <View style={{ width: "70%", top: 85, bottom: 0 }}>
-          <SocialIcon
-            button
-            title="Ingresar con Facebook"
-            type="facebook"
-            onPress={() => signInWithFacebook()}
-          />
+        <View
+        style={{
+            flex: 1,
+                flexDirection: "row",
+                marginTop: 30,
+                bottom: 0,
+        }}
+        >
+        <View>
+        <SocialIcon
+        button
+        type="google"
+        style={{ padding: 25 }}
+        onPress={() => signInWithGoogle()}
+        />
         </View>
-        <View style={{ width: "70%", top: 90, bottom: 0 }}>
-          <TouchableHighlight onPress={() => navigation.navigate("LoginPage")}>
-            <Text
-              style={{ color: "#fff", marginLeft: "auto", marginRight: "auto" }}
-            >
-              Ya tienes cuenta? INGRESA
-            </Text>
-          </TouchableHighlight>
+        <View>
+        <Text style={{ color: "#ffffff", marginTop: 25 }}>O</Text>
         </View>
-      </View>
-    </SafeAreaView>
-  );
+        <View>
+        <SocialIcon
+        button
+        type="facebook"
+        style={{ padding: 30 }}
+        onPress={() => signInWithFacebook()}
+        />
+        </View>
+        </View>
+        <View style={{ width: "70%", bottom: 50 }}>
+        <TouchableHighlight
+        onPress={() => RootNavigation.navigate("LoginPage")}
+        >
+        <Text
+        style={{
+            color: "#fff",
+                marginLeft: "auto",
+                marginRight: "auto",
+        }}
+        >
+        Ya tienes cuenta? INGRESA
+        </Text>
+        </TouchableHighlight>
+        </View>
+        </View>
+        </SafeAreaView>
+        </TouchableWithoutFeedback>
+    );
 };
 
 const styles = StyleSheet.create({
-  button: {
-    alignItems: "center",
-    backgroundColor: "#DDDDDD",
-    padding: 10,
-    width: 300,
-    marginTop: 16,
-  },
+    button: {
+        alignItems: "center",
+        backgroundColor: "#DDDDDD",
+        padding: 10,
+        width: 300,
+        marginTop: 16,
+    },
 });
 
-export default RegisterPage;
+export var user;

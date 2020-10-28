@@ -76,11 +76,12 @@ class CardsUsuarios extends React.Component {
           padding: 0,
           borderRadius: 15,
           backgroundColor: "transparent",
+          borderWidth: 0,
         }}
       >
         {this.state.items.map((u, i) => {
           return (
-            <View key={i} style={{ margin: 25, backgroundColor: "beige" }}>
+            <View key={i} style={{ margin: 25, backgroundColor: "transparent" }}>
               <Image
                 source={require("../assets/patron.jpg")}
                 style={{
