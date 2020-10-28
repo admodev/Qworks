@@ -92,8 +92,6 @@ const signInWithFacebook = () => {
 export default function RegisterPage({ navigation }) {
     let [email, setUserEmail] = useState("");
     let [password, setUserPassword] = useState("");
-    var [isChecked, setChecked] = useState(false);
-    const toggle = React.useCallback(() => setChecked(!isChecked));
 
     if (isChecked == true) {
         firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION)

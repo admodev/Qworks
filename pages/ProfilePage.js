@@ -75,7 +75,7 @@ const ProfilePage = ({ navigation }) => {
                     position: "absolute",
                     resizeMode: "cover",
                     width: "100%",
-                    height: "5%",
+                    height: "3%",
             }}
             />
             <View
@@ -116,6 +116,8 @@ const ProfilePage = ({ navigation }) => {
                 backgroundColor: "orange",
                     marginRight: 15,
                     borderRadius: 5,
+                    height: 60,
+                    width: 120,
             }}
             />
             </View>
@@ -127,6 +129,14 @@ const ProfilePage = ({ navigation }) => {
                     bottom: 50,
             }}
             >
+            <TouchableOpacity
+            onPress={() => navigation.navigate("Anuncios")}
+            >
+            <Text style={{ color: "#000000", fontSize: 20, margin: 15 }}>
+            <MaterialCommunityIcons name="bullhorn" color={"orange"} size={20} />{" "}
+            Mis Anuncios
+            </Text>
+            </TouchableOpacity>
             <TouchableOpacity onPress={() => RootNavigation.navigate("ChatComponent")}>
             <Text style={{ color: "#000000", fontSize: 20, margin: 15 }}>
             <MaterialCommunityIcons
@@ -135,6 +145,14 @@ const ProfilePage = ({ navigation }) => {
             size={20}
             />{" "}
             Mensajes
+            </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+            onPress={() => navigation.navigate("MisFavoritos")}
+            >
+            <Text style={{ color: "#000000", fontSize: 20, margin: 15 }}>
+            <MaterialCommunityIcons name="book-open" color={"orange"} size={20} />{" "}
+            Favoritos
             </Text>
             </TouchableOpacity>
             <TouchableOpacity
@@ -155,22 +173,6 @@ const ProfilePage = ({ navigation }) => {
             <Text style={{ color: "#000000", fontSize: 20, margin: 15 }}>
             <MaterialCommunityIcons name="heart" color={"orange"} size={20} />{" "}
             Recomendados
-            </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-            onPress={() => navigation.navigate("MisFavoritos")}
-            >
-            <Text style={{ color: "#000000", fontSize: 20, margin: 15 }}>
-            <MaterialCommunityIcons name="book-open" color={"orange"} size={20} />{" "}
-            Favoritos
-            </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-            onPress={() => navigation.navigate("Anuncios")}
-            >
-            <Text style={{ color: "#000000", fontSize: 20, margin: 15 }}>
-            <MaterialCommunityIcons name="bullhorn" color={"orange"} size={20} />{" "}
-            Mis Anuncios
             </Text>
             </TouchableOpacity>
             </View>

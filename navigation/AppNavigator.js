@@ -7,7 +7,6 @@ import OnboardingPage from "../pages/OnboardingPage";
 import LoginPage from "../pages/LoginPage";
 import ChatPage from "../pages/ChatPage";
 import RegisterPage from "../pages/RegisterPage";
-import EmailRegisterPage from "../pages/EmailRegisterPage";
 import SearchPage from "../pages/SearchPage";
 import ProfilePage from "../pages/ProfilePage";
 import AnunciatePage from "../pages/AnunciatePage";
@@ -155,11 +154,6 @@ function MainStackNavigator({ navigation }) {
         <Stack.Screen
         name="RegisterPage"
         component={RegisterPage}
-        options={{ title: "QuedeOficios!", headerShown: false }}
-        />
-        <Stack.Screen
-        name="EmailRegisterPage"
-        component={EmailRegisterPage}
         options={{ title: "QuedeOficios!", headerShown: false }}
         />
         <Stack.Screen
