@@ -1,7 +1,7 @@
 // @refresh reset
 //
 import React, { useState, useEffect, useCallback } from 'react'
-import { GiftedChat } from 'react-native-gifted-chat'
+import { GiftedChat, Actions, ActionsProps, } from 'react-native-gifted-chat'
 import AsyncStorage from '@react-native-community/async-storage'
 import { SafeAreaView, StyleSheet, TextInput, View, Button } from 'react-native'
 import {
@@ -20,6 +20,8 @@ import 'firebase/firestore'
 import 'firebase/database'
 import * as RootNavigation from "../RootNavigation.js"
 import LoginPage from "../pages/LoginPage"
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import * as ImagePicker from "expo-image-picker";
 
 if (firebase.apps.length === 0) {
     try {
@@ -75,7 +77,19 @@ export default function Chat() {
                 .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())
             appendMessages(messagesFirestore)
         })
-        return () => unsubscribe()
+        return () => unsubscribe();
+(async () => {
+            if (Platform.OS !== "web") {
+                const {
+                    status,
+                } = await ImagePicker.requestCameraRollPermissionsAsync();
+                if (status !== "granted") {
+                    alert(
+                        "Perdón, necesitamos tu permiso para que puedas subir una foto!"
+                    );
+                }
+            }
+        })();
     }, [])
 
     const appendMessages = useCallback(
@@ -112,6 +126,36 @@ export default function Chat() {
         () => RootNavigation.navigate('LoginPage');
     }
 
+    const pickImage = async () => {
+        let result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.All,
+            allowsEditing: true,
+            aspect: [4, 3],
+            quality: 0.5,
+        });
+
+        console.log(result);
+
+        if (!result.cancelled) {
+            setImage(result.uri);
+        }
+    };
+
+    function renderActions(props: Readonly<ActionsProps>) {
+    return (
+      <Actions
+        {...props}
+        options={{
+          ['Enviar Imágen']: pickImage,
+        }}
+        icon={() => (
+          <MaterialCommunityIcons name="plus-circle" color={"#000000"} size={24} />
+        )}
+        onSend={args => console.log(args)}
+      />
+    )
+  }
+
     return(
         <GiftedChat messages={messages} 
         user={{
@@ -121,6 +165,8 @@ export default function Chat() {
         }} 
         onSend={handleSend}
         showUserAvatar={true}
+        placeholder="Escribe un mensaje..."
+        renderActions={renderActions}
         />
     );
 }

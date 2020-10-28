@@ -26,7 +26,7 @@ class CardsUsuarios extends React.Component {
       items: [],
     };
   }
-  componentWillMount() {
+  componentDidMount() {
    firebase
       .database()
       .ref("usuarios/")

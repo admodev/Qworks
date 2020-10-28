@@ -24,24 +24,6 @@ import Chat from "../components/ChatComponent";
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
-const unreadMessagesIcon = () => {
-    if (Chat.messages) {
-        return(
-            <Badge
-                    status="primary"
-                    badgeStyle={{
-                        width: 15,
-                            height: 15,
-                            borderRadius: 100,
-                            position: "absolute",
-                            backgroundColor: "orange",
-                    }}
-                    containerStyle={{ position: "absolute", top: -4, left: -4 }}
-                    />
-        );
-    }
-}
-
 export function MainTabNavigator({ navigation }) {
     return(
         <Tab.Navigator>
@@ -76,7 +58,19 @@ export function MainTabNavigator({ navigation }) {
             tabBarLabel: "Mensajes",
                 tabBarIcon: ({ color, size }) => (
                     <View>
-                    {unreadMessagesIcon()}
+                    {Chat.messages && (
+                        <Badge
+                        status="primary"
+                        badgeStyle={{
+                            width: 15,
+                                height: 15,
+                                borderRadius: 100,
+                                position: "absolute",
+                                backgroundColor: "orange",
+                        }}
+                        containerStyle={{ position: "absolute", top: -4, left: -4 }}
+                        />
+                    )}
                     <MaterialCommunityIcons
                     name="message"
                     color={color}

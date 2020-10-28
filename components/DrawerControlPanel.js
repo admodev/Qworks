@@ -21,7 +21,7 @@ class ControlPanel extends React.Component {
         };
     }
 
-    componentWillMount() {
+    componentDidMount() {
         return fetch(CardsUsuarios)
             .then((response) => response.json())
             .then((responseJson) => {
