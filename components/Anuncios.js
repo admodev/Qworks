@@ -15,6 +15,7 @@ import "firebase/database";
 import "firebase/auth";
 import * as RootNavigation from "../RootNavigation.js";
 import { StackActions } from '@react-navigation/native';
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import CardsUsuarios from "./Cards";
 import Botonera from "./BotoneraAnuncios";
 
@@ -22,16 +23,30 @@ export default class AnunciosPage extends React.Component {
     render() {
         return(
             <SafeAreaView style={{ flex: 1 }}>
-            <Card>
-            <Card.Title>CARD WITH DIVIDER</Card.Title>
-            <Text>Card</Text>
-<Text>Card</Text>
-<Text>Card</Text>
-<Text>Card</Text>
-<Text>Card</Text>
-            <Card.Divider/>
-            </Card>
-            <Botonera />
+<Image
+        source={require("../assets/gradients/20x20.png")}
+        style={{
+            flex: 1,
+                position: "absolute",
+                resizeMode: "cover",
+                width: "100%",
+                height: "3%",
+        }}
+        />
+            <View style={{ borderWidth: 2, width: 30, height: 30, alignItems: "center", right: 0, left: "85%", marginTop: 15 }}>
+<MaterialCommunityIcons
+        name="close"
+        color={"red"}
+        size={18}
+            style={{ marginTop: "auto", marginBottom: "auto" }}
+        />
+            </View>
+            <ScrollView>
+<CardsUsuarios />
+            </ScrollView>
+            <SafeAreaView style={{ position: "absolute", alignItems: "center", justifyContent: "flex-end", bottom: 0, marginLeft: "auto", marginRight: "auto" }}>
+<Botonera />
+            </SafeAreaView>
             </SafeAreaView>
         );
     }

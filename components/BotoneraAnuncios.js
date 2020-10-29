@@ -22,24 +22,24 @@ export default function Botonera() {
     return(
         <SafeAreaView style={{ flex: 1 }}>
         <View style={{ flex: 1, flexDirection: "row", justifyContent: "space-around", margin: 10 }}>
-        <View>
+        <View style={{ margin: 10 }}>
         <Button
         title="Recomendar"
         titleStyle={{ fontSize: 12, marginBottom: 15 }}
-        buttonStyle={{ width: 100, height: 45 }}
+        buttonStyle={{ width: 100, height: 45, backgroundColor: "orange" }}
         />
         <MaterialCommunityIcons
         name="heart"
         color={"red"}
         size={22}
-        style={{ position: "absolute", marginLeft: 40, marginTop: 24 }}
+        style={{ position: "absolute", marginLeft: 38, marginTop: 22 }}
         />
         </View>
-        <View>
+        <View style={{ margin: 10 }}>
         <Button
         title="Enviar Mensaje"
-        titleStyle={{ fontSize: 12, marginTop: 10 }}
-        buttonStyle={{ width: 100, height: 45 }}
+        titleStyle={{ fontSize: 12, marginTop: 15 }}
+        buttonStyle={{ width: 100, height: 45, backgroundColor: "orange" }}
         />
         <Image
         source={require("../assets/icon.png")}
@@ -53,17 +53,17 @@ export default function Botonera() {
         }}
         />
         </View>
-        <View>
+        <View style={{ margin: 10 }}>
         <Button
         title="Comentar"
         titleStyle={{ fontSize: 12, marginTop: 15 }}
-        buttonStyle={{ width: 100, height: 45 }}
+        buttonStyle={{ width: 100, height: 45, backgroundColor: "orange" }}
         />
         <MaterialCommunityIcons
         name="comment-multiple-outline"
         color={"white"}
         size={18}
-        style={{ position: "absolute", marginLeft: 40, marginTop: 2 }}
+        style={{ position: "absolute", marginLeft: 40, marginTop: 4 }}
         />
         </View>
         </View>
