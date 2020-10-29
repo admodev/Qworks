@@ -22,6 +22,7 @@ import * as RootNavigation from "../RootNavigation.js"
 import LoginPage from "../pages/LoginPage"
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import * as ImagePicker from "expo-image-picker";
+import * as AuthWatcher from "../hooks/HookEstadoDeAuth";
 
 if (firebase.apps.length === 0) {
     try {
@@ -49,6 +50,10 @@ const storage = firebase.storage();
 const storageRef = storage.ref();
 const defaultImageRef = storageRef.child('icon.png');
 const image = storageRef.child('userImages/uid');
+
+if (!AuthWatcher.user) {
+        RootNavigation.navigate('LoginPage');
+    }
 
 if (image == null) {
     image = defaultImageRef;
@@ -120,10 +125,6 @@ export default function Chat() {
 
     if (messages >= 1) {
         schedulePushNotification(); 
-    }
-
-    if (!user) {
-        () => RootNavigation.navigate('LoginPage');
     }
 
     const pickImage = async () => {
