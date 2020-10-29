@@ -109,6 +109,7 @@ export default function RegisterPage({ navigation }) {
                 var errorCode = error.code;
                 var errorMessage = error.message;
             });
+            Updates.reloadAsync();
     };
     firebase.auth().onAuthStateChanged(function (user) {
         if (user) {

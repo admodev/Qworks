@@ -22,6 +22,7 @@ import * as ImagePicker from "expo-image-picker";
 import * as RootNavigation from "../RootNavigation.js";
 import * as LoginPageData from "./LoginPage";
 import LoginPage from "./LoginPage";
+import * as Updates from 'expo-updates';
 
 Notifications.setNotificationHandler({
     handleNotification: async () => ({
@@ -50,6 +51,7 @@ const ProfilePage = ({ navigation }) => {
             .then(function () {
                 navigation.replace("LoginPage");
             });
+            Updates.reloadAsync();
     };
     if (nombre == null) {
         let nombre = "Nombre";

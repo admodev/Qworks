@@ -33,6 +33,7 @@ import {
 } from "@env";
 import * as RootNavigation from "../RootNavigation.js";
 import { StackActions } from '@react-navigation/native';
+import * as Updates from 'expo-updates';
 
 async function signInWithGoogleAsync() {
     try {
@@ -89,7 +90,7 @@ const signInWithFacebook = () => {
     logInWithFacebook();
 };
 
-const LoginPage = ({ navigation }) => {
+export default function LoginPage({ navigation }) {
     let [email, setUserEmail] = useState("");
     let [password, setUserPassword] = useState("");
     var [isChecked, setChecked] = useState(false);
@@ -111,18 +112,14 @@ const LoginPage = ({ navigation }) => {
             .auth()
             .signInWithEmailAndPassword(email, password)
             .catch(function (error) {
-                if (password != user.password) {
-                    alert(
-                        "Ingreso una contraseña erronea, intentelo nuevamente por favor."
-                    );
-                }
-                if (password == null) {
-                    alert("Ingresa tu contraseña para continuar, por favor.");
+                if (error) {
+                    alert("Por favor comprueba tus datos de ingreso.");
                 }
             })
-            .then(function ({ navigation }) {
-                RootNavigation.navigate("ProfilePage");
+            .then(function () {
+                Updates.reloadAsync();
             });
+            RootNavigation.navigate("ProfilePage");
     };
     firebase.auth().onAuthStateChanged(function (user) {
         if (user) {
@@ -272,4 +269,3 @@ const styles = StyleSheet.create({
 });
 
 export var user;
-export default LoginPage;
