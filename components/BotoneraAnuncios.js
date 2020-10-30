@@ -26,11 +26,11 @@ export default function Botonera() {
         <Button
         title="Recomendar"
         titleStyle={{ fontSize: 12, marginBottom: 15 }}
-        buttonStyle={{ width: 100, height: 45, backgroundColor: "orange" }}
+        buttonStyle={{ width: 100, height: 45, backgroundColor: "#59A5D8" }}
         />
         <MaterialCommunityIcons
-        name="heart"
-        color={"red"}
+        name="account-group"
+        color={"white"}
         size={22}
         style={{ position: "absolute", marginLeft: 38, marginTop: 22 }}
         />
@@ -39,7 +39,7 @@ export default function Botonera() {
         <Button
         title="Enviar Mensaje"
         titleStyle={{ fontSize: 12, marginTop: 15 }}
-        buttonStyle={{ width: 100, height: 45, backgroundColor: "orange" }}
+        buttonStyle={{ width: 100, height: 45, backgroundColor: "#59A5D8" }}
         />
         <Image
         source={require("../assets/icon.png")}
@@ -57,7 +57,7 @@ export default function Botonera() {
         <Button
         title="Comentar"
         titleStyle={{ fontSize: 12, marginTop: 15 }}
-        buttonStyle={{ width: 100, height: 45, backgroundColor: "orange" }}
+        buttonStyle={{ width: 100, height: 45, backgroundColor: "#59A5D8" }}
         />
         <MaterialCommunityIcons
         name="comment-multiple-outline"

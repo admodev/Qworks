@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import { GiftedChat, Actions, ActionsProps, } from 'react-native-gifted-chat'
 import AsyncStorage from '@react-native-community/async-storage'
-import { SafeAreaView, StyleSheet, TextInput, View, Button } from 'react-native'
+import { Text, Image, SafeAreaView, StyleSheet, TextInput, View, Button } from 'react-native'
 import {
     FIREBASE_API_KEY,
     FIREBASE_AUTH_DOMAIN,
@@ -51,14 +51,6 @@ const storageRef = storage.ref();
 const defaultImageRef = storageRef.child('icon.png');
 const image = storageRef.child('userImages/uid');
 
-if (!AuthWatcher.user) {
-        RootNavigation.navigate('LoginPage');
-    }
-
-if (image == null) {
-    image = defaultImageRef;
-}
-
 export default function Chat() {
     const [user, setUser] = useState(null)
     const nombre = firebase.database().ref('/users/' + 'id').once('value').then(function(snapshot) {
@@ -83,7 +75,7 @@ export default function Chat() {
             appendMessages(messagesFirestore)
         })
         return () => unsubscribe();
-(async () => {
+        (async () => {
             if (Platform.OS !== "web") {
                 const {
                     status,
@@ -143,32 +135,58 @@ export default function Chat() {
     };
 
     function renderActions(props: Readonly<ActionsProps>) {
-    return (
-      <Actions
-        {...props}
-        options={{
-          ['Enviar Imágen']: pickImage,
-        }}
-        icon={() => (
-          <MaterialCommunityIcons name="plus-circle" color={"#000000"} size={24} />
-        )}
-        onSend={args => console.log(args)}
-      />
-    )
-  }
+        return (
+            <Actions
+            {...props}
+            options={{
+                ['Enviar Imágen']: pickImage,
+            }}
+            icon={() => (
+                <MaterialCommunityIcons name="plus-circle" color={"#000000"} size={24} />
+            )}
+            onSend={args => console.log(args)}
+            />
+        )
+    }
+
+    if (!AuthWatcher.user) {
+        () => RootNavigation.navigate('LoginPage');
+    }
+
+    if (image == null) {
+        image = defaultImageRef;
+    }
 
     return(
-        <GiftedChat messages={messages} 
-        user={{
-            user,
-                secondUser,
-                avatar: image
-        }} 
-        onSend={handleSend}
-        showUserAvatar={true}
-        placeholder="Escribe un mensaje..."
-        renderActions={renderActions}
+        <SafeAreaView style={{ flex: 1 }}>
+        <Image
+        source={require("../assets/gradients/20x20.png")}
+        style={{
+            flex: 1,
+                position: "absolute",
+                resizeMode: "cover",
+                width: "100%",
+                height: "5%",
+        }}
         />
+        {currentUser ? (
+            <SafeAreaView style={{ flex: 1, marginTop: 10 }}>
+            <GiftedChat messages={messages} 
+            user={{
+                user,
+                    secondUser,
+                    avatar: image
+            }} 
+            onSend={handleSend}
+            showUserAvatar={true}
+            placeholder="Escribe un mensaje..."
+            renderActions={renderActions}
+            />
+            </SafeAreaView>
+        ) : (
+            <LoginPage />
+        )}
+        </SafeAreaView>
     );
 }
 

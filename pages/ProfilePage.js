@@ -173,7 +173,7 @@ const ProfilePage = ({ navigation }) => {
             onPress={() => navigation.navigate("MisRecomendadosPage")}
             >
             <Text style={{ color: "#000000", fontSize: 20, margin: 15 }}>
-            <MaterialCommunityIcons name="heart" color={"orange"} size={20} />{" "}
+            <MaterialCommunityIcons name="account-group" color={"orange"} size={20} />{" "}
             Recomendados
             </Text>
             </TouchableOpacity>
