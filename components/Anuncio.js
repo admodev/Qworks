@@ -18,7 +18,9 @@ import { StackActions } from "@react-navigation/native";
 
 var itm = [];
 
-class CardsUsuarios extends React.Component {
+let id = "userId"; // CAMBIAR
+
+export default class AnuncioSeleccionado extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -28,7 +30,7 @@ class CardsUsuarios extends React.Component {
   componentDidMount() {
     firebase
       .database()
-      .ref("usuarios/")
+      .ref("usuarios/" + id)
       .on("value", (snap) => {
         let items = [];
         snap.forEach((child) => {
@@ -38,7 +40,6 @@ class CardsUsuarios extends React.Component {
             apellido: child.val().apellido,
             profesion: child.val().profesion,
             email: child.val().email,
-            id: child.val().id,
           });
         });
         itm = items;
@@ -49,25 +50,8 @@ class CardsUsuarios extends React.Component {
           console.log("title*" + itms.title);
         });
       });
-    firebase.auth().onAuthStateChanged(function (user) {
-      if (user) {
-        var email = user.email;
-        var uid = user.uid;
-        var providerData = user.providerData;
-      } else {
-        user == null;
-      }
-    });
   }
   render() {
-    var user = firebase.auth().currentUser;
-    const userCheckForChat = () => {
-      if (user) {
-        RootNavigation.navigate("ChatPage");
-      } else {
-        RootNavigation.navigate("LoginPage");
-      }
-    };
     return (
       <Card
         style={styles.card}
@@ -143,7 +127,7 @@ class CardsUsuarios extends React.Component {
               <TouchableOpacity
                 onPress={() =>
                   RootNavigation.navigate("AnuncioSeleccionado", {
-                    params: { userId: u.id },
+                    userId: u.id,
                   })
                 }
                 style={{
@@ -199,5 +183,3 @@ const styles = StyleSheet.create({
     },
   },
 });
-
-export default CardsUsuarios;

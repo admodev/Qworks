@@ -189,7 +189,7 @@ export default function LoginPage({ navigation }) {
         onSubmitEditing={() => loguearUsuarios()}
         />
         <CheckBox
-        title="Recordar Correo"
+        title="No cerrar sesión"
         containerStyle={{
             backgroundColor: "transparent",
                 borderColor: "transparent",
