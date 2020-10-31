@@ -20,6 +20,7 @@ import { navigationRef } from "../RootNavigation";
 import AnunciosPage from "../components/Anuncios.js";
 import Chat from "../components/ChatComponent";
 import AnuncioSeleccionado from "../components/Anuncio";
+import MisComentariosPage from "../components/MisComentarios";
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -179,6 +180,11 @@ function MainStackNavigator({ navigation }) {
         <Stack.Screen
           name="AnuncioSeleccionado"
           component={AnuncioSeleccionado}
+          options={{ title: "QuedeOficios!", headerShown: false }}
+        />
+        <Stack.Screen
+          name="MisComentariosPage"
+          component={MisComentariosPage}
           options={{ title: "QuedeOficios!", headerShown: false }}
         />
       </Stack.Navigator>
