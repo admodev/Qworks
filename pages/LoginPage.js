@@ -75,9 +75,9 @@ async function logInWithFacebook() {
       const response = await fetch(
         `https://graph.facebook.com/me?access_token=${token}`
       );
-      Alert.alert("Ingresaste!", `Hola ${(await response.json()).name}!`);
+      alert("Ingresaste!", `Hola ${(await response.json()).name}!`);
     } else {
-      Alert.alert(
+      alert(
         "Tienes que permitir el acceso a tu cuenta para que puedas iniciar sesión con Facebook."
       );
     }
