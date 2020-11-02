@@ -28,17 +28,16 @@ class CardsUsuarios extends React.Component {
   componentDidMount() {
     firebase
       .database()
-      .ref("usuarios/")
+      .ref("anuncios/")
+      .orderByKey()
       .on("value", (snap) => {
         let items = [];
         snap.forEach((child) => {
           items.push({
-            fotoPerfil: child.val().fotoPerfil,
             nombre: child.val().nombre,
             apellido: child.val().apellido,
-            profesion: child.val().profesion,
-            email: child.val().email,
-            id: child.val().id,
+            actividad: child.val().actividad,
+            emailPersonal: child.val().emailPersonal,
           });
         });
         itm = items;
@@ -108,7 +107,7 @@ class CardsUsuarios extends React.Component {
                 }}
               />
               <Card.Image
-                source={{ uri: u.fotoPerfil }}
+                source={{ uri: "https://picsum.photos/200" }}
                 style={{
                   borderRadius: 50,
                   marginTop: 10,
@@ -138,7 +137,7 @@ class CardsUsuarios extends React.Component {
                   color: "#fff",
                 }}
               >
-                {u.profesion}
+                {u.actividad}
               </Text>
               <TouchableOpacity
                 onPress={() =>

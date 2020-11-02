@@ -21,16 +21,6 @@ let storage = firebase.storage();
 let storageRef = storage.ref();
 var userDefaultImage = storageRef.child("userDefaultImage/icon.png");
 
-firebase.auth().onAuthStateChanged(function (user) {
-  if (user) {
-    var email = user.email;
-    var uid = user.uid;
-    var providerData = user.providerData;
-  } else {
-    user == null;
-  }
-});
-
 const AnunciatePage = ({ navigation }) => {
   const [image, setImage] = useState(null);
   const [nombre, setNombre] = useState("");
@@ -172,8 +162,10 @@ const AnunciatePage = ({ navigation }) => {
   ) {
     firebase
       .database()
-      .ref("anuncios/" + user.uid + "/anuncio")
+      .ref("anuncios/")
+      .push()
       .set({
+        id: user.uid,
         nombre: nombre,
         apellido: apellido,
         emailPersonal: emailPersonal,
