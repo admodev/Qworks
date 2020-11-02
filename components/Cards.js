@@ -38,6 +38,7 @@ class CardsUsuarios extends React.Component {
             apellido: child.val().apellido,
             actividad: child.val().actividad,
             emailPersonal: child.val().emailPersonal,
+            idAnuncio: child.val().id,
           });
         });
         itm = items;
@@ -140,11 +141,11 @@ class CardsUsuarios extends React.Component {
                 {u.actividad}
               </Text>
               <TouchableOpacity
-                onPress={() =>
+                onPress={() => {
                   RootNavigation.navigate("AnuncioSeleccionado", {
-                    params: { userId: u.id },
-                  })
-                }
+                    id: u.idAnuncio,
+                  });
+                }}
                 style={{
                   borderRadius: 0,
                   marginLeft: 0,

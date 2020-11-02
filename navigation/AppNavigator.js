@@ -181,6 +181,7 @@ function MainStackNavigator({ navigation }) {
           name="AnuncioSeleccionado"
           component={AnuncioSeleccionado}
           options={{ title: "QuedeOficios!", headerShown: false }}
+          initialParams={{ id: null }}
         />
         <Stack.Screen
           name="MisComentariosPage"
