@@ -18,6 +18,9 @@ import { StackActions } from "@react-navigation/native";
 import CardsUsuarios from "./Cards";
 import { concat } from "react-native-reanimated";
 
+let user = firebase.auth().currentUser;
+let currentUserId = user.uid;
+
 const AnuncioSeleccionado = ({ route }) => {
   let id = route.params.id;
   let nombre, apellido, actividad, emailPersonal;
@@ -32,6 +35,7 @@ const AnuncioSeleccionado = ({ route }) => {
       apellido = child.val().apellido;
       actividad = child.val().actividad;
       emailPersonal = child.val().emailPersonal;
+      id = child.val().id;
     });
   });
   return (
@@ -115,7 +119,12 @@ const AnuncioSeleccionado = ({ route }) => {
           {emailPersonal}
         </Text>
         <TouchableOpacity
-          onPress={() => RootNavigation.navigate("OnboardingPage")}
+          onPress={() =>
+            RootNavigation.navigate("ChatComponent", {
+              userOne: currentUserId,
+              userTwo: id,
+            })
+          }
           style={{
             borderRadius: 0,
             marginLeft: 0,

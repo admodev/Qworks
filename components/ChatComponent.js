@@ -56,20 +56,24 @@ const chatsRef = db.collection("chats");
 const database = firebase.database();
 const storage = firebase.storage();
 const storageRef = storage.ref();
-const defaultImageRef = storageRef.child("icon.png");
+const defaultImageRef = storageRef.child("/defaultUserImage/icon.png");
 const image = storageRef.child("userImages/uid");
 
-export default function Chat() {
-  const [user, setUser] = useState(null);
-  const nombre = firebase
-    .database()
-    .ref("/users/" + "id")
-    .once("value")
-    .then(function (snapshot) {
-      var nombre = snapshot.val() && snapshot.val().nombre;
-    });
+export default function Chat({ route }) {
+  let firstUserId = route.params.userOne;
+  let secondUserId = route.params.userTwo;
+  // const nombre = firebase
+  //  .database()
+  //  .ref("anuncios/" + currentUser.uid)
+  //  .child("nombre")
+  //  .once("value")
+  //  .then(function (snapshot) {
+  //    let nombre = snapshot.val() && snapshot.val().nombre;
+  //  });
+  const nombre = "placeholder";
   const [messages, setMessages] = useState([]);
   const currentUser = firebase.auth().currentUser;
+  const secondUser = id;
 
   useEffect(() => {
     readUser();
@@ -127,8 +131,6 @@ export default function Chat() {
     await Promise.all(writes);
   }
 
-  const secondUser = "CBlLQIfFijbs1Hh7jWWEhkKfIkN2";
-
   if (messages >= 1) {
     schedulePushNotification();
   }
@@ -148,10 +150,10 @@ export default function Chat() {
     }
   };
 
-  function renderActions(props: Readonly<ActionsProps>) {
+  function renderActions(ActionsProps) {
     return (
       <Actions
-        {...props}
+        {...ActionsProps}
         options={{
           ["Enviar Imágen"]: pickImage,
         }}
@@ -192,11 +194,11 @@ export default function Chat() {
           <GiftedChat
             messages={messages}
             user={{
-              user,
-              avatar: image,
+              firstUserId,
+              avatar: !image ? defaultImageRef : image,
             }}
             user={{
-              secondUser,
+              secondUserId,
               avatar: secondUser.image,
             }}
             onSend={handleSend}
