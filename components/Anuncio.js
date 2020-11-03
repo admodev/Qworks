@@ -19,7 +19,6 @@ import CardsUsuarios from "./Cards";
 import { concat } from "react-native-reanimated";
 
 let user = firebase.auth().currentUser;
-let currentUserId = user.uid;
 
 const AnuncioSeleccionado = ({ route }) => {
   let id = route.params.id;
@@ -121,8 +120,8 @@ const AnuncioSeleccionado = ({ route }) => {
         <TouchableOpacity
           onPress={() =>
             RootNavigation.navigate("ChatComponent", {
-              userOne: currentUserId,
-              userTwo: id,
+              userOne: user.uid.toString(),
+              userTwo: id.toString(),
             })
           }
           style={{

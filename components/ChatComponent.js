@@ -30,7 +30,6 @@ import * as RootNavigation from "../RootNavigation.js";
 import LoginPage from "../pages/LoginPage";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import * as ImagePicker from "expo-image-picker";
-import * as AuthWatcher from "../hooks/HookEstadoDeAuth";
 
 if (firebase.apps.length === 0) {
   try {
@@ -73,7 +72,6 @@ export default function Chat({ route }) {
   const nombre = "placeholder";
   const [messages, setMessages] = useState([]);
   const currentUser = firebase.auth().currentUser;
-  const secondUser = id;
 
   useEffect(() => {
     readUser();
@@ -169,10 +167,6 @@ export default function Chat({ route }) {
     );
   }
 
-  if (!AuthWatcher.user) {
-    () => RootNavigation.navigate("LoginPage");
-  }
-
   if (image == null) {
     image = defaultImageRef;
   }
@@ -194,12 +188,12 @@ export default function Chat({ route }) {
           <GiftedChat
             messages={messages}
             user={{
-              firstUserId,
+              user: firstUserId,
               avatar: !image ? defaultImageRef : image,
             }}
             user={{
-              secondUserId,
-              avatar: secondUser.image,
+              user: secondUserId,
+              avatar: !image ? defaultImageRef : image,
             }}
             onSend={handleSend}
             showUserAvatar={true}
