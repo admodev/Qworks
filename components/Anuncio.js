@@ -84,22 +84,35 @@ const AnuncioSeleccionado = ({ route }) => {
             marginRight: "auto",
             textAlign: "center",
             fontSize: 20,
+            marginTop: 10,
             color: "#fff",
           }}
         >
-          {apellido}
+          {nombre} {apellido}
         </Text>
         <Text
           style={{
             marginLeft: "auto",
             marginRight: "auto",
-            marginBottom: 10,
+            marginTop: 10,
             textAlign: "center",
             fontSize: 20,
             color: "#fff",
           }}
         >
-          {nombre}
+          {actividad}
+        </Text>
+        <Text
+          style={{
+            marginLeft: "auto",
+            marginRight: "auto",
+            marginTop: 10,
+            textAlign: "center",
+            fontSize: 20,
+            color: "#fff",
+          }}
+        >
+          {emailPersonal}
         </Text>
         <TouchableOpacity
           onPress={() => RootNavigation.navigate("OnboardingPage")}
@@ -108,6 +121,7 @@ const AnuncioSeleccionado = ({ route }) => {
             marginLeft: 0,
             marginRight: 0,
             marginBottom: 0,
+            marginTop: 15,
             backgroundColor: "transparent",
           }}
         >

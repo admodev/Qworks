@@ -193,13 +193,12 @@ const AnunciatePage = ({ navigation }) => {
         terminos: terminos,
       })
       .then(function () {
-        let profilePicRef = storageRef.child(
-          "userProfilePics/" + user.uid + "/fotoPerfil.jpg"
-        );
-        image == null ? (image = userDefaultImage) : (image = image);
-        let file = File(image);
-        profilePicRef.put(file).then(function (snapshot) {
-          console.log("Imagen subida con exito.");
+        var storageRef = firebase.storage().ref();
+        var imageRef = storageRef.child("image.jpg");
+        var imagesRef = storageRef.child("userProfilePics/image.jpg");
+        var file = image;
+        imagesRef.put(file).then(function (snapshot) {
+          console.log("Uploaded a blob or file!");
         });
       })
       .finally(() => {
