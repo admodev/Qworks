@@ -21,8 +21,11 @@ import { concat } from "react-native-reanimated";
 const AnuncioSeleccionado = ({ route }) => {
   let id = route.params.id;
   let nombre, apellido, actividad, emailPersonal;
-  let dbRef = firebase.database().ref("anuncios/");
-  let refString = dbRef.toString();
+  let dbRef = firebase
+    .database()
+    .ref("anuncios/")
+    .orderByChild("id")
+    .equalTo(id);
   let dbResult = dbRef.on("value", (snap) => {
     snap.forEach((child) => {
       key: child.key, (nombre = child.val().nombre);
