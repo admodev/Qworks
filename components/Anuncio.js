@@ -18,124 +18,110 @@ import { StackActions } from "@react-navigation/native";
 import CardsUsuarios from "./Cards";
 import { concat } from "react-native-reanimated";
 
-let itm = [];
-
 const AnuncioSeleccionado = ({ route }) => {
   let id = route.params.id;
-  let items = [];
-  firebase
-    .database()
-    .ref("anuncios/")
-    .child(id)
-    .on("value", (snap) => {
-      snap.forEach((child) => {
-        items.push({
-          nombre: child.val().nombre,
-          apellido: child.val().apellido,
-          actividad: child.val().actividad,
-          emailPersonal: child.val().emailPersonal,
-        });
-      });
-      itm = items;
-      itm.forEach((itms) => {
-        console.log("title*" + itms.title);
-      });
+  let nombre, apellido, actividad, emailPersonal;
+  let dbRef = firebase.database().ref("anuncios/");
+  let refString = dbRef.toString();
+  let dbResult = dbRef.on("value", (snap) => {
+    snap.forEach((child) => {
+      key: child.key, (nombre = child.val().nombre);
+      apellido = child.val().apellido;
+      actividad = child.val().actividad;
+      emailPersonal = child.val().emailPersonal;
     });
+  });
   return (
-    <Card
-      style={styles.card}
-      containerStyle={{
-        padding: 0,
-        borderRadius: 15,
-        backgroundColor: "transparent",
-        borderWidth: 0,
-      }}
-    >
-      {items.map((u, i) => {
-        return (
-          <View key={i} style={{ margin: 25, backgroundColor: "transparent" }}>
-            <Image
-              source={require("../assets/patron.jpg")}
-              style={{
-                flex: 1,
-                position: "absolute",
-                resizeMode: "cover",
-                width: "100%",
-                height: "100%",
-                borderRadius: 10,
-              }}
-            />
-            <Image
-              source={require("../assets/gradients/20x20.png")}
-              style={{
-                flex: 1,
-                position: "absolute",
-                resizeMode: "cover",
-                width: "100%",
-                height: "100%",
-                opacity: 0.9,
-                borderRadius: 10,
-              }}
-            />
-            <Card.Image
-              source={{ uri: "https://picsum.photos/200" }}
-              style={{
-                borderRadius: 50,
-                marginTop: 10,
-                marginBottom: 20,
-                marginLeft: 60,
-                marginRight: 60,
-              }}
-            />
-            <Text
-              style={{
-                marginLeft: "auto",
-                marginRight: "auto",
-                textAlign: "center",
-                fontSize: 20,
-                color: "#fff",
-              }}
-            >
-              {u.nombre} {u.apellido}
-            </Text>
-            <Text
-              style={{
-                marginLeft: "auto",
-                marginRight: "auto",
-                marginBottom: 10,
-                textAlign: "center",
-                fontSize: 20,
-                color: "#fff",
-              }}
-            >
-              {u.actividad}
-            </Text>
-            <TouchableOpacity
-              onPress={() => RootNavigation.navigate("OnboardingPage")}
-              style={{
-                borderRadius: 0,
-                marginLeft: 0,
-                marginRight: 0,
-                marginBottom: 0,
-                backgroundColor: "transparent",
-              }}
-            >
-              <Text
-                style={{
-                  color: "#fff",
-                  marginLeft: "auto",
-                  marginRight: "auto",
-                  fontSize: 16,
-                  marginBottom: 10,
-                }}
-              >
-                Previsualizar
-              </Text>
-            </TouchableOpacity>
-          </View>
-        );
-      })}
-    </Card>
+    <View style={{ margin: 25, backgroundColor: "transparent" }}>
+      <Card
+        style={styles.card}
+        containerStyle={{
+          padding: 0,
+          borderRadius: 15,
+          backgroundColor: "transparent",
+          borderWidth: 0,
+        }}
+      >
+        <Image
+          source={require("../assets/patron.jpg")}
+          style={{
+            flex: 1,
+            position: "absolute",
+            resizeMode: "cover",
+            width: "100%",
+            height: "100%",
+            borderRadius: 10,
+          }}
+        />
+        <Image
+          source={require("../assets/gradients/20x20.png")}
+          style={{
+            flex: 1,
+            position: "absolute",
+            resizeMode: "cover",
+            width: "100%",
+            height: "100%",
+            opacity: 0.9,
+            borderRadius: 10,
+          }}
+        />
+        <Card.Image
+          source={{ uri: "https://picsum.photos/200" }}
+          style={{
+            borderRadius: 50,
+            marginTop: 10,
+            marginBottom: 20,
+            marginLeft: 60,
+            marginRight: 60,
+          }}
+        />
+        <Text
+          style={{
+            marginLeft: "auto",
+            marginRight: "auto",
+            textAlign: "center",
+            fontSize: 20,
+            color: "#fff",
+          }}
+        >
+          {apellido}
+        </Text>
+        <Text
+          style={{
+            marginLeft: "auto",
+            marginRight: "auto",
+            marginBottom: 10,
+            textAlign: "center",
+            fontSize: 20,
+            color: "#fff",
+          }}
+        >
+          {nombre}
+        </Text>
+        <TouchableOpacity
+          onPress={() => RootNavigation.navigate("OnboardingPage")}
+          style={{
+            borderRadius: 0,
+            marginLeft: 0,
+            marginRight: 0,
+            marginBottom: 0,
+            backgroundColor: "transparent",
+          }}
+        >
+          <Text
+            style={{
+              color: "#fff",
+              marginLeft: "auto",
+              marginRight: "auto",
+              fontSize: 16,
+              marginBottom: 10,
+            }}
+          >
+            Enviar Mensaje
+          </Text>
+        </TouchableOpacity>
+      </Card>
+    </View>
   );
 };
 
