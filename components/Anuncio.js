@@ -8,7 +8,15 @@ import {
   SafeAreaView,
   Text,
 } from "react-native";
-import { Button, Card, Icon, Input } from "react-native-elements";
+import {
+  Button,
+  Card,
+  Icon,
+  Input,
+  Overlay,
+  Rating,
+  AirbnbRating,
+} from "react-native-elements";
 import * as firebase from "firebase";
 import "firebase/firestore";
 import "firebase/database";
@@ -36,6 +44,13 @@ const AnuncioSeleccionado = ({ route }) => {
       id = child.val().id;
     });
   });
+  const [visible, setVisible] = useState(false);
+  const rating = () => {
+    console.log("placeholder");
+  };
+  const toggleOverlay = () => {
+    setVisible(!visible);
+  };
   return (
     <View style={{ margin: 25, backgroundColor: "transparent" }}>
       <Card
@@ -70,16 +85,28 @@ const AnuncioSeleccionado = ({ route }) => {
             borderRadius: 10,
           }}
         />
-        <Card.Image
-          source={{ uri: "https://picsum.photos/200" }}
-          style={{
-            borderRadius: 50,
-            marginTop: 10,
-            marginBottom: 20,
-            marginLeft: 60,
-            marginRight: 60,
-          }}
-        />
+        <TouchableOpacity onPress={toggleOverlay}>
+          <Card.Image
+            source={{ uri: "https://picsum.photos/id/237/200/300" }}
+            style={{
+              borderRadius: 100,
+              marginTop: 10,
+              marginBottom: 20,
+              marginLeft: 60,
+              marginRight: 60,
+            }}
+          />
+        </TouchableOpacity>
+        <Overlay
+          isVisible={visible}
+          onBackdropPress={toggleOverlay}
+          overlayStyle={{ width: "80%", height: "80%" }}
+        >
+          <Card.Image
+            source={{ uri: "https://picsum.photos/id/237/200/300" }}
+            style={{ width: "100%", height: "100%" }}
+          />
+        </Overlay>
         <Text
           style={{
             marginLeft: "auto",
@@ -104,6 +131,14 @@ const AnuncioSeleccionado = ({ route }) => {
         >
           {actividad}
         </Text>
+        <AirbnbRating
+          count={5}
+          reviews={["Malo", "Promedio", "Bueno", "Profesional", "Experto"]}
+          defaultRating={3}
+          size={18}
+          readonly={true}
+          // startingValue={rating}
+        />
         <Text
           style={{
             marginLeft: "auto",
