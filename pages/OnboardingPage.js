@@ -20,6 +20,7 @@ const OnboardingPage = ({ navigation }) => {
     isLoading: true,
     search: false,
     title: "",
+    data: [],
   };
 
   const closeControlPanel = () => {
@@ -28,6 +29,7 @@ const OnboardingPage = ({ navigation }) => {
   const openControlPanel = () => {
     _drawer.open();
   };
+
   return (
     <Drawer ref={(ref) => (_drawer = ref)} content={<ControlPanel />}>
       <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
@@ -70,24 +72,23 @@ const OnboardingPage = ({ navigation }) => {
             width: "80%",
           }}
         >
-        <View style={{ flex: 1, flexDirection: "row", marginTop: 30 }}>
-          <TouchableOpacity onPress={openControlPanel}
-          >
-          <Image
-                  source={require("../assets/icon.png")}
-                  style={{
-                    width: 35,
-                    height: 35,
-                    marginTop: 2,
-                    marginLeft: 15,
-                  }}
-                />
-          </TouchableOpacity>
+          <View style={{ flex: 1, flexDirection: "row", marginTop: 30 }}>
+            <TouchableOpacity onPress={openControlPanel}>
+              <Image
+                source={require("../assets/icon.png")}
+                style={{
+                  width: 35,
+                  height: 35,
+                  marginTop: 2,
+                  marginLeft: 15,
+                }}
+              />
+            </TouchableOpacity>
             <Input
               placeholder="Buscar en  ¡QuedeOficios!"
               inputStyle={{ justifyContent: "center", marginLeft: 20 }}
             />
-            </View>
+          </View>
         </View>
       </SafeAreaView>
     </Drawer>

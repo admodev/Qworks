@@ -32,16 +32,6 @@ Notifications.setNotificationHandler({
   }),
 });
 
-const database = firebase.database();
-
-firebase
-  .database()
-  .ref("/users/uid/nombre")
-  .once("value")
-  .then(function (snapshot) {
-    let nombre = snapshot.val() && snapshot.val().nombre;
-  });
-
 const ProfilePage = ({ navigation }) => {
   const [nombre, actualizarNombre] = useState(nombre);
   var user = firebase.auth().currentUser;
@@ -60,6 +50,25 @@ const ProfilePage = ({ navigation }) => {
   if (nombre == null) {
     let nombre = "Nombre";
   }
+
+  let dato = [];
+
+  // firebase
+  //   .database()
+  //   .ref("anuncios/")
+  //   .orderByChild("id")
+  //   .equalTo(user.uid)
+  //   .on("value", (snap) => {
+  //     let datos = [];
+  //     snap.forEach((child) => {
+  //       datos.push({
+  //         nombre: child.val().nombre,
+  //       });
+  //     });
+  //     dato = datos;
+  //     setState({ datos: datos });
+  //   });
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <Image
@@ -201,7 +210,11 @@ const ProfilePage = ({ navigation }) => {
             </TouchableOpacity>
           </View>
           <View
-            style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
+            style={{
+              flex: 1,
+              alignItems: "center",
+              justifyContent: "center",
+            }}
           >
             <Button
               title="Cerrar Sesión"
