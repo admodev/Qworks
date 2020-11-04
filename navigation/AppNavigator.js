@@ -136,6 +136,7 @@ function MainStackNavigator({ navigation }) {
           name="ChatComponent"
           component={Chat}
           options={{ title: "QuedeOficios!", headerShown: false }}
+          initialParams={{ firstUserId: null, secondUserId: null }}
         />
         <Stack.Screen
           name="LoginPage"

@@ -61,20 +61,11 @@ const image = storageRef.child("userImages/uid");
 export default function Chat({ route }) {
   let firstUserId = route.params.userOne;
   let secondUserId = route.params.userTwo;
-  // const nombre = firebase
-  //  .database()
-  //  .ref("anuncios/" + currentUser.uid)
-  //  .child("nombre")
-  //  .once("value")
-  //  .then(function (snapshot) {
-  //    let nombre = snapshot.val() && snapshot.val().nombre;
-  //  });
   const nombre = "placeholder";
   const [messages, setMessages] = useState([]);
   const currentUser = firebase.auth().currentUser;
 
   useEffect(() => {
-    readUser();
     const unsubscribe = chatsRef.onSnapshot((querySnapshot) => {
       const messagesFirestore = querySnapshot
         .docChanges()
@@ -112,18 +103,6 @@ export default function Chat({ route }) {
     [messages]
   );
 
-  async function readUser() {
-    const user = await AsyncStorage.getItem("user");
-    if (user) {
-      setUser(JSON.parse(user));
-    }
-  }
-  async function handlePress() {
-    const _id = Math.random().toString(36).substring(7);
-    const user = { _id, nombre };
-    await AsyncStorage.setItem("user", JSON.stringify(user));
-    setUser(user);
-  }
   async function handleSend(messages) {
     const writes = messages.map((m) => chatsRef.add(m));
     await Promise.all(writes);
@@ -188,10 +167,12 @@ export default function Chat({ route }) {
           <GiftedChat
             messages={messages}
             user={{
+              _id: firstUserId,
               user: firstUserId,
               avatar: !image ? defaultImageRef : image,
             }}
             user={{
+              _id: secondUserId,
               user: secondUserId,
               avatar: !image ? defaultImageRef : image,
             }}
