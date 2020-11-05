@@ -53,20 +53,20 @@ if (firebase.apps.length === 0) {
   }
 }
 
-const db = firebase.firestore();
-const chatsRef = db.collection("chats");
-const database = firebase.database();
-const storage = firebase.storage();
-const storageRef = storage.ref();
-const defaultImageRef = storageRef.child("/defaultUserImage/icon.png");
-const image = storageRef.child("userImages/uid");
-
 export default function Chat({ route }) {
   let firstUserId = route.params.userOne;
   let secondUserId = route.params.userTwo;
   const nombre = "placeholder";
   const [messages, setMessages] = useState([]);
   const currentUser = firebase.auth().currentUser;
+  const usersIds = firstUserId + secondUserId;
+  const db = firebase.firestore();
+  const chatsRef = db.collection("chats/" + usersIds + "/messages");
+  const database = firebase.database();
+  const storage = firebase.storage();
+  const storageRef = storage.ref();
+  const defaultImageRef = storageRef.child("/defaultUserImage/icon.png");
+  const image = storageRef.child("userImages/uid");
 
   Notifications.setNotificationHandler({
     handleNotification: async () => ({

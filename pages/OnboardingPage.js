@@ -23,28 +23,9 @@ const OnboardingPage = ({ navigation }) => {
     data: [],
   };
 
-  const closeControlPanel = () => {
-    _drawer.close();
-  };
-  const openControlPanel = () => {
-    _drawer.open();
-  };
-
   return (
     <Drawer ref={(ref) => (_drawer = ref)} content={<ControlPanel />}>
       <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
-        <Image
-          source={require("../assets/white.jpg")}
-          style={{
-            flex: 1,
-            position: "absolute",
-            resizeMode: "cover",
-            width: "100%",
-            height: "100%",
-            opacity: 0.9,
-            borderRadius: 10,
-          }}
-        />
         <Image
           source={require("../assets/gradients/20x20.png")}
           style={{
@@ -57,39 +38,10 @@ const OnboardingPage = ({ navigation }) => {
         />
         <ScrollView
           showsVerticalScrollIndicator={false}
-          style={{ position: "relative", marginTop: 130 }}
+          style={{ marginTop: 25 }}
         >
           <CardsUsuarios />
         </ScrollView>
-        <View
-          style={{
-            flex: 1,
-            position: "absolute",
-            alignContent: "center",
-            justifyContent: "center",
-            marginTop: 25,
-            marginLeft: 5,
-            width: "80%",
-          }}
-        >
-          <View style={{ flex: 1, flexDirection: "row", marginTop: 30 }}>
-            <TouchableOpacity onPress={openControlPanel}>
-              <Image
-                source={require("../assets/icon.png")}
-                style={{
-                  width: 35,
-                  height: 35,
-                  marginTop: 2,
-                  marginLeft: 15,
-                }}
-              />
-            </TouchableOpacity>
-            <Input
-              placeholder="Buscar en  ¡QuedeOficios!"
-              inputStyle={{ justifyContent: "center", marginLeft: 20 }}
-            />
-          </View>
-        </View>
       </SafeAreaView>
     </Drawer>
   );

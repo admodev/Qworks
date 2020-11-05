@@ -23,6 +23,7 @@ class CardsUsuarios extends React.Component {
     super(props);
     this.state = {
       items: [],
+      searchText: "",
     };
   }
   componentDidMount() {
@@ -60,130 +61,300 @@ class CardsUsuarios extends React.Component {
     });
   }
   render() {
+    const closeControlPanel = () => {
+      _drawer.close();
+    };
+    const openControlPanel = () => {
+      _drawer.open();
+    };
     var user = firebase.auth().currentUser;
     return (
-      <Card
-        style={styles.card}
-        containerStyle={{
-          padding: 0,
-          borderRadius: 15,
-          backgroundColor: "transparent",
-          borderWidth: 0,
-        }}
-      >
-        {this.state.items.map((u, i) => {
-          let storage = firebase.storage();
-          let storageRef = storage.ref();
-          let defaultImageRef = storageRef
-            .child("defaultUserImage/icon.png")
-            .toString();
-          let userProfilePic = storageRef
-            .child("userProfilePics/")
-            .child(u.idAnuncio).child;
-          return (
-            <View
-              key={i}
-              style={{ margin: 25, backgroundColor: "transparent" }}
-            >
-              <Image
-                source={require("../assets/patron.jpg")}
-                style={{
-                  flex: 1,
-                  position: "absolute",
-                  resizeMode: "cover",
-                  width: "100%",
-                  height: "100%",
-                  borderRadius: 10,
-                }}
-              />
-              <Image
-                source={require("../assets/gradients/20x20.png")}
-                style={{
-                  flex: 1,
-                  position: "absolute",
-                  resizeMode: "cover",
-                  width: "100%",
-                  height: "100%",
-                  opacity: 0.9,
-                  borderRadius: 10,
-                }}
-              />
-              {userProfilePic == null ? (
-                <Card.Image
-                  source={{ uri: `${defaultImageRef}` }}
-                  style={{
-                    borderRadius: 100,
-                    marginTop: 10,
-                    marginBottom: 20,
-                    marginLeft: 60,
-                    marginRight: 60,
-                  }}
-                />
-              ) : (
-                <Card.Image
-                  source={{ uri: `${userProfilePic}` }}
-                  style={{
-                    borderRadius: 100,
-                    marginTop: 10,
-                    marginBottom: 20,
-                    marginLeft: 60,
-                    marginRight: 60,
-                  }}
-                />
-              )}
-              <Text
-                style={{
-                  marginLeft: "auto",
-                  marginRight: "auto",
-                  textAlign: "center",
-                  fontSize: 20,
-                  color: "#fff",
-                }}
-              >
-                {u.nombre} {u.apellido}
-              </Text>
-              <Text
-                style={{
-                  marginLeft: "auto",
-                  marginRight: "auto",
-                  marginBottom: 10,
-                  textAlign: "center",
-                  fontSize: 20,
-                  color: "#fff",
-                }}
-              >
-                {u.actividad}
-              </Text>
-              <TouchableOpacity
-                onPress={() => {
-                  RootNavigation.navigate("AnuncioSeleccionado", {
-                    id: u.idAnuncio,
-                  });
-                }}
-                style={{
-                  borderRadius: 0,
-                  marginLeft: 0,
-                  marginRight: 0,
-                  marginBottom: 0,
-                  backgroundColor: "transparent",
-                }}
-              >
-                <Text
-                  style={{
-                    color: "#fff",
-                    marginLeft: "auto",
-                    marginRight: "auto",
-                    fontSize: 16,
-                    marginBottom: 10,
-                  }}
+      <SafeAreaView style={{ flex: 1 }}>
+        <TouchableOpacity onPress={openControlPanel}>
+          <View
+            style={{
+              flex: 1,
+              flexDirection: "row",
+              position: "absolute",
+              alignContent: "center",
+              justifyContent: "center",
+              marginTop: 20,
+              marginLeft: 25,
+              width: "80%",
+            }}
+          >
+            <Image
+              source={require("../assets/icon.png")}
+              style={{
+                width: 35,
+                height: 35,
+                marginTop: -15,
+                marginLeft: 10,
+              }}
+            />
+            <Input
+              placeholder="Buscar en  ¡QuedeOficios!"
+              inputStyle={{
+                justifyContent: "center",
+                marginLeft: 25,
+                marginTop: -10,
+              }}
+              containerStyle={{ marginLeft: 10, marginTop: -10 }}
+              onChangeText={() => alert("placeholder")}
+              value={this.searchText}
+            />
+          </View>
+        </TouchableOpacity>
+        {this.searchText ? (
+          <Card
+            style={styles.card}
+            containerStyle={{
+              padding: 0,
+              borderRadius: 15,
+              backgroundColor: "transparent",
+              borderWidth: 0,
+              marginTop: 50,
+            }}
+          >
+            {this.state.items.map((u, i) => {
+              let storage = firebase.storage();
+              let storageRef = storage.ref();
+              let defaultImageRef = storageRef
+                .child("defaultUserImage/icon.png")
+                .toString();
+              let userProfilePic = storageRef
+                .child("userProfilePics/")
+                .child(u.idAnuncio).child;
+              return (
+                <View
+                  key={i}
+                  style={{ margin: 25, backgroundColor: "transparent" }}
                 >
-                  Previsualizar
-                </Text>
-              </TouchableOpacity>
-            </View>
-          );
-        })}
-      </Card>
+                  <Image
+                    source={require("../assets/patron.jpg")}
+                    style={{
+                      flex: 1,
+                      position: "absolute",
+                      resizeMode: "cover",
+                      width: "100%",
+                      height: "100%",
+                      borderRadius: 10,
+                    }}
+                  />
+                  <Image
+                    source={require("../assets/gradients/20x20.png")}
+                    style={{
+                      flex: 1,
+                      position: "absolute",
+                      resizeMode: "cover",
+                      width: "100%",
+                      height: "100%",
+                      opacity: 0.9,
+                      borderRadius: 10,
+                    }}
+                  />
+                  {userProfilePic == null ? (
+                    <Card.Image
+                      source={{ uri: `${defaultImageRef}` }}
+                      style={{
+                        borderRadius: 100,
+                        marginTop: 10,
+                        marginBottom: 20,
+                        marginLeft: 60,
+                        marginRight: 60,
+                      }}
+                    />
+                  ) : (
+                    <Card.Image
+                      source={{ uri: `${userProfilePic}` }}
+                      style={{
+                        borderRadius: 100,
+                        marginTop: 10,
+                        marginBottom: 20,
+                        marginLeft: 60,
+                        marginRight: 60,
+                      }}
+                    />
+                  )}
+                  <Text
+                    style={{
+                      marginLeft: "auto",
+                      marginRight: "auto",
+                      textAlign: "center",
+                      fontSize: 20,
+                      color: "#fff",
+                    }}
+                  >
+                    {u.nombre} {u.apellido}
+                  </Text>
+                  <Text
+                    style={{
+                      marginLeft: "auto",
+                      marginRight: "auto",
+                      marginBottom: 10,
+                      textAlign: "center",
+                      fontSize: 20,
+                      color: "#fff",
+                    }}
+                  >
+                    {u.actividad}
+                  </Text>
+                  <TouchableOpacity
+                    onPress={() => {
+                      RootNavigation.navigate("AnuncioSeleccionado", {
+                        id: u.idAnuncio,
+                      });
+                    }}
+                    style={{
+                      borderRadius: 0,
+                      marginLeft: 0,
+                      marginRight: 0,
+                      marginBottom: 0,
+                      backgroundColor: "transparent",
+                    }}
+                  >
+                    <Text
+                      style={{
+                        color: "#fff",
+                        marginLeft: "auto",
+                        marginRight: "auto",
+                        fontSize: 16,
+                        marginBottom: 10,
+                      }}
+                    >
+                      Previsualizar
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+              );
+            })}
+          </Card>
+        ) : (
+          <Card
+            style={styles.card}
+            containerStyle={{
+              padding: 0,
+              borderRadius: 15,
+              backgroundColor: "transparent",
+              borderWidth: 0,
+              marginTop: 50,
+            }}
+          >
+            {this.state.items.map((u, i) => {
+              let storage = firebase.storage();
+              let storageRef = storage.ref();
+              let defaultImageRef = storageRef
+                .child("defaultUserImage/icon.png")
+                .toString();
+              let userProfilePic = storageRef
+                .child("userProfilePics/")
+                .child(u.idAnuncio).child;
+              return (
+                <View
+                  key={i}
+                  style={{ margin: 25, backgroundColor: "transparent" }}
+                >
+                  <Image
+                    source={require("../assets/patron.jpg")}
+                    style={{
+                      flex: 1,
+                      position: "absolute",
+                      resizeMode: "cover",
+                      width: "100%",
+                      height: "100%",
+                      borderRadius: 10,
+                    }}
+                  />
+                  <Image
+                    source={require("../assets/gradients/20x20.png")}
+                    style={{
+                      flex: 1,
+                      position: "absolute",
+                      resizeMode: "cover",
+                      width: "100%",
+                      height: "100%",
+                      opacity: 0.9,
+                      borderRadius: 10,
+                    }}
+                  />
+                  {userProfilePic == null ? (
+                    <Card.Image
+                      source={{ uri: `${defaultImageRef}` }}
+                      style={{
+                        borderRadius: 100,
+                        marginTop: 10,
+                        marginBottom: 20,
+                        marginLeft: 60,
+                        marginRight: 60,
+                      }}
+                    />
+                  ) : (
+                    <Card.Image
+                      source={{ uri: `${userProfilePic}` }}
+                      style={{
+                        borderRadius: 100,
+                        marginTop: 10,
+                        marginBottom: 20,
+                        marginLeft: 60,
+                        marginRight: 60,
+                      }}
+                    />
+                  )}
+                  <Text
+                    style={{
+                      marginLeft: "auto",
+                      marginRight: "auto",
+                      textAlign: "center",
+                      fontSize: 20,
+                      color: "#fff",
+                    }}
+                  >
+                    {u.nombre} {u.apellido}
+                  </Text>
+                  <Text
+                    style={{
+                      marginLeft: "auto",
+                      marginRight: "auto",
+                      marginBottom: 10,
+                      textAlign: "center",
+                      fontSize: 20,
+                      color: "#fff",
+                    }}
+                  >
+                    {u.actividad}
+                  </Text>
+                  <TouchableOpacity
+                    onPress={() => {
+                      RootNavigation.navigate("AnuncioSeleccionado", {
+                        id: u.idAnuncio,
+                      });
+                    }}
+                    style={{
+                      borderRadius: 0,
+                      marginLeft: 0,
+                      marginRight: 0,
+                      marginBottom: 0,
+                      backgroundColor: "transparent",
+                    }}
+                  >
+                    <Text
+                      style={{
+                        color: "#fff",
+                        marginLeft: "auto",
+                        marginRight: "auto",
+                        fontSize: 16,
+                        marginBottom: 10,
+                      }}
+                    >
+                      Previsualizar
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+              );
+            })}
+          </Card>
+        )}
+      </SafeAreaView>
     );
   }
 }
