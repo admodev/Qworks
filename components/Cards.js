@@ -61,13 +61,6 @@ class CardsUsuarios extends React.Component {
   }
   render() {
     var user = firebase.auth().currentUser;
-    const userCheckForChat = () => {
-      if (user) {
-        RootNavigation.navigate("ChatPage");
-      } else {
-        RootNavigation.navigate("LoginPage");
-      }
-    };
     return (
       <Card
         style={styles.card}
@@ -79,6 +72,12 @@ class CardsUsuarios extends React.Component {
         }}
       >
         {this.state.items.map((u, i) => {
+          let storage = firebase.storage();
+          let storageRef = storage.ref();
+          let defaultImageRef = storageRef.child("defaultUserImage/icon.png");
+          let userProfilePic = storageRef.child(
+            "userProfilePics/" + u.idAnuncio + "/profilePic.jpg"
+          );
           return (
             <View
               key={i}
@@ -107,16 +106,29 @@ class CardsUsuarios extends React.Component {
                   borderRadius: 10,
                 }}
               />
-              <Card.Image
-                source={{ uri: "https://picsum.photos/200" }}
-                style={{
-                  borderRadius: 50,
-                  marginTop: 10,
-                  marginBottom: 20,
-                  marginLeft: 60,
-                  marginRight: 60,
-                }}
-              />
+              {userProfilePic == null ? (
+                <Card.Image
+                  source={{ uri: defaultImageRef.fullPath }}
+                  style={{
+                    borderRadius: 100,
+                    marginTop: 10,
+                    marginBottom: 20,
+                    marginLeft: 60,
+                    marginRight: 60,
+                  }}
+                />
+              ) : (
+                <Card.Image
+                  source={{ uri: userProfilePic.fullPath }}
+                  style={{
+                    borderRadius: 100,
+                    marginTop: 10,
+                    marginBottom: 20,
+                    marginLeft: 60,
+                    marginRight: 60,
+                  }}
+                />
+              )}
               <Text
                 style={{
                   marginLeft: "auto",

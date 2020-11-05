@@ -44,6 +44,12 @@ const AnuncioSeleccionado = ({ route }) => {
       id = child.val().id;
     });
   });
+  let storage = firebase.storage();
+  let storageRef = storage.ref();
+  let defaultImageRef = storageRef.child("defaultUserImage/icon.png");
+  let userProfilePic = storageRef.child(
+    "userProfilePics/" + id + "/profilePic.jpg"
+  );
   const [visible, setVisible] = useState(false);
   const rating = () => {
     console.log("placeholder");
@@ -86,16 +92,29 @@ const AnuncioSeleccionado = ({ route }) => {
           }}
         />
         <TouchableOpacity onPress={toggleOverlay}>
-          <Card.Image
-            source={{ uri: "https://picsum.photos/id/237/200/300" }}
-            style={{
-              borderRadius: 100,
-              marginTop: 10,
-              marginBottom: 20,
-              marginLeft: 60,
-              marginRight: 60,
-            }}
-          />
+          {userProfilePic == null ? (
+            <Card.Image
+              source={{ uri: defaultImageRef.fullPath }}
+              style={{
+                borderRadius: 100,
+                marginTop: 10,
+                marginBottom: 20,
+                marginLeft: 60,
+                marginRight: 60,
+              }}
+            />
+          ) : (
+            <Card.Image
+              source={{ uri: userProfilePic.fullPath }}
+              style={{
+                borderRadius: 100,
+                marginTop: 10,
+                marginBottom: 20,
+                marginLeft: 60,
+                marginRight: 60,
+              }}
+            />
+          )}
         </TouchableOpacity>
         <Overlay
           isVisible={visible}
