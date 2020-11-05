@@ -74,10 +74,12 @@ class CardsUsuarios extends React.Component {
         {this.state.items.map((u, i) => {
           let storage = firebase.storage();
           let storageRef = storage.ref();
-          let defaultImageRef = storageRef.child("defaultUserImage/icon.png");
-          let userProfilePic = storageRef.child(
-            "userProfilePics/" + u.idAnuncio + "/profilePic.jpg"
-          );
+          let defaultImageRef = storageRef
+            .child("defaultUserImage/icon.png")
+            .toString();
+          let userProfilePic = storageRef
+            .child("userProfilePics/")
+            .child(u.idAnuncio).child;
           return (
             <View
               key={i}
@@ -108,7 +110,7 @@ class CardsUsuarios extends React.Component {
               />
               {userProfilePic == null ? (
                 <Card.Image
-                  source={{ uri: defaultImageRef.fullPath }}
+                  source={{ uri: `${defaultImageRef}` }}
                   style={{
                     borderRadius: 100,
                     marginTop: 10,
@@ -119,7 +121,7 @@ class CardsUsuarios extends React.Component {
                 />
               ) : (
                 <Card.Image
-                  source={{ uri: userProfilePic.fullPath }}
+                  source={{ uri: `${userProfilePic}` }}
                   style={{
                     borderRadius: 100,
                     marginTop: 10,

@@ -46,10 +46,10 @@ const AnuncioSeleccionado = ({ route }) => {
   });
   let storage = firebase.storage();
   let storageRef = storage.ref();
-  let defaultImageRef = storageRef.child("defaultUserImage/icon.png");
-  let userProfilePic = storageRef.child(
-    "userProfilePics/" + id + "/profilePic.jpg"
-  );
+  let defaultImageRef = storageRef
+    .child("defaultUserImage/icon.png")
+    .toString();
+  let userProfilePic = storageRef.child("userProfilePics/").child(id).child;
   const [visible, setVisible] = useState(false);
   const rating = () => {
     console.log("placeholder");
@@ -94,7 +94,7 @@ const AnuncioSeleccionado = ({ route }) => {
         <TouchableOpacity onPress={toggleOverlay}>
           {userProfilePic == null ? (
             <Card.Image
-              source={{ uri: defaultImageRef.fullPath }}
+              source={{ uri: `${defaultImageRef}` }}
               style={{
                 borderRadius: 100,
                 marginTop: 10,
@@ -105,7 +105,7 @@ const AnuncioSeleccionado = ({ route }) => {
             />
           ) : (
             <Card.Image
-              source={{ uri: userProfilePic.fullPath }}
+              source={{ uri: userProfilePic }}
               style={{
                 borderRadius: 100,
                 marginTop: 10,
@@ -170,6 +170,19 @@ const AnuncioSeleccionado = ({ route }) => {
         >
           {emailPersonal}
         </Text>
+        <TouchableOpacity onPress={() => alert("Proximamente...")}>
+          <Text
+            style={{
+              color: "#fff",
+              marginLeft: "auto",
+              marginRight: "auto",
+              marginTop: 10,
+              fontSize: 20,
+            }}
+          >
+            Ver Mapa
+          </Text>
+        </TouchableOpacity>
         <TouchableOpacity
           onPress={() =>
             RootNavigation.navigate("ChatComponent", {
@@ -191,7 +204,7 @@ const AnuncioSeleccionado = ({ route }) => {
               color: "#fff",
               marginLeft: "auto",
               marginRight: "auto",
-              fontSize: 16,
+              fontSize: 18,
               marginBottom: 10,
             }}
           >

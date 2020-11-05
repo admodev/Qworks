@@ -1,5 +1,8 @@
 // @refresh reset
 //
+import Constants from "expo-constants";
+import * as Notifications from "expo-notifications";
+import * as Permissions from "expo-permissions";
 import React, { useState, useEffect, useCallback } from "react";
 import { GiftedChat, Actions, ActionsProps } from "react-native-gifted-chat";
 import AsyncStorage from "@react-native-community/async-storage";
@@ -65,6 +68,14 @@ export default function Chat({ route }) {
   const [messages, setMessages] = useState([]);
   const currentUser = firebase.auth().currentUser;
 
+  Notifications.setNotificationHandler({
+    handleNotification: async () => ({
+      shouldShowAlert: true,
+      shouldPlaySound: true,
+      shouldSetBadge: true,
+    }),
+  });
+
   useEffect(() => {
     const unsubscribe = chatsRef.onSnapshot((querySnapshot) => {
       const messagesFirestore = querySnapshot
@@ -78,6 +89,14 @@ export default function Chat({ route }) {
         })
         .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
       appendMessages(messagesFirestore);
+      Notifications.scheduleNotificationAsync({
+        content: {
+          title: "QuedeOficios!",
+          body: "Tienes nuevas notificaciones!",
+          data: { data: "Mensajes no leídos." },
+        },
+        trigger: null,
+      });
     });
     return () => unsubscribe();
     (async () => {
@@ -106,10 +125,6 @@ export default function Chat({ route }) {
   async function handleSend(messages) {
     const writes = messages.map((m) => chatsRef.add(m));
     await Promise.all(writes);
-  }
-
-  if (messages >= 1) {
-    schedulePushNotification();
   }
 
   const pickImage = async () => {
@@ -169,12 +184,10 @@ export default function Chat({ route }) {
             user={{
               _id: firstUserId,
               user: firstUserId,
-              avatar: !image ? defaultImageRef : image,
             }}
             user={{
               _id: secondUserId,
               user: secondUserId,
-              avatar: !image ? defaultImageRef : image,
             }}
             onSend={handleSend}
             showUserAvatar={true}
