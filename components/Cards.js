@@ -35,6 +35,7 @@ class CardsUsuarios extends React.Component {
         let items = [];
         snap.forEach((child) => {
           items.push({
+            image: child.val().image,
             nombre: child.val().nombre,
             apellido: child.val().apellido,
             actividad: child.val().actividad,
@@ -153,9 +154,9 @@ class CardsUsuarios extends React.Component {
                       borderRadius: 10,
                     }}
                   />
-                  {userProfilePic == null ? (
+                  {u.image == null ? (
                     <Card.Image
-                      source={{ uri: `${defaultImageRef}` }}
+                      source={require("../assets/icon.png")}
                       style={{
                         borderRadius: 100,
                         marginTop: 10,
@@ -166,7 +167,7 @@ class CardsUsuarios extends React.Component {
                     />
                   ) : (
                     <Card.Image
-                      source={{ uri: `${userProfilePic}` }}
+                      source={{ uri: image }}
                       style={{
                         borderRadius: 100,
                         marginTop: 10,
@@ -277,9 +278,9 @@ class CardsUsuarios extends React.Component {
                       borderRadius: 10,
                     }}
                   />
-                  {userProfilePic == null ? (
+                  {u.image == null ? (
                     <Card.Image
-                      source={{ uri: `${defaultImageRef}` }}
+                      source={require("../assets/icon.png")}
                       style={{
                         borderRadius: 100,
                         marginTop: 10,
@@ -290,7 +291,7 @@ class CardsUsuarios extends React.Component {
                     />
                   ) : (
                     <Card.Image
-                      source={{ uri: `${userProfilePic}` }}
+                      source={{ uri: image }}
                       style={{
                         borderRadius: 100,
                         marginTop: 10,

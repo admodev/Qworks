@@ -23,7 +23,7 @@ import Botonera from "./BotoneraAnuncios";
 const AnunciosPage = ({ route }) => {
   let user = firebase.auth().currentUser;
   let id = user.uid;
-  let nombre, apellido, actividad, emailPersonal;
+  let image, nombre, apellido, actividad, emailPersonal;
   let dbRef = firebase
     .database()
     .ref("anuncios/")
@@ -32,6 +32,7 @@ const AnunciosPage = ({ route }) => {
   let dbResult = dbRef.on("value", (snap) => {
     snap.forEach((child) => {
       key: child.key, (nombre = child.val().nombre);
+      image = child.val().image;
       apellido = child.val().apellido;
       actividad = child.val().actividad;
       emailPersonal = child.val().emailPersonal;
@@ -92,16 +93,29 @@ const AnunciosPage = ({ route }) => {
               borderRadius: 10,
             }}
           />
-          <Card.Image
-            source={{ uri: "https://picsum.photos/200" }}
-            style={{
-              borderRadius: 50,
-              marginTop: 10,
-              marginBottom: 20,
-              marginLeft: 60,
-              marginRight: 60,
-            }}
-          />
+          {image == null ? (
+            <Card.Image
+              source={require("../assets/icon.png")}
+              style={{
+                borderRadius: 100,
+                marginTop: 10,
+                marginBottom: 20,
+                marginLeft: 60,
+                marginRight: 60,
+              }}
+            />
+          ) : (
+            <Card.Image
+              source={{ uri: image }}
+              style={{
+                borderRadius: 100,
+                marginTop: 10,
+                marginBottom: 20,
+                marginLeft: 60,
+                marginRight: 60,
+              }}
+            />
+          )}
           <Text
             style={{
               marginLeft: "auto",

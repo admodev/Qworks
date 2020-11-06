@@ -29,7 +29,7 @@ import { concat } from "react-native-reanimated";
 const AnuncioSeleccionado = ({ route }) => {
   let id = route.params.id;
   let routeParamsToString = id.toString();
-  let nombre, apellido, actividad, emailPersonal;
+  let image, nombre, apellido, actividad, emailPersonal;
   let dbRef = firebase
     .database()
     .ref("anuncios/")
@@ -38,6 +38,7 @@ const AnuncioSeleccionado = ({ route }) => {
   let dbResult = dbRef.on("value", (snap) => {
     snap.forEach((child) => {
       key: child.key, (nombre = child.val().nombre);
+      image = child.val().image;
       apellido = child.val().apellido;
       actividad = child.val().actividad;
       emailPersonal = child.val().emailPersonal;
@@ -92,9 +93,9 @@ const AnuncioSeleccionado = ({ route }) => {
           }}
         />
         <TouchableOpacity onPress={toggleOverlay}>
-          {userProfilePic == null ? (
+          {image == null ? (
             <Card.Image
-              source={{ uri: `${defaultImageRef}` }}
+              source={require("../assets/icon.png")}
               style={{
                 borderRadius: 100,
                 marginTop: 10,
@@ -105,7 +106,7 @@ const AnuncioSeleccionado = ({ route }) => {
             />
           ) : (
             <Card.Image
-              source={{ uri: userProfilePic }}
+              source={{ uri: image }}
               style={{
                 borderRadius: 100,
                 marginTop: 10,
@@ -121,10 +122,29 @@ const AnuncioSeleccionado = ({ route }) => {
           onBackdropPress={toggleOverlay}
           overlayStyle={{ width: "80%", height: "80%" }}
         >
-          <Card.Image
-            source={{ uri: "https://picsum.photos/id/237/200/300" }}
-            style={{ width: "100%", height: "100%" }}
-          />
+          {image == null ? (
+            <Card.Image
+              source={require("../assets/icon.png")}
+              style={{
+                borderRadius: 100,
+                marginTop: 10,
+                marginBottom: 20,
+                marginLeft: 60,
+                marginRight: 60,
+              }}
+            />
+          ) : (
+            <Card.Image
+              source={{ uri: image }}
+              style={{
+                borderRadius: 100,
+                marginTop: 10,
+                marginBottom: 20,
+                marginLeft: 60,
+                marginRight: 60,
+              }}
+            />
+          )}
         </Overlay>
         <Text
           style={{
