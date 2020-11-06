@@ -25,7 +25,6 @@ import * as Updates from "expo-updates";
 
 const ProfilePage = ({ navigation }) => {
   let user = firebase.auth().currentUser;
-  let id = user.uid;
   const signUserOut = () => {
     firebase
       .auth()
@@ -43,21 +42,26 @@ const ProfilePage = ({ navigation }) => {
 
   let dato = [];
 
-  let nombre, apellido, actividad, emailPersonal;
-  let dbRef = firebase
-    .database()
-    .ref("anuncios/")
-    .orderByChild("id")
-    .equalTo(id);
-  let dbResult = dbRef.on("value", (snap) => {
-    snap.forEach((child) => {
-      key: child.key, (nombre = child.val().nombre);
-      image = child.val().image;
-      apellido = child.val().apellido;
-      actividad = child.val().actividad;
-      emailPersonal = child.val().emailPersonal;
-    });
-  });
+  let id, nombre, apellido, actividad, emailPersonal;
+  user ? (id = user.uid) : console.log("No user logged in");
+  user
+    ? (dbRef = firebase
+        .database()
+        .ref("anuncios/")
+        .orderByChild("id")
+        .equalTo(id))
+    : console.log("No user");
+  user
+    ? (dbResult = dbRef.on("value", (snap) => {
+        snap.forEach((child) => {
+          key: child.key, (nombre = child.val().nombre);
+          image = child.val().image;
+          apellido = child.val().apellido;
+          actividad = child.val().actividad;
+          emailPersonal = child.val().emailPersonal;
+        });
+      }))
+    : console.log("No user");
 
   nombre == null ? (nombre = "Nombre") : (nombre = nombre);
 

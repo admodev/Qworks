@@ -61,7 +61,7 @@ export default function Chat({ route }) {
   const currentUser = firebase.auth().currentUser;
   const usersIds = firstUserId + secondUserId;
   const db = firebase.firestore();
-  const chatsRef = db.collection("chats/" + usersIds + "/messages");
+  const chatsRef = db.collection("chats/");
   const database = firebase.database();
   const storage = firebase.storage();
   const storageRef = storage.ref();
@@ -184,10 +184,8 @@ export default function Chat({ route }) {
             user={{
               _id: firstUserId,
               user: firstUserId,
-            }}
-            user={{
-              _id: secondUserId,
-              user: secondUserId,
+              _idTwo: secondUserId,
+              userTwo: secondUserId,
             }}
             onSend={handleSend}
             showUserAvatar={true}

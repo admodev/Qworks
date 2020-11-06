@@ -13,7 +13,7 @@ import AnunciatePage from "../pages/AnunciatePage";
 import PagosPage from "../pages/PagosPage";
 import ShopPage from "../pages/ShopPage";
 import CardsUsuarios from "../components/Cards";
-import Messages from "../pages/ChatMessages";
+import MessagesScreen from "../pages/ChatMessages";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { Badge } from "react-native-elements";
 import { navigationRef } from "../RootNavigation";
@@ -50,13 +50,13 @@ export function MainTabNavigator({ navigation }) {
         }}
       />
       <Tab.Screen
-        name="ChatPage"
-        component={ChatPage}
+        name="MessagesScreen"
+        component={MessagesScreen}
         options={{
           tabBarLabel: "Mensajes",
           tabBarIcon: ({ color, size }) => (
             <View>
-              {Chat.messages && (
+              {Chat.messages >= 1 && (
                 <Badge
                   status="primary"
                   badgeStyle={{
@@ -170,8 +170,8 @@ function MainStackNavigator({ navigation }) {
           options={{ title: "QuedeOficios!", headerShown: false }}
         />
         <Stack.Screen
-          name="Messages"
-          component={Messages}
+          name="MessagesScreen"
+          component={MessagesScreen}
           options={{ title: "QuedeOficios!", headerShown: false }}
         />
         <Stack.Screen
