@@ -1,88 +1,105 @@
 import React, { useState } from "react";
-import { SafeAreaView, ScrollView, Text, View } from "react-native";
+import { Image, SafeAreaView, ScrollView, Text, View } from "react-native";
 import { Button, CheckBox } from "react-native-elements";
 import CardsUsuarios from "./Cards";
+import * as RootNavigation from "../RootNavigation.js";
 
 class ControlPanel extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            isLoading: true,
-            pickerValueHolder: "",
-            filter: [
-                {
-                    option: "profesion",
-                },
-                {
-                    option: "aeiou",
-                },
-            ],
-            dataSource: [],
-        };
-    }
+  constructor(props) {
+    super(props);
+    this.state = {
+      isLoading: true,
+      pickerValueHolder: "",
+      filter: [
+        {
+          option: "profesion",
+        },
+        {
+          option: "aeiou",
+        },
+      ],
+      dataSource: [],
+    };
+  }
 
-    componentDidMount() {
-        return fetch(CardsUsuarios)
-            .then((response) => response.json())
-            .then((responseJson) => {
-                this.setState({
-                    isLoading: false,
-                    dataSource: responseJson,
-                });
-            })
-            .catch((error) => {
-                console.error(error);
-            });
-    }
-    render() {
-        const closeControlPanel = () => {
-            _drawer.close();
-        };
-        return (
-            <SafeAreaView style={{ flex: 1 }}>
-            <Button
-            title=">"
-            buttonStyle={{
-                backgroundColor: "transparent",
-                    justifyContent: "flex-end",
-                    marginTop: 15,
-                    marginRight: 35,
-            }}
-            titleStyle={{ color: "#000000", fontSize: 28 }}
-            onPress={closeControlPanel}
-            />
-            <View style={{ maxWidth: "90%", marginLeft: "auto", marginRight: "auto" }}>
-            <Button
+  componentDidMount() {
+    return fetch(CardsUsuarios)
+      .then((response) => response.json())
+      .then((responseJson) => {
+        this.setState({
+          isLoading: false,
+          dataSource: responseJson,
+        });
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }
+
+  render() {
+    const closeControlPanel = () => {
+      _drawer.close();
+    };
+    return (
+      <SafeAreaView style={{ flex: 1 }}>
+        <Image
+          source={require("../assets/gradients/20x20.png")}
+          style={{
+            flex: 1,
+            position: "absolute",
+            resizeMode: "cover",
+            width: "100%",
+            height: "3%",
+          }}
+        />
+        <Button
+          title=">"
+          buttonStyle={{
+            backgroundColor: "transparent",
+            justifyContent: "flex-end",
+            marginTop: 15,
+            marginRight: 35,
+          }}
+          titleStyle={{ color: "#000000", fontSize: 28 }}
+          onPress={closeControlPanel}
+        />
+        <View
+          style={{
+            maxWidth: "90%",
+            marginLeft: "auto",
+            marginRight: "auto",
+            marginTop: "auto",
+            marginBottom: "auto",
+          }}
+        >
+          <Button
             title="Filtrar por ubicación"
             type="outline"
-            onPress={() => RootNavigation.navigate('UbicacionPage')}
+            onPress={() => RootNavigation.navigate("UbicacionPage")}
             buttonStyle={{ width: "100%", marginTop: 10 }}
-            />
-            <Button
+          />
+          <Button
             title="Filtrar por recomendaciones"
             type="outline"
-            onPress={() => RootNavigation.navigate('RecomendacionesPage')}
+            onPress={() => RootNavigation.navigate("RecomendacionesPage")}
             buttonStyle={{ width: "100%", marginTop: 10 }}
-            />
-            <Button
+          />
+          <Button
             title="Filtrar por comentarios"
             type="outline"
-            onPress={() => RootNavigation.navigate('ComentariosPage')}
+            onPress={() => RootNavigation.navigate("ComentariosPage")}
             buttonStyle={{ width: "100%", marginTop: 10 }}
-            />
-            <Button
+          />
+          <Button
             title="Mis favoritos"
             type="outline"
-            onPress={() => RootNavigation.navigate('FavoritosPage')}
+            onPress={() => RootNavigation.navigate("FavoritosPage")}
             buttonStyle={{ width: "100%", marginTop: 10 }}
-            />
-            </View>
-            <ScrollView style={{ marginTop: 50 }}>
-            <CardsUsuarios />
-            </ScrollView>
-            </SafeAreaView>
-        );
-    }
+          />
+        </View>
+      </SafeAreaView>
+    );
+  }
 }
 
 export default ControlPanel;
