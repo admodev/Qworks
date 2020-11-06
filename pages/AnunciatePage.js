@@ -14,6 +14,7 @@ import "firebase/auth";
 import "firebase/database";
 import * as ImagePicker from "expo-image-picker";
 import * as Updates from "expo-updates";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
 let database = firebase.database();
 let user = firebase.auth().currentUser;
@@ -47,8 +48,11 @@ const AnunciatePage = ({ navigation }) => {
   const [diasHorarios, setDiasHorarios] = useState([]);
   const [desde, setDesde] = useState("");
   const [hasta, setHasta] = useState("");
+  const [mediosDePago, setMediosDePago] = useState([]);
+  const [efectivo, toggleEfectivo] = useState(false);
+  const [mercadoPago, toggleMercadoPago] = useState(false);
   const [terminos, setTerminos] = useState(false);
-  // Pasar valores booleanos (por ejemplo: tengoWhatsapp de falso a verdadero y viceversa.
+  // Pasar valores booleanos (por ejemplo: tengoWhatsapp de falso a verdadero y viceversa.)
   const toggleWhatsapp = React.useCallback(() =>
     setTengoWhatsapp(!tengoWhatsapp)
   );
@@ -97,6 +101,16 @@ const AnunciatePage = ({ navigation }) => {
   const toggleHastaPmChecked = React.useCallback(() =>
     setHastaPmChecked(!hastaPmChecked)
   );
+
+  function setEfectivo() {
+    setMediosDePago(mediosDePago.concat("Efectivo"));
+    toggleEfectivo(!efectivo);
+  }
+
+  function setMercadoPago() {
+    setMediosDePago(mediosDePago.concat("MercadoPago"));
+    toggleMercadoPago(!mercadoPago);
+  }
 
   function concatLunes() {
     setDiasHorarios(diasHorarios.concat("Lunes"));
@@ -158,7 +172,8 @@ const AnunciatePage = ({ navigation }) => {
     diasHorarios,
     desde,
     hasta,
-    terminos
+    terminos,
+    mediosDePago
   ) {
     firebase
       .database()
@@ -191,6 +206,7 @@ const AnunciatePage = ({ navigation }) => {
         desde: desde,
         hasta: hasta,
         terminos: terminos,
+        mediosDePago: mediosDePago,
       })
       .then(function () {
         var storageRef = firebase.storage().ref();
@@ -608,6 +624,60 @@ const AnunciatePage = ({ navigation }) => {
             marginTop: 25,
           }}
         >
+          <Text h3 style={{ color: "#fff" }}>
+            Medios De Pago
+          </Text>
+          <View
+            style={{
+              flex: 1,
+              flexDirection: "row",
+              marginTop: 10,
+              marginBottom: 10,
+            }}
+          >
+            <MaterialCommunityIcons
+              name="cash-usd"
+              color={"#fff"}
+              size={35}
+              style={{ marginTop: 20 }}
+            />
+            <CheckBox
+              title="Efectivo"
+              containerStyle={{
+                backgroundColor: "transparent",
+                borderColor: "transparent",
+                borderWidth: 0,
+                marginTop: 15,
+                marginLeft: "auto",
+                marginRight: "auto",
+              }}
+              textStyle={{ color: "#ffffff" }}
+              checkedColor={"white"}
+              onPress={() => setEfectivo()}
+              checked={efectivo}
+            />
+            <MaterialCommunityIcons
+              name="card-bulleted-outline"
+              color={"#fff"}
+              size={35}
+              style={{ marginTop: 20 }}
+            />
+            <CheckBox
+              title="Mercado Pago"
+              containerStyle={{
+                backgroundColor: "transparent",
+                borderColor: "transparent",
+                borderWidth: 0,
+                marginTop: 15,
+                marginLeft: "auto",
+                marginRight: "auto",
+              }}
+              textStyle={{ color: "#ffffff" }}
+              checkedColor={"white"}
+              onPress={() => setMercadoPago()}
+              checked={mercadoPago}
+            />
+          </View>
           <Text h3 style={{ color: "#fff" }}>
             Términos y condiciones
           </Text>
