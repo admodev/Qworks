@@ -1,5 +1,4 @@
 import Constants from "expo-constants";
-import * as Notifications from "expo-notifications";
 import * as Permissions from "expo-permissions";
 import React, { useState, useEffect, useRef } from "react";
 import {
@@ -24,17 +23,9 @@ import * as LoginPageData from "./LoginPage";
 import LoginPage from "./LoginPage";
 import * as Updates from "expo-updates";
 
-Notifications.setNotificationHandler({
-  handleNotification: async () => ({
-    shouldShowAlert: true,
-    shouldPlaySound: true,
-    shouldSetBadge: false,
-  }),
-});
-
 const ProfilePage = ({ navigation }) => {
-  const [nombre, actualizarNombre] = useState(nombre);
-  var user = firebase.auth().currentUser;
+  let user = firebase.auth().currentUser;
+  let id = user.uid;
   const signUserOut = () => {
     firebase
       .auth()
@@ -47,27 +38,76 @@ const ProfilePage = ({ navigation }) => {
       });
     Updates.reloadAsync();
   };
-  if (nombre == null) {
-    let nombre = "Nombre";
-  }
+
+  let [image, setImage] = useState(null);
 
   let dato = [];
 
-  // firebase
-  //   .database()
-  //   .ref("anuncios/")
-  //   .orderByChild("id")
-  //   .equalTo(user.uid)
-  //   .on("value", (snap) => {
-  //     let datos = [];
-  //     snap.forEach((child) => {
-  //       datos.push({
-  //         nombre: child.val().nombre,
-  //       });
-  //     });
-  //     dato = datos;
-  //     setState({ datos: datos });
-  //   });
+  let nombre, apellido, actividad, emailPersonal;
+  let dbRef = firebase
+    .database()
+    .ref("anuncios/")
+    .orderByChild("id")
+    .equalTo(id);
+  let dbResult = dbRef.on("value", (snap) => {
+    snap.forEach((child) => {
+      key: child.key, (nombre = child.val().nombre);
+      image = child.val().image;
+      apellido = child.val().apellido;
+      actividad = child.val().actividad;
+      emailPersonal = child.val().emailPersonal;
+    });
+  });
+
+  nombre == null ? (nombre = "Nombre") : (nombre = nombre);
+
+  useEffect(() => {
+    (async () => {
+      if (Platform.OS !== "web") {
+        const {
+          status,
+        } = await ImagePicker.requestCameraRollPermissionsAsync();
+        if (status !== "granted") {
+          alert(
+            "Perdón, necesitamos tu permiso para que puedas subir una foto!"
+          );
+        }
+      }
+    })();
+  }, []);
+
+  const pickImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 0.5,
+    });
+
+    if (result.uri) {
+      (image) => setImage(result.uri);
+    }
+
+    updateImage;
+  };
+
+  function updateImage(image) {
+    let dbRef = firebase
+      .database()
+      .ref("anuncios/")
+      .orderByChild("id")
+      .equalTo(id);
+    dbRef
+      .set({
+        image: image,
+      })
+      .then(function () {
+        error == true ? console.log(error) : console.log("success!");
+      })
+      .finally(function () {
+        Updates.reloadAsync();
+      });
+  }
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -102,24 +142,28 @@ const ProfilePage = ({ navigation }) => {
               marginLeft: 15,
             }}
           >
-            <Image
-              source={require("../assets/icon.png")}
-              style={{
-                width: 50,
-                height: 50,
-              }}
-            />
-            <View style={{ flex: 1, flexDirection: "column" }}>
+            {image ? (
+              <Image
+                source={{ uri: image }}
+                style={{
+                  width: 60,
+                  height: 60,
+                }}
+              />
+            ) : (
+              <TouchableOpacity onPress={pickImage}>
+                <Image
+                  source={require("../assets/icon.png")}
+                  style={{
+                    width: 60,
+                    height: 60,
+                  }}
+                />
+              </TouchableOpacity>
+            )}
+            <View style={{ flex: 1, flexDirection: "column", marginTop: 5 }}>
               <Text style={{ color: "#000000", fontSize: 14, marginLeft: 20 }}>
-                {nombre == null ? (
-                  <TouchableOpacity
-                    onPress={() => navigation.navigate("CambiarNombre")}
-                  >
-                    <Text>Nombre</Text>
-                  </TouchableOpacity>
-                ) : (
-                  nombre
-                )}
+                {nombre}
               </Text>
               <Text
                 style={{

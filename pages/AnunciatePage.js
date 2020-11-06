@@ -148,6 +148,7 @@ const AnunciatePage = ({ navigation }) => {
   }
 
   function writeUserData(
+    image,
     nombre,
     apellido,
     emailPersonal,
@@ -175,12 +176,12 @@ const AnunciatePage = ({ navigation }) => {
     terminos,
     mediosDePago
   ) {
-    firebase
-      .database()
-      .ref("anuncios/")
-      .push()
+    let dbRef = firebase.database().ref("anuncios/");
+    let refPush = dbRef.push();
+    refPush
       .set({
         id: user.uid,
+        image: image,
         nombre: nombre,
         apellido: apellido,
         emailPersonal: emailPersonal,
@@ -245,10 +246,8 @@ const AnunciatePage = ({ navigation }) => {
       quality: 0.5,
     });
 
-    console.log(result);
-
-    if (!result.cancelled) {
-      setImage(result.uri);
+    if (result.uri) {
+      (image) => setImage(result.uri);
     }
   };
   return (
