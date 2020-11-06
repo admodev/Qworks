@@ -83,12 +83,7 @@ const ProfilePage = ({ navigation }) => {
       aspect: [4, 3],
       quality: 0.5,
     });
-
-    if (result.uri) {
-      (image) => setImage(result.uri);
-    }
-
-    updateImage;
+    (image) => setImage(result.uri);
   };
 
   function updateImage(image) {
@@ -162,9 +157,23 @@ const ProfilePage = ({ navigation }) => {
               </TouchableOpacity>
             )}
             <View style={{ flex: 1, flexDirection: "column", marginTop: 5 }}>
-              <Text style={{ color: "#000000", fontSize: 14, marginLeft: 20 }}>
-                {nombre}
-              </Text>
+              {nombre == "Nombre" ? (
+                <TouchableOpacity
+                  onPress={RootNavigation.navigate("CambiarNombreScreen")}
+                >
+                  <Text
+                    style={{ color: "#000000", fontSize: 14, marginLeft: 20 }}
+                  >
+                    Nombre
+                  </Text>
+                </TouchableOpacity>
+              ) : (
+                <Text
+                  style={{ color: "#000000", fontSize: 14, marginLeft: 20 }}
+                >
+                  {nombre}
+                </Text>
+              )}
               <Text
                 style={{
                   color: "#000000",
