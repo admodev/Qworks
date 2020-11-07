@@ -25,6 +25,7 @@ import * as RootNavigation from "../RootNavigation.js";
 import { StackActions } from "@react-navigation/native";
 import CardsUsuarios from "./Cards";
 import { concat } from "react-native-reanimated";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
 const AnuncioSeleccionado = ({ route }) => {
   let id = route.params.id;
@@ -59,7 +60,7 @@ const AnuncioSeleccionado = ({ route }) => {
     setVisible(!visible);
   };
   return (
-    <View style={{ margin: 25, backgroundColor: "transparent" }}>
+    <SafeAreaView style={{ margin: 25, backgroundColor: "transparent" }}>
       <Card
         style={styles.card}
         containerStyle={{
@@ -197,42 +198,100 @@ const AnuncioSeleccionado = ({ route }) => {
               marginLeft: "auto",
               marginRight: "auto",
               marginTop: 10,
+              marginBottom: 10,
               fontSize: 20,
             }}
           >
             Ver Mapa
           </Text>
         </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() =>
-            RootNavigation.navigate("ChatComponent", {
-              userOne: firebase.auth().currentUser.uid,
-              userTwo: routeParamsToString,
-            })
-          }
-          style={{
-            borderRadius: 0,
-            marginLeft: 0,
-            marginRight: 0,
-            marginBottom: 0,
-            marginTop: 15,
-            backgroundColor: "transparent",
-          }}
-        >
-          <Text
-            style={{
-              color: "#fff",
-              marginLeft: "auto",
-              marginRight: "auto",
-              fontSize: 18,
-              marginBottom: 10,
-            }}
-          >
-            Enviar Mensaje
-          </Text>
-        </TouchableOpacity>
       </Card>
-    </View>
+      <View
+        style={{
+          flex: 1,
+          flexDirection: "row",
+          justifyContent: "space-around",
+          margin: 10,
+          position: "absolute",
+          bottom: -180,
+        }}
+      >
+        <Image
+          source={require("../assets/gradients/20x20.png")}
+          style={{
+            flex: 1,
+            position: "absolute",
+            resizeMode: "cover",
+            width: 320,
+            height: 55,
+            margin: 10,
+            borderRadius: 5,
+          }}
+        />
+        <View style={{ margin: 10, marginLeft: 20 }}>
+          <Button
+            title="Recomendar"
+            titleStyle={{ fontSize: 12, marginBottom: 15 }}
+            buttonStyle={{
+              width: 120,
+              height: 50,
+              backgroundColor: "transparent",
+            }}
+          />
+          <MaterialCommunityIcons
+            name="account-group"
+            color={"white"}
+            size={22}
+            style={{ position: "absolute", marginLeft: 40, marginTop: 22 }}
+          />
+        </View>
+        <View style={{ margin: 10 }}>
+          <Button
+            title="Enviar Mensaje"
+            onPress={() =>
+              RootNavigation.navigate("ChatComponent", {
+                userOne: firebase.auth().currentUser.uid,
+                userTwo: routeParamsToString,
+              })
+            }
+            titleStyle={{ fontSize: 12, marginTop: 15 }}
+            buttonStyle={{
+              width: 120,
+              height: 50,
+              backgroundColor: "transparent",
+            }}
+          />
+          <Image
+            source={require("../assets/icon.png")}
+            style={{
+              width: 60,
+              height: 60,
+              borderRadius: 100,
+              position: "absolute",
+              marginTop: -45,
+              marginLeft: 30,
+            }}
+          />
+        </View>
+        <View style={{ margin: 10 }}>
+          <Button
+            title="Comentar"
+            titleStyle={{ fontSize: 12, marginTop: 15 }}
+            buttonStyle={{
+              width: 120,
+              height: 50,
+              backgroundColor: "transparent",
+            }}
+          />
+          <MaterialCommunityIcons
+            name="comment-multiple-outline"
+            color={"white"}
+            size={18}
+            style={{ position: "absolute", marginLeft: 50, marginTop: 4 }}
+          />
+        </View>
+      </View>
+    </SafeAreaView>
   );
 };
 

@@ -18,7 +18,6 @@ import { StackActions } from "@react-navigation/native";
 import CardsUsuarios from "./Cards";
 import { concat } from "react-native-reanimated";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-import Botonera from "./BotoneraAnuncios";
 
 const AnunciosPage = ({ route }) => {
   let user = firebase.auth().currentUser;
@@ -29,7 +28,7 @@ const AnunciosPage = ({ route }) => {
     .ref("anuncios/")
     .orderByChild("id")
     .equalTo(id);
-  let dbResult = dbRef.on("value", (snap) => {
+  dbRef.on("value", (snap) => {
     snap.forEach((child) => {
       key: child.key, (nombre = child.val().nombre);
       image = child.val().image;
@@ -153,7 +152,7 @@ const AnunciosPage = ({ route }) => {
             {emailPersonal}
           </Text>
           <TouchableOpacity
-            onPress={() => RootNavigation.navigate("OnboardingPage")}
+            onPress={() => RootNavigation.navigate("EditarAnuncioScreen")}
             style={{
               borderRadius: 0,
               marginLeft: 0,
@@ -172,7 +171,7 @@ const AnunciosPage = ({ route }) => {
                 marginBottom: 10,
               }}
             >
-              Enviar Mensaje
+              Editar Anuncio
             </Text>
           </TouchableOpacity>
         </Card>
@@ -186,9 +185,7 @@ const AnunciosPage = ({ route }) => {
           marginLeft: "auto",
           marginRight: "auto",
         }}
-      >
-        <Botonera />
-      </SafeAreaView>
+      ></SafeAreaView>
     </SafeAreaView>
   );
 };
