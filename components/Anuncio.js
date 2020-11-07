@@ -53,12 +53,28 @@ const AnuncioSeleccionado = ({ route }) => {
     .toString();
   let userProfilePic = storageRef.child("userProfilePics/").child(id).child;
   const [visible, setVisible] = useState(false);
-  const rating = () => {
-    console.log("placeholder");
-  };
   const toggleOverlay = () => {
     setVisible(!visible);
   };
+
+  let userId = firebase.auth().currentUser.uid;
+
+  function agregarFavorito() {
+    firebase
+      .database()
+      .ref("favoritos/")
+      .orderByChild("id")
+      .equalTo(id)
+      .on("value", (snap) => {
+        snap.forEach((child) => {
+          nombre = child.val().nombre;
+          id = child.val().id;
+        });
+      });
+  }
+
+  const { rating } = 3;
+
   return (
     <SafeAreaView style={{ margin: 25, backgroundColor: "transparent" }}>
       <Card
@@ -68,6 +84,7 @@ const AnuncioSeleccionado = ({ route }) => {
           borderRadius: 15,
           backgroundColor: "transparent",
           borderWidth: 0,
+          marginTop: -10,
         }}
       >
         <Image
@@ -171,13 +188,14 @@ const AnuncioSeleccionado = ({ route }) => {
         >
           {actividad}
         </Text>
-        <AirbnbRating
-          count={5}
-          reviews={["Malo", "Promedio", "Bueno", "Profesional", "Experto"]}
-          defaultRating={3}
-          size={18}
-          readonly={true}
-          // startingValue={rating}
+        <Rating
+          imageSize={28}
+          readonly
+          startingValue={rating}
+          type="star"
+          style={{
+            margin: 10,
+          }}
         />
         <Text
           style={{
@@ -191,6 +209,54 @@ const AnuncioSeleccionado = ({ route }) => {
         >
           {emailPersonal}
         </Text>
+        <TouchableOpacity
+          onPress={() =>
+            RootNavigation.navigate("RecomendarUsuario", {
+              id: routeParamsToString,
+            })
+          }
+        >
+          <Text
+            style={{
+              color: "#fff",
+              marginLeft: "auto",
+              marginRight: "auto",
+              marginTop: 10,
+              marginBottom: 10,
+              fontSize: 20,
+            }}
+          >
+            Recomendar
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity>
+          <Text
+            style={{
+              color: "#fff",
+              marginLeft: "auto",
+              marginRight: "auto",
+              marginTop: 10,
+              marginBottom: 10,
+              fontSize: 20,
+            }}
+          >
+            Comentar
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => agregarFavorito()}>
+          <Text
+            style={{
+              color: "#fff",
+              marginLeft: "auto",
+              marginRight: "auto",
+              marginTop: 10,
+              marginBottom: 10,
+              fontSize: 20,
+            }}
+          >
+            Favorito
+          </Text>
+        </TouchableOpacity>
         <TouchableOpacity onPress={() => alert("Proximamente...")}>
           <Text
             style={{
@@ -213,7 +279,7 @@ const AnuncioSeleccionado = ({ route }) => {
           justifyContent: "space-around",
           margin: 10,
           position: "absolute",
-          bottom: -180,
+          bottom: -120,
         }}
       >
         <Image

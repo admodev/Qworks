@@ -23,6 +23,7 @@ import AnuncioSeleccionado from "../components/Anuncio";
 import MisComentariosPage from "../components/MisComentarios";
 import CambiarNombreScreen from "../components/CambiarNombreComponent";
 import UbicacionPage from "../components/FiltroUbicacion";
+import RecomendarUsuario from "../components/RecomendarScreen";
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -199,6 +200,11 @@ function MainStackNavigator({ navigation }) {
         <Stack.Screen
           name="UbicacionPage"
           component={UbicacionPage}
+          options={{ title: "QuedeOficios!", headerShown: false }}
+        />
+        <Stack.Screen
+          name="RecomendarUsuario"
+          component={RecomendarUsuario}
           options={{ title: "QuedeOficios!", headerShown: false }}
         />
       </Stack.Navigator>

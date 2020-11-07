@@ -37,6 +37,24 @@ const AnunciosPage = ({ route }) => {
       emailPersonal = child.val().emailPersonal;
     });
   });
+
+  function eliminarAnuncio() {
+    dbRef.remove();
+  }
+
+  function eliminarCuenta() {
+    console.log("placeholder");
+    //    admin
+    //      .auth()
+    //      .deleteUser(uid)
+    //      .then(function () {
+    //        console.log("Successfully deleted user");
+    //      })
+    //      .catch(function (error) {
+    //        console.log("Error deleting user:", error);
+    //      });
+  }
+
   return (
     <SafeAreaView style={{ margin: 25, backgroundColor: "transparent" }}>
       <View
@@ -158,7 +176,7 @@ const AnunciosPage = ({ route }) => {
               marginLeft: 0,
               marginRight: 0,
               marginBottom: 0,
-              marginTop: 15,
+              marginTop: 20,
               backgroundColor: "transparent",
             }}
           >
@@ -172,6 +190,52 @@ const AnunciosPage = ({ route }) => {
               }}
             >
               Editar Anuncio
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => eliminarAnuncio()}
+            style={{
+              borderRadius: 0,
+              marginLeft: 0,
+              marginRight: 0,
+              marginBottom: 0,
+              marginTop: 15,
+              backgroundColor: "transparent",
+            }}
+          >
+            <Text
+              style={{
+                color: "#fff",
+                marginLeft: "auto",
+                marginRight: "auto",
+                fontSize: 16,
+                marginBottom: 10,
+              }}
+            >
+              Eliminar Anuncio
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => eliminarCuenta()}
+            style={{
+              borderRadius: 0,
+              marginLeft: 0,
+              marginRight: 0,
+              marginBottom: 0,
+              marginTop: 15,
+              backgroundColor: "transparent",
+            }}
+          >
+            <Text
+              style={{
+                color: "#fff",
+                marginLeft: "auto",
+                marginRight: "auto",
+                fontSize: 16,
+                marginBottom: 10,
+              }}
+            >
+              Eliminar Cuenta
             </Text>
           </TouchableOpacity>
         </Card>
