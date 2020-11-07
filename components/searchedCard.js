@@ -7,6 +7,7 @@ import {
   ScrollView,
   SafeAreaView,
   Text,
+  KeyboardAvoidingView,
 } from "react-native";
 import { Button, Card, Icon, Input } from "react-native-elements";
 import * as firebase from "firebase";
@@ -16,12 +17,45 @@ import "firebase/auth";
 import * as RootNavigation from "../RootNavigation.js";
 import { StackActions } from "@react-navigation/native";
 
-let image = null;
+let image;
+let idAnuncio;
 
 export default class searchedCardResult extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      search: "",
+      idAnuncio: "",
+    };
+  }
+
+  componentDidMount() {
+    firebase
+      .database()
+      .ref("anuncios/")
+      .orderByKey()
+      .on("value", (snap) => {
+        snap.forEach((child) => {
+          image = child.val().image;
+          idAnuncio = child.val().id;
+        });
+      });
+    firebase.auth().onAuthStateChanged(function (user) {
+      if (user) {
+        var email = user.email;
+        var uid = user.uid;
+        var providerData = user.providerData;
+      } else {
+        user == null;
+      }
+    });
+  }
+
   render() {
     return (
-      <View style={{ margin: 25, backgroundColor: "transparent" }}>
+      <SafeAreaView
+        style={{ margin: 25, marginTop: 100, backgroundColor: "transparent" }}
+      >
         <Image
           source={require("../assets/patron.jpg")}
           style={{
@@ -52,7 +86,6 @@ export default class searchedCardResult extends React.Component {
             borderRadius: 15,
             backgroundColor: "transparent",
             borderWidth: 0,
-            marginTop: 50,
           }}
         >
           {image == null ? (
@@ -102,7 +135,11 @@ export default class searchedCardResult extends React.Component {
             {this.props.actividad}
           </Text>
           <TouchableOpacity
-            onPress={() => RootNavigation.navigate("AnuncioSeleccionado")}
+            onPress={() => {
+              RootNavigation.navigate("AnuncioSeleccionado", {
+                id: idAnuncio,
+              });
+            }}
             style={{
               borderRadius: 0,
               marginLeft: 0,
@@ -124,7 +161,7 @@ export default class searchedCardResult extends React.Component {
             </Text>
           </TouchableOpacity>
         </Card>
-      </View>
+      </SafeAreaView>
     );
   }
 }
