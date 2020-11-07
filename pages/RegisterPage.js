@@ -93,25 +93,15 @@ export default function RegisterPage({ navigation }) {
   let [email, setUserEmail] = useState("");
   let [password, setUserPassword] = useState("");
 
-  const RegistrarUsuarios = () => {
+  function registrarUsuarios(email, password) {
     firebase
       .auth()
       .createUserWithEmailAndPassword(email, password)
-      .catch(function (error) {
-        var errorCode = error.code;
-        var errorMessage = error.message;
+      .then(function () {
+        Updates.reloadAsync();
       });
-    Updates.reloadAsync();
-  };
-  firebase.auth().onAuthStateChanged(function (user) {
-    if (user) {
-      var email = user.email;
-      var uid = user.uid;
-      var providerData = user.providerData;
-    } else {
-      user == null;
-    }
-  });
+  }
+
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
       <SafeAreaView style={{ flex: 1 }} keyboardShouldPersistTaps="handled">
@@ -157,7 +147,6 @@ export default function RegisterPage({ navigation }) {
                 style={{ color: "#ffffff", fontSize: 16 }}
                 leftIcon={<Icon name="envelope-o" size={18} color="white" />}
                 onChangeText={(email) => setUserEmail(email)}
-                value={email}
               />
               <Input
                 placeholder="Contraseña"
@@ -166,11 +155,10 @@ export default function RegisterPage({ navigation }) {
                 style={{ color: "#ffffff", fontSize: 16 }}
                 secureTextEntry={true}
                 onChangeText={(password) => setUserPassword(password)}
-                value={password}
               />
               <Button
                 title="Registrarme"
-                onPress={() => RegistrarUsuarios}
+                onPress={() => registrarUsuarios()}
                 buttonStyle={{
                   backgroundColor: "orange",
                   borderRadius: 25,

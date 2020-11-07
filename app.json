@@ -1,7 +1,7 @@
 { 
   "expo": {
-    "name": "quedeoficiosfinal",
-    "slug": "quedeoficiosfinal",
+    "name": "quedeoficios",
+    "slug": "quedeoficios",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -37,7 +37,7 @@
     "android": {
       "versionCode": 1,
       "useNextNotificationsApi": true,
-      "package": "com.admodev.qdo2020"
+      "package": "com.admodev.quedeoficios"
     },
     "web": {
       "favicon": "./assets/favicon.png",

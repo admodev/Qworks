@@ -163,7 +163,7 @@ const ProfilePage = ({ navigation }) => {
             <View style={{ flex: 1, flexDirection: "column", marginTop: 5 }}>
               {nombre == "Nombre" ? (
                 <TouchableOpacity
-                  onPress={RootNavigation.navigate("CambiarNombreScreen")}
+                  onPress={() => RootNavigation.navigate("CambiarNombreScreen")}
                 >
                   <Text
                     style={{ color: "#000000", fontSize: 14, marginLeft: 20 }}
