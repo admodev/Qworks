@@ -18,6 +18,7 @@
     "@react-navigation/stack": "^5.9.1",
     "expo": "~39.0.2",
     "expo-app-auth": "~9.2.0",
+    "expo-blur": "~8.2.0",
     "expo-facebook": "~9.0.0",
     "expo-firebase-analytics": "~2.5.0",
     "expo-firebase-core": "~1.2.0",

@@ -24,6 +24,7 @@ import MisComentariosPage from "../components/MisComentarios";
 import CambiarNombreScreen from "../components/CambiarNombreComponent";
 import UbicacionPage from "../components/FiltroUbicacion";
 import RecomendarUsuario from "../components/RecomendarScreen";
+import ComentarScreen from "../components/Comentar";
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -205,6 +206,11 @@ function MainStackNavigator({ navigation }) {
         <Stack.Screen
           name="RecomendarUsuario"
           component={RecomendarUsuario}
+          options={{ title: "QuedeOficios!", headerShown: false }}
+        />
+        <Stack.Screen
+          name="ComentarScreen"
+          component={ComentarScreen}
           options={{ title: "QuedeOficios!", headerShown: false }}
         />
       </Stack.Navigator>

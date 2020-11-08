@@ -26,6 +26,7 @@ import { StackActions } from "@react-navigation/native";
 import CardsUsuarios from "./Cards";
 import { concat } from "react-native-reanimated";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import * as Updates from "expo-updates";
 
 const AnuncioSeleccionado = ({ route }) => {
   let id = route.params.id;
@@ -59,21 +60,28 @@ const AnuncioSeleccionado = ({ route }) => {
 
   let userId = firebase.auth().currentUser.uid;
 
-  function agregarFavorito() {
+  function agregarFavorito(id) {
     firebase
       .database()
-      .ref("anuncios/")
-      .orderByChild("id")
-      .equalTo(userId)
-      .on("value", (snap) => {
-        snap.set({
-          favoritos: id,
-        });
+      .ref("anuncios/" + user.uid)
+      .set({
+        favoritos: [id],
+      })
+      .then(function () {
+        Updates.reloadAsync();
       });
   }
 
   function calificarUsuario(rating) {
-    console.log("placeholder");
+    firebase
+      .database()
+      .ref("anuncios/" + id)
+      .set({
+        calificacion: rating,
+      })
+      .then(function () {
+        Updates.reloadAsync();
+      });
   }
 
   let { rating } = 3;

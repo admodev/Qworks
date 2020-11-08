@@ -22,6 +22,7 @@ import "firebase/database";
 import "firebase/auth";
 import * as RootNavigation from "../RootNavigation.js";
 import { StackActions } from "@react-navigation/native";
+import { BlurView } from "expo-blur";
 
 var itm = [];
 let image;
@@ -55,14 +56,25 @@ class MessagesScreen extends React.Component {
     return (
       <SafeAreaView style={{ flex: 1 }}>
         {list.map((l, i) => (
-          <ListItem key={i} bottomDivider>
-            <Avatar source={{ uri: l.avatar_url }} />
+          <View>
+            <ListItem key={i} bottomDivider>
+              <Avatar source={{ uri: l.avatar_url }} />
+              <ListItem.Content>
+                <ListItem.Title>{l.nombre}</ListItem.Title>
+                <ListItem.Subtitle>{l.mensaje}</ListItem.Subtitle>
+              </ListItem.Content>
+            </ListItem>
+          </View>
+        ))}
+        <BlurView intensity={100} blurRadius={1}>
+          <ListItem bottomDivider>
+            <Avatar source={require("../assets/icon.png")} />
             <ListItem.Content>
-              <ListItem.Title>{l.nombre}</ListItem.Title>
-              <ListItem.Subtitle>{l.mensaje}</ListItem.Subtitle>
+              <ListItem.Title>Cuarto chat</ListItem.Title>
+              <ListItem.Subtitle>Censurado</ListItem.Subtitle>
             </ListItem.Content>
           </ListItem>
-        ))}
+        </BlurView>
       </SafeAreaView>
     );
   }

@@ -4,7 +4,6 @@ import Constants from "expo-constants";
 import * as Notifications from "expo-notifications";
 import * as Permissions from "expo-permissions";
 import React, { useState, useEffect, useCallback } from "react";
-import { GiftedChat, Actions, ActionsProps } from "react-native-gifted-chat";
 import AsyncStorage from "@react-native-community/async-storage";
 import {
   Text,
@@ -15,6 +14,7 @@ import {
   View,
   Button,
 } from "react-native";
+import { Input } from "react-native-elements";
 import {
   FIREBASE_API_KEY,
   FIREBASE_AUTH_DOMAIN,
