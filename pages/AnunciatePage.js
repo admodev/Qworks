@@ -14,12 +14,15 @@ import "firebase/auth";
 import "firebase/database";
 import * as ImagePicker from "expo-image-picker";
 import * as Updates from "expo-updates";
-let database = firebase.database();
-let user = firebase.auth().currentUser;
-let storage = firebase.storage();
-let storageRef = storage.ref();
-var userDefaultImage = storageRef.child("userDefaultImage/icon.png");
+
 const AnunciatePage = ({ navigation }) => {
+  let database = firebase.database();
+  let user = firebase.auth().currentUser;
+  let id = user.uid;
+  let storage = firebase.storage();
+  let storageRef = storage.ref();
+  var userDefaultImage = storageRef.child("userDefaultImage/icon.png");
+
   const [image, setImage] = useState(null);
   const [nombre, setNombre] = useState("");
   const [apellido, setApellido] = useState("");
@@ -284,6 +287,8 @@ const AnunciatePage = ({ navigation }) => {
           <Input
             placeholder="Email Personal"
             style={{ color: "#ffffff", fontSize: 16 }}
+            keyboardType="email-address"
+            autoCapitalize="none"
             onChangeText={(emailPersonal) => setEmailPersonal(emailPersonal)}
             value={emailPersonal}
           />
@@ -302,6 +307,7 @@ const AnunciatePage = ({ navigation }) => {
           <Input
             placeholder="CUIL / CUIT"
             style={{ color: "#ffffff", fontSize: 16 }}
+            keyboardType="numeric"
             onChangeText={(cuitCuil) => setCuitCuil(cuitCuil)}
             value={cuitCuil}
           />
@@ -322,46 +328,57 @@ const AnunciatePage = ({ navigation }) => {
           </Text>
           <Input
             placeholder="Actividad"
+            style={{ color: "#ffffff", fontSize: 16 }}
             onChangeText={(actividad) => setActividad(actividad)}
             value={actividad}
           />
           <Input
             placeholder="Teléfono"
+            style={{ color: "#ffffff", fontSize: 16 }}
+            keyboardType="phone-pad"
             onChangeText={(telefono) => setTelefono(telefono)}
             value={telefono}
           />
           <Input
             placeholder="Celular"
+            style={{ color: "#ffffff", fontSize: 16 }}
+            keyboardType="phone-pad"
             onChangeText={(celular) => setCelular(celular)}
             value={celular}
           />
           <Input
             placeholder="Provincia"
+            style={{ color: "#ffffff", fontSize: 16 }}
             onChangeText={(provincia) => setProvincia(provincia)}
             value={provincia}
           />
           <Input
             placeholder="Localidad"
+            style={{ color: "#ffffff", fontSize: 16 }}
             onChangeText={(localidad) => setLocalidad(localidad)}
             value={localidad}
           />
           <Input
             placeholder="Local"
+            style={{ color: "#ffffff", fontSize: 16 }}
             onChangeText={(local) => setLocal(local)}
             value={local}
           />
           <Input
             placeholder="Empresa"
+            style={{ color: "#ffffff", fontSize: 16 }}
             onChangeText={(empresa) => setEmpresa(empresa)}
             value={empresa}
           />
           <Input
             placeholder="Factura"
+            style={{ color: "#ffffff", fontSize: 16 }}
             onChangeText={(factura) => setFactura(factura)}
             value={factura}
           />
           <Input
             placeholder="Dirección del local"
+            style={{ color: "#ffffff", fontSize: 16 }}
             onChangeText={(direccionDelLocal) =>
               setDireccionDelLocal(direccionDelLocal)
             }
@@ -369,6 +386,7 @@ const AnunciatePage = ({ navigation }) => {
           />
           <Input
             placeholder="Nombre de la empresa"
+            style={{ color: "#ffffff", fontSize: 16 }}
             onChangeText={(nombreDeLaEmpresa) =>
               setNombreDeLaEmpresa(nombreDeLaEmpresa)
             }
@@ -376,11 +394,14 @@ const AnunciatePage = ({ navigation }) => {
           />
           <Input
             placeholder="Matrícula"
+            style={{ color: "#ffffff", fontSize: 16 }}
             onChangeText={(matricula) => setMatricula(matricula)}
             value={matricula}
           />
           <Input
             placeholder="Número de matrícula"
+            style={{ color: "#ffffff", fontSize: 16 }}
+            keyboardType="numeric"
             onChangeText={(numeroDeMatricula) =>
               setNumeroDeMatricula(numeroDeMatricula)
             }
@@ -388,6 +409,9 @@ const AnunciatePage = ({ navigation }) => {
           />
           <Input
             placeholder="Email laboral"
+            style={{ color: "#ffffff", fontSize: 16 }}
+            keyboardType="email-address"
+            autoCapitalize="none"
             onChangeText={(emailLaboral) => setEmailLaboral(emailLaboral)}
             value={emailLaboral}
           />
@@ -563,6 +587,7 @@ const AnunciatePage = ({ navigation }) => {
           <View style={{ width: "80%" }}>
             <Input
               placeholder="Desde ... hs"
+              style={{ color: "#ffffff", fontSize: 16 }}
               containerStyle={{
                 backgroundColor: "transparent",
                 borderColor: "transparent",
@@ -572,9 +597,11 @@ const AnunciatePage = ({ navigation }) => {
                 marginRight: "auto",
               }}
               textStyle={{ color: "#ffffff" }}
+              keyboardType="numeric"
             />
             <Input
               placeholder="Hasta ... hs"
+              style={{ color: "#ffffff", fontSize: 16 }}
               containerStyle={{
                 backgroundColor: "transparent",
                 borderColor: "transparent",
@@ -584,6 +611,7 @@ const AnunciatePage = ({ navigation }) => {
                 marginRight: "auto",
               }}
               textStyle={{ color: "#ffffff" }}
+              keyboardType="numeric"
             />
           </View>
         </View>
