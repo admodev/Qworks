@@ -14,6 +14,7 @@ import "firebase/auth";
 import "firebase/database";
 import * as ImagePicker from "expo-image-picker";
 import * as Updates from "expo-updates";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
 const AnunciatePage = ({ navigation }) => {
   let database = firebase.database();
@@ -614,6 +615,58 @@ const AnunciatePage = ({ navigation }) => {
               keyboardType="numeric"
             />
           </View>
+        </View>
+        <Text h3 style={{ color: "#fff" }}>
+          Medios De Pago
+        </Text>
+        <View
+          style={{
+            flex: 1,
+            flexDirection: "row",
+            marginTop: 10,
+            marginBottom: 10,
+          }}
+        >
+          <MaterialCommunityIcons
+            name="cash-usd"
+            color={"#fff"}
+            size={35}
+            style={{ marginTop: 20 }}
+          />
+          <CheckBox
+            title="Efectivo"
+            containerStyle={{
+              backgroundColor: "transparent",
+              borderColor: "transparent",
+              borderWidth: 0,
+              marginTop: 15,
+              marginLeft: "auto",
+              marginRight: "auto",
+            }}
+            textStyle={{ color: "#ffffff" }}
+            checkedColor={"white"}
+            checked={true}
+          />
+          <MaterialCommunityIcons
+            name="card-bulleted-outline"
+            color={"#fff"}
+            size={35}
+            style={{ marginTop: 20 }}
+          />
+          <CheckBox
+            title="Mercado Pago"
+            containerStyle={{
+              backgroundColor: "transparent",
+              borderColor: "transparent",
+              borderWidth: 0,
+              marginTop: 15,
+              marginLeft: "auto",
+              marginRight: "auto",
+            }}
+            textStyle={{ color: "#ffffff" }}
+            checkedColor={"white"}
+            checked={true}
+          />
         </View>
         <View
           style={{

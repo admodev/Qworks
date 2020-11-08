@@ -3,6 +3,7 @@ import {
   TouchableOpacity,
   StyleSheet,
   Image,
+  Platform,
   View,
   ScrollView,
   SafeAreaView,
@@ -18,6 +19,7 @@ import { StackActions } from "@react-navigation/native";
 import CardsUsuarios from "./Cards";
 import { concat } from "react-native-reanimated";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import * as Sharing from "expo-sharing";
 
 const AnunciosPage = ({ route }) => {
   let user = firebase.auth().currentUser;
@@ -53,6 +55,14 @@ const AnunciosPage = ({ route }) => {
     //      .catch(function (error) {
     //        console.log("Error deleting user:", error);
     //      });
+  }
+
+  function shareContent() {
+    let options;
+    Platform.OS === "ios" ? (options = "UTI") : (options = "mimeType");
+    Sharing.isAvailableAsync().then(function () {
+      Sharing.shareAsync(dbRef, options);
+    });
   }
 
   return (
@@ -169,6 +179,29 @@ const AnunciosPage = ({ route }) => {
           >
             {emailPersonal}
           </Text>
+          <TouchableOpacity
+            style={{
+              borderRadius: 0,
+              marginLeft: 0,
+              marginRight: 0,
+              marginBottom: 0,
+              marginTop: 20,
+              backgroundColor: "transparent",
+            }}
+            onPress={() => shareContent()}
+          >
+            <Text
+              style={{
+                color: "#fff",
+                marginLeft: "auto",
+                marginRight: "auto",
+                fontSize: 16,
+                marginBottom: 10,
+              }}
+            >
+              Compartir
+            </Text>
+          </TouchableOpacity>
           <TouchableOpacity
             onPress={() => RootNavigation.navigate("EditarAnuncioScreen")}
             style={{
