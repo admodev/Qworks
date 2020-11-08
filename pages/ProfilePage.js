@@ -10,7 +10,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { Avatar, Button, SocialIcon } from "react-native-elements";
+import { Avatar, Button, Overlay, SocialIcon } from "react-native-elements";
 import Icon from "react-native-vector-icons/FontAwesome";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import * as Location from "expo-location";
@@ -108,6 +108,11 @@ const ProfilePage = ({ navigation }) => {
       });
   }
 
+  const [visible, setVisible] = useState(false);
+  const toggleOverlay = () => {
+    setVisible(!visible);
+  };
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <Image
@@ -141,6 +146,33 @@ const ProfilePage = ({ navigation }) => {
               marginLeft: 15,
             }}
           >
+            <Overlay
+              isVisible={visible}
+              onBackdropPress={toggleOverlay}
+              overlayStyle={{ width: "85%", height: "85%", borderRadius: 10 }}
+            >
+              {image == null ? (
+                <Avatar
+                  rounded
+                  source={require("../assets/icon.png")}
+                  size="xlarge"
+                  style={{
+                    width: 60,
+                    height: 60,
+                  }}
+                />
+              ) : (
+                <Avatar
+                  rounded
+                  source={{ uri: image }}
+                  size="xlarge"
+                  style={{
+                    width: 60,
+                    height: 60,
+                  }}
+                />
+              )}
+            </Overlay>
             {image ? (
               <Avatar
                 rounded

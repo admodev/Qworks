@@ -1,83 +1,97 @@
-import React from "react";
-import { Image, SafeAreaView, ScrollView } from "react-native";
-import { Avatar, ListItem } from "react-native-elements";
-import { TouchableOpacity } from "react-native-gesture-handler";
-import * as RootNavigation from "../RootNavigation.js";
+import React, { useState, setState } from "react";
+import {
+  TouchableOpacity,
+  StyleSheet,
+  Image,
+  View,
+  ScrollView,
+  SafeAreaView,
+  Text,
+} from "react-native";
+import {
+  Avatar,
+  Button,
+  Card,
+  Icon,
+  Input,
+  ListItem,
+} from "react-native-elements";
 import * as firebase from "firebase";
-import "firebase/auth";
+import "firebase/firestore";
 import "firebase/database";
+import "firebase/auth";
+import * as RootNavigation from "../RootNavigation.js";
+import { StackActions } from "@react-navigation/native";
 
 var itm = [];
+let image;
 
-export default class MessagesScreen extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      items: [],
-    };
-  }
-
-  componentDidMount() {
-    let user = firebase.auth().currentUser;
-    let id = user.uid;
-    let dbRef = firebase
-      .database()
-      .ref("chats/")
-      .orderByChild("id")
-      .equalTo(id);
-    dbRef.on("value", (snap) => {
-      let items = [];
-      snap.forEach((child) => {
-        items.push({
-          image: child.val().image,
-          nombre: child.val().nombre,
-          message: child.val().message,
-          idAnuncio: child.val().id,
-        });
-      });
-      itm = items;
-      this.setState({ items: items });
-      console.log(itm);
-      console.log("itemstate " + this.state.items);
-      itm.forEach((itms) => {
-        console.log("title*" + itms.title);
-      });
-    });
-  }
-
+class MessagesScreen extends React.Component {
   render() {
+    let defaultImage = require("../assets/icon.png");
+    let image;
+    const list = [
+      {
+        nombre: "Usuario",
+        avatar_url: image == null ? defaultImage : image,
+        mensaje: "Mensaje de chat acá",
+      },
+      {
+        nombre: "Usuario",
+        avatar_url: image == null ? defaultImage : image,
+        mensaje: "Mensaje de chat acá",
+      },
+      {
+        nombre: "Usuario",
+        avatar_url: image == null ? defaultImage : image,
+        mensaje: "Mensaje de chat acá",
+      },
+      {
+        nombre: "Usuario",
+        avatar_url: image == null ? defaultImage : image,
+        mensaje: "Mensaje de chat acá",
+      },
+    ];
     return (
       <SafeAreaView style={{ flex: 1 }}>
-        <Image
-          source={require("../assets/gradients/20x20.png")}
-          style={{
-            flex: 1,
-            position: "absolute",
-            resizeMode: "cover",
-            width: "100%",
-            height: "5%",
-          }}
-        />
-        <ScrollView showsVerticalScrollIndicator={false}>
-          {this.state.items.map((u, i) => {
-            <ListItem key={i} bottomDivider>
-              {image == null ? (
-                <Avatar source={require("../assets/icon.png")} />
-              ) : (
-                <Avatar source={{ uri: u.image }} />
-              )}
-              <TouchableOpacity
-                onPress={() => RootNavigation.navigate("ChatComponent")}
-              >
-                <ListItem.Content>
-                  <ListItem.Title>{u.nombre}</ListItem.Title>
-                  <ListItem.Subtitle>{u.message}</ListItem.Subtitle>
-                </ListItem.Content>
-              </TouchableOpacity>
-            </ListItem>;
-          })}
-        </ScrollView>
+        {list.map((l, i) => (
+          <ListItem key={i} bottomDivider>
+            <Avatar source={{ uri: l.avatar_url }} />
+            <ListItem.Content>
+              <ListItem.Title>{l.nombre}</ListItem.Title>
+              <ListItem.Subtitle>{l.mensaje}</ListItem.Subtitle>
+            </ListItem.Content>
+          </ListItem>
+        ))}
       </SafeAreaView>
     );
   }
 }
+
+const styles = StyleSheet.create({
+  button: {
+    alignItems: "center",
+    backgroundColor: "#DDDDDD",
+    padding: 10,
+    width: 300,
+    marginTop: 16,
+  },
+  card: {
+    marginTop: 50,
+    backgroundColor: "#483D8B",
+    shadowColor: "#000",
+    borderRadius: 15,
+    paddingTop: -5,
+    paddingBottom: 2,
+    marginBottom: 100,
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+  },
+});
+
+export default MessagesScreen;

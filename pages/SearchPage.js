@@ -18,6 +18,7 @@ import { StackActions } from "@react-navigation/native";
 import SearchedCardResult from "../components/searchedCard";
 
 var itm = [];
+let image;
 
 class SearchPage extends React.Component {
   constructor(props) {
@@ -82,6 +83,16 @@ class SearchPage extends React.Component {
     var user = firebase.auth().currentUser;
     return (
       <SafeAreaView style={{ flex: 1 }}>
+        <Image
+          source={require("../assets/gradients/20x20.png")}
+          style={{
+            flex: 1,
+            position: "absolute",
+            resizeMode: "cover",
+            width: "100%",
+            height: "3%",
+          }}
+        />
         <TouchableOpacity onPress={openControlPanel}>
           <View
             style={{
@@ -106,13 +117,13 @@ class SearchPage extends React.Component {
             />
             <Input
               placeholder="Buscar en  ¡QuedeOficios!"
+              autoFocus={true}
               inputStyle={{
                 justifyContent: "center",
                 marginLeft: 25,
                 marginTop: -10,
               }}
               containerStyle={{ marginLeft: 10, marginTop: -10 }}
-              autoFocus={true}
               onChangeText={(search) => this.setState({ search })}
             />
           </View>
@@ -174,7 +185,7 @@ class SearchPage extends React.Component {
                       borderRadius: 10,
                     }}
                   />
-                  {u.image == null ? (
+                  {image == null ? (
                     <Card.Image
                       source={require("../assets/icon.png")}
                       style={{
