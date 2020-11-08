@@ -10,7 +10,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { Button, SocialIcon } from "react-native-elements";
+import { Avatar, Button, SocialIcon } from "react-native-elements";
 import Icon from "react-native-vector-icons/FontAwesome";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import * as Location from "expo-location";
@@ -142,8 +142,10 @@ const ProfilePage = ({ navigation }) => {
             }}
           >
             {image ? (
-              <Image
+              <Avatar
+                rounded
                 source={{ uri: image }}
+                size="xlarge"
                 style={{
                   width: 60,
                   height: 60,

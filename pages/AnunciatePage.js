@@ -14,14 +14,11 @@ import "firebase/auth";
 import "firebase/database";
 import * as ImagePicker from "expo-image-picker";
 import * as Updates from "expo-updates";
-import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-
 let database = firebase.database();
 let user = firebase.auth().currentUser;
 let storage = firebase.storage();
 let storageRef = storage.ref();
 var userDefaultImage = storageRef.child("userDefaultImage/icon.png");
-
 const AnunciatePage = ({ navigation }) => {
   const [image, setImage] = useState(null);
   const [nombre, setNombre] = useState("");
@@ -48,11 +45,8 @@ const AnunciatePage = ({ navigation }) => {
   const [diasHorarios, setDiasHorarios] = useState([]);
   const [desde, setDesde] = useState("");
   const [hasta, setHasta] = useState("");
-  const [mediosDePago, setMediosDePago] = useState([]);
-  const [efectivo, toggleEfectivo] = useState(false);
-  const [mercadoPago, toggleMercadoPago] = useState(false);
   const [terminos, setTerminos] = useState(false);
-  // Pasar valores booleanos (por ejemplo: tengoWhatsapp de falso a verdadero y viceversa.)
+  // Pasar valores booleanos (por ejemplo: tengoWhatsapp de falso a verdadero y viceversa.
   const toggleWhatsapp = React.useCallback(() =>
     setTengoWhatsapp(!tengoWhatsapp)
   );
@@ -101,52 +95,34 @@ const AnunciatePage = ({ navigation }) => {
   const toggleHastaPmChecked = React.useCallback(() =>
     setHastaPmChecked(!hastaPmChecked)
   );
-
-  function setEfectivo() {
-    setMediosDePago(mediosDePago.concat("Efectivo"));
-    toggleEfectivo(!efectivo);
-  }
-
-  function setMercadoPago() {
-    setMediosDePago(mediosDePago.concat("MercadoPago"));
-    toggleMercadoPago(!mercadoPago);
-  }
-
   function concatLunes() {
     setDiasHorarios(diasHorarios.concat("Lunes"));
     toggleLunesChecked();
   }
-
   function concatMartes() {
     setDiasHorarios(diasHorarios.concat("Martes"));
     toggleMartesChecked();
   }
-
   function concatMiercoles() {
     setDiasHorarios(diasHorarios.concat("Miercoles"));
     toggleMiercolesChecked();
   }
-
   function concatJueves() {
     setDiasHorarios(diasHorarios.concat("Jueves"));
     toggleJuevesChecked();
   }
-
   function concatViernes() {
     setDiasHorarios(diasHorarios.concat("Viernes"));
     toggleViernesChecked();
   }
-
   function concatSabado() {
     setDiasHorarios(diasHorarios.concat("Sabado"));
     toggleSabadoChecked();
   }
-
   function concatDomingo() {
     setDiasHorarios(diasHorarios.concat("Domingo"));
     toggleDomingoChecked();
   }
-
   function writeUserData(
     image,
     nombre,
@@ -173,15 +149,14 @@ const AnunciatePage = ({ navigation }) => {
     diasHorarios,
     desde,
     hasta,
-    terminos,
-    mediosDePago
+    terminos
   ) {
-    let dbRef = firebase.database().ref("anuncios/");
-    let refPush = dbRef.push();
-    refPush
+    firebase
+      .database()
+      .ref("anuncios/" + user.uid)
       .set({
         id: user.uid,
-        image: image,
+        image,
         nombre: nombre,
         apellido: apellido,
         emailPersonal: emailPersonal,
@@ -207,22 +182,16 @@ const AnunciatePage = ({ navigation }) => {
         desde: desde,
         hasta: hasta,
         terminos: terminos,
-        mediosDePago: mediosDePago,
       })
       .then(function () {
-        var storageRef = firebase.storage().ref();
-        var imageRef = storageRef.child("image.jpg");
-        var imagesRef = storageRef.child("userProfilePics/image.jpg");
-        var file = image;
-        imagesRef.put(file).then(function (snapshot) {
-          console.log("Uploaded a blob or file!");
-        });
+        if (error) {
+          console.log(error);
+        }
       })
       .finally(() => {
         Updates.reloadAsync();
       });
   }
-
   useEffect(() => {
     (async () => {
       if (Platform.OS !== "web") {
@@ -237,7 +206,6 @@ const AnunciatePage = ({ navigation }) => {
       }
     })();
   }, []);
-
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
@@ -245,9 +213,12 @@ const AnunciatePage = ({ navigation }) => {
       aspect: [4, 3],
       quality: 0.5,
     });
-
+    console.log(result);
+    if (!result.cancelled) {
+      setImage(result.uri);
+    }
     if (result.uri) {
-      (image) => setImage(result.uri);
+      setImage(result.uri);
     }
   };
   return (
@@ -274,8 +245,9 @@ const AnunciatePage = ({ navigation }) => {
           <Text h3 style={{ color: "#fff", marginTop: 30, marginBottom: 25 }}>
             Foto de Perfil
           </Text>
-          {image && <Avatar rounded source={{ uri: image }} size="xlarge" />}
-          {image == null && (
+          {image ? (
+            <Avatar rounded source={{ uri: image }} size="xlarge" />
+          ) : (
             <Button
               buttonStyle={{ marginTop: 10, backgroundColor: "#F4743B" }}
               title="Subir foto"
@@ -624,60 +596,6 @@ const AnunciatePage = ({ navigation }) => {
           }}
         >
           <Text h3 style={{ color: "#fff" }}>
-            Medios De Pago
-          </Text>
-          <View
-            style={{
-              flex: 1,
-              flexDirection: "row",
-              marginTop: 10,
-              marginBottom: 10,
-            }}
-          >
-            <MaterialCommunityIcons
-              name="cash-usd"
-              color={"#fff"}
-              size={35}
-              style={{ marginTop: 20 }}
-            />
-            <CheckBox
-              title="Efectivo"
-              containerStyle={{
-                backgroundColor: "transparent",
-                borderColor: "transparent",
-                borderWidth: 0,
-                marginTop: 15,
-                marginLeft: "auto",
-                marginRight: "auto",
-              }}
-              textStyle={{ color: "#ffffff" }}
-              checkedColor={"white"}
-              onPress={() => setEfectivo()}
-              checked={efectivo}
-            />
-            <MaterialCommunityIcons
-              name="card-bulleted-outline"
-              color={"#fff"}
-              size={35}
-              style={{ marginTop: 20 }}
-            />
-            <CheckBox
-              title="Mercado Pago"
-              containerStyle={{
-                backgroundColor: "transparent",
-                borderColor: "transparent",
-                borderWidth: 0,
-                marginTop: 15,
-                marginLeft: "auto",
-                marginRight: "auto",
-              }}
-              textStyle={{ color: "#ffffff" }}
-              checkedColor={"white"}
-              onPress={() => setMercadoPago()}
-              checked={mercadoPago}
-            />
-          </View>
-          <Text h3 style={{ color: "#fff" }}>
             Términos y condiciones
           </Text>
           <CheckBox
@@ -708,6 +626,7 @@ const AnunciatePage = ({ navigation }) => {
           <Button
             onPress={() =>
               writeUserData(
+                image,
                 nombre,
                 apellido,
                 emailPersonal,
@@ -745,5 +664,4 @@ const AnunciatePage = ({ navigation }) => {
     </View>
   );
 };
-
 export default AnunciatePage;

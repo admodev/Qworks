@@ -15,6 +15,7 @@ import "firebase/database";
 import "firebase/auth";
 import * as RootNavigation from "../RootNavigation.js";
 import { StackActions } from "@react-navigation/native";
+import SearchedCardResult from "../components/searchedCard";
 
 var itm = [];
 
@@ -23,9 +24,10 @@ class SearchPage extends React.Component {
     super(props);
     this.state = {
       items: [],
-      searchText: "",
+      search: "",
     };
   }
+
   componentDidMount() {
     firebase
       .database()
@@ -35,6 +37,7 @@ class SearchPage extends React.Component {
         let items = [];
         snap.forEach((child) => {
           items.push({
+            image: child.val().image,
             nombre: child.val().nombre,
             apellido: child.val().apellido,
             actividad: child.val().actividad,
@@ -60,6 +63,15 @@ class SearchPage extends React.Component {
       }
     });
   }
+  filterList(items) {
+    return items.filter(
+      (itm) =>
+        itm.nombre.toLowerCase().includes(this.state.search.toLowerCase()) ||
+        itm.apellido.toLowerCase().includes(this.state.search.toLowerCase()) ||
+        itm.actividad.toLowerCase().includes(this.state.search.toLowerCase())
+    );
+  }
+
   render() {
     const closeControlPanel = () => {
       _drawer.close();
@@ -94,269 +106,151 @@ class SearchPage extends React.Component {
             />
             <Input
               placeholder="Buscar en  ¡QuedeOficios!"
-              autoFocus={true}
               inputStyle={{
                 justifyContent: "center",
                 marginLeft: 25,
                 marginTop: -10,
               }}
               containerStyle={{ marginLeft: 10, marginTop: -10 }}
-              onChangeText={() => alert("placeholder")}
-              value={this.searchText}
+              autoFocus={true}
+              onChangeText={(search) => this.setState({ search })}
             />
           </View>
         </TouchableOpacity>
-        <ScrollView showsVerticalScrollIndicator={false}>
-          {this.searchText ? (
-            <Card
-              style={styles.card}
-              containerStyle={{
-                padding: 0,
-                borderRadius: 15,
-                backgroundColor: "transparent",
-                borderWidth: 0,
-                marginTop: 50,
-              }}
-            >
-              {this.state.items.map((u, i) => {
-                let storage = firebase.storage();
-                let storageRef = storage.ref();
-                let defaultImageRef = storageRef
-                  .child("defaultUserImage/icon.png")
-                  .toString();
-                let userProfilePic = storageRef
-                  .child("userProfilePics/")
-                  .child(u.idAnuncio).child;
-                return (
-                  <View
-                    key={i}
-                    style={{ margin: 25, backgroundColor: "transparent" }}
+        {this.state.search ? (
+          this.filterList(this.state.items).map((itm, index) => (
+            <SearchedCardResult
+              key={index}
+              nombre={itm.nombre}
+              apellido={itm.apellido}
+              actividad={itm.actividad}
+            />
+          ))
+        ) : (
+          <Card
+            style={styles.card}
+            containerStyle={{
+              padding: 0,
+              borderRadius: 15,
+              backgroundColor: "transparent",
+              borderWidth: 0,
+              marginTop: 50,
+            }}
+          >
+            {this.state.items.map((u, i) => {
+              let storage = firebase.storage();
+              let storageRef = storage.ref();
+              let defaultImageRef = storageRef
+                .child("defaultUserImage/icon.png")
+                .toString();
+              let userProfilePic = storageRef
+                .child("userProfilePics/")
+                .child(u.idAnuncio).child;
+              return (
+                <View
+                  key={i}
+                  style={{ margin: 25, backgroundColor: "transparent" }}
+                >
+                  <Image
+                    source={require("../assets/patron.jpg")}
+                    style={{
+                      flex: 1,
+                      position: "absolute",
+                      resizeMode: "cover",
+                      width: "100%",
+                      height: "100%",
+                      borderRadius: 10,
+                    }}
+                  />
+                  <Image
+                    source={require("../assets/gradients/20x20.png")}
+                    style={{
+                      flex: 1,
+                      position: "absolute",
+                      resizeMode: "cover",
+                      width: "100%",
+                      height: "100%",
+                      opacity: 0.9,
+                      borderRadius: 10,
+                    }}
+                  />
+                  {u.image == null ? (
+                    <Card.Image
+                      source={require("../assets/icon.png")}
+                      style={{
+                        borderRadius: 100,
+                        marginTop: 10,
+                        marginBottom: 20,
+                        marginLeft: 60,
+                        marginRight: 60,
+                      }}
+                    />
+                  ) : (
+                    <Card.Image
+                      source={{ uri: image }}
+                      style={{
+                        borderRadius: 100,
+                        marginTop: 10,
+                        marginBottom: 20,
+                        marginLeft: 60,
+                        marginRight: 60,
+                      }}
+                    />
+                  )}
+                  <Text
+                    style={{
+                      marginLeft: "auto",
+                      marginRight: "auto",
+                      textAlign: "center",
+                      fontSize: 20,
+                      color: "#fff",
+                    }}
                   >
-                    <Image
-                      source={require("../assets/patron.jpg")}
-                      style={{
-                        flex: 1,
-                        position: "absolute",
-                        resizeMode: "cover",
-                        width: "100%",
-                        height: "100%",
-                        borderRadius: 10,
-                      }}
-                    />
-                    <Image
-                      source={require("../assets/gradients/20x20.png")}
-                      style={{
-                        flex: 1,
-                        position: "absolute",
-                        resizeMode: "cover",
-                        width: "100%",
-                        height: "100%",
-                        opacity: 0.9,
-                        borderRadius: 10,
-                      }}
-                    />
-                    {u.image == null ? (
-                      <Card.Image
-                        source={require("../assets/icon.png")}
-                        style={{
-                          borderRadius: 100,
-                          marginTop: 10,
-                          marginBottom: 20,
-                          marginLeft: 60,
-                          marginRight: 60,
-                        }}
-                      />
-                    ) : (
-                      <Card.Image
-                        source={{ uri: image }}
-                        style={{
-                          borderRadius: 100,
-                          marginTop: 10,
-                          marginBottom: 20,
-                          marginLeft: 60,
-                          marginRight: 60,
-                        }}
-                      />
-                    )}
-                    <Text
-                      style={{
-                        marginLeft: "auto",
-                        marginRight: "auto",
-                        textAlign: "center",
-                        fontSize: 20,
-                        color: "#fff",
-                      }}
-                    >
-                      {u.nombre} {u.apellido}
-                    </Text>
-                    <Text
-                      style={{
-                        marginLeft: "auto",
-                        marginRight: "auto",
-                        marginBottom: 10,
-                        textAlign: "center",
-                        fontSize: 20,
-                        color: "#fff",
-                      }}
-                    >
-                      {u.actividad}
-                    </Text>
-                    <TouchableOpacity
-                      onPress={() => {
-                        RootNavigation.navigate("AnuncioSeleccionado", {
-                          id: u.idAnuncio,
-                        });
-                      }}
-                      style={{
-                        borderRadius: 0,
-                        marginLeft: 0,
-                        marginRight: 0,
-                        marginBottom: 0,
-                        backgroundColor: "transparent",
-                      }}
-                    >
-                      <Text
-                        style={{
-                          color: "#fff",
-                          marginLeft: "auto",
-                          marginRight: "auto",
-                          fontSize: 16,
-                          marginBottom: 10,
-                        }}
-                      >
-                        Previsualizar
-                      </Text>
-                    </TouchableOpacity>
-                  </View>
-                );
-              })}
-            </Card>
-          ) : (
-            <Card
-              style={styles.card}
-              containerStyle={{
-                padding: 0,
-                borderRadius: 15,
-                backgroundColor: "transparent",
-                borderWidth: 0,
-                marginTop: 50,
-              }}
-            >
-              {this.state.items.map((u, i) => {
-                let storage = firebase.storage();
-                let storageRef = storage.ref();
-                let defaultImageRef = storageRef
-                  .child("defaultUserImage/icon.png")
-                  .toString();
-                let userProfilePic = storageRef
-                  .child("userProfilePics/")
-                  .child(u.idAnuncio).child;
-                return (
-                  <View
-                    key={i}
-                    style={{ margin: 25, backgroundColor: "transparent" }}
+                    {u.nombre} {u.apellido}
+                  </Text>
+                  <Text
+                    style={{
+                      marginLeft: "auto",
+                      marginRight: "auto",
+                      marginBottom: 10,
+                      textAlign: "center",
+                      fontSize: 20,
+                      color: "#fff",
+                    }}
                   >
-                    <Image
-                      source={require("../assets/patron.jpg")}
-                      style={{
-                        flex: 1,
-                        position: "absolute",
-                        resizeMode: "cover",
-                        width: "100%",
-                        height: "100%",
-                        borderRadius: 10,
-                      }}
-                    />
-                    <Image
-                      source={require("../assets/gradients/20x20.png")}
-                      style={{
-                        flex: 1,
-                        position: "absolute",
-                        resizeMode: "cover",
-                        width: "100%",
-                        height: "100%",
-                        opacity: 0.9,
-                        borderRadius: 10,
-                      }}
-                    />
-                    {u.image == null ? (
-                      <Card.Image
-                        source={require("../assets/icon.png")}
-                        style={{
-                          borderRadius: 100,
-                          marginTop: 10,
-                          marginBottom: 20,
-                          marginLeft: 60,
-                          marginRight: 60,
-                        }}
-                      />
-                    ) : (
-                      <Card.Image
-                        source={{ uri: image }}
-                        style={{
-                          borderRadius: 100,
-                          marginTop: 10,
-                          marginBottom: 20,
-                          marginLeft: 60,
-                          marginRight: 60,
-                        }}
-                      />
-                    )}
+                    {u.actividad}
+                  </Text>
+                  <TouchableOpacity
+                    onPress={() => {
+                      RootNavigation.navigate("AnuncioSeleccionado", {
+                        id: u.idAnuncio,
+                      });
+                    }}
+                    style={{
+                      borderRadius: 0,
+                      marginLeft: 0,
+                      marginRight: 0,
+                      marginBottom: 0,
+                      backgroundColor: "transparent",
+                    }}
+                  >
                     <Text
                       style={{
-                        marginLeft: "auto",
-                        marginRight: "auto",
-                        textAlign: "center",
-                        fontSize: 20,
                         color: "#fff",
-                      }}
-                    >
-                      {u.nombre} {u.apellido}
-                    </Text>
-                    <Text
-                      style={{
                         marginLeft: "auto",
                         marginRight: "auto",
+                        fontSize: 16,
                         marginBottom: 10,
-                        textAlign: "center",
-                        fontSize: 20,
-                        color: "#fff",
                       }}
                     >
-                      {u.actividad}
+                      Previsualizar
                     </Text>
-                    <TouchableOpacity
-                      onPress={() => {
-                        RootNavigation.navigate("AnuncioSeleccionado", {
-                          id: u.idAnuncio,
-                        });
-                      }}
-                      style={{
-                        borderRadius: 0,
-                        marginLeft: 0,
-                        marginRight: 0,
-                        marginBottom: 0,
-                        backgroundColor: "transparent",
-                      }}
-                    >
-                      <Text
-                        style={{
-                          color: "#fff",
-                          marginLeft: "auto",
-                          marginRight: "auto",
-                          fontSize: 16,
-                          marginBottom: 10,
-                        }}
-                      >
-                        Previsualizar
-                      </Text>
-                    </TouchableOpacity>
-                  </View>
-                );
-              })}
-            </Card>
-          )}
-        </ScrollView>
+                  </TouchableOpacity>
+                </View>
+              );
+            })}
+          </Card>
+        )}
       </SafeAreaView>
     );
   }

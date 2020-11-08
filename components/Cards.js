@@ -18,6 +18,7 @@ import { StackActions } from "@react-navigation/native";
 import SearchedCardResult from "./searchedCard";
 
 var itm = [];
+let image;
 
 class CardsUsuarios extends React.Component {
   constructor(props) {
@@ -173,7 +174,7 @@ class CardsUsuarios extends React.Component {
                       borderRadius: 10,
                     }}
                   />
-                  {u.image == null ? (
+                  {image == null ? (
                     <Card.Image
                       source={require("../assets/icon.png")}
                       style={{
