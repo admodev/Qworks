@@ -20,6 +20,7 @@ import CardsUsuarios from "./Cards";
 import { concat } from "react-native-reanimated";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import * as Sharing from "expo-sharing";
+import * as Updates from "expo-updates";
 
 const AnunciosPage = ({ route }) => {
   let user = firebase.auth().currentUser;
@@ -41,7 +42,8 @@ const AnunciosPage = ({ route }) => {
   });
 
   function eliminarAnuncio() {
-    dbRef.remove();
+    firebase.database().ref("anuncios/").child(id).remove();
+    Updates.reloadAsync();
   }
 
   function eliminarCuenta() {
@@ -179,6 +181,29 @@ const AnunciosPage = ({ route }) => {
           >
             {emailPersonal}
           </Text>
+          <TouchableOpacity
+            style={{
+              borderRadius: 0,
+              marginLeft: 0,
+              marginRight: 0,
+              marginBottom: 0,
+              marginTop: 20,
+              backgroundColor: "transparent",
+            }}
+            onPress={() => shareContent()}
+          >
+            <Text
+              style={{
+                color: "#fff",
+                marginLeft: "auto",
+                marginRight: "auto",
+                fontSize: 16,
+                marginBottom: 10,
+              }}
+            >
+              Mis Redes
+            </Text>
+          </TouchableOpacity>
           <TouchableOpacity
             style={{
               borderRadius: 0,
