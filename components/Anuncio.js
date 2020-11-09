@@ -31,7 +31,28 @@ import * as Updates from "expo-updates";
 const AnuncioSeleccionado = ({ route }) => {
   let id = route.params.id;
   let routeParamsToString = id.toString();
-  let image, nombre, apellido, actividad, emailPersonal;
+  let image,
+    nombre,
+    apellido,
+    actividad,
+    emailPersonal,
+    celular,
+    descripcionPersonal,
+    desde,
+    diasHorarios,
+    direccionDelLocal,
+    emailLaboral,
+    empresa,
+    factura,
+    hasta,
+    local,
+    localidad,
+    matricula,
+    nombreDeLaEmpresa,
+    numeroDeMatricula,
+    pisoDptoCasa,
+    provincia,
+    telefono;
   let dbRef = firebase
     .database()
     .ref("anuncios/")
@@ -45,6 +66,17 @@ const AnuncioSeleccionado = ({ route }) => {
       actividad = child.val().actividad;
       emailPersonal = child.val().emailPersonal;
       id = child.val().id;
+      celular = child.val().celular;
+      descripcionPersonal = child.val().descripcionPersonal;
+      desde = child.val().desde;
+      diasHorarios = child.val().diasHorarios;
+      direccionDelLocal = child.val().direccionDelLocal;
+      emailLaboral = child.val().emailLaboral;
+      empresa = child.val().empresa;
+      factura = child.val().factura;
+      hasta = child.val().hasta;
+      local = child.val().local;
+      localidad = child.val().localidad;
     });
   });
   let storage = firebase.storage();
@@ -88,146 +120,280 @@ const AnuncioSeleccionado = ({ route }) => {
 
   return (
     <SafeAreaView style={{ margin: 25, backgroundColor: "transparent" }}>
-      <Card
-        style={styles.card}
-        containerStyle={{
-          padding: 0,
-          borderRadius: 15,
-          backgroundColor: "transparent",
-          borderWidth: 0,
-          marginTop: -10,
-        }}
-      >
-        <Image
-          source={require("../assets/patron.jpg")}
-          style={{
-            flex: 1,
-            position: "absolute",
-            resizeMode: "cover",
-            width: "100%",
-            height: "100%",
-            borderRadius: 10,
+      <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+        <Card
+          style={styles.card}
+          containerStyle={{
+            padding: 0,
+            borderRadius: 15,
+            backgroundColor: "transparent",
+            borderWidth: 0,
           }}
-        />
-        <Image
-          source={require("../assets/gradients/20x20.png")}
-          style={{
-            flex: 1,
-            position: "absolute",
-            resizeMode: "cover",
-            width: "100%",
-            height: "100%",
-            opacity: 0.9,
-            borderRadius: 10,
-          }}
-        />
-        <TouchableOpacity onPress={toggleOverlay}>
-          {image == null ? (
-            <Card.Image
-              source={require("../assets/icon.png")}
-              style={{
-                borderRadius: 100,
-                marginTop: 10,
-                marginBottom: 20,
-                marginLeft: 60,
-                marginRight: 60,
-              }}
-            />
-          ) : (
-            <Card.Image
-              source={{ uri: image }}
-              style={{
-                borderRadius: 100,
-                marginTop: 10,
-                marginBottom: 20,
-                marginLeft: 60,
-                marginRight: 60,
-              }}
-            />
-          )}
-        </TouchableOpacity>
-        <Overlay
-          isVisible={visible}
-          onBackdropPress={toggleOverlay}
-          overlayStyle={{ width: "85%", height: "85%", borderRadius: 10 }}
         >
-          {image == null ? (
-            <Card.Image
-              source={require("../assets/icon.png")}
+          <Image
+            source={require("../assets/patron.jpg")}
+            style={{
+              flex: 1,
+              position: "absolute",
+              resizeMode: "cover",
+              width: "100%",
+              height: "100%",
+              borderRadius: 10,
+            }}
+          />
+          <Image
+            source={require("../assets/gradients/20x20.png")}
+            style={{
+              flex: 1,
+              position: "absolute",
+              resizeMode: "cover",
+              width: "100%",
+              height: "100%",
+              opacity: 0.9,
+              borderRadius: 10,
+            }}
+          />
+          <TouchableOpacity onPress={toggleOverlay}>
+            {image == null ? (
+              <Card.Image
+                source={require("../assets/icon.png")}
+                style={{
+                  borderRadius: 100,
+                  marginTop: 10,
+                  marginBottom: 20,
+                  marginLeft: 60,
+                  marginRight: 60,
+                }}
+              />
+            ) : (
+              <Card.Image
+                source={{ uri: image }}
+                style={{
+                  borderRadius: 100,
+                  marginTop: 10,
+                  marginBottom: 20,
+                  marginLeft: 60,
+                  marginRight: 60,
+                }}
+              />
+            )}
+          </TouchableOpacity>
+          <Overlay
+            isVisible={visible}
+            onBackdropPress={toggleOverlay}
+            overlayStyle={{ width: "85%", height: "85%", borderRadius: 10 }}
+          >
+            {image == null ? (
+              <Card.Image
+                source={require("../assets/icon.png")}
+                style={{
+                  borderRadius: 100,
+                  marginTop: "auto",
+                  marginBottom: "auto",
+                  marginLeft: "auto",
+                  marginRight: "auto",
+                  width: "100%",
+                  height: "100%",
+                }}
+              />
+            ) : (
+              <Card.Image
+                source={{ uri: image }}
+                style={{
+                  borderRadius: 100,
+                  marginTop: "auto",
+                  marginBottom: "auto",
+                  marginLeft: "auto",
+                  marginRight: "auto",
+                  width: "100%",
+                  height: "100%",
+                }}
+              />
+            )}
+          </Overlay>
+          <Text
+            style={{
+              marginLeft: "auto",
+              marginRight: "auto",
+              textAlign: "center",
+              fontSize: 20,
+              marginTop: 10,
+              color: "#fff",
+            }}
+          >
+            {nombre} {apellido}
+          </Text>
+          <Text
+            style={{
+              marginLeft: "auto",
+              marginRight: "auto",
+              marginTop: 10,
+              textAlign: "center",
+              fontSize: 20,
+              color: "#fff",
+            }}
+          >
+            {actividad}
+          </Text>
+          <AirbnbRating
+            showRating={true}
+            reviews={["Malo", "Promedio", "Bueno", "Profesional", "Excelente"]}
+            defaultRating={rating}
+            type="star"
+            onFinishRating={() => calificarUsuario(rating)}
+            style={{
+              margin: 10,
+            }}
+          />
+          <Text
+            style={{
+              marginLeft: "auto",
+              marginRight: "auto",
+              marginTop: 10,
+              textAlign: "center",
+              fontSize: 20,
+              color: "#fff",
+            }}
+          >
+            {emailPersonal}
+          </Text>
+          <TouchableOpacity onPress={() => agregarFavorito()}>
+            <Text
               style={{
-                borderRadius: 100,
-                marginTop: "auto",
-                marginBottom: "auto",
+                color: "#fff",
                 marginLeft: "auto",
                 marginRight: "auto",
-                width: "100%",
-                height: "100%",
+                marginTop: 10,
+                marginBottom: 10,
+                fontSize: 20,
               }}
-            />
-          ) : (
-            <Card.Image
-              source={{ uri: image }}
+            >
+              Favorito
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => alert("Proximamente...")}>
+            <Text
               style={{
-                borderRadius: 100,
-                marginTop: "auto",
-                marginBottom: "auto",
+                color: "#fff",
                 marginLeft: "auto",
                 marginRight: "auto",
-                width: "100%",
-                height: "100%",
+                marginTop: 10,
+                marginBottom: 10,
+                fontSize: 20,
               }}
-            />
-          )}
-        </Overlay>
-        <Text
-          style={{
-            marginLeft: "auto",
-            marginRight: "auto",
-            textAlign: "center",
-            fontSize: 20,
-            marginTop: 10,
-            color: "#fff",
+            >
+              Ver Mapa
+            </Text>
+          </TouchableOpacity>
+        </Card>
+        <Card
+          style={styles.card}
+          containerStyle={{
+            padding: 0,
+            borderRadius: 15,
+            backgroundColor: "transparent",
+            borderWidth: 0,
           }}
         >
-          {nombre} {apellido}
-        </Text>
-        <Text
-          style={{
-            marginLeft: "auto",
-            marginRight: "auto",
-            marginTop: 10,
-            textAlign: "center",
-            fontSize: 20,
-            color: "#fff",
-          }}
-        >
-          {actividad}
-        </Text>
-        <AirbnbRating
-          showRating={true}
-          reviews={["Malo", "Promedio", "Bueno", "Profesional", "Excelente"]}
-          defaultRating={rating}
-          type="star"
-          onFinishRating={() => calificarUsuario(rating)}
-          style={{
-            margin: 10,
-          }}
-        />
-        <Text
-          style={{
-            marginLeft: "auto",
-            marginRight: "auto",
-            marginTop: 10,
-            textAlign: "center",
-            fontSize: 20,
-            color: "#fff",
-          }}
-        >
-          {emailPersonal}
-        </Text>
-        <TouchableOpacity
-          onPress={() => RootNavigation.navigate("ComentarScreen", { id: id })}
-        >
+          <Image
+            source={require("../assets/patron.jpg")}
+            style={{
+              flex: 1,
+              position: "absolute",
+              resizeMode: "cover",
+              width: "100%",
+              height: "100%",
+              borderRadius: 10,
+            }}
+          />
+          <Image
+            source={require("../assets/gradients/20x20.png")}
+            style={{
+              flex: 1,
+              position: "absolute",
+              resizeMode: "cover",
+              width: "100%",
+              height: "100%",
+              opacity: 0.9,
+              borderRadius: 10,
+            }}
+          />
+          <Text
+            style={{
+              marginLeft: "auto",
+              marginRight: "auto",
+              textAlign: "center",
+              fontSize: 20,
+              marginTop: 10,
+              color: "#fff",
+            }}
+          >
+            Celular: {celular}
+          </Text>
+          <View style={{ flexDirection: "column" }}>
+            <Text
+              style={{
+                marginLeft: "auto",
+                marginRight: "auto",
+                marginTop: 10,
+                textAlign: "center",
+                fontSize: 20,
+                color: "#fff",
+              }}
+            >
+              Dias y horarios laborales:
+            </Text>
+            <Text
+              style={{
+                marginLeft: "auto",
+                marginRight: "auto",
+                marginTop: 10,
+                textAlign: "center",
+                fontSize: 20,
+                color: "#fff",
+              }}
+            >
+              {diasHorarios.join(", ")}
+            </Text>
+          </View>
+          <Text
+            style={{
+              marginLeft: "auto",
+              marginRight: "auto",
+              marginTop: 10,
+              textAlign: "center",
+              fontSize: 20,
+              color: "#fff",
+            }}
+          >
+            Local: {direccionDelLocal}
+          </Text>
+          <View style={{ flexDirection: "column" }}>
+            <Text
+              style={{
+                color: "#fff",
+                marginLeft: "auto",
+                marginRight: "auto",
+                marginTop: 10,
+                marginBottom: 10,
+                fontSize: 20,
+              }}
+            >
+              Email laboral:
+            </Text>
+            <Text
+              style={{
+                color: "#fff",
+                marginLeft: "auto",
+                marginRight: "auto",
+                marginTop: 10,
+                marginBottom: 10,
+                fontSize: 20,
+              }}
+            >
+              {emailLaboral}
+            </Text>
+          </View>
           <Text
             style={{
               color: "#fff",
@@ -238,10 +404,8 @@ const AnuncioSeleccionado = ({ route }) => {
               fontSize: 20,
             }}
           >
-            Comentar
+            Empresa {empresa}
           </Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => agregarFavorito()}>
           <Text
             style={{
               color: "#fff",
@@ -252,10 +416,8 @@ const AnuncioSeleccionado = ({ route }) => {
               fontSize: 20,
             }}
           >
-            Favorito
+            Factura {factura}
           </Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => alert("Proximamente...")}>
           <Text
             style={{
               color: "#fff",
@@ -266,10 +428,34 @@ const AnuncioSeleccionado = ({ route }) => {
               fontSize: 20,
             }}
           >
-            Ver Mapa
+            Local {local}
           </Text>
-        </TouchableOpacity>
-      </Card>
+          <Text
+            style={{
+              color: "#fff",
+              marginLeft: "auto",
+              marginRight: "auto",
+              marginTop: 10,
+              marginBottom: 10,
+              fontSize: 20,
+            }}
+          >
+            Localidad
+          </Text>
+          <Text
+            style={{
+              color: "#fff",
+              marginLeft: "auto",
+              marginRight: "auto",
+              marginTop: 10,
+              marginBottom: 10,
+              fontSize: 20,
+            }}
+          >
+            {localidad}
+          </Text>
+        </Card>
+      </ScrollView>
       <View
         style={{
           flex: 1,
@@ -340,6 +526,9 @@ const AnuncioSeleccionado = ({ route }) => {
         <View style={{ margin: 10 }}>
           <Button
             title="Comentar"
+            onPress={() =>
+              RootNavigation.navigate("ComentarScreen", { id: id })
+            }
             titleStyle={{ fontSize: 12, marginTop: 15 }}
             buttonStyle={{
               width: 120,
