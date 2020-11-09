@@ -62,11 +62,12 @@ export default function Chat({ route }) {
   const usersIds = firstUserId + secondUserId;
   const db = firebase.firestore();
   const chatsRef = db.collection("chats/");
+  let selectedChat = chatsRef.where("userTwo", "==", secondUserId);
   const database = firebase.database();
   const storage = firebase.storage();
   const storageRef = storage.ref();
   const defaultImageRef = storageRef.child("/defaultUserImage/icon.png");
-  const image = storageRef.child("userImages/uid");
+  let [image, setImage] = useState("");
 
   Notifications.setNotificationHandler({
     handleNotification: async () => ({
@@ -85,7 +86,11 @@ export default function Chat({ route }) {
           const message = doc.data();
           //createdAt is firebase.firestore.Timestamp instance
           //https://firebase.google.com/docs/reference/js/firebase.firestore.Timestamp
-          return { ...message, createdAt: message.createdAt.toDate() };
+          if (chatsRef.where("userTwo", "==", secondUserId)) {
+            return { ...message, createdAt: message.createdAt.toDate() };
+          } else {
+            return "Inicia un chat!";
+          }
         })
         .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
       appendMessages(messagesFirestore);
@@ -137,9 +142,7 @@ export default function Chat({ route }) {
 
     console.log(result);
 
-    if (!result.cancelled) {
-      setImage(result.uri);
-    }
+    setImage(result.uri);
   };
 
   function renderActions(ActionsProps) {

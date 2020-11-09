@@ -157,7 +157,8 @@ const AnunciatePage = ({ navigation }) => {
   ) {
     firebase
       .database()
-      .ref("anuncios/" + user.uid + "-" + 1)
+      .ref("anuncios/")
+      .push({})
       .set({
         id: user.uid,
         image,
