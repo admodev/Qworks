@@ -33,6 +33,8 @@ import * as RootNavigation from "../RootNavigation.js";
 import LoginPage from "../pages/LoginPage";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import * as ImagePicker from "expo-image-picker";
+import { unstable_batchedUpdates } from "react-dom";
+import * as Updates from "expo-updates";
 
 if (firebase.apps.length === 0) {
   try {
@@ -54,13 +56,32 @@ if (firebase.apps.length === 0) {
 }
 
 export default function ComentarScreen({ route }) {
-  id = route.params.id;
+  const id = route.params.id;
+
+  const [comentario, setComentario] = useState("");
+
+  function comentarUsuario(comentario) {
+    firebase
+      .database()
+      .ref("comentarios/" + id)
+      .set({
+        comentario: comentario,
+      })
+      .then(function () {
+        Updates.reloadAsync();
+      });
+  }
+
   return (
     <SafeAreaView
       style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
     >
-      <Input placeholder="Deja un comentario..." />
-      <Button title="Comentar" />
+      <Input
+        placeholder="Deja un comentario..."
+        onChangeText={(comentario) => setComentario(comentario)}
+        value={comentario}
+      />
+      <Button title="Comentar" onPress={() => comentarUsuario(comentario)} />
     </SafeAreaView>
   );
 }

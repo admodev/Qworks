@@ -79,6 +79,17 @@ const AnuncioSeleccionado = ({ route }) => {
       localidad = child.val().localidad;
     });
   });
+  let comentario;
+  let comentariosRef = firebase
+    .database()
+    .ref("comentarios/")
+    .orderByKey()
+    .equalTo(id);
+  let comentariosResult = comentariosRef.on("value", (snap) => {
+    snap.forEach((child) => {
+      comentario = child.val().comentario;
+    });
+  });
   let storage = firebase.storage();
   let storageRef = storage.ref();
   let defaultImageRef = storageRef
@@ -569,6 +580,18 @@ const AnuncioSeleccionado = ({ route }) => {
             }}
           >
             Comentarios
+          </Text>
+          <Text
+            style={{
+              marginLeft: "auto",
+              marginRight: "auto",
+              textAlign: "center",
+              fontSize: 20,
+              marginTop: 10,
+              color: "#fff",
+            }}
+          >
+            {comentario}
           </Text>
         </Card>
       </ScrollView>
