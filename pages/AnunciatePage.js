@@ -157,7 +157,7 @@ const AnunciatePage = ({ navigation }) => {
   ) {
     firebase
       .database()
-      .ref("anuncios/" + user.uid)
+      .ref("anuncios/" + user.uid + "-" + 1)
       .set({
         id: user.uid,
         image,
@@ -616,7 +616,7 @@ const AnunciatePage = ({ navigation }) => {
             />
           </View>
         </View>
-        <Text h3 style={{ color: "#fff" }}>
+        <Text h3 style={{ color: "#fff", textAlign: "center" }}>
           Medios De Pago
         </Text>
         <View
@@ -625,6 +625,8 @@ const AnunciatePage = ({ navigation }) => {
             flexDirection: "row",
             marginTop: 10,
             marginBottom: 10,
+            marginLeft: 5,
+            marginRight: 5,
           }}
         >
           <MaterialCommunityIcons

@@ -108,7 +108,7 @@ const AnuncioSeleccionado = ({ route }) => {
   function agregarFavorito(id) {
     firebase
       .database()
-      .ref("favoritos/" + user.uid)
+      .ref("favoritos/" + user.uid + "-" + 1)
       .set({
         favoritos: id,
       })
@@ -123,7 +123,7 @@ const AnuncioSeleccionado = ({ route }) => {
     let ratingString = toString(rating);
     firebase
       .database()
-      .ref("calificaciones/" + id)
+      .ref("calificaciones/" + id + "-" + 1)
       .set({
         calificacion: ratingString,
       })

@@ -63,7 +63,7 @@ export default function ComentarScreen({ route }) {
   function comentarUsuario(comentario) {
     firebase
       .database()
-      .ref("comentarios/" + id)
+      .ref("comentarios/" + id + "-" + 1)
       .set({
         id: user,
         comentario: comentario,
