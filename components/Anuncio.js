@@ -119,8 +119,19 @@ const AnuncioSeleccionado = ({ route }) => {
   let { rating } = 3;
 
   return (
-    <SafeAreaView style={{ margin: 25, backgroundColor: "transparent" }}>
+    <SafeAreaView>
+      <Image
+        source={require("../assets/gradients/20x20.png")}
+        style={{
+          flex: 1,
+          position: "absolute",
+          resizeMode: "cover",
+          width: "100%",
+          height: "5%",
+        }}
+      />
       <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+        {/* Card principal */}
         <Card
           style={styles.card}
           containerStyle={{
@@ -286,6 +297,7 @@ const AnuncioSeleccionado = ({ route }) => {
             </Text>
           </TouchableOpacity>
         </Card>
+        {/* Card detalles */}
         <Card
           style={styles.card}
           containerStyle={{
@@ -455,13 +467,119 @@ const AnuncioSeleccionado = ({ route }) => {
             {localidad}
           </Text>
         </Card>
+        {/* Card resúmen personal */}
+        <Card
+          style={styles.card}
+          containerStyle={{
+            padding: 0,
+            borderRadius: 15,
+            backgroundColor: "transparent",
+            borderWidth: 0,
+          }}
+        >
+          <Image
+            source={require("../assets/patron.jpg")}
+            style={{
+              flex: 1,
+              position: "absolute",
+              resizeMode: "cover",
+              width: "100%",
+              height: "100%",
+              borderRadius: 10,
+            }}
+          />
+          <Image
+            source={require("../assets/gradients/20x20.png")}
+            style={{
+              flex: 1,
+              position: "absolute",
+              resizeMode: "cover",
+              width: "100%",
+              height: "100%",
+              opacity: 0.9,
+              borderRadius: 10,
+            }}
+          />
+          <Text
+            style={{
+              marginLeft: "auto",
+              marginRight: "auto",
+              textAlign: "center",
+              fontSize: 20,
+              marginTop: 10,
+              color: "#fff",
+            }}
+          >
+            Resúmen Personal:
+          </Text>
+          <Text
+            style={{
+              marginLeft: "auto",
+              marginRight: "auto",
+              textAlign: "center",
+              fontSize: 20,
+              marginTop: 10,
+              color: "#fff",
+            }}
+          >
+            {descripcionPersonal}
+          </Text>
+        </Card>
+        {/* Card comentarios */}
+        <Card
+          style={styles.card}
+          containerStyle={{
+            padding: 0,
+            borderRadius: 15,
+            backgroundColor: "transparent",
+            borderWidth: 0,
+          }}
+        >
+          <Image
+            source={require("../assets/patron.jpg")}
+            style={{
+              flex: 1,
+              position: "absolute",
+              resizeMode: "cover",
+              width: "100%",
+              height: "100%",
+              borderRadius: 10,
+            }}
+          />
+          <Image
+            source={require("../assets/gradients/20x20.png")}
+            style={{
+              flex: 1,
+              position: "absolute",
+              resizeMode: "cover",
+              width: "100%",
+              height: "100%",
+              opacity: 0.9,
+              borderRadius: 10,
+            }}
+          />
+          <Text
+            style={{
+              marginLeft: "auto",
+              marginRight: "auto",
+              textAlign: "center",
+              fontSize: 20,
+              marginTop: 10,
+              color: "#fff",
+            }}
+          >
+            Comentarios
+          </Text>
+        </Card>
       </ScrollView>
       <View
         style={{
           flex: 1,
           flexDirection: "row",
           justifyContent: "space-around",
-          margin: 10,
+          marginBottom: -20,
+          marginLeft: 25,
+          marginRight: 25,
           position: "absolute",
           bottom: -120,
         }}
@@ -472,7 +590,7 @@ const AnuncioSeleccionado = ({ route }) => {
             flex: 1,
             position: "absolute",
             resizeMode: "cover",
-            width: 320,
+            width: 350,
             height: 55,
             margin: 10,
             borderRadius: 5,
