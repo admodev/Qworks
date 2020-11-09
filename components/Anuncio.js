@@ -101,35 +101,36 @@ const AnuncioSeleccionado = ({ route }) => {
     setVisible(!visible);
   };
 
-  let userId = firebase.auth().currentUser.uid;
+  let user = firebase.auth().currentUser;
 
   console.log(comentariosRef.toString());
 
   function agregarFavorito(id) {
     firebase
       .database()
-      .ref("anuncios/" + user.uid)
+      .ref("favoritos/" + user.uid)
       .set({
-        favoritos: [id],
+        favoritos: id,
       })
       .then(function () {
         Updates.reloadAsync();
       });
   }
+
+  let [rating, setRating] = useState("");
 
   function calificarUsuario(rating) {
+    let ratingString = toString(rating);
     firebase
       .database()
-      .ref("anuncios/" + id)
+      .ref("calificaciones/" + id)
       .set({
-        calificacion: rating,
+        calificacion: ratingString,
       })
       .then(function () {
         Updates.reloadAsync();
       });
   }
-
-  let { rating } = 3;
 
   return (
     <SafeAreaView>
@@ -264,7 +265,7 @@ const AnuncioSeleccionado = ({ route }) => {
             reviews={["Malo", "Promedio", "Bueno", "Profesional", "Excelente"]}
             defaultRating={rating}
             type="star"
-            onFinishRating={() => calificarUsuario(rating)}
+            onFinishRating={(rating) => setRating(rating)}
             style={{
               margin: 10,
             }}
@@ -627,6 +628,7 @@ const AnuncioSeleccionado = ({ route }) => {
         <View style={{ margin: 10, marginLeft: 20 }}>
           <Button
             title="Recomendar"
+            onPress={() => calificarUsuario()}
             titleStyle={{ fontSize: 12, marginBottom: 15 }}
             buttonStyle={{
               width: 120,
