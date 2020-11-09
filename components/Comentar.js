@@ -56,15 +56,16 @@ if (firebase.apps.length === 0) {
 }
 
 export default function ComentarScreen({ route }) {
-  const id = route.params.id;
-
-  const [comentario, setComentario] = useState("");
+  let id = route.params.id;
+  let user = firebase.auth().currentUser.uid;
+  let [comentario, setComentario] = useState("");
 
   function comentarUsuario(comentario) {
     firebase
       .database()
       .ref("comentarios/" + id)
       .set({
+        id: user,
         comentario: comentario,
       })
       .then(function () {

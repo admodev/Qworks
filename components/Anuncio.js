@@ -103,6 +103,8 @@ const AnuncioSeleccionado = ({ route }) => {
 
   let userId = firebase.auth().currentUser.uid;
 
+  console.log(comentariosRef.toString());
+
   function agregarFavorito(id) {
     firebase
       .database()
@@ -316,6 +318,7 @@ const AnuncioSeleccionado = ({ route }) => {
             borderRadius: 15,
             backgroundColor: "transparent",
             borderWidth: 0,
+            maxWidth: 350,
           }}
         >
           <Image
@@ -486,6 +489,7 @@ const AnuncioSeleccionado = ({ route }) => {
             borderRadius: 15,
             backgroundColor: "transparent",
             borderWidth: 0,
+            maxWidth: 350,
           }}
         >
           <Image
@@ -544,6 +548,7 @@ const AnuncioSeleccionado = ({ route }) => {
             borderRadius: 15,
             backgroundColor: "transparent",
             borderWidth: 0,
+            maxWidth: 350,
           }}
         >
           <Image
