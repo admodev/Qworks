@@ -80,17 +80,27 @@ const AnuncioSeleccionado = ({ route }) => {
       localidad = child.val().localidad;
     });
   });
-  let comentario;
+  let key, userId, comentario;
+  var arr = [];
   let comentariosRef = firebase
     .database()
     .ref("comentarios/")
     .orderByKey()
-    .equalTo(id);
-  let comentariosResult = comentariosRef.on("value", (snap) => {
-    snap.forEach((child) => {
-      comentario = child.val().comentario;
+    .on("value", function snapshotToArray(snapshot) {
+      var returnArr = [];
+      snapshot.forEach(function (childSnapshot) {
+        let item = childSnapshot.val();
+        item.key = childSnapshot.key;
+        returnArr.push({
+          key: item.key,
+          id: item.id,
+          comentario: item.comentario,
+        });
+        arr = returnArr;
+        console.log(arr);
+      });
     });
-  });
+
   let storage = firebase.storage();
   let storageRef = storage.ref();
   let defaultImageRef = storageRef
@@ -103,8 +113,6 @@ const AnuncioSeleccionado = ({ route }) => {
   };
 
   let user = firebase.auth().currentUser;
-
-  console.log(comentariosRef.toString());
 
   function agregarFavorito(id) {
     firebase
@@ -649,18 +657,24 @@ const AnuncioSeleccionado = ({ route }) => {
           >
             Comentarios
           </Text>
-          <Text
-            style={{
-              marginLeft: "auto",
-              marginRight: "auto",
-              textAlign: "center",
-              fontSize: 20,
-              marginTop: 10,
-              color: "#fff",
-            }}
-          >
-            {comentario}
-          </Text>
+          {arr.map((u, i) => {
+            return (
+              <View key={i}>
+                <Text
+                  style={{
+                    marginLeft: "auto",
+                    marginRight: "auto",
+                    textAlign: "center",
+                    fontSize: 20,
+                    marginTop: 10,
+                    color: "#fff",
+                  }}
+                >
+                  {JSON.stringify(u.comentario)}
+                </Text>
+              </View>
+            );
+          })}
         </Card>
       </ScrollView>
       <View

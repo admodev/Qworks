@@ -23,6 +23,9 @@ import AnuncioSeleccionado from "../components/Anuncio";
 import MisComentariosPage from "../components/MisComentarios";
 import CambiarNombreScreen from "../components/CambiarNombreComponent";
 import UbicacionPage from "../components/FiltroUbicacion";
+import FiltroRecomendados from "../components/FiltroRecomendaciones";
+import FiltroDeComentarios from "../components/FiltroComentarios";
+import FiltroDeFavoritos from "../components/FiltroFavoritos";
 import RecomendarUsuario from "../components/RecomendarScreen";
 import ComentarScreen from "../components/Comentar";
 
@@ -211,6 +214,21 @@ function MainStackNavigator({ navigation }) {
         <Stack.Screen
           name="ComentarScreen"
           component={ComentarScreen}
+          options={{ title: "QuedeOficios!", headerShown: false }}
+        />
+        <Stack.Screen
+          name="FiltroRecomendados"
+          component={FiltroRecomendados}
+          options={{ title: "QuedeOficios!", headerShown: false }}
+        />
+        <Stack.Screen
+          name="FiltroDeComentarios"
+          component={FiltroDeComentarios}
+          options={{ title: "QuedeOficios!", headerShown: false }}
+        />
+        <Stack.Screen
+          name="FiltroDeFavoritos"
+          component={FiltroDeFavoritos}
           options={{ title: "QuedeOficios!", headerShown: false }}
         />
       </Stack.Navigator>

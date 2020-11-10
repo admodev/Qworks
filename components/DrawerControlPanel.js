@@ -81,19 +81,19 @@ class ControlPanel extends React.Component {
           <Button
             title="Filtrar por recomendaciones"
             type="outline"
-            onPress={() => RootNavigation.navigate("RecomendacionesPage")}
+            onPress={() => RootNavigation.navigate("FiltroRecomendados")}
             buttonStyle={{ width: "100%", marginTop: 10 }}
           />
           <Button
             title="Filtrar por comentarios"
             type="outline"
-            onPress={() => RootNavigation.navigate("ComentariosPage")}
+            onPress={() => RootNavigation.navigate("FiltroDeComentarios")}
             buttonStyle={{ width: "100%", marginTop: 10 }}
           />
           <Button
             title="Mis favoritos"
             type="outline"
-            onPress={() => RootNavigation.navigate("FavoritosPage")}
+            onPress={() => RootNavigation.navigate("FiltroDeFavoritos")}
             buttonStyle={{ width: "100%", marginTop: 10 }}
           />
         </View>

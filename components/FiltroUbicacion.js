@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Text, View, SafeAreaView, StyleSheet } from "react-native";
+import { Button } from "react-native-elements";
 import * as Location from "expo-location";
 
 export default function UbicacionPage() {
@@ -18,7 +19,7 @@ export default function UbicacionPage() {
     })();
   }, []);
 
-  let text = "Waiting..";
+  let text = "Cargando..";
   if (errorMsg) {
     text = errorMsg;
   } else if (location) {
@@ -27,7 +28,16 @@ export default function UbicacionPage() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Text>{text}</Text>
+      <Button
+        title="Mostrar usuarios cerca"
+        onPress={() => location}
+        buttonStyle={{
+          width: 300,
+        }}
+      />
+      <Text style={{ textAlign: "center", marginTop: "10%", margin: 15 }}>
+        {text}
+      </Text>
     </SafeAreaView>
   );
 }
@@ -35,5 +45,7 @@ export default function UbicacionPage() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
   },
 });
