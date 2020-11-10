@@ -3,7 +3,7 @@ import Constants from "expo-constants";
 import * as Notifications from "expo-notifications";
 import * as Permissions from "expo-permissions";
 import * as React from "react";
-import { AppRegistry, View } from "react-native";
+import { AppRegistry, Platform, View } from "react-native";
 import MainStackNavigator from "./navigation/AppNavigator.js";
 import { Badge } from "react-native-elements";
 import { navigationRef } from "./RootNavigation";

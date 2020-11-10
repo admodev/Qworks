@@ -7,6 +7,7 @@ import {
   ScrollView,
   SafeAreaView,
   Text,
+  Platform,
 } from "react-native";
 import {
   Button,
@@ -151,10 +152,24 @@ const AnuncioSeleccionado = ({ route }) => {
         <Card
           style={styles.card}
           containerStyle={{
-            padding: 0,
-            borderRadius: 15,
-            backgroundColor: "transparent",
-            borderWidth: 0,
+            ...Platform.select({
+              android: {
+                padding: 0,
+                borderRadius: 15,
+                backgroundColor: "transparent",
+                borderWidth: 0,
+                marginTop: "3%",
+                height: "2%",
+              },
+              ios: {
+                padding: 0,
+                borderRadius: 15,
+                backgroundColor: "transparent",
+                borderWidth: 0,
+                marginTop: "3%",
+                height: "95%",
+              },
+            }),
           }}
         >
           <Image
@@ -317,11 +332,26 @@ const AnuncioSeleccionado = ({ route }) => {
         <Card
           style={styles.card}
           containerStyle={{
-            padding: 0,
-            borderRadius: 15,
-            backgroundColor: "transparent",
-            borderWidth: 0,
-            maxWidth: 350,
+            ...Platform.select({
+              android: {
+                padding: 0,
+                borderRadius: 15,
+                backgroundColor: "transparent",
+                borderWidth: 0,
+                maxWidth: "150%",
+                marginTop: "3%",
+                height: "2%",
+              },
+              ios: {
+                padding: 0,
+                borderRadius: 15,
+                backgroundColor: "transparent",
+                borderWidth: 0,
+                maxWidth: "200%",
+                marginTop: "3%",
+                height: "95%",
+              },
+            }),
           }}
         >
           <Image
@@ -488,11 +518,26 @@ const AnuncioSeleccionado = ({ route }) => {
         <Card
           style={styles.card}
           containerStyle={{
-            padding: 0,
-            borderRadius: 15,
-            backgroundColor: "transparent",
-            borderWidth: 0,
-            maxWidth: 350,
+            ...Platform.select({
+              android: {
+                padding: 0,
+                borderRadius: 15,
+                backgroundColor: "transparent",
+                borderWidth: 0,
+                maxWidth: "150%",
+                marginTop: "3%",
+                height: "2%",
+              },
+              ios: {
+                padding: 0,
+                borderRadius: 15,
+                backgroundColor: "transparent",
+                borderWidth: 0,
+                maxWidth: "200%",
+                marginTop: "3%",
+                height: "95%",
+              },
+            }),
           }}
         >
           <Image
@@ -547,11 +592,26 @@ const AnuncioSeleccionado = ({ route }) => {
         <Card
           style={styles.card}
           containerStyle={{
-            padding: 0,
-            borderRadius: 15,
-            backgroundColor: "transparent",
-            borderWidth: 0,
-            maxWidth: 350,
+            ...Platform.select({
+              android: {
+                padding: 0,
+                borderRadius: 15,
+                backgroundColor: "transparent",
+                borderWidth: 0,
+                maxWidth: "150%",
+                marginTop: "3%",
+                height: "2%",
+              },
+              ios: {
+                padding: 0,
+                borderRadius: 15,
+                backgroundColor: "transparent",
+                borderWidth: 0,
+                maxWidth: "200%",
+                marginTop: "3%",
+                height: "95%",
+              },
+            }),
           }}
         >
           <Image
@@ -605,14 +665,28 @@ const AnuncioSeleccionado = ({ route }) => {
       </ScrollView>
       <View
         style={{
-          flex: 1,
-          flexDirection: "row",
-          justifyContent: "space-around",
-          marginBottom: -20,
-          marginLeft: 25,
-          marginRight: 25,
-          position: "absolute",
-          bottom: -120,
+          ...Platform.select({
+            android: {
+              flex: 1,
+              flexDirection: "row",
+              justifyContent: "space-around",
+              marginBottom: -20,
+              marginLeft: 25,
+              marginRight: 25,
+              position: "absolute",
+              bottom: "-12%",
+            },
+            ios: {
+              flex: 1,
+              flexDirection: "row",
+              justifyContent: "space-around",
+              marginBottom: -20,
+              marginLeft: 25,
+              marginRight: 25,
+              position: "absolute",
+              bottom: -125,
+            },
+          }),
         }}
       >
         <Image
@@ -621,7 +695,7 @@ const AnuncioSeleccionado = ({ route }) => {
             flex: 1,
             position: "absolute",
             resizeMode: "cover",
-            width: 350,
+            width: "115%",
             height: 55,
             margin: 10,
             borderRadius: 5,
@@ -707,20 +781,40 @@ const styles = StyleSheet.create({
     marginTop: 16,
   },
   card: {
-    marginTop: 50,
-    backgroundColor: "#483D8B",
-    shadowColor: "#000",
-    borderRadius: 15,
-    paddingTop: -5,
-    paddingBottom: 2,
-    marginBottom: 100,
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
+    ...Platform.select({
+      ios: {
+        marginTop: 50,
+        backgroundColor: "#483D8B",
+        shadowColor: "#000",
+        borderRadius: 15,
+        paddingTop: -5,
+        paddingBottom: 2,
+        marginBottom: 100,
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+        elevation: 5,
+        shadowOffset: {
+          width: 0,
+          height: 2,
+        },
+      },
+      android: {
+        marginTop: 50,
+        backgroundColor: "#483D8B",
+        shadowColor: "#000",
+        borderRadius: 15,
+        paddingTop: -5,
+        paddingBottom: 2,
+        marginBottom: 100,
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+        elevation: 5,
+        shadowOffset: {
+          width: 0,
+          height: 2,
+        },
+      },
+    }),
   },
 });
 

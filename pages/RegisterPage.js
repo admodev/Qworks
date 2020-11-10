@@ -158,7 +158,7 @@ export default function RegisterPage({ navigation }) {
               />
               <Button
                 title="Registrarme"
-                onPress={() => registrarUsuarios()}
+                onPress={() => registrarUsuarios(email, password)}
                 buttonStyle={{
                   backgroundColor: "orange",
                   borderRadius: 25,

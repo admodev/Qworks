@@ -1,7 +1,5 @@
-import React, { state, useState, setState, useEffect } from "react";
-import { SafeAreaView, Text } from "react-native";
-import { Button } from "react-native-elements";
-import * as RootNavigation from "../RootNavigation.js";
+import React, { useState, useEffect } from "react";
+import { Text, View, SafeAreaView, StyleSheet } from "react-native";
 import * as Location from "expo-location";
 
 export default function UbicacionPage() {
@@ -27,15 +25,15 @@ export default function UbicacionPage() {
     text = JSON.stringify(location);
   }
 
-  Location;
-
   return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <Button
-        onPress={() => Location.getCurrentPositionAsync()}
-        title="Ubicar"
-      />
+    <SafeAreaView style={styles.container}>
       <Text>{text}</Text>
     </SafeAreaView>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+});
