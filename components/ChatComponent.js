@@ -1,5 +1,8 @@
 // @refresh reset
 //
+import Constants from "expo-constants";
+import * as Notifications from "expo-notifications";
+import * as Permissions from "expo-permissions";
 import React, { useState, useEffect, useCallback } from "react";
 import { GiftedChat, Actions, ActionsProps } from "react-native-gifted-chat";
 import AsyncStorage from "@react-native-community/async-storage";
@@ -25,51 +28,113 @@ import {
 import * as firebase from "firebase";
 import "firebase/auth";
 import "firebase/firestore";
+import "firebase/database";
 import * as RootNavigation from "../RootNavigation.js";
 import LoginPage from "../pages/LoginPage";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import * as ImagePicker from "expo-image-picker";
 
+if (firebase.apps.length === 0) {
+  try {
+    firebase.initializeApp({
+      apiKey: `${FIREBASE_API_KEY}`,
+      authDomain: `${FIREBASE_AUTH_DOMAIN}`,
+      databaseURL: `${FIREBASE_DATABASE_URL}`,
+      projectId: `${FIREBASE_PROJECT_ID}`,
+      storageBucket: `${FIREBASE_STORAGE_BUCKET}`,
+      messagingSenderId: `${FIREBASE_MESSAGING_SENDER_ID}`,
+      appId: `${FIREBASE_APP_ID}`,
+      measurementId: `${FIREBASE_MEASUREMENT_ID}`,
+    });
+  } catch (err) {
+    if (!/already exists/.test(err.message)) {
+      console.error("Firebase initialization error raised", err.stack);
+    }
+  }
+}
+
 export default function Chat({ route }) {
   let firstUserId = route.params.userOne;
   let secondUserId = route.params.userTwo;
+  const nombre = "placeholder";
+  const [messages, setMessages] = useState([]);
+  const currentUser = firebase.auth().currentUser;
   const usersIds = firstUserId + secondUserId;
-  let currentUser = firebase.auth().currentUser;
-  const [messages, setMessages] = useState([
-    {
-      _id: firstUserId,
-      text: messages,
-      createdAt: new Date().getTime(),
-      user: {
-        _id: firstUserId,
-        name: "nombre",
-      },
-    },
-    {
-      _id: secondUserId,
-      text: messages,
-      createdAt: new Date().getTime(),
-      user: {
-        _id: secondUserId,
-        name: "nombreDos",
-      },
-    },
-  ]);
+  const db = firebase.firestore();
+  const chatsRef = db.collection("chats/");
+  const chatsThread = chatsRef.doc(usersIds);
+  let selectedChat = chatsRef.where("chatsThread", "==", usersIds);
+  const database = firebase.database();
+  const storage = firebase.storage();
+  const storageRef = storage.ref();
+  const defaultImageRef = storageRef.child("/defaultUserImage/icon.png");
   let [image, setImage] = useState("");
-  let firestore = firebase.firestore().collection("MESSAGE_THREADS");
 
-  function handleSend(newMessage = []) {
-    setMessages(GiftedChat.append(messages, newMessage));
-  }
+  Notifications.setNotificationHandler({
+    handleNotification: async () => ({
+      shouldShowAlert: true,
+      shouldPlaySound: true,
+      shouldSetBadge: true,
+    }),
+  });
 
-  (async () => {
-    if (Platform.OS !== "web") {
-      const { status } = await ImagePicker.requestCameraRollPermissionsAsync();
-      if (status !== "granted") {
-        alert("Perdón, necesitamos tu permiso para que puedas subir una foto!");
+  useEffect(() => {
+    const unsubscribe = chatsThread.collection("chat").onSnapshot((querySnapshot) => {
+      const messagesFirestore = querySnapshot
+        .docChanges()
+        .filter(({ type }) => type === "added")
+        .map(({ doc }) => {
+          const message = doc.data();
+          //createdAt is firebase.firestore.Timestamp instance
+          //https://firebase.google.com/docs/reference/js/firebase.firestore.Timestamp
+
+          return { ...message, createdAt: message.createdAt.toDate() };
+
+          //          if (chatsRef.where("chatsThread", "==", usersIds)) {
+          //            return { ...message, createdAt: message.createdAt.toDate() };
+          //          } else {
+          //            return {}
+          //          }
+        })
+        .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
+      appendMessages(messagesFirestore);
+      Notifications.scheduleNotificationAsync({
+        content: {
+          title: "QuedeOficios!",
+          body: "Tienes nuevas notificaciones!",
+          data: { data: "Mensajes no leídos." },
+        },
+        trigger: null,
+      });
+    });
+    return () => unsubscribe();
+    (async () => {
+      if (Platform.OS !== "web") {
+        const {
+          status,
+        } = await ImagePicker.requestCameraRollPermissionsAsync();
+        if (status !== "granted") {
+          alert(
+            "Perdón, necesitamos tu permiso para que puedas subir una foto!"
+          );
+        }
       }
-    }
-  })();
+    })();
+  }, []);
+
+  const appendMessages = useCallback(
+    (messages) => {
+      setMessages((previousMessages) =>
+        GiftedChat.append(previousMessages, messages)
+      );
+    },
+    [messages]
+  );
+
+  async function handleSend(messages) {
+    const writes = messages.map((m) => chatsThread.collection("chat").add(m));
+    await Promise.all(writes);
+  }
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -78,7 +143,9 @@ export default function Chat({ route }) {
       aspect: [4, 3],
       quality: 0.5,
     });
+
     console.log(result);
+
     setImage(result.uri);
   };
 
@@ -100,6 +167,11 @@ export default function Chat({ route }) {
       />
     );
   }
+
+  if (image == null) {
+    image = defaultImageRef;
+  }
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <Image
@@ -117,11 +189,14 @@ export default function Chat({ route }) {
           <GiftedChat
             messages={messages}
             user={{
-              _id: currentUser.uid,
-              user: currentUser.uid,
+              _id: firstUserId,
+              user: firstUserId,
+              _idTwo: secondUserId,
+              userTwo: secondUserId,
             }}
-            onSend={newMessage => handleSend(newMessage)}
+            onSend={handleSend}
             showUserAvatar={true}
+            showAvatarForEveryMessage={true}
             placeholder="Escribe un mensaje..."
             renderActions={renderActions}
           />
