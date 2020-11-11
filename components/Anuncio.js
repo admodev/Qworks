@@ -1,4 +1,4 @@
-import React, { useState, setState } from "react";
+import React, { useState, setState, useEffect } from "react";
 import {
   TouchableOpacity,
   StyleSheet,
@@ -117,8 +117,7 @@ const AnuncioSeleccionado = ({ route }) => {
   function agregarFavorito(id) {
     firebase
       .database()
-      .ref("favoritos/")
-      .push({})
+      .ref("favoritos/" + user.uid)
       .set({
         favoritos: id,
       })
@@ -307,7 +306,7 @@ const AnuncioSeleccionado = ({ route }) => {
           >
             {emailPersonal}
           </Text>
-          <TouchableOpacity onPress={() => agregarFavorito()}>
+          <TouchableOpacity onPress={() => agregarFavorito(id)}>
             <Text
               style={{
                 color: "#fff",
