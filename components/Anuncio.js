@@ -173,7 +173,7 @@ const AnuncioSeleccionado = ({ route }) => {
                 borderRadius: 15,
                 backgroundColor: "transparent",
                 borderWidth: 0,
-                marginTop: "3%",
+                marginTop: "2%",
                 height: "95%",
               },
             }),
@@ -260,6 +260,16 @@ const AnuncioSeleccionado = ({ route }) => {
               />
             )}
           </Overlay>
+          <AirbnbRating
+            showRating={true}
+            reviews={["Malo", "Promedio", "Bueno", "Profesional", "Excelente"]}
+            defaultRating={rating}
+            type="star"
+            onFinishRating={(rating) => setRating(rating)}
+            style={{
+              margin: 10,
+            }}
+          />
           <Text
             style={{
               marginLeft: "auto",
@@ -284,16 +294,30 @@ const AnuncioSeleccionado = ({ route }) => {
           >
             {actividad}
           </Text>
-          <AirbnbRating
-            showRating={true}
-            reviews={["Malo", "Promedio", "Bueno", "Profesional", "Excelente"]}
-            defaultRating={rating}
-            type="star"
-            onFinishRating={(rating) => setRating(rating)}
+          <Text
             style={{
-              margin: 10,
+              ...Platform.select({
+                android: {
+                  marginLeft: "auto",
+                  marginRight: "auto",
+                  marginTop: 10,
+                  textAlign: "center",
+                  fontSize: 20,
+                  color: "#fff",
+                },
+                ios: {
+                  marginLeft: "auto",
+                  marginRight: "auto",
+                  marginTop: 10,
+                  textAlign: "center",
+                  fontSize: 20,
+                  color: "#fff",
+                },
+              }),
             }}
-          />
+          >
+            {localidad}
+          </Text>
           <Text
             style={{
               marginLeft: "auto",
@@ -306,34 +330,121 @@ const AnuncioSeleccionado = ({ route }) => {
           >
             {emailPersonal}
           </Text>
+          <Text
+            style={{
+              ...Platform.select({
+                android: {
+                  marginLeft: "auto",
+                  marginRight: "auto",
+                  marginTop: 10,
+                  textAlign: "center",
+                  fontSize: 20,
+                  color: "#fff",
+                },
+                ios: {
+                  marginLeft: "auto",
+                  marginRight: "auto",
+                  marginTop: 10,
+                  textAlign: "center",
+                  fontSize: 20,
+                  color: "#fff",
+                },
+              }),
+            }}
+          >
+            Redes Sociales
+          </Text>
           <TouchableOpacity onPress={() => agregarFavorito(id)}>
             <Text
               style={{
-                color: "#fff",
-                marginLeft: "auto",
-                marginRight: "auto",
-                marginTop: 10,
-                marginBottom: 10,
-                fontSize: 20,
+                ...Platform.select({
+                  android: {
+                    color: "#fff",
+                    marginLeft: "auto",
+                    marginRight: "auto",
+                    marginTop: 10,
+                    marginBottom: 10,
+                    fontSize: 20,
+                  },
+                  ios: {
+                    color: "#fff",
+                    marginLeft: "auto",
+                    marginRight: "auto",
+                    marginTop: 10,
+                    marginBottom: 10,
+                    fontSize: 20,
+                  },
+                }),
               }}
             >
               Favorito
             </Text>
           </TouchableOpacity>
+          <View
+            style={{
+              ...Platform.select({
+                android: {
+                  flex: 1,
+                  flexDirection: "row",
+                },
+                ios: {
+                  flex: 1,
+                  flexDirection: "row",
+                },
+              }),
+            }}
+          >
           <TouchableOpacity onPress={() => alert("Proximamente...")}>
             <Text
               style={{
-                color: "#fff",
-                marginLeft: "auto",
-                marginRight: "auto",
-                marginTop: 10,
-                marginBottom: 10,
-                fontSize: 20,
+                ...Platform.select({
+                  android: {
+                    color: "#fff",
+                    marginLeft: "auto",
+                    marginRight: "auto",
+                    marginTop: 10,
+                    marginBottom: 10,
+                    fontSize: 20,
+                  },
+                  ios: {
+                    color: "#fff",
+                    marginLeft: "auto",
+                    marginRight: "auto",
+                    marginTop: 10,
+                    marginBottom: 10,
+                    fontSize: 20,
+                  },
+                }),
               }}
             >
-              Ver Mapa
+              Ubicación
             </Text>
-          </TouchableOpacity>
+            </TouchableOpacity>
+            <Text
+              style={{
+                ...Platform.select({
+                  android: {
+                    color: "#fff",
+                    marginLeft: "auto",
+                    marginRight: "auto",
+                    marginTop: 10,
+                    marginBottom: 10,
+                    fontSize: 20,
+                  },
+                  ios: {
+                    color: "#fff",
+                    marginLeft: "auto",
+                    marginRight: "auto",
+                    marginTop: 10,
+                    marginBottom: 10,
+                    fontSize: 20,
+                  },
+                }),
+              }}
+            >
+              Compartir
+            </Text>
+          </View>
         </Card>
         {/* Card detalles */}
         <Card
@@ -540,7 +651,7 @@ const AnuncioSeleccionado = ({ route }) => {
                 borderRadius: 15,
                 backgroundColor: "transparent",
                 borderWidth: 0,
-                maxWidth: "200%",
+                maxWidth: "100%",
                 marginTop: "3%",
                 height: "95%",
               },
@@ -697,7 +808,7 @@ const AnuncioSeleccionado = ({ route }) => {
               marginLeft: 25,
               marginRight: 25,
               position: "absolute",
-              bottom: -125,
+              bottom: -82,
             },
           }),
         }}

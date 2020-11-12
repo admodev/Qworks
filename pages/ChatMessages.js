@@ -18,17 +18,26 @@ import {
 } from "react-native-elements";
 import * as firebase from "firebase";
 import "firebase/firestore";
-import "firebase/database";
 import "firebase/auth";
 import * as RootNavigation from "../RootNavigation.js";
 import { StackActions } from "@react-navigation/native";
 import { BlurView } from "expo-blur";
+
+let currentUser = firebase.auth().currentUser;
+let chatsRef = firebase.firestore().collection("chats/");
+
+
 
 var itm = [];
 let image;
 
 class MessagesScreen extends React.Component {
   render() {
+
+
+
+
+
     let defaultImage = require("../assets/icon.png");
     let image;
     const list = [

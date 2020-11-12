@@ -62,8 +62,7 @@ export default function Chat({ route }) {
   const usersIds = firstUserId + secondUserId;
   const db = firebase.firestore();
   const chatsRef = db.collection("chats/");
-  const chatsThread = chatsRef.doc(usersIds);
-  let selectedChat = chatsRef.where("chatsThread", "==", usersIds);
+  let selectedChat = chatsRef.where("userTwo", "==", secondUserId);
   const database = firebase.database();
   const storage = firebase.storage();
   const storageRef = storage.ref();
@@ -79,7 +78,7 @@ export default function Chat({ route }) {
   });
 
   useEffect(() => {
-    const unsubscribe = chatsThread.collection("chat").onSnapshot((querySnapshot) => {
+    const unsubscribe = chatsRef.onSnapshot((querySnapshot) => {
       const messagesFirestore = querySnapshot
         .docChanges()
         .filter(({ type }) => type === "added")
@@ -87,14 +86,11 @@ export default function Chat({ route }) {
           const message = doc.data();
           //createdAt is firebase.firestore.Timestamp instance
           //https://firebase.google.com/docs/reference/js/firebase.firestore.Timestamp
-
-          return { ...message, createdAt: message.createdAt.toDate() };
-
-          //          if (chatsRef.where("chatsThread", "==", usersIds)) {
-          //            return { ...message, createdAt: message.createdAt.toDate() };
-          //          } else {
-          //            return {}
-          //          }
+          if (chatsRef.where("userTwo", "==", secondUserId)) {
+            return { ...message, createdAt: message.createdAt.toDate() };
+          } else {
+            return "Inicia un chat!";
+          }
         })
         .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
       appendMessages(messagesFirestore);
@@ -132,7 +128,7 @@ export default function Chat({ route }) {
   );
 
   async function handleSend(messages) {
-    const writes = messages.map((m) => chatsThread.collection("chat").add(m));
+    const writes = messages.map((m) => chatsRef.add(m));
     await Promise.all(writes);
   }
 
