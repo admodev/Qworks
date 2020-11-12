@@ -9,6 +9,7 @@ import {
   Text,
 } from "react-native";
 import { Button, Card, Icon, Input } from "react-native-elements";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import * as firebase from "firebase";
 import "firebase/firestore";
 import "firebase/database";
@@ -44,6 +45,8 @@ class CardsUsuarios extends React.Component {
             actividad: child.val().actividad,
             emailPersonal: child.val().emailPersonal,
             idAnuncio: child.val().id,
+            localidad: child.val().localidad,
+            provincia: child.val().provincia,
           });
         });
         itm = items;
@@ -175,51 +178,132 @@ class CardsUsuarios extends React.Component {
                     }}
                   />
                   {image == null ? (
-                    <Card.Image
-                      source={require("../assets/icon.png")}
-                      style={{
-                        borderRadius: 100,
-                        marginTop: 10,
-                        marginBottom: 20,
-                        marginLeft: 60,
-                        marginRight: 60,
-                      }}
-                    />
+                    <View style={{ flexDirection: "row" }}>
+                      <Card.Image
+                        source={require("../assets/icon.png")}
+                        style={{
+                          ...Platform.select({
+                            android: {
+                              borderRadius: 100,
+                              marginTop: 10,
+                              marginBottom: 20,
+                              marginLeft: 60,
+                              marginRight: 60,
+                              width: 100,
+                              height: 100,
+                            },
+                            ios: {
+                              borderRadius: 100,
+                              alignItems: "center",
+                              width: 90,
+                              height: 90,
+                              marginTop: "10%",
+                              marginLeft: "10%",
+                            },
+                          }),
+                        }}
+                      />
+                    <View style={{ flexDirection: "column" }}>
+                      <Text
+                        style={{
+                          ...Platform.select({
+                            android: {
+                              marginLeft: "auto",
+                              marginRight: "auto",
+                              textAlign: "center",
+                              fontSize: 20,
+                              color: "#fff",
+                            },
+                            ios: {
+                              marginTop: "35%",
+                              marginLeft: "12%",
+                              textAlign: "center",
+                              fontSize: 18,
+                              color: "#fff",
+                            },
+                          })
+                        }}
+                      >
+                        {u.nombre}
+                      </Text>
+                      <Text
+                        style={{
+                          marginTop: "10%",
+                          marginLeft: "12%",
+                          textAlign: "center",
+                          fontSize: 18,
+                          color: "#fff",
+                        }}
+                      >
+                        {u.actividad}
+                      </Text>
+                      <View style={{ flexDirection: "row", maxWidth: "50%" }}>
+                        <Text
+                          style={{
+                            marginTop: "10%",
+                            marginLeft: "8%",
+                            textAlign: "center",
+                            fontSize: 16,
+                            color: "#fff",
+                          }}
+                        >
+                          {u.localidad}
+                        </Text>
+                        <Text
+                          style={{
+                            marginTop: "10%",
+                            marginLeft: "5%",
+                            textAlign: "center",
+                            fontSize: 16,
+                            color: "#fff",
+                          }}
+                        >
+                          {u.provincia}
+                        </Text>
+                      </View>
+                    </View>
+                    </View>
                   ) : (
-                    <Card.Image
-                      source={{ uri: image }}
+                    <View
                       style={{
-                        borderRadius: 100,
-                        marginTop: 10,
-                        marginBottom: 20,
-                        marginLeft: 60,
-                        marginRight: 60,
+                        flexDirection: "row",
                       }}
-                    />
+                    >
+                      <Card.Image
+                        source={{ uri: image }}
+                        style={{
+                          ...Platform.select({
+                            android: {
+                              borderRadius: 100,
+                              marginTop: 10,
+                              marginBottom: 20,
+                              marginLeft: 60,
+                              marginRight: 60,
+                            },
+                            ios: {
+                              borderRadius: 100,
+                              marginTop: 10,
+                              marginBottom: 20,
+                              marginLeft: 60,
+                              marginRight: 60,
+                            },
+                          }),
+                        }}
+                      />
+                      <Text
+                        style={{
+                          marginLeft: "auto",
+                          marginRight: "auto",
+                          marginBottom: 10,
+                          textAlign: "center",
+                          fontSize: 20,
+                          color: "#fff",
+                        }}
+                      >
+                        {u.actividad}
+                      </Text>
+                    </View>
                   )}
-                  <Text
-                    style={{
-                      marginLeft: "auto",
-                      marginRight: "auto",
-                      textAlign: "center",
-                      fontSize: 20,
-                      color: "#fff",
-                    }}
-                  >
-                    {u.nombre} {u.apellido}
-                  </Text>
-                  <Text
-                    style={{
-                      marginLeft: "auto",
-                      marginRight: "auto",
-                      marginBottom: 10,
-                      textAlign: "center",
-                      fontSize: 20,
-                      color: "#fff",
-                    }}
-                  >
-                    {u.actividad}
-                  </Text>
                   <TouchableOpacity
                     onPress={() => {
                       RootNavigation.navigate("AnuncioSeleccionado", {
@@ -234,17 +318,24 @@ class CardsUsuarios extends React.Component {
                       backgroundColor: "transparent",
                     }}
                   >
-                    <Text
-                      style={{
-                        color: "#fff",
-                        marginLeft: "auto",
-                        marginRight: "auto",
-                        fontSize: 16,
-                        marginBottom: 10,
-                      }}
-                    >
-                      Previsualizar
-                    </Text>
+                  <View style={{ flexDirection: "row" }}>
+                      <Text
+                        style={{
+                          color: "orange",
+                          marginLeft: "auto",
+                          marginRight: "auto",
+                          fontSize: 16,
+                          marginBottom: 10,
+                        }}
+                      >
+                      <MaterialCommunityIcons
+                        name="email"
+                        color={"orange"}
+                        size={20}
+                      />
+                    Contactar
+                      </Text>
+                  </View>
                   </TouchableOpacity>
                 </View>
               );

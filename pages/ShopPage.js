@@ -22,19 +22,30 @@ class ShopPage extends React.Component {
           <Text style={{ textAlign: "center", marginTop: 25 }} h3>
             ¡Hola!
           </Text>
-          <Text style={{ margin: 20 }} h3>
-            Esta sección se encuentra en desarrollo, pronto estará disponible!
+          <Text style={{ margin: 20, textAlign: "justify" }} h3>
+            En breve vas a poder disfrutar de esta sección.
           </Text>
           <TouchableOpacity
             onPress={() => RootNavigation.navigate("OnboardingPage")}
           >
             <Text
               style={{
-                color: "orange",
-                fontSize: 20,
-                fontWeight: "bold",
-                alignSelf: "center",
-                margin: 20,
+                ...Platform.select({
+                  android: {
+                    color: "orange",
+                    fontSize: 20,
+                    fontWeight: "bold",
+                    alignSelf: "center",
+                    margin: 20,
+                  },
+                  ios: {
+                    color: "orange",
+                    fontSize: 20,
+                    fontWeight: "bold",
+                    alignSelf: "center",
+                    margin: 20,
+                  }
+                })
               }}
             >
               Atrás

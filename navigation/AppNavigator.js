@@ -41,7 +41,7 @@ export function MainTabNavigator({ navigation }) {
         options={{
           tabBarLabel: "Inicio",
           tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name="home" color={color} size={size} />
+            <MaterialCommunityIcons name="home" color={"#000000"} size={size} />
           ),
         }}
       />
@@ -51,7 +51,7 @@ export function MainTabNavigator({ navigation }) {
         options={{
           tabBarLabel: "Buscar",
           tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name="magnify" color={color} size={size} />
+            <MaterialCommunityIcons name="magnify" color={"#000000"} size={size} />
           ),
         }}
       />
@@ -75,7 +75,7 @@ export function MainTabNavigator({ navigation }) {
                   containerStyle={{ position: "absolute", top: -4, left: -4 }}
                 />
               )}
-              <MaterialCommunityIcons name="message" color={color} size={35} />
+              <MaterialCommunityIcons name="message" color={"#000000"} size={35} />
             </View>
           ),
         }}
@@ -86,7 +86,7 @@ export function MainTabNavigator({ navigation }) {
         options={{
           tabBarLabel: "Shop",
           tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name="shopping" color={color} size={size} />
+            <MaterialCommunityIcons name="shopping" color={"#000000"} size={size} />
           ),
         }}
       />
@@ -96,7 +96,7 @@ export function MainTabNavigator({ navigation }) {
         options={{
           tabBarLabel: "Mi Perfil",
           tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name="account" color={color} size={size} />
+            <MaterialCommunityIcons name="account" color={"#000000"} size={size} />
           ),
         }}
       />
