@@ -1,18 +1,8 @@
 import React from "react";
-import {
-  Alert,
-  Image,
-  FlatList,
-  SafeAreaView,
-  StyleSheet,
-  TouchableOpacity,
-  View,
-} from "react-native";
-import * as RootNavigation from "../RootNavigation.js";
-
+import { SafeAreaView, TouchableOpacity } from "react-native";
 import { Card, Text } from "react-native-elements";
 
-class ShopPage extends React.Component {
+export default class ShopPage extends React.Component {
   render() {
     return (
       <SafeAreaView
@@ -26,7 +16,7 @@ class ShopPage extends React.Component {
             En breve vas a poder disfrutar de esta sección.
           </Text>
           <TouchableOpacity
-            onPress={() => RootNavigation.navigate("OnboardingPage")}
+            onPress={({ navigation }) => this.props.navigation.goBack()}
           >
             <Text
               style={{
@@ -44,8 +34,8 @@ class ShopPage extends React.Component {
                     fontWeight: "bold",
                     alignSelf: "center",
                     margin: 20,
-                  }
-                })
+                  },
+                }),
               }}
             >
               Atrás
@@ -56,4 +46,3 @@ class ShopPage extends React.Component {
     );
   }
 }
-export default ShopPage;

@@ -8,24 +8,11 @@ import {
   SafeAreaView,
   Text,
 } from "react-native";
-import {
-  Button,
-  Card,
-  Icon,
-  Input,
-  Overlay,
-  Rating,
-  AirbnbRating,
-} from "react-native-elements";
+import { Card, Overlay, AirbnbRating } from "react-native-elements";
 import * as firebase from "firebase";
 import "firebase/firestore";
 import "firebase/database";
 import "firebase/auth";
-import * as RootNavigation from "../RootNavigation.js";
-import { StackActions } from "@react-navigation/native";
-import CardsUsuarios from "./Cards";
-import { concat } from "react-native-reanimated";
-import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
 const RecomendarUsuario = ({ route }) => {
   let id = route.params.id;

@@ -14,7 +14,6 @@ import { Button, CheckBox, Input, SocialIcon } from "react-native-elements";
 import * as FirebaseCore from "expo-firebase-core";
 import * as Google from "expo-google-app-auth";
 import * as Facebook from "expo-facebook";
-import * as Location from "expo-location";
 import { TouchableHighlight } from "react-native-gesture-handler";
 import * as firebase from "firebase";
 import "firebase/auth";

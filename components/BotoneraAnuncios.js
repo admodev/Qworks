@@ -1,21 +1,11 @@
-import React, { useState, setState } from "react";
-import {
-  TouchableOpacity,
-  StyleSheet,
-  Image,
-  View,
-  ScrollView,
-  SafeAreaView,
-  Text,
-} from "react-native";
-import { Button, Card, Icon, Input } from "react-native-elements";
+import React from "react";
+import { Image, View, SafeAreaView } from "react-native";
+import { Button } from "react-native-elements";
 import * as firebase from "firebase";
 import "firebase/firestore";
 import "firebase/database";
 import "firebase/auth";
 import * as RootNavigation from "../RootNavigation.js";
-import { StackActions } from "@react-navigation/native";
-import CardsUsuarios from "./Cards";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
 export default function Botonera() {

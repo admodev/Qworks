@@ -1,20 +1,9 @@
 // @refresh reset
 //
-import Constants from "expo-constants";
-import * as Notifications from "expo-notifications";
-import * as Permissions from "expo-permissions";
 import React, { useState, useEffect, useCallback } from "react";
 import { GiftedChat, Actions, ActionsProps } from "react-native-gifted-chat";
 import AsyncStorage from "@react-native-community/async-storage";
-import {
-  Text,
-  Image,
-  SafeAreaView,
-  StyleSheet,
-  TextInput,
-  View,
-  Button,
-} from "react-native";
+import { Image, SafeAreaView, StyleSheet } from "react-native";
 import {
   FIREBASE_API_KEY,
   FIREBASE_AUTH_DOMAIN,
@@ -29,7 +18,6 @@ import * as firebase from "firebase";
 import "firebase/auth";
 import "firebase/firestore";
 import "firebase/database";
-import * as RootNavigation from "../RootNavigation.js";
 import LoginPage from "../pages/LoginPage";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import * as ImagePicker from "expo-image-picker";

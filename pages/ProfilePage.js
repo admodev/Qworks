@@ -38,21 +38,17 @@ const ProfilePage = ({ navigation }) => {
     Updates.reloadAsync();
   };
 
+  let dbRef = firebase.database().ref("anuncios/");
+
   let [image, setImage] = useState(null);
 
   let dato = [];
 
   let id, nombre, apellido, actividad, emailPersonal;
   user ? (id = user.uid) : console.log("No user logged in");
+  user ? dbRef.orderByChild("id").equalTo(id) : console.log("No user");
   user
-    ? (dbRef = firebase
-        .database()
-        .ref("anuncios/")
-        .orderByChild("id")
-        .equalTo(id))
-    : console.log("No user");
-  user
-    ? (dbResult = dbRef.on("value", (snap) => {
+    ? dbRef.on("value", (snap) => {
         snap.forEach((child) => {
           key: child.key, (nombre = child.val().nombre);
           image = child.val().image;
@@ -60,7 +56,7 @@ const ProfilePage = ({ navigation }) => {
           actividad = child.val().actividad;
           emailPersonal = child.val().emailPersonal;
         });
-      }))
+      })
     : console.log("No user");
 
   nombre == null ? (nombre = "Nombre") : (nombre = nombre);

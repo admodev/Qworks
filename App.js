@@ -3,14 +3,14 @@ import Constants from "expo-constants";
 import * as Notifications from "expo-notifications";
 import * as Permissions from "expo-permissions";
 import * as React from "react";
-import { AppRegistry, Platform, View } from "react-native";
+import { Platform } from "react-native";
 import MainStackNavigator from "./navigation/AppNavigator.js";
-import { Badge } from "react-native-elements";
-import { navigationRef } from "./RootNavigation";
-import * as Chat from "./components/ChatComponent";
 import * as Location from "expo-location";
 import * as firebase from "firebase";
 import "firebase/auth";
+import "firebase/database";
+import "firebase/firestore";
+import "firebase/storage";
 import {
   GOOGLE_LOGIN_ANDROID_CLIENT_ID,
   GOOGLE_LOGIN_IOS_CLIENT_ID,
@@ -43,59 +43,6 @@ if (firebase.apps.length === 0) {
     }
   }
 }
-
-// Planes
-
-const standard = {
-  duracion: "6 meses",
-  compraDeConversaciones: "multiplos de 3",
-  recomendar: false,
-  calificar: true,
-  comentar: false,
-  compartir: true,
-  subirFoto: true,
-  webs: [],
-  redes: ["facebook", "instagram", "2 webs"],
-};
-
-const green = {
-  duracion: "mensual",
-  conversaciones: 7,
-  compraDeConversaciones: "multiplos de 4",
-  recomendar: true,
-  calificar: true,
-  comentar: false,
-  compartir: true,
-  subirFoto: true,
-  webs: [],
-  redes: ["facebook", "instagram", "2webs"],
-};
-
-const orange = {
-  duracion: "trimestral",
-  conversaciones: 11,
-  compraDeConversaciones: "multiplos de 4 y 7",
-  recomendar: true,
-  calificar: true,
-  comentar: true,
-  compartir: true,
-  subirFoto: true,
-  webs: [],
-  redes: ["facebook", "instagram", "2webs"],
-};
-
-const blue = {
-  duracion: "6 meses",
-  conversaciones: 21,
-  compraDeConversaciones: "multiplos de 4, 7 y 11",
-  recomendar: true,
-  calificar: true,
-  comentar: true,
-  compartir: true,
-  subirFoto: true,
-  webs: [],
-  redes: ["facebook", "instagram", "2webs"],
-};
 
 let user = firebase.auth().currentUser;
 
@@ -134,13 +81,6 @@ export default function App() {
       setLocation(location);
     })();
   }, []);
-
-  let text = "Cargando...";
-  if (errorMsg) {
-    text = errorMsg;
-  } else if (location) {
-    text = JSON.stringify(location);
-  }
 
   const [expoPushToken, setExpoPushToken] = React.useState("");
   const [notification, setNotification] = React.useState(false);
@@ -185,7 +125,7 @@ async function schedulePushNotification() {
       body: "Tienes nuevas notificaciones!",
       data: { data: "Mensajes no leídos." },
     },
-    trigger: { seconds: 2 },
+    trigger: { seconds: 3 },
   });
 }
 

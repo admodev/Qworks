@@ -1,17 +1,10 @@
 import React from "react";
-import {
-  Image,
-  SafeAreaView,
-  ScrollView,
-  StyleSheet,
-  Text,
-  View,
-} from "react-native";
+import { Image, SafeAreaView, ScrollView, View } from "react-native";
 import { Button, PricingCard } from "react-native-elements";
 
 const PagosPage = ({ navigation }) => {
   return (
-    <View style={{ flex: 1 }}>
+    <SafeAreaView style={{ flex: 1 }}>
       <Image
         source={require("../assets/gradients/20x20.png")}
         style={{
@@ -66,7 +59,7 @@ const PagosPage = ({ navigation }) => {
           />
         </View>
       </ScrollView>
-    </View>
+    </SafeAreaView>
   );
 };
 

@@ -1,6 +1,6 @@
-import React, { useState } from "react";
-import { Image, SafeAreaView, ScrollView, Text, View } from "react-native";
-import { Button, CheckBox } from "react-native-elements";
+import React, { useState, setState } from "react";
+import { Image, SafeAreaView, View } from "react-native";
+import { Button } from "react-native-elements";
 import CardsUsuarios from "./Cards";
 import * as RootNavigation from "../RootNavigation.js";
 

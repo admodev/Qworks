@@ -1,15 +1,5 @@
 import * as React from "react";
-import {
-  TouchableOpacity,
-  StyleSheet,
-  Image,
-  View,
-  ScrollView,
-  SafeAreaView,
-  Text,
-} from "react-native";
-import { Button, Card, Icon, Input } from "react-native-elements";
-import { AntDesign } from "@expo/vector-icons";
+import { StyleSheet, Image, ScrollView, SafeAreaView } from "react-native";
 import CardsUsuarios from "../components/Cards";
 import Drawer from "react-native-drawer";
 import ControlPanel from "../components/DrawerControlPanel";

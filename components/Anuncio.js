@@ -12,8 +12,6 @@ import {
 import {
   Button,
   Card,
-  Icon,
-  Input,
   Overlay,
   Rating,
   AirbnbRating,
@@ -394,31 +392,31 @@ const AnuncioSeleccionado = ({ route }) => {
               }),
             }}
           >
-          <TouchableOpacity onPress={() => alert("Proximamente...")}>
-            <Text
-              style={{
-                ...Platform.select({
-                  android: {
-                    color: "#fff",
-                    marginLeft: "auto",
-                    marginRight: "auto",
-                    marginTop: 10,
-                    marginBottom: 10,
-                    fontSize: 20,
-                  },
-                  ios: {
-                    color: "#fff",
-                    marginLeft: "auto",
-                    marginRight: "auto",
-                    marginTop: 10,
-                    marginBottom: 10,
-                    fontSize: 20,
-                  },
-                }),
-              }}
-            >
-              Ubicación
-            </Text>
+            <TouchableOpacity onPress={() => alert("Proximamente...")}>
+              <Text
+                style={{
+                  ...Platform.select({
+                    android: {
+                      color: "#fff",
+                      marginLeft: "auto",
+                      marginRight: "auto",
+                      marginTop: 10,
+                      marginBottom: 10,
+                      fontSize: 20,
+                    },
+                    ios: {
+                      color: "#fff",
+                      marginLeft: "auto",
+                      marginRight: "auto",
+                      marginTop: 10,
+                      marginBottom: 10,
+                      fontSize: 20,
+                    },
+                  }),
+                }}
+              >
+                Ubicación
+              </Text>
             </TouchableOpacity>
             <Text
               style={{
