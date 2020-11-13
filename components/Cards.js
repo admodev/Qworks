@@ -86,40 +86,76 @@ class CardsUsuarios extends React.Component {
     var user = firebase.auth().currentUser;
     return (
       <SafeAreaView style={{ flex: 1 }}>
-        <TouchableOpacity onPress={openControlPanel}>
-          <View
-            style={{
-              flex: 1,
-              flexDirection: "row",
-              position: "absolute",
-              alignContent: "center",
-              justifyContent: "center",
-              marginTop: 20,
-              marginLeft: 25,
-              width: "80%",
-            }}
-          >
-            <Image
-              source={require("../assets/icon.png")}
+        {Platform.OS === "ios" ? (
+          <TouchableOpacity onPress={openControlPanel}>
+            <View
               style={{
-                width: 35,
-                height: 35,
-                marginTop: -15,
-                marginLeft: 10,
-              }}
-            />
-            <Input
-              placeholder="Buscar en  ¡QuedeOficios!"
-              inputStyle={{
+                flex: 1,
+                flexDirection: "row",
+                position: "absolute",
+                alignContent: "center",
                 justifyContent: "center",
+                marginTop: 20,
                 marginLeft: 25,
-                marginTop: -10,
+                width: "80%",
               }}
-              containerStyle={{ marginLeft: 10, marginTop: -10 }}
-              onChangeText={(search) => this.setState({ search })}
-            />
-          </View>
-        </TouchableOpacity>
+            >
+              <Image
+                source={require("../assets/icon.png")}
+                style={{
+                  width: 35,
+                  height: 35,
+                  marginTop: -15,
+                  marginLeft: 10,
+                }}
+              />
+              <Input
+                placeholder="Buscar en  ¡QuedeOficios!"
+                inputStyle={{
+                  justifyContent: "center",
+                  marginLeft: 25,
+                  marginTop: -10,
+                }}
+                containerStyle={{ marginLeft: 10, marginTop: -10 }}
+                onChangeText={(search) => this.setState({ search })}
+              />
+            </View>
+          </TouchableOpacity>
+        ) : (
+          <TouchableOpacity onPress={openControlPanel}>
+            <View
+              style={{
+                flex: 1,
+                flexDirection: "row",
+                alignContent: "center",
+                justifyContent: "center",
+                marginTop: "8%",
+                marginLeft: "8%",
+                width: "80%",
+              }}
+            >
+              <Image
+                source={require("../assets/icon.png")}
+                style={{
+                  width: 35,
+                  height: 35,
+                  marginTop: -15,
+                  marginLeft: 10,
+                }}
+              />
+              <Input
+                placeholder="Buscar en  ¡QuedeOficios!"
+                inputStyle={{
+                  justifyContent: "center",
+                  marginLeft: 25,
+                  marginTop: -10,
+                }}
+                containerStyle={{ marginLeft: 10, marginTop: -10 }}
+                onChangeText={(search) => this.setState({ search })}
+              />
+            </View>
+          </TouchableOpacity>
+        )}
         {this.state.search ? (
           this.filterList(this.state.items).map((itm, index) => (
             <SearchedCardResult
@@ -203,65 +239,65 @@ class CardsUsuarios extends React.Component {
                           }),
                         }}
                       />
-                    <View style={{ flexDirection: "column" }}>
-                      <Text
-                        style={{
-                          ...Platform.select({
-                            android: {
-                              marginLeft: "auto",
-                              marginRight: "auto",
-                              textAlign: "center",
-                              fontSize: 20,
-                              color: "#fff",
-                            },
-                            ios: {
-                              marginTop: "35%",
-                              marginLeft: "12%",
-                              textAlign: "center",
-                              fontSize: 18,
-                              color: "#fff",
-                            },
-                          })
-                        }}
-                      >
-                        {u.nombre}
-                      </Text>
-                      <Text
-                        style={{
-                          marginTop: "10%",
-                          marginLeft: "12%",
-                          textAlign: "center",
-                          fontSize: 18,
-                          color: "#fff",
-                        }}
-                      >
-                        {u.actividad}
-                      </Text>
-                      <View style={{ flexDirection: "row", maxWidth: "50%" }}>
+                      <View style={{ flexDirection: "column" }}>
                         <Text
                           style={{
-                            marginTop: "10%",
-                            marginLeft: "8%",
-                            textAlign: "center",
-                            fontSize: 16,
-                            color: "#fff",
+                            ...Platform.select({
+                              android: {
+                                marginLeft: "auto",
+                                marginRight: "auto",
+                                textAlign: "center",
+                                fontSize: 20,
+                                color: "#fff",
+                              },
+                              ios: {
+                                marginTop: "35%",
+                                marginLeft: "12%",
+                                textAlign: "center",
+                                fontSize: 18,
+                                color: "#fff",
+                              },
+                            }),
                           }}
                         >
-                          {u.localidad}
+                          {u.nombre}
                         </Text>
                         <Text
                           style={{
                             marginTop: "10%",
-                            marginLeft: "5%",
+                            marginLeft: "12%",
                             textAlign: "center",
-                            fontSize: 16,
+                            fontSize: 18,
                             color: "#fff",
                           }}
                         >
-                          {u.provincia}
+                          {u.actividad}
                         </Text>
+                        <View style={{ flexDirection: "row", maxWidth: "50%" }}>
+                          <Text
+                            style={{
+                              marginTop: "10%",
+                              marginLeft: "8%",
+                              textAlign: "center",
+                              fontSize: 16,
+                              color: "#fff",
+                            }}
+                          >
+                            {u.localidad}
+                          </Text>
+                          <Text
+                            style={{
+                              marginTop: "10%",
+                              marginLeft: "5%",
+                              textAlign: "center",
+                              fontSize: 16,
+                              color: "#fff",
+                            }}
+                          >
+                            {u.provincia}
+                          </Text>
+                        </View>
                       </View>
-                    </View>
                     </View>
                   ) : (
                     <View
@@ -318,7 +354,7 @@ class CardsUsuarios extends React.Component {
                       backgroundColor: "transparent",
                     }}
                   >
-                  <View style={{ flexDirection: "row" }}>
+                    <View style={{ flexDirection: "row" }}>
                       <Text
                         style={{
                           color: "orange",
@@ -328,14 +364,14 @@ class CardsUsuarios extends React.Component {
                           marginBottom: 10,
                         }}
                       >
-                      <MaterialCommunityIcons
-                        name="email"
-                        color={"orange"}
-                        size={20}
-                      />
-                    Contactar
+                        <MaterialCommunityIcons
+                          name="email"
+                          color={"orange"}
+                          size={20}
+                        />
+                        Contactar
                       </Text>
-                  </View>
+                    </View>
                   </TouchableOpacity>
                 </View>
               );
