@@ -129,7 +129,7 @@ class CardsUsuarios extends React.Component {
                 flexDirection: "row",
                 alignContent: "center",
                 justifyContent: "center",
-                marginTop: "8%",
+                marginTop: "10%",
                 marginLeft: "8%",
                 width: "80%",
               }}
@@ -173,7 +173,8 @@ class CardsUsuarios extends React.Component {
               borderRadius: 15,
               backgroundColor: "transparent",
               borderWidth: 0,
-              marginTop: 50,
+              marginTop: "2%",
+              elevation: 0,
             }}
           >
             {this.state.items.map((u, i) => {
@@ -220,13 +221,13 @@ class CardsUsuarios extends React.Component {
                         style={{
                           ...Platform.select({
                             android: {
-                              borderRadius: 100,
-                              marginTop: 10,
-                              marginBottom: 20,
-                              marginLeft: 60,
-                              marginRight: 60,
+                              marginTop: "10%",
+                              marginBottom: "10%",
+                              marginLeft: "10%",
+                              marginRight: "10%",
                               width: 100,
                               height: 100,
+                              borderRadius: 100,
                             },
                             ios: {
                               borderRadius: 100,
@@ -239,7 +240,9 @@ class CardsUsuarios extends React.Component {
                           }),
                         }}
                       />
-                      <View style={{ flexDirection: "column" }}>
+                      <View
+                        style={{ flexDirection: "column", maxWidth: "80%" }}
+                      >
                         <Text
                           style={{
                             ...Platform.select({
@@ -249,6 +252,8 @@ class CardsUsuarios extends React.Component {
                                 textAlign: "center",
                                 fontSize: 20,
                                 color: "#fff",
+                                maxWidth: "60%",
+                                marginTop: "10%",
                               },
                               ios: {
                                 marginTop: "35%",
