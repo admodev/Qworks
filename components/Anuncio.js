@@ -141,7 +141,23 @@ const AnuncioSeleccionado = ({ route }) => {
   }
 
   return (
-    <SafeAreaView>
+    <SafeAreaView
+      style={{
+        width: "100%",
+        height: "100%",
+        flex: 1,
+      }}
+    >
+      <Image
+        source={require("../assets/patron.jpg")}
+        style={{
+          flex: 1,
+          position: "absolute",
+          resizeMode: "cover",
+          width: "100%",
+          height: "100%",
+        }}
+      />
       <Image
         source={require("../assets/gradients/20x20.png")}
         style={{
@@ -149,10 +165,16 @@ const AnuncioSeleccionado = ({ route }) => {
           position: "absolute",
           resizeMode: "cover",
           width: "100%",
-          height: "5%",
+          height: "100%",
+          opacity: 0.9,
         }}
       />
-      <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+      <ScrollView
+        showsHorizontalScrollIndicator={false}
+        style={{
+          marginBottom: "30%",
+        }}
+      >
         {/* Card principal */}
         <Card
           style={styles.card}
@@ -164,7 +186,6 @@ const AnuncioSeleccionado = ({ route }) => {
                 backgroundColor: "transparent",
                 borderWidth: 0,
                 marginTop: "3%",
-                height: "2%",
               },
               ios: {
                 padding: 0,
@@ -177,29 +198,6 @@ const AnuncioSeleccionado = ({ route }) => {
             }),
           }}
         >
-          <Image
-            source={require("../assets/patron.jpg")}
-            style={{
-              flex: 1,
-              position: "absolute",
-              resizeMode: "cover",
-              width: "100%",
-              height: "100%",
-              borderRadius: 10,
-            }}
-          />
-          <Image
-            source={require("../assets/gradients/20x20.png")}
-            style={{
-              flex: 1,
-              position: "absolute",
-              resizeMode: "cover",
-              width: "100%",
-              height: "100%",
-              opacity: 0.9,
-              borderRadius: 10,
-            }}
-          />
           <TouchableOpacity onPress={toggleOverlay}>
             {image == null ? (
               <Card.Image
@@ -383,11 +381,9 @@ const AnuncioSeleccionado = ({ route }) => {
               ...Platform.select({
                 android: {
                   flex: 1,
-                  flexDirection: "row",
                 },
                 ios: {
                   flex: 1,
-                  flexDirection: "row",
                 },
               }),
             }}
@@ -456,7 +452,6 @@ const AnuncioSeleccionado = ({ route }) => {
                 borderWidth: 0,
                 maxWidth: "150%",
                 marginTop: "3%",
-                height: "2%",
               },
               ios: {
                 padding: 0,
@@ -470,29 +465,6 @@ const AnuncioSeleccionado = ({ route }) => {
             }),
           }}
         >
-          <Image
-            source={require("../assets/patron.jpg")}
-            style={{
-              flex: 1,
-              position: "absolute",
-              resizeMode: "cover",
-              width: "100%",
-              height: "100%",
-              borderRadius: 10,
-            }}
-          />
-          <Image
-            source={require("../assets/gradients/20x20.png")}
-            style={{
-              flex: 1,
-              position: "absolute",
-              resizeMode: "cover",
-              width: "100%",
-              height: "100%",
-              opacity: 0.9,
-              borderRadius: 10,
-            }}
-          />
           <Text
             style={{
               marginLeft: "auto",
@@ -642,7 +614,6 @@ const AnuncioSeleccionado = ({ route }) => {
                 borderWidth: 0,
                 maxWidth: "150%",
                 marginTop: "3%",
-                height: "2%",
               },
               ios: {
                 padding: 0,
@@ -656,29 +627,6 @@ const AnuncioSeleccionado = ({ route }) => {
             }),
           }}
         >
-          <Image
-            source={require("../assets/patron.jpg")}
-            style={{
-              flex: 1,
-              position: "absolute",
-              resizeMode: "cover",
-              width: "100%",
-              height: "100%",
-              borderRadius: 10,
-            }}
-          />
-          <Image
-            source={require("../assets/gradients/20x20.png")}
-            style={{
-              flex: 1,
-              position: "absolute",
-              resizeMode: "cover",
-              width: "100%",
-              height: "100%",
-              opacity: 0.9,
-              borderRadius: 10,
-            }}
-          />
           <Text
             style={{
               marginLeft: "auto",
@@ -716,7 +664,6 @@ const AnuncioSeleccionado = ({ route }) => {
                 borderWidth: 0,
                 maxWidth: "150%",
                 marginTop: "3%",
-                height: "2%",
               },
               ios: {
                 padding: 0,
@@ -730,29 +677,6 @@ const AnuncioSeleccionado = ({ route }) => {
             }),
           }}
         >
-          <Image
-            source={require("../assets/patron.jpg")}
-            style={{
-              flex: 1,
-              position: "absolute",
-              resizeMode: "cover",
-              width: "100%",
-              height: "100%",
-              borderRadius: 10,
-            }}
-          />
-          <Image
-            source={require("../assets/gradients/20x20.png")}
-            style={{
-              flex: 1,
-              position: "absolute",
-              resizeMode: "cover",
-              width: "100%",
-              height: "100%",
-              opacity: 0.9,
-              borderRadius: 10,
-            }}
-          />
           <Text
             style={{
               marginLeft: "auto",
@@ -790,18 +714,18 @@ const AnuncioSeleccionado = ({ route }) => {
           ...Platform.select({
             android: {
               flex: 1,
-              flexDirection: "row",
               justifyContent: "space-around",
+              flexDirection: "row",
               marginBottom: -20,
               marginLeft: 25,
               marginRight: 25,
               position: "absolute",
-              bottom: "-12%",
+              bottom: "5%",
             },
             ios: {
               flex: 1,
-              flexDirection: "row",
               justifyContent: "space-around",
+              flexDirection: "row",
               marginBottom: -20,
               marginLeft: 25,
               marginRight: 25,
