@@ -23,7 +23,7 @@ Usamos [SemVer](http://semver.org/) para el versionado. Para todas las versiones
 ## Autores ✒️
 
 - **Adolfo Moyano** - _Software Engineer_ - [admodev](https://github.com/admodev)
-- **Gonzalo Javier Sanchez Garcia** - _Fundador QueDeOficios_ - [gonzalo](#gonzalo)
+- **Gonzalo Javier Sanchez Garcia** - _Fundador QuedeOficios_ - [gonzalo](#gonzalo)
 
 ## Licencia 📄
 
