@@ -9,6 +9,7 @@ import {
   Text,
 } from "react-native";
 import { Button, Card, Icon, Input } from "react-native-elements";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import * as firebase from "firebase";
 import "firebase/firestore";
 import "firebase/database";
@@ -44,6 +45,8 @@ class SearchPage extends React.Component {
             actividad: child.val().actividad,
             emailPersonal: child.val().emailPersonal,
             idAnuncio: child.val().id,
+            localidad: child.val().localidad,
+            provincia: child.val().provincia,
           });
         });
         itm = items;
@@ -83,51 +86,78 @@ class SearchPage extends React.Component {
     var user = firebase.auth().currentUser;
     return (
       <SafeAreaView style={{ flex: 1 }}>
-        <Image
-          source={require("../assets/gradients/20x20.png")}
-          style={{
-            flex: 1,
-            position: "absolute",
-            resizeMode: "cover",
-            width: "100%",
-            height: "3%",
-          }}
-        />
-        <TouchableOpacity onPress={openControlPanel}>
-          <View
-            style={{
-              flex: 1,
-              flexDirection: "row",
-              position: "absolute",
-              alignContent: "center",
-              justifyContent: "center",
-              marginTop: 20,
-              marginLeft: 25,
-              width: "80%",
-            }}
-          >
-            <Image
-              source={require("../assets/icon.png")}
+        {Platform.OS === "ios" ? (
+          <TouchableOpacity onPress={openControlPanel}>
+            <View
               style={{
-                width: 35,
-                height: 35,
-                marginTop: -15,
-                marginLeft: 10,
-              }}
-            />
-            <Input
-              placeholder="Buscar en  ¡QuedeOficios!"
-              autoFocus={true}
-              inputStyle={{
+                flex: 1,
+                flexDirection: "row",
+                position: "absolute",
+                alignContent: "center",
                 justifyContent: "center",
+                marginTop: 20,
                 marginLeft: 25,
-                marginTop: -10,
+                width: "80%",
               }}
-              containerStyle={{ marginLeft: 10, marginTop: -10 }}
-              onChangeText={(search) => this.setState({ search })}
-            />
-          </View>
-        </TouchableOpacity>
+            >
+              <Image
+                source={require("../assets/icon.png")}
+                style={{
+                  width: 35,
+                  height: 35,
+                  marginTop: -15,
+                  marginLeft: 10,
+                }}
+              />
+              <Input
+                placeholder="Buscar en  ¡QuedeOficios!"
+                inputStyle={{
+                  justifyContent: "center",
+                  marginLeft: 25,
+                  marginTop: -10,
+                }}
+                autoFocus={true}
+                containerStyle={{ marginLeft: 10, marginTop: -10 }}
+                onChangeText={(search) => this.setState({ search })}
+              />
+            </View>
+          </TouchableOpacity>
+        ) : (
+          <TouchableOpacity onPress={openControlPanel}>
+            <View
+              style={{
+                flex: 1,
+                flexDirection: "row",
+                alignContent: "center",
+                justifyContent: "center",
+                marginTop: "10%",
+                marginLeft: "8%",
+                width: "80%",
+              }}
+            >
+              <Image
+                source={require("../assets/icon.png")}
+                style={{
+                  width: 35,
+                  height: 35,
+                  marginTop: -15,
+                  marginLeft: 10,
+                }}
+              />
+              <Input
+                placeholder="Buscar en  ¡QuedeOficios!"
+                inputStyle={{
+                  justifyContent: "center",
+                  marginLeft: 25,
+                  marginTop: -10,
+                }}
+                autoFocus={true}
+                containerStyle={{ marginLeft: 10, marginTop: -10 }}
+                onChangeText={(search) => this.setState({ search })}
+              />
+            </View>
+          </TouchableOpacity>
+        )}
         {this.state.search ? (
           this.filterList(this.state.items).map((itm, index) => (
             <SearchedCardResult
@@ -145,7 +175,8 @@ class SearchPage extends React.Component {
               borderRadius: 15,
               backgroundColor: "transparent",
               borderWidth: 0,
-              marginTop: 50,
+              marginTop: "2%",
+              elevation: 0,
             }}
           >
             {this.state.items.map((u, i) => {
@@ -186,51 +217,135 @@ class SearchPage extends React.Component {
                     }}
                   />
                   {image == null ? (
-                    <Card.Image
-                      source={require("../assets/icon.png")}
-                      style={{
-                        borderRadius: 100,
-                        marginTop: 10,
-                        marginBottom: 20,
-                        marginLeft: 60,
-                        marginRight: 60,
-                      }}
-                    />
+                    <View style={{ flexDirection: "row" }}>
+                      <Card.Image
+                        source={require("../assets/icon.png")}
+                        style={{
+                          ...Platform.select({
+                            android: {
+                              marginTop: "10%",
+                              marginBottom: "10%",
+                              marginLeft: "10%",
+                              marginRight: "10%",
+                              width: 100,
+                              height: 100,
+                              borderRadius: 100,
+                            },
+                            ios: {
+                              borderRadius: 100,
+                              alignItems: "center",
+                              width: 90,
+                              height: 90,
+                              marginTop: "10%",
+                              marginLeft: "10%",
+                            },
+                          }),
+                        }}
+                      />
+                      <View
+                        style={{ flexDirection: "column", maxWidth: "80%" }}
+                      >
+                        <Text
+                          style={{
+                            ...Platform.select({
+                              android: {
+                                marginLeft: "auto",
+                                marginRight: "auto",
+                                textAlign: "center",
+                                fontSize: 20,
+                                color: "#fff",
+                                marginTop: "10%",
+                              },
+                              ios: {
+                                marginTop: "35%",
+                                marginLeft: "12%",
+                                textAlign: "center",
+                                fontSize: 18,
+                                color: "#fff",
+                              },
+                            }),
+                          }}
+                        >
+                          {u.nombre}
+                        </Text>
+                        <Text
+                          style={{
+                            marginTop: "2%",
+                            textAlign: "center",
+                            fontSize: 18,
+                            color: "#fff",
+                          }}
+                        >
+                          {u.actividad}
+                        </Text>
+                        <View
+                          style={{ flexDirection: "column", maxWidth: "90%" }}
+                        >
+                          <Text
+                            style={{
+                              marginTop: "10%",
+                              marginLeft: "8%",
+                              textAlign: "center",
+                              fontSize: 16,
+                              color: "#fff",
+                            }}
+                          >
+                            {u.localidad}
+                          </Text>
+                          <Text
+                            style={{
+                              marginTop: "2%",
+                              textAlign: "center",
+                              fontSize: 16,
+                              color: "#fff",
+                            }}
+                          >
+                            {u.provincia}
+                          </Text>
+                        </View>
+                      </View>
+                    </View>
                   ) : (
-                    <Card.Image
-                      source={{ uri: image }}
+                    <View
                       style={{
-                        borderRadius: 100,
-                        marginTop: 10,
-                        marginBottom: 20,
-                        marginLeft: 60,
-                        marginRight: 60,
+                        flexDirection: "row",
                       }}
-                    />
+                    >
+                      <Card.Image
+                        source={{ uri: image }}
+                        style={{
+                          ...Platform.select({
+                            android: {
+                              borderRadius: 100,
+                              marginTop: 10,
+                              marginBottom: 20,
+                              marginLeft: 60,
+                              marginRight: 60,
+                            },
+                            ios: {
+                              borderRadius: 100,
+                              marginTop: 10,
+                              marginBottom: 20,
+                              marginLeft: 60,
+                              marginRight: 60,
+                            },
+                          }),
+                        }}
+                      />
+                      <Text
+                        style={{
+                          marginLeft: "auto",
+                          marginRight: "auto",
+                          marginBottom: 10,
+                          textAlign: "center",
+                          fontSize: 20,
+                          color: "#fff",
+                        }}
+                      >
+                        {u.actividad}
+                      </Text>
+                    </View>
                   )}
-                  <Text
-                    style={{
-                      marginLeft: "auto",
-                      marginRight: "auto",
-                      textAlign: "center",
-                      fontSize: 20,
-                      color: "#fff",
-                    }}
-                  >
-                    {u.nombre} {u.apellido}
-                  </Text>
-                  <Text
-                    style={{
-                      marginLeft: "auto",
-                      marginRight: "auto",
-                      marginBottom: 10,
-                      textAlign: "center",
-                      fontSize: 20,
-                      color: "#fff",
-                    }}
-                  >
-                    {u.actividad}
-                  </Text>
                   <TouchableOpacity
                     onPress={() => {
                       RootNavigation.navigate("AnuncioSeleccionado", {
@@ -245,17 +360,24 @@ class SearchPage extends React.Component {
                       backgroundColor: "transparent",
                     }}
                   >
-                    <Text
-                      style={{
-                        color: "#fff",
-                        marginLeft: "auto",
-                        marginRight: "auto",
-                        fontSize: 16,
-                        marginBottom: 10,
-                      }}
-                    >
-                      Previsualizar
-                    </Text>
+                    <View style={{ flexDirection: "row" }}>
+                      <Text
+                        style={{
+                          color: "orange",
+                          marginLeft: "auto",
+                          marginRight: "auto",
+                          fontSize: 16,
+                          marginBottom: 10,
+                        }}
+                      >
+                        <MaterialCommunityIcons
+                          name="email"
+                          color={"orange"}
+                          size={20}
+                        />
+                        Contactar
+                      </Text>
+                    </View>
                   </TouchableOpacity>
                 </View>
               );

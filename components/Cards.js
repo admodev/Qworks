@@ -252,7 +252,6 @@ class CardsUsuarios extends React.Component {
                                 textAlign: "center",
                                 fontSize: 20,
                                 color: "#fff",
-                                maxWidth: "60%",
                                 marginTop: "10%",
                               },
                               ios: {
@@ -269,8 +268,7 @@ class CardsUsuarios extends React.Component {
                         </Text>
                         <Text
                           style={{
-                            marginTop: "10%",
-                            marginLeft: "12%",
+                            marginTop: "2%",
                             textAlign: "center",
                             fontSize: 18,
                             color: "#fff",
@@ -278,7 +276,9 @@ class CardsUsuarios extends React.Component {
                         >
                           {u.actividad}
                         </Text>
-                        <View style={{ flexDirection: "row", maxWidth: "50%" }}>
+                        <View
+                          style={{ flexDirection: "column", maxWidth: "90%" }}
+                        >
                           <Text
                             style={{
                               marginTop: "10%",
@@ -292,8 +292,7 @@ class CardsUsuarios extends React.Component {
                           </Text>
                           <Text
                             style={{
-                              marginTop: "10%",
-                              marginLeft: "5%",
+                              marginTop: "2%",
                               textAlign: "center",
                               fontSize: 16,
                               color: "#fff",
