@@ -10,6 +10,7 @@ import {
   KeyboardAvoidingView,
 } from "react-native";
 import { Button, Card, Icon, Input } from "react-native-elements";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import * as firebase from "firebase";
 import "firebase/firestore";
 import "firebase/database";
@@ -54,7 +55,12 @@ export default class searchedCardResult extends React.Component {
   render() {
     return (
       <SafeAreaView
-        style={{ margin: 25, marginTop: 100, backgroundColor: "transparent" }}
+        style={{
+          flex: 1,
+          margin: 25,
+          marginTop: "8%",
+          backgroundColor: "transparent",
+        }}
       >
         <Image
           source={require("../assets/patron.jpg")}
@@ -86,80 +92,148 @@ export default class searchedCardResult extends React.Component {
             borderRadius: 15,
             backgroundColor: "transparent",
             borderWidth: 0,
+            marginTop: "2%",
+            elevation: 0,
           }}
         >
-          {image == null ? (
-            <Card.Image
-              source={require("../assets/icon.png")}
-              style={{
-                borderRadius: 100,
-                marginTop: 10,
-                marginBottom: 20,
-                marginLeft: 60,
-                marginRight: 60,
+          <View style={{ margin: 25, backgroundColor: "transparent" }}>
+            {image == null ? (
+              <View style={{ flexDirection: "row" }}>
+                <Card.Image
+                  source={require("../assets/icon.png")}
+                  style={{
+                    ...Platform.select({
+                      android: {
+                        marginTop: "10%",
+                        marginBottom: "10%",
+                        marginLeft: "10%",
+                        marginRight: "10%",
+                        width: 100,
+                        height: 100,
+                        borderRadius: 100,
+                      },
+                      ios: {
+                        borderRadius: 100,
+                        alignItems: "center",
+                        width: 90,
+                        height: 90,
+                        marginTop: "10%",
+                        marginLeft: "10%",
+                      },
+                    }),
+                  }}
+                />
+                <View style={{ flexDirection: "column", maxWidth: "80%" }}>
+                  <Text
+                    style={{
+                      ...Platform.select({
+                        android: {
+                          marginLeft: "auto",
+                          marginRight: "auto",
+                          textAlign: "center",
+                          fontSize: 20,
+                          color: "#fff",
+                          marginTop: "10%",
+                        },
+                        ios: {
+                          marginTop: "35%",
+                          marginLeft: "12%",
+                          textAlign: "center",
+                          fontSize: 18,
+                          color: "#fff",
+                        },
+                      }),
+                    }}
+                  >
+                    {this.props.nombre}
+                  </Text>
+                  <Text
+                    style={{
+                      marginTop: "2%",
+                      textAlign: "center",
+                      fontSize: 18,
+                      color: "#fff",
+                    }}
+                  >
+                    {this.props.actividad}
+                  </Text>
+                </View>
+              </View>
+            ) : (
+              <View
+                style={{
+                  flexDirection: "row",
+                }}
+              >
+                <Card.Image
+                  source={{ uri: image }}
+                  style={{
+                    ...Platform.select({
+                      android: {
+                        borderRadius: 100,
+                        marginTop: 10,
+                        marginBottom: 20,
+                        marginLeft: 60,
+                        marginRight: 60,
+                      },
+                      ios: {
+                        borderRadius: 100,
+                        marginTop: 10,
+                        marginBottom: 20,
+                        marginLeft: 60,
+                        marginRight: 60,
+                      },
+                    }),
+                  }}
+                />
+                <Text
+                  style={{
+                    marginLeft: "auto",
+                    marginRight: "auto",
+                    marginBottom: 10,
+                    textAlign: "center",
+                    fontSize: 20,
+                    color: "#fff",
+                  }}
+                >
+                  {this.props.actividad}
+                </Text>
+              </View>
+            )}
+            <TouchableOpacity
+              onPress={() => {
+                RootNavigation.navigate("AnuncioSeleccionado", {
+                  id: idAnuncio,
+                });
               }}
-            />
-          ) : (
-            <Card.Image
-              source={{ uri: image }}
               style={{
-                borderRadius: 100,
-                marginTop: 10,
-                marginBottom: 20,
-                marginLeft: 60,
-                marginRight: 60,
-              }}
-            />
-          )}
-          <Text
-            style={{
-              marginLeft: "auto",
-              marginRight: "auto",
-              textAlign: "center",
-              fontSize: 20,
-              color: "#fff",
-            }}
-          >
-            {this.props.nombre} {this.props.apellido}
-          </Text>
-          <Text
-            style={{
-              marginLeft: "auto",
-              marginRight: "auto",
-              marginBottom: 10,
-              textAlign: "center",
-              fontSize: 20,
-              color: "#fff",
-            }}
-          >
-            {this.props.actividad}
-          </Text>
-          <TouchableOpacity
-            onPress={() => {
-              RootNavigation.navigate("AnuncioSeleccionado", {
-                id: idAnuncio,
-              });
-            }}
-            style={{
-              borderRadius: 0,
-              marginLeft: 0,
-              marginRight: 0,
-              marginBottom: 0,
-              backgroundColor: "transparent",
-            }}
-          >
-            <Text
-              style={{
-                color: "#fff",
-                marginLeft: "auto",
-                marginRight: "auto",
-                fontSize: 16,
-                marginBottom: 10,
+                borderRadius: 0,
+                marginLeft: 0,
+                marginRight: 0,
+                marginBottom: 0,
+                backgroundColor: "transparent",
               }}
             >
-              Previsualizar
-            </Text>
-          </TouchableOpacity>
+              <View style={{ flexDirection: "row" }}>
+                <Text
+                  style={{
+                    color: "orange",
+                    marginLeft: "auto",
+                    marginRight: "auto",
+                    fontSize: 16,
+                    marginBottom: 10,
+                  }}
+                >
+                  <MaterialCommunityIcons
+                    name="email"
+                    color={"orange"}
+                    size={20}
+                  />
+                  Contactar
+                </Text>
+              </View>
+            </TouchableOpacity>
+          </View>
         </Card>
       </SafeAreaView>
     );
