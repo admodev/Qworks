@@ -766,21 +766,34 @@ const AnuncioSeleccionado = ({ route }) => {
           />
         </View>
         <View style={{ margin: 10 }}>
-          <Button
-            title="Enviar Mensaje"
-            onPress={() =>
-              RootNavigation.navigate("ChatComponent", {
-                userOne: firebase.auth().currentUser.uid,
-                userTwo: routeParamsToString,
-              })
-            }
-            titleStyle={{ fontSize: 12, marginTop: 15 }}
-            buttonStyle={{
-              width: 120,
-              height: 50,
-              backgroundColor: "transparent",
-            }}
-          />
+          {user == null ? (
+            <Button
+              title="Enviar Mensaje"
+              onPress={() => alert("Debes ingresar para iniciar un chat!")}
+              titleStyle={{ fontSize: 12, marginTop: 15 }}
+              buttonStyle={{
+                width: 120,
+                height: 50,
+                backgroundColor: "transparent",
+              }}
+            />
+          ) : (
+            <Button
+              title="Enviar Mensaje"
+              onPress={() =>
+                RootNavigation.navigate("ChatComponent", {
+                  userOne: firebase.auth().currentUser.uid,
+                  userTwo: routeParamsToString,
+                })
+              }
+              titleStyle={{ fontSize: 12, marginTop: 15 }}
+              buttonStyle={{
+                width: 120,
+                height: 50,
+                backgroundColor: "transparent",
+              }}
+            />
+          )}
           <Image
             source={require("../assets/icon.png")}
             style={{

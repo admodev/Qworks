@@ -21,7 +21,7 @@ import "firebase/database";
 import LoginPage from "../pages/LoginPage";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import * as ImagePicker from "expo-image-picker";
-
+import * as Notifications from "expo-notifications";
 if (firebase.apps.length === 0) {
   try {
     firebase.initializeApp({
@@ -53,6 +53,8 @@ export default function Chat({ route }) {
   let selectedChat = chatsRef.where("userTwo", "==", secondUserId);
   const database = firebase.database();
   const storage = firebase.storage();
+  // Estado del chat mediante la función setTimeOut().
+  const [chatActivo, setChatActivo] = useState(true);
   const storageRef = storage.ref();
   const defaultImageRef = storageRef.child("/defaultUserImage/icon.png");
   let [image, setImage] = useState("");
@@ -104,6 +106,11 @@ export default function Chat({ route }) {
         }
       }
     })();
+
+    // Desactivar chat luego de que pasen 30 minutos:
+    setTimeout(() => {
+      (chatActivo) => setChatActivo(!chatActivo);
+    }, 1000 * 60 * 30);
   }, []);
 
   const appendMessages = useCallback(
