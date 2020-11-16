@@ -124,15 +124,16 @@ const AnuncioSeleccionado = ({ route }) => {
       });
   }
 
-  let [rating, setRating] = useState("");
+  let [rating, setRating] = useState(0);
 
   function calificarUsuario(rating) {
-    let ratingString = toString(rating);
+    let ratingString = parseInt(rating);
     firebase
       .database()
-      .ref("calificaciones/")
-      .push({})
+      .ref("calificaciones/" + id)
       .set({
+        ratingUser: firebase.auth().currentUser.uid,
+        ratedUser: id,
         calificacion: ratingString,
       })
       .then(function () {
@@ -259,7 +260,6 @@ const AnuncioSeleccionado = ({ route }) => {
           <AirbnbRating
             showRating={true}
             reviews={["Malo", "Promedio", "Bueno", "Profesional", "Excelente"]}
-            defaultRating={rating}
             type="star"
             onFinishRating={(rating) => setRating(rating)}
             style={{
@@ -730,7 +730,7 @@ const AnuncioSeleccionado = ({ route }) => {
               marginLeft: 25,
               marginRight: 25,
               position: "absolute",
-              bottom: -82,
+              bottom: "3%",
             },
           }),
         }}
@@ -748,16 +748,31 @@ const AnuncioSeleccionado = ({ route }) => {
           }}
         />
         <View style={{ margin: 10, marginLeft: 20 }}>
-          <Button
-            title="Recomendar"
-            onPress={() => calificarUsuario()}
-            titleStyle={{ fontSize: 12, marginBottom: 15 }}
-            buttonStyle={{
-              width: 120,
-              height: 50,
-              backgroundColor: "transparent",
-            }}
-          />
+          {user == null ? (
+            <Button
+              title="Recomendar"
+              onPress={() =>
+                alert("Debes ingresar para recomendar a un usuario!")
+              }
+              titleStyle={{ fontSize: 12, marginBottom: 15 }}
+              buttonStyle={{
+                width: 120,
+                height: 50,
+                backgroundColor: "transparent",
+              }}
+            />
+          ) : (
+            <Button
+              title="Recomendar"
+              onPress={() => calificarUsuario(rating)}
+              titleStyle={{ fontSize: 12, marginBottom: 15 }}
+              buttonStyle={{
+                width: 120,
+                height: 50,
+                backgroundColor: "transparent",
+              }}
+            />
+          )}
           <MaterialCommunityIcons
             name="account-group"
             color={"white"}
@@ -807,18 +822,31 @@ const AnuncioSeleccionado = ({ route }) => {
           />
         </View>
         <View style={{ margin: 10 }}>
-          <Button
-            title="Comentar"
-            onPress={() =>
-              RootNavigation.navigate("ComentarScreen", { id: id })
-            }
-            titleStyle={{ fontSize: 12, marginTop: 15 }}
-            buttonStyle={{
-              width: 120,
-              height: 50,
-              backgroundColor: "transparent",
-            }}
-          />
+          {user == null ? (
+            <Button
+              title="Comentar"
+              onPress={() => alert("Debes ingresar para comentar!")}
+              titleStyle={{ fontSize: 12, marginTop: 15 }}
+              buttonStyle={{
+                width: 120,
+                height: 50,
+                backgroundColor: "transparent",
+              }}
+            />
+          ) : (
+            <Button
+              title="Comentar"
+              onPress={() =>
+                RootNavigation.navigate("ComentarScreen", { id: id })
+              }
+              titleStyle={{ fontSize: 12, marginTop: 15 }}
+              buttonStyle={{
+                width: 120,
+                height: 50,
+                backgroundColor: "transparent",
+              }}
+            />
+          )}
           <MaterialCommunityIcons
             name="comment-multiple-outline"
             color={"white"}
