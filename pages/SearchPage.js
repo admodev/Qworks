@@ -171,12 +171,24 @@ class SearchPage extends React.Component {
           <Card
             style={styles.card}
             containerStyle={{
-              padding: 0,
-              borderRadius: 15,
-              backgroundColor: "transparent",
-              borderWidth: 0,
-              marginTop: "2%",
-              elevation: 0,
+              ...Platform.select({
+                android: {
+                  padding: 0,
+                  borderRadius: 15,
+                  backgroundColor: "transparent",
+                  borderWidth: 0,
+                  marginTop: "5%",
+                  elevation: 0,
+                },
+                ios: {
+                  padding: 0,
+                  borderRadius: 15,
+                  backgroundColor: "transparent",
+                  borderWidth: 0,
+                  marginTop: "10%",
+                  elevation: 0,
+                },
+              }),
             }}
           >
             {this.state.items.map((u, i) => {

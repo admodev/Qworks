@@ -56,10 +56,20 @@ export default class searchedCardResult extends React.Component {
     return (
       <SafeAreaView
         style={{
-          flex: 1,
-          margin: 25,
-          marginTop: "8%",
-          backgroundColor: "transparent",
+          ...Platform.select({
+            android: {
+              flex: 1,
+              margin: 25,
+              marginTop: "5%",
+              backgroundColor: "transparent",
+            },
+            ios: {
+              flex: 1,
+              margin: 25,
+              marginTop: "20%",
+              backgroundColor: "transparent",
+            },
+          }),
         }}
       >
         <Image
@@ -88,15 +98,27 @@ export default class searchedCardResult extends React.Component {
         <Card
           style={styles.card}
           containerStyle={{
-            padding: 0,
-            borderRadius: 15,
-            backgroundColor: "transparent",
-            borderWidth: 0,
-            marginTop: "2%",
-            elevation: 0,
+            ...Platform.select({
+              android: {
+                padding: 0,
+                borderRadius: 15,
+                backgroundColor: "transparent",
+                borderWidth: 0,
+                marginTop: "2%",
+                elevation: 0,
+              },
+              ios: {
+                padding: 0,
+                borderRadius: 15,
+                backgroundColor: "transparent",
+                borderWidth: 0,
+                marginTop: "2%",
+                elevation: 0,
+              },
+            }),
           }}
         >
-          <View style={{ margin: 25, backgroundColor: "transparent" }}>
+          <View style={{ margin: 20, backgroundColor: "transparent" }}>
             {image == null ? (
               <View style={{ flexDirection: "row" }}>
                 <Card.Image

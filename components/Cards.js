@@ -7,6 +7,7 @@ import {
   ScrollView,
   SafeAreaView,
   Text,
+  Platform,
 } from "react-native";
 import { Button, Card, Icon, Input } from "react-native-elements";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
@@ -72,7 +73,9 @@ class CardsUsuarios extends React.Component {
       (itm) =>
         itm.nombre.toLowerCase().includes(this.state.search.toLowerCase()) ||
         itm.apellido.toLowerCase().includes(this.state.search.toLowerCase()) ||
-        itm.actividad.toLowerCase().includes(this.state.search.toLowerCase())
+        itm.actividad.toLowerCase().includes(this.state.search.toLowerCase()) ||
+        itm.localidad.toLowerCase().includes(this.state.search.toLowerCase()) ||
+        itm.provincia.toLowerCase().includes(this.state.search.toLowerCase())
     );
   }
 
@@ -169,12 +172,24 @@ class CardsUsuarios extends React.Component {
           <Card
             style={styles.card}
             containerStyle={{
-              padding: 0,
-              borderRadius: 15,
-              backgroundColor: "transparent",
-              borderWidth: 0,
-              marginTop: "2%",
-              elevation: 0,
+              ...Platform.select({
+                android: {
+                  padding: 0,
+                  borderRadius: 15,
+                  backgroundColor: "transparent",
+                  borderWidth: 0,
+                  marginTop: "2%",
+                  elevation: 0,
+                },
+                ios: {
+                  padding: 0,
+                  borderRadius: 15,
+                  backgroundColor: "transparent",
+                  borderWidth: 0,
+                  marginTop: "10%",
+                  elevation: 0,
+                },
+              }),
             }}
           >
             {this.state.items.map((u, i) => {
@@ -189,7 +204,19 @@ class CardsUsuarios extends React.Component {
               return (
                 <View
                   key={i}
-                  style={{ margin: 25, backgroundColor: "transparent" }}
+                  style={{
+                    ...Platform.select({
+                      android: {
+                        margin: 20,
+                        backgroundColor: "transparent",
+                      },
+                      ios: {
+                        margin: 20,
+                        marginTop: "8%",
+                        backgroundColor: "transparent",
+                      },
+                    }),
+                  }}
                 >
                   <Image
                     source={require("../assets/patron.jpg")}
@@ -241,7 +268,19 @@ class CardsUsuarios extends React.Component {
                         }}
                       />
                       <View
-                        style={{ flexDirection: "column", maxWidth: "80%" }}
+                        style={{
+                          ...Platform.select({
+                            android: {
+                              flexDirection: "column",
+                              maxWidth: "80%",
+                            },
+                            ios: {
+                              flexDirection: "column",
+                              maxWidth: "80%",
+                              marginLeft: "12%",
+                            },
+                          }),
+                        }}
                       >
                         <Text
                           style={{
@@ -255,11 +294,12 @@ class CardsUsuarios extends React.Component {
                                 marginTop: "10%",
                               },
                               ios: {
-                                marginTop: "35%",
-                                marginLeft: "12%",
+                                marginLeft: "auto",
+                                marginRight: "auto",
                                 textAlign: "center",
-                                fontSize: 18,
+                                fontSize: 20,
                                 color: "#fff",
+                                marginTop: "10%",
                               },
                             }),
                           }}
@@ -268,34 +308,81 @@ class CardsUsuarios extends React.Component {
                         </Text>
                         <Text
                           style={{
-                            marginTop: "2%",
-                            textAlign: "center",
-                            fontSize: 18,
-                            color: "#fff",
+                            ...Platform.select({
+                              android: {
+                                marginTop: "2%",
+                                textAlign: "center",
+                                fontSize: 18,
+                                color: "#fff",
+                              },
+                              ios: {
+                                marginTop: "2%",
+                                marginLeft: "auto",
+                                marginRight: "auto",
+                                textAlign: "center",
+                                fontSize: 18,
+                                color: "#fff",
+                              },
+                            }),
                           }}
                         >
                           {u.actividad}
                         </Text>
                         <View
-                          style={{ flexDirection: "column", maxWidth: "90%" }}
+                          style={{
+                            ...Platform.select({
+                              android: {
+                                flexDirection: "column",
+                                maxWidth: "90%",
+                              },
+                              ios: {
+                                flexDirection: "column",
+                                maxWidth: "90%",
+                              },
+                            }),
+                          }}
                         >
                           <Text
                             style={{
-                              marginTop: "10%",
-                              marginLeft: "8%",
-                              textAlign: "center",
-                              fontSize: 16,
-                              color: "#fff",
+                              ...Platform.select({
+                                android: {
+                                  marginTop: "10%",
+                                  marginLeft: "8%",
+                                  textAlign: "center",
+                                  fontSize: 16,
+                                  color: "#fff",
+                                },
+                                ios: {
+                                  marginLeft: "auto",
+                                  marginRight: "auto",
+                                  marginTop: "10%",
+                                  textAlign: "center",
+                                  fontSize: 16,
+                                  color: "#fff",
+                                },
+                              }),
                             }}
                           >
                             {u.localidad}
                           </Text>
                           <Text
                             style={{
-                              marginTop: "2%",
-                              textAlign: "center",
-                              fontSize: 16,
-                              color: "#fff",
+                              ...Platform.select({
+                                android: {
+                                  marginTop: "2%",
+                                  textAlign: "center",
+                                  fontSize: 16,
+                                  color: "#fff",
+                                },
+                                ios: {
+                                  marginLeft: "auto",
+                                  marginRight: "auto",
+                                  marginTop: "2%",
+                                  textAlign: "center",
+                                  fontSize: 16,
+                                  color: "#fff",
+                                },
+                              }),
                             }}
                           >
                             {u.provincia}
@@ -330,18 +417,129 @@ class CardsUsuarios extends React.Component {
                           }),
                         }}
                       />
-                      <Text
+                      <View
                         style={{
-                          marginLeft: "auto",
-                          marginRight: "auto",
-                          marginBottom: 10,
-                          textAlign: "center",
-                          fontSize: 20,
-                          color: "#fff",
+                          ...Platform.select({
+                            android: {
+                              flexDirection: "column",
+                              maxWidth: "80%",
+                            },
+                            ios: {
+                              flexDirection: "column",
+                              maxWidth: "80%",
+                              left: "30%",
+                            },
+                          }),
                         }}
                       >
-                        {u.actividad}
-                      </Text>
+                        <Text
+                          style={{
+                            ...Platform.select({
+                              android: {
+                                marginLeft: "auto",
+                                marginRight: "auto",
+                                textAlign: "center",
+                                fontSize: 20,
+                                color: "#fff",
+                                marginTop: "10%",
+                              },
+                              ios: {
+                                marginLeft: "auto",
+                                marginRight: "auto",
+                                textAlign: "center",
+                                fontSize: 20,
+                                color: "#fff",
+                                marginTop: "10%",
+                              },
+                            }),
+                          }}
+                        >
+                          {u.nombre}
+                        </Text>
+                        <Text
+                          style={{
+                            ...Platform.select({
+                              android: {
+                                marginTop: "2%",
+                                textAlign: "center",
+                                fontSize: 18,
+                                color: "#fff",
+                              },
+                              ios: {
+                                marginTop: "2%",
+                                marginLeft: "auto",
+                                marginRight: "auto",
+                                textAlign: "center",
+                                fontSize: 18,
+                                color: "#fff",
+                              },
+                            }),
+                          }}
+                        >
+                          {u.actividad}
+                        </Text>
+                        <View
+                          style={{
+                            ...Platform.select({
+                              android: {
+                                flexDirection: "column",
+                                maxWidth: "90%",
+                              },
+                              ios: {
+                                flexDirection: "column",
+                                maxWidth: "90%",
+                                left: "30%",
+                              },
+                            }),
+                          }}
+                        >
+                          <Text
+                            style={{
+                              ...Platform.select({
+                                android: {
+                                  marginTop: "10%",
+                                  marginLeft: "8%",
+                                  textAlign: "center",
+                                  fontSize: 16,
+                                  color: "#fff",
+                                },
+                                ios: {
+                                  marginLeft: "auto",
+                                  marginRight: "auto",
+                                  marginTop: "10%",
+                                  textAlign: "center",
+                                  fontSize: 16,
+                                  color: "#fff",
+                                },
+                              }),
+                            }}
+                          >
+                            {u.localidad}
+                          </Text>
+                          <Text
+                            style={{
+                              ...Platform.select({
+                                android: {
+                                  marginTop: "2%",
+                                  textAlign: "center",
+                                  fontSize: 16,
+                                  color: "#fff",
+                                },
+                                ios: {
+                                  marginLeft: "auto",
+                                  marginRight: "auto",
+                                  marginTop: "2%",
+                                  textAlign: "center",
+                                  fontSize: 16,
+                                  color: "#fff",
+                                },
+                              }),
+                            }}
+                          >
+                            {u.provincia}
+                          </Text>
+                        </View>
+                      </View>
                     </View>
                   )}
                   <TouchableOpacity
@@ -355,6 +553,7 @@ class CardsUsuarios extends React.Component {
                       marginLeft: 0,
                       marginRight: 0,
                       marginBottom: 0,
+                      marginTop: "3%",
                       backgroundColor: "transparent",
                     }}
                   >
