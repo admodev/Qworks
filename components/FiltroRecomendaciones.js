@@ -7,7 +7,7 @@ import "firebase/database";
 
 var itm = [];
 
-export default function FiltroRecomendados() {
+export default function FiltroRecomendados({ navigation }) {
   let user = firebase.auth().currentUser;
   firebase
     .database()
@@ -17,31 +17,11 @@ export default function FiltroRecomendados() {
       snap.forEach((child) => {
         items.push({
           ratedUser: child.val().ratedUser,
-          calificacion: child.val().calificacion,
+          rating: child.val().rating,
         });
       });
       itm = items;
     });
-
-  function filtrarMenosTresEstrellas() {
-    firebase
-      .database()
-      .ref("calificaciones/")
-      .orderByChild("calificacion")
-      .startAt(0)
-      .endAt(3)
-      .on("child_added", (snap) => {
-        let items = [];
-        snap.forEach((child) => {
-          items.push({
-            ratedUser: child.val().ratedUser,
-            calificacion: child.val().calificacion,
-          });
-        });
-      });
-
-    console.log(itm);
-  }
 
   function filtrarMasTresEstrellas() {
     firebase
@@ -100,7 +80,6 @@ export default function FiltroRecomendados() {
         style={{
           ...Platform.select({
             android: {
-              flexDirection: "row",
               alignItems: "center",
               justifyContent: "center",
             },
@@ -113,7 +92,7 @@ export default function FiltroRecomendados() {
       >
         <Button
           title="Mostrar menos de 3 estrellas"
-          onPress={() => filtrarMenosTresEstrellas()}
+          onPress={() => navigation.navigate("FiltroMenosTresEstrellasScreen")}
           buttonStyle={{
             ...Platform.select({
               android: {
@@ -127,7 +106,7 @@ export default function FiltroRecomendados() {
         />
         <Button
           title="Mostrar más de 3 estrellas"
-          onPress={() => filtrarMasTresEstrellas()}
+          onPress={() => navigation.navigate("FiltroMasTresEstrellasScreen")}
           buttonStyle={{
             ...Platform.select({
               android: {
@@ -141,7 +120,7 @@ export default function FiltroRecomendados() {
         />
         <Button
           title="Mostrar solo 5 estrellas"
-          onPress={() => filtrarCincoEstrellas()}
+          onPress={() => navigation.navigate("FiltroCincoEstrellasScreen")}
           buttonStyle={{
             ...Platform.select({
               android: {
@@ -157,7 +136,7 @@ export default function FiltroRecomendados() {
       {itm.map((l, i) => (
         <View key={i}>
           <Text>{l.ratedUser}</Text>
-          <Text>{l.calificacion}</Text>
+          <Text>{l.rating}</Text>
         </View>
       ))}
     </SafeAreaView>

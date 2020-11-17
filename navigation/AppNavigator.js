@@ -28,6 +28,9 @@ import FiltroDeComentarios from "../components/FiltroComentarios";
 import FiltroDeFavoritos from "../components/FiltroFavoritos";
 import RecomendarUsuario from "../components/RecomendarScreen";
 import ComentarScreen from "../components/Comentar";
+import FiltroMenosTresEstrellasScreen from "../components/FiltroMenosTresEstrellas";
+import FiltroMasTresEstrellasScreen from "../components/FiltroMasTresEstrellas";
+import FiltroCincoEstrellasScreen from "../components/FiltroCincoEstrellas";
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -51,7 +54,11 @@ export function MainTabNavigator({ navigation }) {
         options={{
           tabBarLabel: "Buscar",
           tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name="magnify" color={"#000000"} size={size} />
+            <MaterialCommunityIcons
+              name="magnify"
+              color={"#000000"}
+              size={size}
+            />
           ),
         }}
       />
@@ -75,7 +82,11 @@ export function MainTabNavigator({ navigation }) {
                   containerStyle={{ position: "absolute", top: -4, left: -4 }}
                 />
               )}
-              <MaterialCommunityIcons name="message" color={"#000000"} size={35} />
+              <MaterialCommunityIcons
+                name="message"
+                color={"#000000"}
+                size={35}
+              />
             </View>
           ),
         }}
@@ -86,7 +97,11 @@ export function MainTabNavigator({ navigation }) {
         options={{
           tabBarLabel: "Shop",
           tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name="shopping" color={"#000000"} size={size} />
+            <MaterialCommunityIcons
+              name="shopping"
+              color={"#000000"}
+              size={size}
+            />
           ),
         }}
       />
@@ -96,7 +111,11 @@ export function MainTabNavigator({ navigation }) {
         options={{
           tabBarLabel: "Mi Perfil",
           tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name="account" color={"#000000"} size={size} />
+            <MaterialCommunityIcons
+              name="account"
+              color={"#000000"}
+              size={size}
+            />
           ),
         }}
       />
@@ -229,6 +248,21 @@ function MainStackNavigator({ navigation }) {
         <Stack.Screen
           name="FiltroDeFavoritos"
           component={FiltroDeFavoritos}
+          options={{ title: "QuedeOficios!", headerShown: false }}
+        />
+        <Stack.Screen
+          name="FiltroMenosTresEstrellasScreen"
+          component={FiltroMenosTresEstrellasScreen}
+          options={{ title: "QuedeOficios!", headerShown: false }}
+        />
+        <Stack.Screen
+          name="FiltroMasTresEstrellasScreen"
+          component={FiltroMasTresEstrellasScreen}
+          options={{ title: "QuedeOficios!", headerShown: false }}
+        />
+        <Stack.Screen
+          name="FiltroCincoEstrellasScreen"
+          component={FiltroCincoEstrellasScreen}
           options={{ title: "QuedeOficios!", headerShown: false }}
         />
       </Stack.Navigator>

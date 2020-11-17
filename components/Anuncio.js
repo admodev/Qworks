@@ -27,6 +27,8 @@ import { concat } from "react-native-reanimated";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import * as Updates from "expo-updates";
 
+let calificacion = "calificacion";
+
 const AnuncioSeleccionado = ({ route }) => {
   let id = route.params.id;
   let routeParamsToString = id.toString();
@@ -130,11 +132,14 @@ const AnuncioSeleccionado = ({ route }) => {
     let ratingString = parseInt(rating);
     firebase
       .database()
-      .ref("calificaciones/" + id)
+      .ref("calificaciones/")
+      .push()
       .set({
-        ratingUser: firebase.auth().currentUser.uid,
-        ratedUser: id,
-        calificacion: ratingString,
+        calificacion: {
+          ratingUser: firebase.auth().currentUser.uid,
+          ratedUser: id,
+          rating: ratingString,
+        },
       })
       .then(function () {
         Updates.reloadAsync();
