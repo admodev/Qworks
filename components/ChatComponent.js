@@ -22,6 +22,8 @@ import LoginPage from "../pages/LoginPage";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import * as ImagePicker from "expo-image-picker";
 import * as Notifications from "expo-notifications";
+import TimerComponent from "./Timer";
+
 if (firebase.apps.length === 0) {
   try {
     firebase.initializeApp({
@@ -177,6 +179,7 @@ export default function Chat({ route }) {
       />
       {currentUser ? (
         <SafeAreaView style={{ flex: 1, marginTop: 10 }}>
+          <TimerComponent />
           <GiftedChat
             messages={messages}
             user={{

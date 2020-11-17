@@ -8,6 +8,7 @@ import {
   ScrollView,
   SafeAreaView,
   Text,
+  Share,
 } from "react-native";
 import { Button, Card, Icon, Input } from "react-native-elements";
 import * as firebase from "firebase";
@@ -60,11 +61,19 @@ const AnunciosPage = ({ route }) => {
   }
 
   function shareContent() {
-    let options;
-    Platform.OS === "ios" ? (options = "UTI") : (options = "mimeType");
-    Sharing.isAvailableAsync().then(function () {
-      Sharing.shareAsync(dbRef, options);
-    });
+    Share.share(
+      {
+        message: `Dale un vistazo al perfil de ${nombre}`,
+        url: "http://dominioquedeoficios.com",
+        title: "QuedeOficios!",
+      },
+      {
+        // Android only:
+        dialogTitle: `Mira el perfil de ${nombre}`,
+        // iOS only:
+        excludedActivityTypes: ["com.apple.UIKit.activity.PostToTwitter"],
+      }
+    );
   }
 
   return (

@@ -45,6 +45,7 @@
     "react-native-safe-area-context": "3.1.4",
     "react-native-screens": "~2.10.1",
     "react-native-search-filter": "^0.1.5",
+    "react-native-stopwatch-timer": "^0.0.21",
     "react-native-tab-view": "^2.0.0",
     "react-native-web": "~0.13.12",
     "react-navigation": "3.0.9",
