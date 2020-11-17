@@ -31,6 +31,9 @@ import ComentarScreen from "../components/Comentar";
 import FiltroMenosTresEstrellasScreen from "../components/FiltroMenosTresEstrellas";
 import FiltroMasTresEstrellasScreen from "../components/FiltroMasTresEstrellas";
 import FiltroCincoEstrellasScreen from "../components/FiltroCincoEstrellas";
+import MisFavoritosScreen from "../components/MisFavoritos";
+import EditarAnuncioScreen from "../components/EditarAnuncio";
+import MisRecomendadosPage from "../components/MisRecomendados";
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -263,6 +266,21 @@ function MainStackNavigator({ navigation }) {
         <Stack.Screen
           name="FiltroCincoEstrellasScreen"
           component={FiltroCincoEstrellasScreen}
+          options={{ title: "QuedeOficios!", headerShown: false }}
+        />
+        <Stack.Screen
+          name="MisFavoritosScreen"
+          component={MisFavoritosScreen}
+          options={{ title: "QuedeOficios!", headerShown: false }}
+        />
+        <Stack.Screen
+          name="EditarAnuncioScreen"
+          component={EditarAnuncioScreen}
+          options={{ title: "QuedeOficios!", headerShown: false }}
+        />
+        <Stack.Screen
+          name="MisRecomendadosPage"
+          component={MisRecomendadosPage}
           options={{ title: "QuedeOficios!", headerShown: false }}
         />
       </Stack.Navigator>

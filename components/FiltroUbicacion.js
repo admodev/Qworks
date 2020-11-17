@@ -90,7 +90,6 @@ class UbicacionPage extends React.Component {
           <View
             style={{
               flex: 1,
-              flexDirection: "row",
               position: "absolute",
               alignContent: "center",
               justifyContent: "center",
@@ -99,12 +98,23 @@ class UbicacionPage extends React.Component {
               width: "80%",
             }}
           >
+            <TouchableOpacity onPress={() => this.props.navigation.goBack()}>
+              <MaterialCommunityIcons
+                name="arrow-left"
+                color={"black"}
+                size={24}
+                style={{
+                  marginTop: "8%",
+                  marginLeft: "5%",
+                }}
+              />
+            </TouchableOpacity>
             <Input
               placeholder="Buscar..."
               inputStyle={{
                 justifyContent: "center",
                 marginLeft: 25,
-                marginTop: -10,
+                marginTop: "30%",
               }}
               containerStyle={{ marginLeft: 10, marginTop: -10 }}
               onChangeText={(search) => this.setState({ search })}
@@ -144,9 +154,15 @@ class UbicacionPage extends React.Component {
             />
           ))
         ) : (
-          <Text style={{ alignItems: "center", justifyContent: "center" }}>
-            Ingresa una localidad/provincia
-          </Text>
+          <View
+            style={{
+              alignItems: "center",
+              justifyContent: "center",
+              marginTop: "50%",
+            }}
+          >
+            <Text>Ingresa una localidad/provincia</Text>
+          </View>
         )}
       </SafeAreaView>
     );

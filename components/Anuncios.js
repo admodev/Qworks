@@ -82,7 +82,7 @@ const AnunciosPage = ({ route }) => {
           onPress={() => RootNavigation.navigate("ProfilePage")}
         >
           <MaterialCommunityIcons
-            name="arrow-left-bold"
+            name="arrow-left"
             color={"black"}
             size={32}
             style={{ marginTop: "auto", marginBottom: "auto" }}
@@ -181,29 +181,6 @@ const AnunciosPage = ({ route }) => {
           >
             {emailPersonal}
           </Text>
-          <TouchableOpacity
-            style={{
-              borderRadius: 0,
-              marginLeft: 0,
-              marginRight: 0,
-              marginBottom: 0,
-              marginTop: 20,
-              backgroundColor: "transparent",
-            }}
-            onPress={() => shareContent()}
-          >
-            <Text
-              style={{
-                color: "#fff",
-                marginLeft: "auto",
-                marginRight: "auto",
-                fontSize: 16,
-                marginBottom: 10,
-              }}
-            >
-              Mis Redes
-            </Text>
-          </TouchableOpacity>
           <TouchableOpacity
             style={{
               borderRadius: 0,

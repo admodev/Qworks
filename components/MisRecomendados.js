@@ -1,11 +1,24 @@
-import React from "react";
-import { ScrollView, Text, View } from "react-native";
+import React, { useState, setState } from "react";
+import {
+  TouchableOpacity,
+  StyleSheet,
+  Image,
+  View,
+  ScrollView,
+  SafeAreaView,
+  Text,
+} from "react-native";
+import { Button, Card, Icon, Input } from "react-native-elements";
 import * as firebase from "firebase";
+import "firebase/firestore";
 import "firebase/database";
+import "firebase/auth";
+import * as RootNavigation from "../RootNavigation.js";
+import { StackActions } from "@react-navigation/native";
 
 var itm = [];
 
-export default class FiltroMenosTresEstrellasScreen extends React.Component {
+class MisRecomendadosPage extends React.Component {
   constructor(props) {
     super(props);
 
@@ -49,3 +62,31 @@ export default class FiltroMenosTresEstrellasScreen extends React.Component {
     );
   }
 }
+
+const styles = StyleSheet.create({
+  button: {
+    alignItems: "center",
+    backgroundColor: "#DDDDDD",
+    padding: 10,
+    width: 300,
+    marginTop: 16,
+  },
+  card: {
+    marginTop: 50,
+    backgroundColor: "#483D8B",
+    shadowColor: "#000",
+    borderRadius: 15,
+    paddingTop: -5,
+    paddingBottom: 2,
+    marginBottom: 100,
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+  },
+});
+
+export default MisRecomendadosPage;

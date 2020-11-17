@@ -260,7 +260,7 @@ const ProfilePage = ({ navigation }) => {
               </Text>
             </TouchableOpacity>
             <TouchableOpacity
-              onPress={() => navigation.navigate("MisFavoritos")}
+              onPress={() => navigation.navigate("MisFavoritosScreen")}
             >
               <Text style={{ color: "#000000", fontSize: 20, margin: 15 }}>
                 <MaterialCommunityIcons

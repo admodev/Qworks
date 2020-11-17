@@ -21,165 +21,44 @@ var itm = [];
 class MisComentariosPage extends React.Component {
   constructor(props) {
     super(props);
+
     this.state = {
       items: [],
+      search: "",
     };
   }
+
   componentDidMount() {
-    const user = firebase.auth().currentUser;
-    var email, uid;
-
-    uid = user.uid;
-
-    if (user != null) {
-      email = user.email;
-      uid = user.uid;
-    }
-
     firebase
       .database()
-      .ref("usuarios/" + id)
-      .on("value", (snap) => {
+      .ref("comentarios/")
+      .orderByKey()
+      .once("value", (snap) => {
         let items = [];
         snap.forEach((child) => {
           items.push({
-            fotoPerfil: child.val().fotoPerfil,
-            nombre: child.val().nombre,
-            apellido: child.val().apellido,
-            profesion: child.val().profesion,
-            email: child.val().email,
+            refKey: child.val().key,
+            comentario: child.val().comentario,
             id: child.val().id,
           });
         });
-        itm = items;
-        this.setState({ items: items });
-        console.log(itm);
-        console.log("itemstate " + this.state.items);
-        itm.forEach((itms) => {
-          console.log("title*" + itms.title);
-        });
       });
-    firebase.auth().onAuthStateChanged(function (user) {
-      if (user) {
-        var email = user.email;
-        var uid = user.uid;
-        var providerData = user.providerData;
-      } else {
-        user == null;
-      }
-    });
+
+    console.log(itm);
   }
   render() {
-    var user = firebase.auth().currentUser;
-    const userCheckForChat = () => {
-      if (user) {
-        RootNavigation.navigate("ChatPage");
-      } else {
-        RootNavigation.navigate("LoginPage");
-      }
-    };
     return (
-      <Card
-        style={styles.card}
-        containerStyle={{
-          padding: 0,
-          borderRadius: 15,
-          backgroundColor: "transparent",
-          borderWidth: 0,
-        }}
-      >
+      <ScrollView style={{ flex: 1 }}>
         {this.state.items.map((u, i) => {
-          return (
-            <View
-              key={i}
-              style={{ margin: 25, backgroundColor: "transparent" }}
-            >
-              <Image
-                source={require("../assets/patron.jpg")}
-                style={{
-                  flex: 1,
-                  position: "absolute",
-                  resizeMode: "cover",
-                  width: "100%",
-                  height: "100%",
-                  borderRadius: 10,
-                }}
-              />
-              <Image
-                source={require("../assets/gradients/20x20.png")}
-                style={{
-                  flex: 1,
-                  position: "absolute",
-                  resizeMode: "cover",
-                  width: "100%",
-                  height: "100%",
-                  opacity: 0.9,
-                  borderRadius: 10,
-                }}
-              />
-              <Card.Image
-                source={{ uri: u.fotoPerfil }}
-                style={{
-                  borderRadius: 50,
-                  marginTop: 10,
-                  marginBottom: 20,
-                  marginLeft: 60,
-                  marginRight: 60,
-                }}
-              />
-              <Text
-                style={{
-                  marginLeft: "auto",
-                  marginRight: "auto",
-                  textAlign: "center",
-                  fontSize: 20,
-                  color: "#fff",
-                }}
-              >
-                {u.nombre} {u.apellido}
-              </Text>
-              <Text
-                style={{
-                  marginLeft: "auto",
-                  marginRight: "auto",
-                  marginBottom: 10,
-                  textAlign: "center",
-                  fontSize: 20,
-                  color: "#fff",
-                }}
-              >
-                {u.profesion}
-              </Text>
-              <TouchableOpacity
-                onPress={() =>
-                  RootNavigation.navigate("AnuncioSeleccionado", {
-                    params: { userId: u.id },
-                  })
-                }
-                style={{
-                  borderRadius: 0,
-                  marginLeft: 0,
-                  marginRight: 0,
-                  marginBottom: 0,
-                  backgroundColor: "transparent",
-                }}
-              >
-                <Text
-                  style={{
-                    color: "#fff",
-                    marginLeft: "auto",
-                    marginRight: "auto",
-                    fontSize: 16,
-                    marginBottom: 10,
-                  }}
-                >
-                  Previsualizar
-                </Text>
-              </TouchableOpacity>
-            </View>
-          );
+          <View
+            key={i}
+            style={{ alignItems: "center", justifyContent: "center" }}
+          >
+            <Text style={{ marginTop: "30%" }}>{u.comentario}</Text>
+            <Text style={{ marginTop: "30%" }}>{u.id}</Text>
+          </View>;
         })}
-      </Card>
+      </ScrollView>
     );
   }
 }
