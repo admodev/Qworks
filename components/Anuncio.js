@@ -8,6 +8,7 @@ import {
     SafeAreaView,
     Text,
     Platform,
+    Share,
 } from "react-native";
 import {
     Avatar,
@@ -147,6 +148,22 @@ const AnuncioSeleccionado = ({ route }) => {
             .then(function () {
                 Updates.reloadAsync();
             });
+    }
+
+    function shareContent() {
+        Share.share(
+            {
+                message: `Dale un vistazo al perfil de ${nombre}`,
+                url: "http://dominioquedeoficios.com",
+                title: "QuedeOficios!",
+            },
+            {
+                // Android only:
+                dialogTitle: `Mira el perfil de ${nombre}`,
+                // iOS only:
+                excludedActivityTypes: ["com.apple.UIKit.activity.PostToTwitter"],
+            }
+        );
     }
 
     return (
@@ -324,10 +341,10 @@ const AnuncioSeleccionado = ({ route }) => {
         </Text> 
         <View style={{
             flexDirection: "row",
-            alignItems: "center",
-            justifyContent: "center",
+                alignItems: "center",
+                justifyContent: "center",
         }}>
-<TouchableOpacity onPress={() => alert("Proximamente...")}>
+        <TouchableOpacity onPress={() => alert("Proximamente...")}>
         <Text
         style={{
             ...Platform.select({
@@ -349,13 +366,13 @@ const AnuncioSeleccionado = ({ route }) => {
         }}
         >
         <MaterialCommunityIcons
-                  name="google-maps"
-                  color={"orange"}
-                  size={24}
-                /> Ubicación
+        name="google-maps"
+        color={"orange"}
+        size={24}
+        /> Ubicación
         </Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => alert("placeholder")}>
+        <TouchableOpacity onPress={() => shareContent()}>
         <Text
         style={{
             ...Platform.select({
@@ -377,14 +394,14 @@ const AnuncioSeleccionado = ({ route }) => {
         }}
         >
         <MaterialCommunityIcons
-                  name="share-variant"
-                  color={"orange"}
-                  size={24}
-                /> Compartir
+        name="share-variant"
+        color={"orange"}
+        size={24}
+        /> Compartir
         </Text>
         </TouchableOpacity>
         </View>
-<TouchableOpacity onPress={() => agregarFavorito(id)}>
+        <TouchableOpacity onPress={() => agregarFavorito(id)}>
         <Text
         style={{
             ...Platform.select({
@@ -408,10 +425,10 @@ const AnuncioSeleccionado = ({ route }) => {
         }}
         >
         <MaterialCommunityIcons
-                  name="book-open"
-                  color={"orange"}
-                  size={24}
-                /> Agregar a favoritos
+        name="book-open"
+        color={"orange"}
+        size={24}
+        /> Agregar a favoritos
         </Text>
         </TouchableOpacity>
         <View
