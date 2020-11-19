@@ -79,6 +79,8 @@ const AnuncioSeleccionado = ({ route }) => {
             hasta = child.val().hasta;
             local = child.val().local;
             localidad = child.val().localidad;
+            provincia = child.val().provincia;
+            nombreDeLaEmpresa = child.val().nombreDeLaEmpresa;
         });
     });
     let key, userId, comentario;
@@ -276,7 +278,7 @@ const AnuncioSeleccionado = ({ route }) => {
             marginLeft: "auto",
                 marginRight: "auto",
                 textAlign: "center",
-                fontSize: 20,
+                fontSize: 22,
                 marginTop: 10,
                 color: "#fff",
         }}
@@ -290,6 +292,18 @@ const AnuncioSeleccionado = ({ route }) => {
                 marginTop: 10,
                 textAlign: "center",
                 fontSize: 20,
+                color: "#fff",
+        }}
+        >
+        {emailPersonal}
+        </Text>
+        <Text
+        style={{
+            marginLeft: "auto",
+                marginRight: "auto",
+                marginTop: 10,
+                textAlign: "center",
+                fontSize: 22,
                 color: "#fff",
         }}
         >
@@ -317,20 +331,83 @@ const AnuncioSeleccionado = ({ route }) => {
             }),
         }}
         >
-        {localidad}
+        {localidad},
         </Text>
-        <Text
-        style={{
-            marginLeft: "auto",
-                marginRight: "auto",
-                marginTop: 10,
-                textAlign: "center",
-                fontSize: 20,
-                color: "#fff",
+        <Text style={{
+            ...Platform.select({
+                android: {
+                    marginLeft: "auto",
+                    marginRight: "auto",
+                    marginTop: 10,
+                    textAlign: "center",
+                    fontSize: 20,
+                    color: "#fff",
+                },
+                ios: {
+                    marginLeft: "auto",
+                    marginRight: "auto",
+                    marginTop: 10,
+                    textAlign: "center",
+                    fontSize: 20,
+                    color: "#fff",
+                },
+            }),
         }}
         >
-        {emailPersonal}
+        {provincia}
         </Text>
+        <TouchableOpacity onPress={() => alert("Proximamente...")}>
+        <Text
+        style={{
+            ...Platform.select({
+                android: {
+                    color: "#fff",
+                    marginLeft: "auto",
+                    marginRight: "auto",
+                    marginTop: 10,
+                    marginBottom: 10,
+                    fontSize: 20,
+                },
+                ios: {
+                    color: "#fff",
+                    marginLeft: "auto",
+                    marginRight: "auto",
+                    marginTop: 10,
+                    marginBottom: 10,
+                    fontSize: 20,
+                },
+            }),
+        }}
+        >
+        Ubicación
+        </Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => alert("placeholder")}>
+        <Text
+        style={{
+            ...Platform.select({
+                android: {
+                    color: "#fff",
+                    marginLeft: "auto",
+                    marginRight: "auto",
+                    marginTop: 10,
+                    marginBottom: 10,
+                    fontSize: 20,
+                },
+                ios: {
+                    color: "#fff",
+                    marginLeft: "auto",
+                    marginRight: "auto",
+                    marginTop: 10,
+                    marginBottom: 10,
+                    fontSize: 20,
+                },
+            }),
+        }}
+        >
+        Compartir
+        </Text>
+        </TouchableOpacity>
         <TouchableOpacity onPress={() => agregarFavorito(id)}>
         <Text
         style={{
@@ -369,56 +446,6 @@ const AnuncioSeleccionado = ({ route }) => {
             }),
         }}
         >
-        <TouchableOpacity onPress={() => alert("Proximamente...")}>
-        <Text
-        style={{
-            ...Platform.select({
-                android: {
-                    color: "#fff",
-                    marginLeft: "auto",
-                    marginRight: "auto",
-                    marginTop: 10,
-                    marginBottom: 10,
-                    fontSize: 20,
-                },
-                ios: {
-                    color: "#fff",
-                    marginLeft: "auto",
-                    marginRight: "auto",
-                    marginTop: 10,
-                    marginBottom: 10,
-                    fontSize: 20,
-                },
-            }),
-        }}
-        >
-        Ubicación
-        </Text>
-        </TouchableOpacity>
-        <Text
-        style={{
-            ...Platform.select({
-                android: {
-                    color: "#fff",
-                    marginLeft: "auto",
-                    marginRight: "auto",
-                    marginTop: 10,
-                    marginBottom: 10,
-                    fontSize: 20,
-                },
-                ios: {
-                    color: "#fff",
-                    marginLeft: "auto",
-                    marginRight: "auto",
-                    marginTop: 10,
-                    marginBottom: 10,
-                    fontSize: 20,
-                },
-            }),
-        }}
-        >
-        Compartir
-        </Text>
         </View>
         </Card>
         {/* Card detalles */}
@@ -458,15 +485,15 @@ const AnuncioSeleccionado = ({ route }) => {
         >
         <Text
         style={{
-            marginLeft: "auto",
+            color: "#fff",
+                marginLeft: "auto",
                 marginRight: "auto",
-                textAlign: "center",
-                fontSize: 20,
                 marginTop: 10,
-                color: "#fff",
+                marginBottom: 10,
+                fontSize: 20,
         }}
         >
-        Celular: {celular}
+        Email laboral: {emailLaboral}
         </Text>
         <View style={{ flexDirection: "column" }}>
         <Text
@@ -494,19 +521,42 @@ const AnuncioSeleccionado = ({ route }) => {
         {diasHorarios.join(", ")}
         </Text>
         </View>
+        {local.toString().toLowerCase() == "si" && (
+            <Text
+            style={{
+                marginLeft: "auto",
+                    marginRight: "auto",
+                    marginTop: 10,
+                    textAlign: "center",
+                    fontSize: 20,
+                    color: "#fff",
+            }}
+            >
+            Local: {direccionDelLocal}
+            </Text>
+        )}
         <Text
         style={{
             marginLeft: "auto",
                 marginRight: "auto",
-                marginTop: 10,
                 textAlign: "center",
                 fontSize: 20,
+                marginTop: 10,
                 color: "#fff",
         }}
         >
-        Local: {direccionDelLocal}
+        Celular: {celular}
         </Text>
-        <View style={{ flexDirection: "column" }}>
+        {empresa.toString().toLowerCase() == "si" && (
+            <Text style={{
+                color: "#fff",
+                    marginLeft: "auto",
+                    marginRight: "auto",
+                    marginTop: 10,
+                    marginBottom: 10,
+                    fontSize: 20,
+            }}>Nombre de la empresa: {nombreDeLaEmpresa}</Text>
+        )}
         <Text
         style={{
             color: "#fff",
@@ -517,81 +567,8 @@ const AnuncioSeleccionado = ({ route }) => {
                 fontSize: 20,
         }}
         >
-        Email laboral:
-        </Text>
-        <Text
-        style={{
-            color: "#fff",
-                marginLeft: "auto",
-                marginRight: "auto",
-                marginTop: 10,
-                marginBottom: 10,
-                fontSize: 20,
-        }}
-        >
-        {emailLaboral}
-        </Text>
-        </View>
-        <Text
-        style={{
-            color: "#fff",
-                marginLeft: "auto",
-                marginRight: "auto",
-                marginTop: 10,
-                marginBottom: 10,
-                fontSize: 20,
-        }}
-        >
-        Empresa {empresa}
-        </Text>
-        <Text
-        style={{
-            color: "#fff",
-                marginLeft: "auto",
-                marginRight: "auto",
-                marginTop: 10,
-                marginBottom: 10,
-                fontSize: 20,
-        }}
-        >
-        Factura {factura}
-        </Text>
-        <Text
-        style={{
-            color: "#fff",
-                marginLeft: "auto",
-                marginRight: "auto",
-                marginTop: 10,
-                marginBottom: 10,
-                fontSize: 20,
-        }}
-        >
-        Local {local}
-        </Text>
-        <Text
-        style={{
-            color: "#fff",
-                marginLeft: "auto",
-                marginRight: "auto",
-                marginTop: 10,
-                marginBottom: 10,
-                fontSize: 20,
-        }}
-        >
-        Localidad
-        </Text>
-        <Text
-        style={{
-            color: "#fff",
-                marginLeft: "auto",
-                marginRight: "auto",
-                marginTop: 10,
-                marginBottom: 10,
-                fontSize: 20,
-        }}
-        >
-        {localidad}
-        </Text>
+        Factura: {factura}
+        </Text> 
         </Card>
         {/* Card resumen personal */}
         <Text 
