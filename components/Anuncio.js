@@ -379,7 +379,11 @@ const AnuncioSeleccionado = ({ route }) => {
             }),
         }}
         >
-        Ubicación
+        <MaterialCommunityIcons
+                  name="google-maps"
+                  color={"orange"}
+                  size={24}
+                /> Ubicación
         </Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => alert("placeholder")}>
@@ -405,7 +409,11 @@ const AnuncioSeleccionado = ({ route }) => {
             }),
         }}
         >
-        Compartir
+        <MaterialCommunityIcons
+                  name="share-variant"
+                  color={"orange"}
+                  size={24}
+                /> Compartir
         </Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => agregarFavorito(id)}>
@@ -431,7 +439,11 @@ const AnuncioSeleccionado = ({ route }) => {
             }),
         }}
         >
-        Favorito
+        <MaterialCommunityIcons
+                  name="book-open"
+                  color={"orange"}
+                  size={24}
+                /> Favorito
         </Text>
         </TouchableOpacity>
         <View
