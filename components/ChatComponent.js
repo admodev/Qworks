@@ -43,7 +43,7 @@ if (firebase.apps.length === 0) {
     }
 }
 
-export default function Chat({ route }) {
+export default function Chat({ route, navigation }) {
     let firstUserId = route.params.userOne;
     let secondUserId = route.params.userTwo;
     const nombre = "placeholder";
@@ -63,12 +63,12 @@ export default function Chat({ route }) {
     const defaultImageRef = storageRef.child("/defaultUserImage/icon.png");
     let [image, setImage] = useState("");
 
-     Notifications.setNotificationHandler({
-    handleNotification: async () => ({
-    shouldShowAlert: true,
-    shouldPlaySound: true,
-    shouldSetBadge: true,
-    }),
+    Notifications.setNotificationHandler({
+        handleNotification: async () => ({
+            shouldShowAlert: true,
+            shouldPlaySound: true,
+            shouldSetBadge: true,
+        }),
     });
 
     useEffect(() => {
@@ -89,12 +89,12 @@ export default function Chat({ route }) {
                 .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
             appendMessages(messagesFirestore);
             Notifications.scheduleNotificationAsync({
-            content: {
-            title: "QuedeOficios!",
-            body: "Tienes nuevas notificaciones!",
-            data: { data: "Mensajes no leídos." },
-            },
-            trigger: null,
+                content: {
+                    title: "QuedeOficios!",
+                    body: "Tienes nuevas notificaciones!",
+                    data: { data: "Mensajes no leídos." },
+                },
+                trigger: null,
             });
         });
         return () => unsubscribe();
@@ -148,15 +148,15 @@ export default function Chat({ route }) {
     function renderSend(props) {
         return (
             <Send
-                {...props}
+            {...props}
             >
-                <View style={{marginRight: 10, marginBottom: 10}}>
-                   <MaterialCommunityIcons
-                name="send"
-                color={"#000000"}
-                size={28}
-                /> 
-                </View>
+            <View style={{marginRight: 10, marginBottom: 10}}>
+            <MaterialCommunityIcons
+            name="send"
+            color={"#000000"}
+            size={28}
+            /> 
+            </View>
             </Send>
         );
     }
@@ -194,7 +194,30 @@ export default function Chat({ route }) {
         />
         {currentUser ? (
             <SafeAreaView style={{ flex: 1, marginTop: 10 }}>
-            {chatActivo == true ? (
+            <View
+            style={{
+                width: 30,
+                    height: 30,
+                    alignItems: "center",
+                    left: 5,
+                    marginTop: 25,
+                    marginLeft: 15,
+                    backgroundColor: "transparent",
+            }}
+            >
+            <TouchableOpacity
+            onPress={() => navigation.goBack()}
+            style={{ backgroundColor: "transparent" }}
+            >
+            <MaterialCommunityIcons
+            name="arrow-left"
+            color={"black"}
+            size={32}
+            style={{ marginTop: "auto", marginBottom: "auto", backgroundColor: "transparent" }}
+            />
+            </TouchableOpacity>
+            </View>
+            {chatActivo == true ? ( 
                 <GiftedChat
                 isAnimated
                 messages={messages}
