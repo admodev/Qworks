@@ -1,7 +1,7 @@
 // @refresh reset
 //
 import React, { useState, useEffect, useCallback } from "react";
-import { GiftedChat, Actions, ActionsProps } from "react-native-gifted-chat";
+import { GiftedChat, Actions, ActionsProps, Send } from "react-native-gifted-chat";
 import AsyncStorage from "@react-native-community/async-storage";
 import { Image, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import {
@@ -63,13 +63,13 @@ export default function Chat({ route }) {
     const defaultImageRef = storageRef.child("/defaultUserImage/icon.png");
     let [image, setImage] = useState("");
 
-    /* Notifications.setNotificationHandler({*/
-    //handleNotification: async () => ({
-    //shouldShowAlert: true,
-    //shouldPlaySound: true,
-    //shouldSetBadge: true,
-    //}),
-    /*});*/
+     Notifications.setNotificationHandler({
+    handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: true,
+    shouldSetBadge: true,
+    }),
+    });
 
     useEffect(() => {
         const unsubscribe = chat.onSnapshot((querySnapshot) => {
@@ -81,21 +81,21 @@ export default function Chat({ route }) {
                     //createdAt is firebase.firestore.Timestamp instance
                     //https://firebase.google.com/docs/reference/js/firebase.firestore.Timestamp
                     if (chat.where("userTwo", "==", secondUserId)) {
-                        return { ...message, createdAt: message.createdAt.toDate() };
+                        return { ...message, createdAt: message.createdAt.toDate(), image };
                     } else {
                         return "Inicia un chat!";
                     }
                 })
                 .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
             appendMessages(messagesFirestore);
-            /*Notifications.scheduleNotificationAsync({*/
-            //content: {
-            //title: "QuedeOficios!",
-            //body: "Tienes nuevas notificaciones!",
-            //data: { data: "Mensajes no leídos." },
-            //},
-            //trigger: null,
-            /*});*/
+            Notifications.scheduleNotificationAsync({
+            content: {
+            title: "QuedeOficios!",
+            body: "Tienes nuevas notificaciones!",
+            data: { data: "Mensajes no leídos." },
+            },
+            trigger: null,
+            });
         });
         return () => unsubscribe();
         (async () => {
@@ -120,7 +120,8 @@ export default function Chat({ route }) {
     const appendMessages = useCallback(
         (messages) => {
             setMessages((previousMessages) =>
-                GiftedChat.append(previousMessages, messages)
+                GiftedChat.append(previousMessages, messages),
+                image,
             );
         },
         [messages]
@@ -144,6 +145,22 @@ export default function Chat({ route }) {
         setImage(result.uri);
     };
 
+    function renderSend(props) {
+        return (
+            <Send
+                {...props}
+            >
+                <View style={{marginRight: 10, marginBottom: 10}}>
+                   <MaterialCommunityIcons
+                name="send"
+                color={"#000000"}
+                size={28}
+                /> 
+                </View>
+            </Send>
+        );
+    }
+
     function renderActions(ActionsProps) {
         return (
             <Actions
@@ -158,13 +175,9 @@ export default function Chat({ route }) {
                 size={24}
                 />
             )}
-            onSend={(args) => console.log(args)}
+            onSend={() => console.log(handleSend)}
             />
         );
-    }
-
-    if (image == null) {
-        image = defaultImageRef;
     }
 
     return (
@@ -200,6 +213,7 @@ export default function Chat({ route }) {
                 showAvatarForEveryMessage={true}
                 placeholder="Escribe un mensaje..."
                 renderActions={renderActions}
+                renderSend={renderSend}
                 />
             ) : (
                 <View>

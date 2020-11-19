@@ -1,64 +1,36 @@
 { 
-  "expo": {
-    "name": "quedeoficios",
-    "slug": "quedeoficios",
-    "version": "1.0.0",
-    "orientation": "portrait",
-    "icon": "./assets/icon.png",
-    "splash": {
-      "image": "./assets/splash.png",
-      "resizeMode": "cover",
-      "backgroundColor": "#654F6F",
-      "firebase": {
-        "apiKey": "AIzaSyADf1sCZ72YNWPMsEuCmBkc_gns7UHwDdA",
-        "authDomain": "qdo2020-1da7b.firebaseapp.com",
-        "databaseURL": "https://qdo2020-1da7b.firebaseio.com",
-        "projectId": "qdo2020-1da7b",
-        "storageBucket": "qdo2020-1da7b.appspot.com",
-        "messagingSenderId": "224428348880",
-        "appId": "1:224428348880:web:e591820528fc39409c95d5",
-        "measurementId": "1:224428348880:web:e591820528fc39409c95d5"
-      },
-      "googleMaps": {
-        "apiKey": "AIzaSyAv01lBcj4QItbqcoACgdv1nkkUTJfXBuk"
-      },
-      "facebookScheme": "fb791075094961301",
-      "facebookAppId": "791075094961301",
-      "facebookDisplayName": "qdo2020"
-    },
-    "updates": {
-      "fallbackToCacheTimeout": 0
-    },
-    "assetBundlePatterns": ["assets/*"],
-    "ios": {
-      "supportsTablet": true,
-      "bundleIdentifier": "com.admodev.quedeoficios"
-    },
-    "android": {
-      "versionCode": 1,
-      "useNextNotificationsApi": true,
-      "package": "com.admodev.quedeoficios"
-    },
-    "web": {
-      "favicon": "./assets/favicon.png",
-      "config": {
-        "firebase": {
-          "apiKey": "AIzaSyADf1sCZ72YNWPMsEuCmBkc_gns7UHwDdA",
-          "authDomain": "qdo2020-1da7b.firebaseapp.com",
-          "databaseURL": "https://qdo2020-1da7b.firebaseio.com",
-          "projectId": "qdo2020-1da7b",
-          "storageBucket": "qdo2020-1da7b.appspot.com",
-          "messagingSenderId": "224428348880",
-          "appId": "1:224428348880:web:e591820528fc39409c95d5",
-          "measurementId": "1:224428348880:web:e591820528fc39409c95d5"
+    "expo": {
+        "name": "quedeoficios",
+        "description": "App para profesionales que ofrecen sus servicios y personas que desean contratarlos.",
+        "slug": "quedeoficios",
+        "version": "1.0.0",
+        "orientation": "portrait",
+        "icon": "./assets/icon.png",
+        "splash": {
+            "image": "./assets/splash.png",
+            "resizeMode": "cover",
+            "backgroundColor": "#654F6F"
         },
-        "googleMaps": {
-          "apiKey": "AIzaSyAv01lBcj4QItbqcoACgdv1nkkUTJfXBuk"
+        "notification": { 
+            "icon": "./assets/icon.png"
+        }, 
+        "updates": {
+            "fallbackToCacheTimeout": 0
         },
-        "facebookScheme": "fb791075094961301",
-        "facebookAppId": "791075094961301",
-        "facebookDisplayName": "qdo2020"
-      }
+        "assetBundlePatterns": ["assets/*"],
+        "ios": {
+            "supportsTablet": true,
+            "bundleIdentifier": "com.admodev.quedeoficios",
+            "icon": "./assets/icon.png"
+        },
+        "android": {
+            "versionCode": 1,
+            "useNextNotificationsApi": true,
+            "package": "com.admodev.quedeoficios",
+            "icon": "./assets/icon.png"
+        },
+        "web": {
+            "favicon": "./assets/favicon.png"
+        }
     }
-  }
 }
