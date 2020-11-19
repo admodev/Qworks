@@ -251,22 +251,11 @@ const AnuncioSeleccionado = ({ route }) => {
             }}
             />
         )}
-        </Overlay>
-        <Text 
-        style={{
-            marginLeft: "auto",
-                marginRight: "auto",
-                textAlign: "center",
-                fontSize: 28,
-                marginTop: 10,
-                color: "#fff",
-                fontWeight: "bold",
-        }}
-        >Información Personal</Text>
+        </Overlay> 
         <AirbnbRating
         size={28}
         showRating={true}
-        reviews={["Malo", "Promedio", "Bueno", "Profesional", "Excelente"]}
+        reviews={[""]}
         type="star"
         onFinishRating={(rating) => setRating(rating)}
         style={{
@@ -331,32 +320,14 @@ const AnuncioSeleccionado = ({ route }) => {
             }),
         }}
         >
-        {localidad},
-        </Text>
-        <Text style={{
-            ...Platform.select({
-                android: {
-                    marginLeft: "auto",
-                    marginRight: "auto",
-                    marginTop: 10,
-                    textAlign: "center",
-                    fontSize: 20,
-                    color: "#fff",
-                },
-                ios: {
-                    marginLeft: "auto",
-                    marginRight: "auto",
-                    marginTop: 10,
-                    textAlign: "center",
-                    fontSize: 20,
-                    color: "#fff",
-                },
-            }),
-        }}
-        >
-        {provincia}
-        </Text>
-        <TouchableOpacity onPress={() => alert("Proximamente...")}>
+        {localidad}, {provincia}
+        </Text> 
+        <View style={{
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "center",
+        }}>
+<TouchableOpacity onPress={() => alert("Proximamente...")}>
         <Text
         style={{
             ...Platform.select({
@@ -370,10 +341,8 @@ const AnuncioSeleccionado = ({ route }) => {
                 },
                 ios: {
                     color: "#fff",
-                    marginLeft: "auto",
-                    marginRight: "auto",
-                    marginTop: 10,
-                    marginBottom: 10,
+                    marginTop: 15,
+                    marginRight: 10,
                     fontSize: 20,
                 },
             }),
@@ -395,15 +364,13 @@ const AnuncioSeleccionado = ({ route }) => {
                     marginLeft: "auto",
                     marginRight: "auto",
                     marginTop: 10,
-                    marginBottom: 10,
+                    marginRight: 10,
                     fontSize: 20,
                 },
                 ios: {
                     color: "#fff",
-                    marginLeft: "auto",
-                    marginRight: "auto",
-                    marginTop: 10,
-                    marginBottom: 10,
+                    marginTop: 15,
+                    marginLeft: 10,
                     fontSize: 20,
                 },
             }),
@@ -416,7 +383,8 @@ const AnuncioSeleccionado = ({ route }) => {
                 /> Compartir
         </Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => agregarFavorito(id)}>
+        </View>
+<TouchableOpacity onPress={() => agregarFavorito(id)}>
         <Text
         style={{
             ...Platform.select({
@@ -430,11 +398,11 @@ const AnuncioSeleccionado = ({ route }) => {
                 },
                 ios: {
                     color: "#fff",
-                    marginLeft: "auto",
-                    marginRight: "auto",
-                    marginTop: 10,
-                    marginBottom: 10,
+                    marginTop: 15,
+                    marginBottom: 15,
                     fontSize: 20,
+                    alignSelf: "center",
+                    justifyContent: "center",
                 },
             }),
         }}
@@ -443,7 +411,7 @@ const AnuncioSeleccionado = ({ route }) => {
                   name="book-open"
                   color={"orange"}
                   size={24}
-                /> Favorito
+                /> Agregar a favoritos
         </Text>
         </TouchableOpacity>
         <View
@@ -466,10 +434,11 @@ const AnuncioSeleccionado = ({ route }) => {
             marginLeft: "auto",
                 marginRight: "auto",
                 textAlign: "center",
-                fontSize: 28,
+                fontSize: 24,
                 marginTop: 10,
                 color: "#fff",
                 fontWeight: "bold",
+                textTransform: "uppercase"
         }}
         >Información Laboral</Text>
         <Card
