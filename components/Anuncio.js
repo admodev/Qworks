@@ -31,7 +31,7 @@ import * as Updates from "expo-updates";
 
 let calificacion = "calificacion";
 
-const AnuncioSeleccionado = ({ route }) => {
+const AnuncioSeleccionado = ({ route, navigation }) => {
     let id = route.params.id;
     let routeParamsToString = id.toString();
     let image,
@@ -183,11 +183,31 @@ const AnuncioSeleccionado = ({ route }) => {
                 opacity: 0.9,
         }}
         />
+        <View
+        style={{
+            width: 30,
+                height: 30,
+                alignItems: "center",
+                left: 5,
+                marginTop: 15,
+                marginLeft: 15,
+                backgroundColor: "transparent",
+        }}
+        >
+        <TouchableOpacity
+        onPress={() => navigation.goBack()}
+        style={{ backgroundColor: "transparent" }}
+        >
+        <MaterialCommunityIcons
+        name="arrow-left"
+        color={"white"}
+        size={32}
+        style={{ marginTop: "auto", marginBottom: "auto", backgroundColor: "transparent" }}
+        />
+        </TouchableOpacity>
+        </View>
         <ScrollView
         showsHorizontalScrollIndicator={false}
-        style={{
-            marginBottom: "30%",
-        }}
         >
         {/* Card principal */}
         <Card
@@ -452,7 +472,7 @@ const AnuncioSeleccionado = ({ route }) => {
                 marginRight: "auto",
                 textAlign: "center",
                 fontSize: 24,
-                marginTop: 10,
+                marginTop: 2,
                 color: "#fff",
                 fontWeight: "bold",
                 textTransform: "uppercase"
@@ -659,6 +679,7 @@ const AnuncioSeleccionado = ({ route }) => {
                     borderWidth: 0,
                     maxWidth: "200%",
                     marginTop: "3%",
+                    marginBottom: "35%",
                 },
             }),
         }}
