@@ -129,7 +129,7 @@ const ProfilePage = ({ navigation }) => {
     function countTrue(array) {
         var trueCounter = [];
         for (var i = 0; i < array.length; i++) {
-            if (array[i] === user.uid) {
+            if (array[i] === id) {
                 trueCounter.push(array[i]);
             }
         } return trueCounter.length;
