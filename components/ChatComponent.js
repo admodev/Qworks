@@ -63,14 +63,6 @@ export default function Chat({ route, navigation }) {
     const defaultImageRef = storageRef.child("/defaultUserImage/icon.png");
     let [image, setImage] = useState("");
 
-    Notifications.setNotificationHandler({
-        handleNotification: async () => ({
-            shouldShowAlert: true,
-            shouldPlaySound: true,
-            shouldSetBadge: true,
-        }),
-    });
-
     useEffect(() => {
         const unsubscribe = chat.onSnapshot((querySnapshot) => {
             const messagesFirestore = querySnapshot
@@ -88,14 +80,6 @@ export default function Chat({ route, navigation }) {
                 })
                 .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
             appendMessages(messagesFirestore);
-            Notifications.scheduleNotificationAsync({
-                content: {
-                    title: "QuedeOficios!",
-                    body: "Tienes nuevas notificaciones!",
-                    data: { data: "Mensajes no leídos." },
-                },
-                trigger: null,
-            });
         });
         return () => unsubscribe();
         (async () => {

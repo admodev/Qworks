@@ -57,12 +57,12 @@ let user = firebase.auth().currentUser;
 // }
 
 Notifications.setNotificationHandler({
-  handleNotification: async () => ({
-    shouldShowAlert: true,
-    shouldPlaySound: true,
-    shouldSetBadge: true,
-  }),
-});
+        handleNotification: async () => ({
+            shouldShowAlert: true,
+            shouldPlaySound: true,
+            shouldSetBadge: true,
+        }),
+    });
 
 export default function App() {
   const [location, setLocation] = React.useState(null);

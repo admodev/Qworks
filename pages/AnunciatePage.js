@@ -183,6 +183,7 @@ const AnunciatePage = ({ navigation }) => {
         terminos: terminos,
       })
       .then(function () {
+        user.displayName = nombre;
         if (error) {
           console.log(error);
         }
