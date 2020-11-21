@@ -25,6 +25,7 @@ const AnunciatePage = ({ navigation }) => {
   const [domicilio, setDomicilio] = useState("");
   const [pisoDptoCasa, setPisoDptoCasa] = useState("");
   const [cuitCuil, setCuitCuil] = useState("");
+  const [dni, setDni] = useState("");
   const [actividad, setActividad] = useState("");
   const [telefono, setTelefono] = useState("");
   const [celular, setCelular] = useState("");
@@ -38,16 +39,11 @@ const AnunciatePage = ({ navigation }) => {
   const [matricula, setMatricula] = useState("");
   const [numeroDeMatricula, setNumeroDeMatricula] = useState("");
   const [emailLaboral, setEmailLaboral] = useState("");
-  const [tengoWhatsapp, setTengoWhatsapp] = useState(false);
   const [descripcionPersonal, setDescripcionPersonal] = useState("");
   const [diasHorarios, setDiasHorarios] = useState([]);
   const [desde, setDesde] = useState("");
   const [hasta, setHasta] = useState("");
   const [terminos, setTerminos] = useState(false);
-  // Pasar valores booleanos (por ejemplo: tengoWhatsapp de falso a verdadero y viceversa.
-  const toggleWhatsapp = React.useCallback(() =>
-    setTengoWhatsapp(!tengoWhatsapp)
-  );
   const toggleTerminos = React.useCallback(() => setTerminos(!terminos));
   const [lunesChecked, setLunesChecked] = useState(false);
   const toggleLunesChecked = React.useCallback(() =>
@@ -129,6 +125,7 @@ const AnunciatePage = ({ navigation }) => {
     domicilio,
     pisoDptoCasa,
     cuitCuil,
+    dni,
     actividad,
     telefono,
     celular,
@@ -142,55 +139,61 @@ const AnunciatePage = ({ navigation }) => {
     matricula,
     numeroDeMatricula,
     emailLaboral,
-    tengoWhatsapp,
     descripcionPersonal,
     diasHorarios,
     desde,
     hasta,
     terminos
   ) {
-    firebase
-      .database()
-      .ref("anuncios/")
-      .push({})
-      .set({
-        id: user.uid,
-        image,
-        nombre: nombre,
-        apellido: apellido,
-        emailPersonal: emailPersonal,
-        domicilio: domicilio,
-        pisoDptoCasa: pisoDptoCasa,
-        cuitCuil: cuitCuil,
-        actividad: actividad,
-        telefono: telefono,
-        celular: celular,
-        provincia: provincia,
-        localidad: localidad,
-        local: local,
-        empresa: empresa,
-        factura: factura,
-        direccionDelLocal: direccionDelLocal,
-        nombreDeLaEmpresa: nombreDeLaEmpresa,
-        matricula: matricula,
-        numeroDeMatricula: numeroDeMatricula,
-        emailLaboral: emailLaboral,
-        tengoWhatsapp: tengoWhatsapp,
-        descripcionPersonal: descripcionPersonal,
-        diasHorarios: diasHorarios,
-        desde: desde,
-        hasta: hasta,
-        terminos: terminos,
-      })
-      .then(function () {
-        user.displayName = nombre;
-        if (error) {
-          console.log(error);
-        }
-      })
-      .finally(() => {
-        Updates.reloadAsync();
-      });
+    if (!cuitCuil.trim()) {
+      alert("Por favor ingrese su cuit/cuil");
+      return;
+    } else if (!dni.trim()) {
+      alert("Por favor ingrese su DNI");
+      return;
+    } else if (terminos == false) {
+      alert("Tiene que aceptar los terminos para continuar");
+    } else {
+      firebase
+        .database()
+        .ref("anuncios/")
+        .push(user.uid)
+        .set({
+          id: user.uid,
+          image,
+          nombre: nombre,
+          apellido: apellido,
+          emailPersonal: emailPersonal,
+          domicilio: domicilio,
+          pisoDptoCasa: pisoDptoCasa,
+          cuitCuil: cuitCuil,
+          dni: dni,
+          actividad: actividad,
+          telefono: telefono,
+          celular: celular,
+          provincia: provincia,
+          localidad: localidad,
+          local: local,
+          empresa: empresa,
+          factura: factura,
+          direccionDelLocal: direccionDelLocal,
+          nombreDeLaEmpresa: nombreDeLaEmpresa,
+          matricula: matricula,
+          numeroDeMatricula: numeroDeMatricula,
+          emailLaboral: emailLaboral,
+          descripcionPersonal: descripcionPersonal,
+          diasHorarios: diasHorarios,
+          desde: desde,
+          hasta: hasta,
+          terminos: terminos,
+        })
+        .then(function () {
+          user.displayName = nombre;
+        })
+        .finally(() => {
+          Updates.reloadAsync();
+        });
+    }
   }
   useEffect(() => {
     (async () => {
@@ -325,6 +328,13 @@ const AnunciatePage = ({ navigation }) => {
             onChangeText={(cuitCuil) => setCuitCuil(cuitCuil)}
             value={cuitCuil}
           />
+          <Input
+            placeholder="DNI"
+            style={{ color: "#ffffff", fontSize: 16 }}
+            keyboardType="numeric"
+            onChangeText={(dni) => setDni(dni)}
+            value={dni}
+          />
         </View>
         <View
           style={{
@@ -428,20 +438,6 @@ const AnunciatePage = ({ navigation }) => {
             autoCapitalize="none"
             onChangeText={(emailLaboral) => setEmailLaboral(emailLaboral)}
             value={emailLaboral}
-          />
-          <CheckBox
-            title="Tengo WhatsApp"
-            containerStyle={{
-              backgroundColor: "transparent",
-              borderColor: "transparent",
-              borderWidth: 0,
-              marginLeft: "auto",
-              marginRight: "auto",
-            }}
-            textStyle={{ color: "#ffffff" }}
-            checkedColor={"white"}
-            onPress={toggleWhatsapp}
-            checked={tengoWhatsapp}
           />
         </View>
         <View
@@ -729,6 +725,7 @@ const AnunciatePage = ({ navigation }) => {
                 domicilio,
                 pisoDptoCasa,
                 cuitCuil,
+                dni,
                 actividad,
                 telefono,
                 celular,
@@ -742,7 +739,6 @@ const AnunciatePage = ({ navigation }) => {
                 matricula,
                 numeroDeMatricula,
                 emailLaboral,
-                tengoWhatsapp,
                 descripcionPersonal,
                 diasHorarios,
                 desde,

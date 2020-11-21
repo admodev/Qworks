@@ -50,6 +50,7 @@ export default function ComentarScreen({ route }) {
       .push({})
       .set({
         id: user,
+        comentadoPor: firebase.auth().currentUser.displayName,
         comentario: comentario,
       })
       .then(function () {
