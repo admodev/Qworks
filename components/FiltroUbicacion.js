@@ -151,6 +151,8 @@ class UbicacionPage extends React.Component {
               nombre={itm.nombre}
               apellido={itm.apellido}
               actividad={itm.actividad}
+              localidad={itm.localidad}
+              provincia={itm.provincia}
             />
           ))
         ) : (

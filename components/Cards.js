@@ -243,47 +243,49 @@ class CardsUsuarios extends React.Component {
                   />
                   {image == null ? (
                     <View style={{ flexDirection: "row" }}>
-                      {/*<Card.Image*/
+                      {
+                        /*<Card.Image*/
                         //source={require("../assets/icon.png")}
                         //style={{
-                          //...Platform.select({
-                            //android: {
-                              //marginTop: "10%",
-                              //marginBottom: "10%",
-                              //marginLeft: "10%",
-                              //marginRight: "10%",
-                              //width: 100,
-                              //height: 100,
-                              //borderRadius: 100,
-                            //},
-                            //ios: {
-                              //borderRadius: 100,
-                              //alignItems: "center",
-                              //width: 90,
-                              //height: 90,
-                              //marginTop: "10%",
-                              //marginLeft: "10%",
-                            //},
-                          //}),
+                        //...Platform.select({
+                        //android: {
+                        //marginTop: "10%",
+                        //marginBottom: "10%",
+                        //marginLeft: "10%",
+                        //marginRight: "10%",
+                        //width: 100,
+                        //height: 100,
+                        //borderRadius: 100,
+                        //},
+                        //ios: {
+                        //borderRadius: 100,
+                        //alignItems: "center",
+                        //width: 90,
+                        //height: 90,
+                        //marginTop: "10%",
+                        //marginLeft: "10%",
+                        //},
+                        //}),
                         //}}
-                      /*/>*/}
-<Avatar
-            size="large"
-            rounded
-            source={require("../assets/icon.png")}
-            containerStyle={{
-                marginTop: "10%",
-                marginLeft: "10%",
-                width: 100,
-                height: 100,
-                borderRadius: 100,
-            }}
-            avatarStyle={{
-                width: 100,
-                height: 100,
-                borderRadius: 100,
-            }}
-            />
+                        /*/>*/
+                      }
+                      <Avatar
+                        size="large"
+                        rounded
+                        source={require("../assets/icon.png")}
+                        containerStyle={{
+                          marginTop: "10%",
+                          marginLeft: "10%",
+                          width: 100,
+                          height: 100,
+                          borderRadius: 100,
+                        }}
+                        avatarStyle={{
+                          width: 100,
+                          height: 100,
+                          borderRadius: 100,
+                        }}
+                      />
                       <View
                         style={{
                           ...Platform.select({

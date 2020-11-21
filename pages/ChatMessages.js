@@ -21,62 +21,14 @@ import "firebase/firestore";
 import "firebase/auth";
 import * as RootNavigation from "../RootNavigation.js";
 import { StackActions } from "@react-navigation/native";
-import { BlurView } from "expo-blur";
 
-let currentUser = firebase.auth().currentUser;
-let chatsRef = firebase.firestore().collection("chats/");
-
-var itm = [];
-let image;
+let db = firebase.firestore().collection("chats/");
 
 class MessagesScreen extends React.Component {
-  render() {
-    let defaultImage = require("../assets/icon.png");
-    let image;
-    const list = [
-      {
-        nombre: "Usuario",
-        avatar_url: image == null ? defaultImage : image,
-        mensaje: "Mensaje de chat acá",
-      },
-      {
-        nombre: "Usuario",
-        avatar_url: image == null ? defaultImage : image,
-        mensaje: "Mensaje de chat acá",
-      },
-      {
-        nombre: "Usuario",
-        avatar_url: image == null ? defaultImage : image,
-        mensaje: "Mensaje de chat acá",
-      },
-      {
-        nombre: "Usuario",
-        avatar_url: image == null ? defaultImage : image,
-        mensaje: "Mensaje de chat acá",
-      },
-    ];
+  render() { 
     return (
       <SafeAreaView style={{ flex: 1 }}>
-        {list.map((l, i) => (
-          <View>
-            <ListItem key={i} bottomDivider>
-              <Avatar source={{ uri: l.avatar_url }} />
-              <ListItem.Content>
-                <ListItem.Title>{l.nombre}</ListItem.Title>
-                <ListItem.Subtitle>{l.mensaje}</ListItem.Subtitle>
-              </ListItem.Content>
-            </ListItem>
-          </View>
-        ))}
-        <BlurView intensity={100} blurRadius={1}>
-          <ListItem bottomDivider>
-            <Avatar source={require("../assets/icon.png")} />
-            <ListItem.Content>
-              <ListItem.Title>Cuarto chat</ListItem.Title>
-              <ListItem.Subtitle>Censurado</ListItem.Subtitle>
-            </ListItem.Content>
-          </ListItem>
-        </BlurView>
+
       </SafeAreaView>
     );
   }
