@@ -21,6 +21,7 @@ import "firebase/firestore";
 import "firebase/auth";
 import * as RootNavigation from "../RootNavigation.js";
 import { StackActions } from "@react-navigation/native";
+import LoginPage from "./LoginPage";
 
 let user = firebase.auth().currentUser;
 let items = [];
@@ -47,25 +48,24 @@ export default function MessagesScreen({ route }) {
     })
     return(
         <SafeAreaView style={{ flex: 1 }}>
-        {user == null ? (
-            <View style={{ alignItems: "center", justifyContent: "center", marginTop: "auto", marginBottom: "auto" }}>
-            <Text style={{ alignSelf: "center", fontSize: 26 }}>Por favor inicia sesión para visualizar tus chats.</Text>
-            <TouchableOpacity onPress={() => RootNavigation.navigate('LoginPage')}>
-            <Text style={{ alignSelf: "center", marginTop: "5%", fontSize: 24, color: "orange", fontWeight: "bold", textTransform: "uppercase" }}>Ingresar</Text>
-            </TouchableOpacity>
-            </View>
-        ) : items.map((u, i) => {
-            (
-                <View key={i}>
-                <ListItem bottomDivider>
-                <ListItem.Content>
-                <ListItem.Title>Chat</ListItem.Title>
-                <ListItem.Subtitle>{u.ultimoMensaje}</ListItem.Subtitle>
-                </ListItem.Content>
-                </ListItem>
-                </View>
-            )
-        })}
+        {typeof user !== null ? (
+            <SafeAreaView style={{ flex: 1 }}>
+            {items.map((u, i) => {
+                (
+                    <View key={i}>
+                    <ListItem bottomDivider>
+                    <ListItem.Content>
+                    <ListItem.Title>Chat</ListItem.Title>
+                    <ListItem.Subtitle>{u.ultimoMensaje}</ListItem.Subtitle>
+                    </ListItem.Content>
+                    </ListItem>
+                    </View>
+                )
+            })}
+            </SafeAreaView>
+        ) : (
+            <LoginPage />
+        )}
         </SafeAreaView>
     );
 }

@@ -153,15 +153,13 @@ const AnuncioSeleccionado = ({ route, navigation }) => {
     function shareContent() {
         Share.share(
             {
-                message: `Dale un vistazo al perfil de ${nombre}`,
+                message: `Dale un vistazo al perfil de ${nombre} en QuedeOficios!`,
                 url: "http://dominioquedeoficios.com",
                 title: "QuedeOficios!",
             },
             {
                 // Android only:
                 dialogTitle: `Mira el perfil de ${nombre}`,
-                // iOS only:
-                excludedActivityTypes: ["com.apple.UIKit.activity.PostToTwitter"],
             }
         );
     }

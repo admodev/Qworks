@@ -5,6 +5,8 @@ import * as Permissions from "expo-permissions";
 import * as React from "react";
 import { Platform } from "react-native";
 import MainStackNavigator from "./navigation/AppNavigator.js";
+import { Asset } from 'expo-asset';
+import { AppLoading } from 'expo';
 import * as Location from "expo-location";
 import * as firebase from "firebase";
 import "firebase/auth";
@@ -63,6 +65,7 @@ Notifications.setNotificationHandler({
 });
 
 export default function App() {
+    let [isReady, setIsReady] = React.useState(false);
     const [location, setLocation] = React.useState(null);
     const [errorMsg, setErrorMsg] = React.useState(null);
 
@@ -114,7 +117,28 @@ export default function App() {
     //      await schedulePushNotification();
     //    };
     //  }
-    return <MainStackNavigator />;
+    
+    if (!isReady) {
+      return (
+        <AppLoading
+          startAsync={cacheResourcesAsync()}
+          onFinish={() => setIsReady({ isReady: true })}
+          onError={console.warn}
+        />
+      ); }
+
+    return (
+      <MainStackNavigator />
+    );
+}
+
+async function cacheResourcesAsync() {
+    const images = [require('./assets/ScreenSplash-02.png')];
+
+    const cacheImages = images.map(image => {
+      return Asset.fromModule(image).downloadAsync();
+    });
+    return Promise.all(cacheImages);
 }
 
 async function schedulePushNotification() {
