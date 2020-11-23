@@ -204,7 +204,7 @@ export default function LoginPage({ navigation }) {
         checked={isChecked}
         />
         <Button
-        title="Olvidé mi contraseña"
+        title="Recuperar contraseña"
         onPress={() => RootNavigation.navigate('RecuperarPasswordScreen')}
         buttonStyle={{
             backgroundColor: "transparent",

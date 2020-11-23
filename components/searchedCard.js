@@ -26,7 +26,6 @@ export default class searchedCardResult extends React.Component {
     super(props);
     this.state = {
       search: "",
-      idAnuncio: "",
     };
   }
 
@@ -41,15 +40,15 @@ export default class searchedCardResult extends React.Component {
           idAnuncio = child.val().id;
         });
       });
-    firebase.auth().onAuthStateChanged(function (user) {
-      if (user) {
-        var email = user.email;
-        var uid = user.uid;
-        var providerData = user.providerData;
-      } else {
-        user == null;
-      }
-    });
+    /*firebase.auth().onAuthStateChanged(function (user) {*/
+      //if (user) {
+        //var email = user.email;
+        //var uid = user.uid;
+        //var providerData = user.providerData;
+      //} else {
+        //user == null;
+      //}
+    /*});*/
   }
 
   render() {
@@ -446,7 +445,7 @@ export default class searchedCardResult extends React.Component {
               <TouchableOpacity
                 onPress={() => {
                   RootNavigation.navigate("AnuncioSeleccionado", {
-                    id: u.idAnuncio,
+                    id: idAnuncio,
                   });
                 }}
                 style={{

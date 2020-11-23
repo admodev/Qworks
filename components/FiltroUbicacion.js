@@ -58,15 +58,15 @@ class UbicacionPage extends React.Component {
           console.log("title*" + itms.title);
         });
       });
-    firebase.auth().onAuthStateChanged(function (user) {
-      if (user) {
-        var email = user.email;
-        var uid = user.uid;
-        var providerData = user.providerData;
-      } else {
-        user == null;
-      }
-    });
+    /*firebase.auth().onAuthStateChanged(function (user) {*/
+      //if (user) {
+        //var email = user.email;
+        //var uid = user.uid;
+        //var providerData = user.providerData;
+      //} else {
+        //user == null;
+      //}
+    /*});*/
   }
   filterList(items) {
     return items.filter(
@@ -148,6 +148,7 @@ class UbicacionPage extends React.Component {
           this.filterList(this.state.items).map((itm, index) => (
             <SearchedCardResult
               key={index}
+              id={itm.idAnuncio}
               nombre={itm.nombre}
               apellido={itm.apellido}
               actividad={itm.actividad}
