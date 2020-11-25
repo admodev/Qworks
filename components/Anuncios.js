@@ -156,12 +156,24 @@ const AnunciosPage = ({ route, navigation }) => {
         )}
         <Text
         style={{
-            marginLeft: "auto",
-                marginRight: "auto",
-                textAlign: "center",
-                fontSize: 20,
-                marginTop: 10,
-                color: "#fff",
+            ...Platform.select({
+                android: {
+                    marginLeft: "auto",
+                    marginRight: "auto",
+                    textAlign: "center",
+                    fontSize: 20,
+                    marginTop: 10,
+                    color: "#fff",
+                },
+                ios: {
+                    marginLeft: "auto",
+                    marginRight: "auto",
+                    textAlign: "center",
+                    fontSize: 20,
+                    marginTop: 10,
+                    color: "#fff",
+                },
+            })
         }}
         >
         {nombre} {apellido}
@@ -178,7 +190,7 @@ const AnunciosPage = ({ route, navigation }) => {
         >
         {actividad}
         </Text>
-<TouchableOpacity onPress={() => shareContent()}>
+        <TouchableOpacity onPress={() => shareContent()}>
         <Text
         style={{
             ...Platform.select({
@@ -186,8 +198,9 @@ const AnunciosPage = ({ route, navigation }) => {
                     color: "#fff",
                     marginLeft: "auto",
                     marginRight: "auto",
-                    marginTop: 10,
-                    marginRight: 10,
+                    marginTop: 15,
+                    marginRight: "auto",
+                    marginLeft: "auto",
                     fontSize: 20,
                 },
                 ios: {
@@ -219,8 +232,9 @@ const AnunciosPage = ({ route, navigation }) => {
                     color: "#fff",
                     marginLeft: "auto",
                     marginRight: "auto",
-                    marginTop: 10,
-                    marginRight: 10,
+                    marginTop: 15,
+                    marginRight: "auto",
+                    marginLeft: "auto",
                     fontSize: 20,
                 },
                 ios: {
@@ -248,8 +262,9 @@ const AnunciosPage = ({ route, navigation }) => {
                     color: "#fff",
                     marginLeft: "auto",
                     marginRight: "auto",
-                    marginTop: 10,
-                    marginRight: 10,
+                    marginTop: 15,
+                    marginRight: "auto",
+                    marginLeft: "auto",
                     fontSize: 20,
                 },
                 ios: {
@@ -277,8 +292,9 @@ const AnunciosPage = ({ route, navigation }) => {
                     color: "#fff",
                     marginLeft: "auto",
                     marginRight: "auto",
-                    marginTop: 10,
-                    marginRight: 10,
+                    marginTop: 15,
+                    marginRight: "auto",
+                    marginLeft: "auto",
                     fontSize: 20,
                 },
                 ios: {
@@ -306,8 +322,10 @@ const AnunciosPage = ({ route, navigation }) => {
                     color: "#fff",
                     marginLeft: "auto",
                     marginRight: "auto",
-                    marginTop: 10,
-                    marginRight: 10,
+                    marginTop: 15,
+                    marginRight: "auto",
+                    marginLeft: "auto",
+                    marginBottom: 20,
                     fontSize: 20,
                 },
                 ios: {

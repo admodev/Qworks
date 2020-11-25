@@ -44,13 +44,17 @@ export default function ComentarScreen({ route }) {
   let [comentario, setComentario] = useState("");
 
   function comentarUsuario(comentario) {
+      let userCommentingRef = firebase.database().ref("anuncios/").orderByChild("id").equalTo(firebase.auth().currentUser.uid);
+      let userNameRef = userCommentingRef.once("value").then(function(snapshot) {
+    var nombre = snapshot.val().nombre;
+      });
     firebase
       .database()
       .ref("comentarios/")
       .push({})
       .set({
         id: user,
-        comentadoPor: firebase.auth().currentUser.displayName,
+        comentadoPor: nombre,
         comentario: comentario,
       })
       .then(function () {

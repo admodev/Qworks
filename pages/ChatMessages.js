@@ -23,15 +23,22 @@ import * as RootNavigation from "../RootNavigation.js";
 import { StackActions } from "@react-navigation/native";
 import LoginPage from "./LoginPage";
 
-let user = firebase.auth().currentUser;
-let items = [];
-let usuario, ultimoMensaje;
-let db = firebase.firestore();
-let chatsRef = db.collection("chats/");
-
 export default function MessagesScreen({ route }) {
+    let user = firebase.auth().currentUser;
+    let items = [];
+    let usuario, ultimoMensaje;
+    let db = firebase.firestore();
+    let chatsRef = db.collection("chats/");
     useEffect(() => {
-        if (user) {
+        //if (user) {
+            /*chatsRef.get().then((snapshot) => {*/
+                //snapshot.docs.forEach(doc => {
+                    //items.push({
+                        //ultimoMensaje: doc.data().text,
+                    //})
+                //})
+            /*})*/
+
             Promise.all([
                 //chatsRef.where("_id", "==", user.uid).orderBy("createdAt")
                 chatsRef.get().then((snapshot) => {
@@ -44,28 +51,16 @@ export default function MessagesScreen({ route }) {
                     });
                 }),
             ]);
-        }
+        //}
     })
     return(
         <SafeAreaView style={{ flex: 1 }}>
-        {typeof user !== null ? (
-            <SafeAreaView style={{ flex: 1 }}>
-            {items.map((u, i) => {
-                (
-                    <View key={i}>
                     <ListItem bottomDivider>
                     <ListItem.Content>
                     <ListItem.Title>Chat</ListItem.Title>
-                    <ListItem.Subtitle>{u.ultimoMensaje}</ListItem.Subtitle>
+                    <ListItem.Subtitle>{ultimoMensaje}</ListItem.Subtitle>
                     </ListItem.Content>
                     </ListItem>
-                    </View>
-                )
-            })}
-            </SafeAreaView>
-        ) : (
-            <LoginPage />
-        )}
         </SafeAreaView>
     );
 }

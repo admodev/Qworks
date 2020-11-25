@@ -64,7 +64,7 @@ export default function Chat({ route, navigation }) {
     let [image, setImage] = useState("");
 
     useEffect(() => {
-        const unsubscribe = chat.onSnapshot((querySnapshot) => {
+        const unsubscribe = chatsRef.onSnapshot((querySnapshot) => {
             const messagesFirestore = querySnapshot
                 .docChanges()
                 .filter(({ type }) => type === "added")
@@ -72,7 +72,7 @@ export default function Chat({ route, navigation }) {
                     const message = doc.data();
                     //createdAt is firebase.firestore.Timestamp instance
                     //https://firebase.google.com/docs/reference/js/firebase.firestore.Timestamp
-                    if (chat.where("userTwo", "==", secondUserId)) {
+                    if (chatsRef.where("userTwo", "==", secondUserId)) {
                         return { ...message, createdAt: message.createdAt.toDate(), image };
                     } else {
                         return "Inicia un chat!";
@@ -112,7 +112,7 @@ export default function Chat({ route, navigation }) {
     );
 
     async function handleSend(messages) {
-        const writes = messages.map((m) => chat.add(m));
+        const writes = messages.map((m) => chatsRef.add(m));
         await Promise.all(writes);
     }
 

@@ -98,6 +98,7 @@ const AnuncioSeleccionado = ({ route, navigation }) => {
                 returnArr.push({
                     key: item.key,
                     id: item.id,
+                    comentadoPor: item.comentadoPor,
                     comentario: item.comentario,
                 });
                 arr = returnArr;
@@ -134,13 +135,17 @@ const AnuncioSeleccionado = ({ route, navigation }) => {
 
     function calificarUsuario(rating) {
         let ratingString = parseInt(rating);
+        let ratingUserRef = firebase.database().ref("anuncios/").orderByChild("id").equalTo(firebase.auth().currentUser.uid).once("value").then(function(snapshot) {
+            var nombre = snapshot.val().nombre;
+        })
         firebase
             .database()
             .ref("calificaciones/")
             .push()
             .set({
                 calificacion: {
-                    ratingUser: firebase.auth().currentUser.uid,
+                    ratingUserId: firebase.auth().currentUser.uid,
+                    ratingUserName: nombre,
                     ratedUser: id,
                     rating: ratingString,
                 },
@@ -669,6 +674,7 @@ const AnuncioSeleccionado = ({ route, navigation }) => {
                     borderWidth: 0,
                     maxWidth: "150%",
                     marginTop: "3%",
+                    marginBottom: "35%",
                 },
                 ios: {
                     padding: 0,
@@ -707,6 +713,16 @@ const AnuncioSeleccionado = ({ route, navigation }) => {
                         color: "#fff",
                 }}
                 >
+                Comentario de: {JSON.stringify(u.comentadoPor)}
+                </Text>
+                <Text style={{
+                    marginLeft: "auto",
+                        marginRight: "auto",
+                        textAlign: "center",
+                        fontSize: 20,
+                        marginTop: 10,
+                        color: "#fff",
+                }}>
                 {JSON.stringify(u.comentario)}
                 </Text>
                 </View>
