@@ -117,18 +117,18 @@ export default function App() {
     //      await schedulePushNotification();
     //    };
     //  }
-    
+
     if (!isReady) {
-      return (
-        <AppLoading
-          startAsync={cacheResourcesAsync()}
-          onFinish={() => setIsReady({ isReady: true })}
-          onError={console.warn}
-        />
-      ); }
+        return (
+            <AppLoading
+            startAsync={cacheResourcesAsync()}
+            onFinish={() => setIsReady({ isReady: true })}
+            onError={console.warn}
+            />
+        ); }
 
     return (
-      <MainStackNavigator />
+        <MainStackNavigator />
     );
 }
 
@@ -136,7 +136,7 @@ async function cacheResourcesAsync() {
     const images = [require('./assets/ScreenSplash-02.png')];
 
     const cacheImages = images.map(image => {
-      return Asset.fromModule(image).downloadAsync();
+        return Asset.fromModule(image).downloadAsync();
     });
     return Promise.all(cacheImages);
 }

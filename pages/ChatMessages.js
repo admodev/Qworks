@@ -23,44 +23,43 @@ import * as RootNavigation from "../RootNavigation.js";
 import { StackActions } from "@react-navigation/native";
 import LoginPage from "./LoginPage";
 
+let user = firebase.auth().currentUser;
+let items = [];
+let usuario, ultimoMensaje;
+let db = firebase.firestore();
+let chatsRef = db.collection("chats/");
+
 export default function MessagesScreen({ route }) {
-    let user = firebase.auth().currentUser;
-    let items = [];
-    let usuario, ultimoMensaje;
-    let db = firebase.firestore();
-    let chatsRef = db.collection("chats/");
     useEffect(() => {
         //if (user) {
-            /*chatsRef.get().then((snapshot) => {*/
-                //snapshot.docs.forEach(doc => {
-                    //items.push({
-                        //ultimoMensaje: doc.data().text,
-                    //})
-                //})
-            /*})*/
+        /*chatsRef.get().then((snapshot) => {*/
+        //snapshot.docs.forEach(doc => {
+        //items.push({
+        //ultimoMensaje: doc.data().text,
+        //})
+        //})
+        /*})*/
 
-            Promise.all([
-                //chatsRef.where("_id", "==", user.uid).orderBy("createdAt")
-                chatsRef.get().then((snapshot) => {
-                    snapshot.docs.forEach((doc) => {
-                        console.log(doc.data());
-                        items.push({
-                            usuario: doc.data()._id,
-                            ultimoMensaje: doc.data().text,
-                        });
-                    });
-                }),
-            ]);
+        Promise.all([
+            //chatsRef.where("_id", "==", user.uid).orderBy("createdAt")
+            chatsRef.get().then((snapshot) => {
+                snapshot.docs.forEach((doc) => {
+                    console.log(doc.data());
+                        //usuario: doc.data()._id,
+                        ultimoMensaje = doc.data().text;
+                });
+            }),
+        ]);
         //}
     })
     return(
         <SafeAreaView style={{ flex: 1 }}>
-                    <ListItem bottomDivider>
-                    <ListItem.Content>
-                    <ListItem.Title>Chat</ListItem.Title>
-                    <ListItem.Subtitle>{ultimoMensaje}</ListItem.Subtitle>
-                    </ListItem.Content>
-                    </ListItem>
+        <ListItem bottomDivider>
+        <ListItem.Content>
+        <ListItem.Title>Chat</ListItem.Title>
+        <ListItem.Subtitle>{ultimoMensaje}</ListItem.Subtitle>
+        </ListItem.Content>
+        </ListItem>
         </SafeAreaView>
     );
 }
