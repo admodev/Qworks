@@ -51,6 +51,8 @@ class UbicacionPage extends React.Component {
                         idAnuncio: child.val().id,
                         localidad: child.val().localidad,
                         provincia: child.val().provincia,
+                        latidud: child.val().latitud,
+                        longitud: child.val().longitud,
                     });
                 });
                 itm = items;

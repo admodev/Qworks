@@ -89,6 +89,51 @@ const AnunciatePage = ({ navigation }) => {
     const toggleHastaPmChecked = React.useCallback(() =>
         setHastaPmChecked(!hastaPmChecked)
     );
+    const [ready, setReady] = useState(false);
+    const [where, setWhere] = useState({ lat: null, lng: null});
+    const [error, setError] = useState(null);
+    let latitud = where.lat;
+    let longitud = where.lng;
+
+    useEffect(() => {
+        (async () => {
+            if (Platform.OS !== "web") {
+                const {
+                    status,
+                } = await ImagePicker.requestCameraRollPermissionsAsync();
+                if (status !== "granted") {
+                    alert(
+                        "Perdón, necesitamos tu permiso para que puedas subir una foto!"
+                    );
+                }
+            }     
+        })();
+
+        setReady(false);
+        setError(null);
+
+        let geoOptions = {
+            enableHighAccuracy: true,
+            timeout: 20000,
+            maximumAge: 60 * 60 * 24,
+        }
+
+        const geoSuccess = (position) => {
+            console.log(position);
+            setReady(true);
+            setWhere({lat: position.coords.latitude, lng: position.coords.longitude});
+        }
+
+        const geoFailure = (error) => {
+            setError(err.message);
+        }
+
+        navigator.geolocation.getCurrentPosition( geoSuccess, 
+                                                  geoFailure, 
+                                                  geoOptions);
+
+    }, []);
+
     function concatLunes() {
         setDiasHorarios(diasHorarios.concat("Lunes"));
         toggleLunesChecked();
@@ -143,7 +188,9 @@ const AnunciatePage = ({ navigation }) => {
         diasHorarios,
         desde,
         hasta,
-        terminos
+        terminos,
+        latitud,
+        longitud,
     ) {
         if (!cuitCuil.trim()) {
             alert("Por favor ingrese su cuit/cuil");
@@ -190,6 +237,8 @@ const AnunciatePage = ({ navigation }) => {
                     desde: desde,
                     hasta: hasta,
                     terminos: terminos,
+                    latitud: latitud,
+                    longitud: longitud,
                 })
                 .then(function () {
                     user.displayName = nombre;
@@ -198,34 +247,6 @@ const AnunciatePage = ({ navigation }) => {
                     Updates.reloadAsync();
                 });
         }
-    }
-    useEffect(() => {
-        (async () => {
-            if (Platform.OS !== "web") {
-                const {
-                    status,
-                } = await ImagePicker.requestCameraRollPermissionsAsync();
-                if (status !== "granted") {
-                    alert(
-                        "Perdón, necesitamos tu permiso para que puedas subir una foto!"
-                    );
-                }
-            }
-            let { status } = await Location.requestPermissionsAsync();
-            if (status !== "granted") {
-                setErrorMsg("Permission to access location was denied");
-            }
-
-            let location = await Location.getCurrentPositionAsync({});
-            setLocation(location);
-        })();
-    }, []);
-
-    let text = "Esperando ubicación..";
-    if (errorMsg) {
-        text = errorMsg;
-    } else if (location) {
-        text = JSON.stringify(location);
     }
 
     const pickImage = async () => {
@@ -244,7 +265,6 @@ const AnunciatePage = ({ navigation }) => {
         }
     };
 
-    location;
     return (
         <View style={{ flex: 1 }}>
         <Image
@@ -755,7 +775,9 @@ const AnunciatePage = ({ navigation }) => {
                 diasHorarios,
                 desde,
                 hasta,
-                terminos
+                terminos,
+                latitud,
+                longitud,
             )
         }
         title="Continuar"
