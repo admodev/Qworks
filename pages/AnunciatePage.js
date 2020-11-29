@@ -106,7 +106,7 @@ const AnunciatePage = ({ navigation }) => {
                         "Perdón, necesitamos tu permiso para que puedas subir una foto!"
                     );
                 }
-            }     
+            }
         })();
 
         setReady(false);
@@ -128,8 +128,8 @@ const AnunciatePage = ({ navigation }) => {
             setError(err.message);
         }
 
-        navigator.geolocation.getCurrentPosition( geoSuccess, 
-                                                  geoFailure, 
+        navigator.geolocation.getCurrentPosition( geoSuccess,
+                                                  geoFailure,
                                                   geoOptions);
 
     }, []);
@@ -204,7 +204,7 @@ const AnunciatePage = ({ navigation }) => {
             let anunciosRef = firebase
                 .database()
                 .ref("anuncios/");
-            
+
             let userRef = user.uid;
 
                 anunciosRef
@@ -315,19 +315,28 @@ const AnunciatePage = ({ navigation }) => {
         </Text>
         <Input
         placeholder="Nombre"
-        style={{ color: "#ffffff", fontSize: 16 }}
+        inputStyle={{ color: "#ffffff" }}
+        style={{ color: "#ffffff", fontSize: 16, textAlign: "center" }}
+        inputContainerStyle={{ borderBottomColor: "#ffffff" }}
+        placeholderTextColor="white"
         onChangeText={(nombre) => setNombre(nombre)}
         value={nombre}
         />
         <Input
         placeholder="Apellido"
-        style={{ color: "#ffffff", fontSize: 16 }}
+        inputStyle={{ color: "#ffffff" }}
+        style={{ color: "#ffffff", fontSize: 16, textAlign: "center" }}
+        inputContainerStyle={{ borderBottomColor: "#ffffff" }}
+        placeholderTextColor="white"
         onChangeText={(apellido) => setApellido(apellido)}
         value={apellido}
         />
         <Input
         placeholder="Email Personal"
-        style={{ color: "#ffffff", fontSize: 16 }}
+        inputStyle={{ color: "#ffffff" }}
+        style={{ color: "#ffffff", fontSize: 16, textAlign: "center" }}
+        inputContainerStyle={{ borderBottomColor: "#ffffff" }}
+        placeholderTextColor="white"
         keyboardType="email-address"
         autoCapitalize="none"
         onChangeText={(emailPersonal) => setEmailPersonal(emailPersonal)}
@@ -335,26 +344,38 @@ const AnunciatePage = ({ navigation }) => {
         />
         <Input
         placeholder="Domicilio"
-        style={{ color: "#ffffff", fontSize: 16 }}
+        inputStyle={{ color: "#ffffff" }}
+        style={{ color: "#ffffff", fontSize: 16, textAlign: "center" }}
+        inputContainerStyle={{ borderBottomColor: "#ffffff" }}
+        placeholderTextColor="white"
         onChangeText={(domicilio) => setDomicilio(domicilio)}
         value={domicilio}
         />
         <Input
         placeholder="Piso / Dpto / Casa"
-        style={{ color: "#ffffff", fontSize: 16 }}
+        inputStyle={{ color: "#ffffff" }}
+        style={{ color: "#ffffff", fontSize: 16, textAlign: "center" }}
+        inputContainerStyle={{ borderBottomColor: "#ffffff" }}
+        placeholderTextColor="white"
         onChangeText={(pisoDptoCasa) => setPisoDptoCasa(pisoDptoCasa)}
         value={pisoDptoCasa}
         />
         <Input
         placeholder="CUIL / CUIT"
-        style={{ color: "#ffffff", fontSize: 16 }}
+        inputStyle={{ color: "#ffffff" }}
+        style={{ color: "#ffffff", fontSize: 16, textAlign: "center" }}
+        inputContainerStyle={{ borderBottomColor: "#ffffff" }}
+        placeholderTextColor="white"
         keyboardType="numeric"
         onChangeText={(cuitCuil) => setCuitCuil(cuitCuil)}
         value={cuitCuil}
         />
         <Input
         placeholder="DNI"
-        style={{ color: "#ffffff", fontSize: 16 }}
+        inputStyle={{ color: "#ffffff" }}
+        style={{ color: "#ffffff", fontSize: 16, textAlign: "center" }}
+        inputContainerStyle={{ borderBottomColor: "#ffffff" }}
+        placeholderTextColor="white"
         keyboardType="numeric"
         onChangeText={(dni) => setDni(dni)}
         value={dni}
@@ -376,57 +397,84 @@ const AnunciatePage = ({ navigation }) => {
         </Text>
         <Input
         placeholder="Actividad"
-        style={{ color: "#ffffff", fontSize: 16 }}
+        inputStyle={{ color: "#ffffff" }}
+        style={{ color: "#ffffff", fontSize: 16, textAlign: "center" }}
+        inputContainerStyle={{ borderBottomColor: "#ffffff" }}
+        placeholderTextColor="white"
         onChangeText={(actividad) => setActividad(actividad)}
         value={actividad}
         />
         <Input
         placeholder="Teléfono"
-        style={{ color: "#ffffff", fontSize: 16 }}
+        inputStyle={{ color: "#ffffff" }}
+        style={{ color: "#ffffff", fontSize: 16, textAlign: "center" }}
+        inputContainerStyle={{ borderBottomColor: "#ffffff" }}
+        placeholderTextColor="white"
         keyboardType="phone-pad"
         onChangeText={(telefono) => setTelefono(telefono)}
         value={telefono}
         />
         <Input
         placeholder="Celular"
-        style={{ color: "#ffffff", fontSize: 16 }}
+        inputStyle={{ color: "#ffffff" }}
+        style={{ color: "#ffffff", fontSize: 16, textAlign: "center" }}
+        inputContainerStyle={{ borderBottomColor: "#ffffff" }}
+        placeholderTextColor="white"
         keyboardType="phone-pad"
         onChangeText={(celular) => setCelular(celular)}
         value={celular}
         />
         <Input
         placeholder="Provincia"
-        style={{ color: "#ffffff", fontSize: 16 }}
+        inputStyle={{ color: "#ffffff" }}
+        style={{ color: "#ffffff", fontSize: 16, textAlign: "center" }}
+        inputContainerStyle={{ borderBottomColor: "#ffffff" }}
+        placeholderTextColor="white"
         onChangeText={(provincia) => setProvincia(provincia)}
         value={provincia}
         />
         <Input
         placeholder="Localidad"
-        style={{ color: "#ffffff", fontSize: 16 }}
+        inputStyle={{ color: "#ffffff" }}
+        style={{ color: "#ffffff", fontSize: 16, textAlign: "center" }}
+        inputContainerStyle={{ borderBottomColor: "#ffffff" }}
+        placeholderTextColor="white"
         onChangeText={(localidad) => setLocalidad(localidad)}
         value={localidad}
         />
         <Input
         placeholder="Local"
-        style={{ color: "#ffffff", fontSize: 16 }}
+        inputStyle={{ color: "#ffffff" }}
+        style={{ color: "#ffffff", fontSize: 16, textAlign: "center" }}
+        inputContainerStyle={{ borderBottomColor: "#ffffff" }}
+        placeholderTextColor="white"
         onChangeText={(local) => setLocal(local)}
         value={local}
         />
         <Input
         placeholder="Empresa"
-        style={{ color: "#ffffff", fontSize: 16 }}
+        inputStyle={{ color: "#ffffff" }}
+        style={{ color: "#ffffff", fontSize: 16, textAlign: "center" }}
+        inputContainerStyle={{ borderBottomColor: "#ffffff" }}
+        placeholderTextColor="white"
         onChangeText={(empresa) => setEmpresa(empresa)}
         value={empresa}
         />
         <Input
         placeholder="Factura"
-        style={{ color: "#ffffff", fontSize: 16 }}
+        inputStyle={{ color: "#ffffff" }}
+        style={{ color: "#ffffff", fontSize: 16, textAlign: "center" }}
+        inputContainerStyle={{ borderBottomColor: "#ffffff" }}
+        placeholderTextColor="white"
         onChangeText={(factura) => setFactura(factura)}
         value={factura}
         />
         <Input
         placeholder="Dirección del local"
-        style={{ color: "#ffffff", fontSize: 16 }}
+        inputStyle={{ color: "#ffffff" }}
+        style={{ color: "#ffffff", fontSize: 16, textAlign: "center" }}
+        inputContainerStyle={{ borderBottomColor: "#ffffff" }}
+        placeholderTextColor="white"
         onChangeText={(direccionDelLocal) =>
             setDireccionDelLocal(direccionDelLocal)
         }
@@ -434,7 +482,10 @@ const AnunciatePage = ({ navigation }) => {
         />
         <Input
         placeholder="Nombre de la empresa"
-        style={{ color: "#ffffff", fontSize: 16 }}
+        inputStyle={{ color: "#ffffff" }}
+        style={{ color: "#ffffff", fontSize: 16, textAlign: "center" }}
+        inputContainerStyle={{ borderBottomColor: "#ffffff" }}
+        placeholderTextColor="white"
         onChangeText={(nombreDeLaEmpresa) =>
             setNombreDeLaEmpresa(nombreDeLaEmpresa)
         }
@@ -442,13 +493,19 @@ const AnunciatePage = ({ navigation }) => {
         />
         <Input
         placeholder="Matrícula"
-        style={{ color: "#ffffff", fontSize: 16 }}
+        inputStyle={{ color: "#ffffff" }}
+        style={{ color: "#ffffff", fontSize: 16, textAlign: "center" }}
+        inputContainerStyle={{ borderBottomColor: "#ffffff" }}
+        placeholderTextColor="white"
         onChangeText={(matricula) => setMatricula(matricula)}
         value={matricula}
         />
         <Input
         placeholder="Número de matrícula"
-        style={{ color: "#ffffff", fontSize: 16 }}
+        inputStyle={{ color: "#ffffff" }}
+        style={{ color: "#ffffff", fontSize: 16, textAlign: "center" }}
+        inputContainerStyle={{ borderBottomColor: "#ffffff" }}
+        placeholderTextColor="white"
         keyboardType="numeric"
         onChangeText={(numeroDeMatricula) =>
             setNumeroDeMatricula(numeroDeMatricula)
@@ -457,7 +514,10 @@ const AnunciatePage = ({ navigation }) => {
         />
         <Input
         placeholder="Email laboral"
-        style={{ color: "#ffffff", fontSize: 16 }}
+        inputStyle={{ color: "#ffffff" }}
+        style={{ color: "#ffffff", fontSize: 16, textAlign: "center" }}
+        inputContainerStyle={{ borderBottomColor: "#ffffff" }}
+        placeholderTextColor="white"
         keyboardType="email-address"
         autoCapitalize="none"
         onChangeText={(emailLaboral) => setEmailLaboral(emailLaboral)}
@@ -475,7 +535,7 @@ const AnunciatePage = ({ navigation }) => {
         <Text h3 style={{ color: "#fff", marginTop: 10, marginBottom: 25 }}>
         Descripcion / Resumen Personal
         </Text>
-        <TextInput
+        <Input
         placeholder="Ingrese una descripción personal..."
         placeholderTextColor={"white"}
         style={{
@@ -487,7 +547,11 @@ const AnunciatePage = ({ navigation }) => {
                 color: "#ffffff",
                 margin: 10,
                 textAlignVertical: "top",
+                textAlign: "center"
         }}
+        inputStyle={{ color: "#ffffff" }}
+        inputContainerStyle={{ borderBottomWidth: 0 }}
+        placeholderTextColor="white"
         multiline={true}
         onChangeText={(descripcionPersonal) =>
             setDescripcionPersonal(descripcionPersonal)
@@ -622,15 +686,10 @@ const AnunciatePage = ({ navigation }) => {
         <Input
         placeholder="Desde ... hs"
         style={{ color: "#ffffff", fontSize: 16 }}
-        containerStyle={{
-            backgroundColor: "transparent",
-                borderColor: "transparent",
-                borderWidth: 0,
-                marginTop: 15,
-                marginLeft: "auto",
-                marginRight: "auto",
-        }}
-        textStyle={{ color: "#ffffff" }}
+        inputStyle={{ color: "#ffffff" }}
+        style={{ color: "#ffffff", fontSize: 16, textAlign: "center" }}
+        inputContainerStyle={{ borderBottomColor: "#ffffff", marginTop: 15 }}
+        placeholderTextColor="white"
         keyboardType="numeric"
         onChangeText={(desde) =>
             setDesde(desde)
@@ -640,15 +699,10 @@ const AnunciatePage = ({ navigation }) => {
         <Input
         placeholder="Hasta ... hs"
         style={{ color: "#ffffff", fontSize: 16 }}
-        containerStyle={{
-            backgroundColor: "transparent",
-                borderColor: "transparent",
-                borderWidth: 0,
-                marginTop: 15,
-                marginLeft: "auto",
-                marginRight: "auto",
-        }}
-        textStyle={{ color: "#ffffff" }}
+        inputStyle={{ color: "#ffffff" }}
+        style={{ color: "#ffffff", fontSize: 16, textAlign: "center" }}
+        inputContainerStyle={{ borderBottomColor: "#ffffff", marginTop: 15 }}
+        placeholderTextColor="white"
         keyboardType="numeric"
         onChangeText={(hasta) =>
             setHasta(hasta)
