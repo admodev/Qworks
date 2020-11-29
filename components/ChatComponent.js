@@ -22,7 +22,7 @@ import LoginPage from "../pages/LoginPage";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import * as ImagePicker from "expo-image-picker";
 import * as Notifications from "expo-notifications";
-import TimerComponent from "./Timer";
+import { Stopwatch, Timer } from 'react-native-stopwatch-timer';
 
 if (firebase.apps.length === 0) {
     try {
@@ -44,6 +44,10 @@ if (firebase.apps.length === 0) {
 }
 
 export default function Chat({ route, navigation }) {
+    let [timerStart, setTimerStart] = useState(false);
+    let [totalDuration, setTotalDuration] = useState(9000);
+    let [timerReset, setTimerReset] = useState(false);
+
     let firstUserId = route.params.userOne;
     let secondUserId = route.params.userTwo;
     const nombre = "placeholder";
@@ -63,7 +67,28 @@ export default function Chat({ route, navigation }) {
     const defaultImageRef = storageRef.child("/defaultUserImage/icon.png");
     let [image, setImage] = useState("");
 
+    const handleTimerComplete = () => alert("Te quedaste sin tiempo!");
+
+    function toggleTimer() {
+      setTimerStart(!timerStart);
+    }
+
+    function resetTimer() {
+      setTimerReset(!timerReset);
+    }
+
+    if (timerStart == true && totalDuration == 0) {
+      resetTimer();
+    }
+
+    function getFormattedTime(time) {
+      let currentTime = time;
+  };
+
+    totalDuration > 0 ? alert("El tiempo está corriendo") : console.log("Te quedaste sin tiempo!");
+
     useEffect(() => {
+        toggleTimer();
         const unsubscribe = chatsRef.onSnapshot((querySnapshot) => {
             const messagesFirestore = querySnapshot
                 .docChanges()
@@ -139,7 +164,7 @@ export default function Chat({ route, navigation }) {
             name="send"
             color={"#000000"}
             size={28}
-            /> 
+            />
             </View>
             </Send>
         );
@@ -201,27 +226,35 @@ export default function Chat({ route, navigation }) {
             />
             </TouchableOpacity>
             </View>
-            {chatActivo == true ? ( 
-                <GiftedChat
-                isAnimated
-                messages={messages}
-                user={
-                    {
-                        _id: firstUserId,
-                            user: firstUserId,
-                    },
-                    {
-                        _id: secondUserId,
-                        user: secondUserId,
-                    }
-                }
-                onSend={handleSend}
-                showUserAvatar={true}
-                showAvatarForEveryMessage={true}
-                placeholder="Escribe un mensaje..."
-                renderActions={renderActions}
-                renderSend={renderSend}
+            {chatActivo == true ? (
+                <View>
+                  <GiftedChat
+                  isAnimated
+                  messages={messages}
+                  user={
+                      {
+                          _id: firstUserId,
+                              user: firstUserId,
+                      },
+                      {
+                          _id: secondUserId,
+                          user: secondUserId,
+                      }
+                  }
+                  onSend={handleSend}
+                  showUserAvatar={true}
+                  showAvatarForEveryMessage={true}
+                  placeholder="Escribe un mensaje..."
+                  renderActions={renderActions}
+                  renderSend={renderSend}
+                  />
+                <Timer totalDuration={totalDuration} msecs start={timerStart}
+                       reset={timerReset}
+                       handleFinish={handleTimerComplete}
+                       getTime={getFormattedTime}
+                       options={options}
                 />
+                </View>
             ) : (
                 <View>
                 <Text style={{ alignItems: "center", justifyContent: "center", marginTop: "50%", marginLeft: "20%", marginRight: "20%", fontWeight: "bold", fontSize: 24 }}>Tu tiempo se acabó, adquiere más tiempo para continuar conversando...</Text>
@@ -236,6 +269,15 @@ export default function Chat({ route, navigation }) {
         )}
         </SafeAreaView>
     );
+}
+
+const options = {
+  container: {
+    display: "none",
+  },
+  text: {
+    display: "none",
+  },
 }
 
 const styles = StyleSheet.create({
