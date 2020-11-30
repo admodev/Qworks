@@ -294,7 +294,7 @@ const ProfilePage = ({ navigation }) => {
             Mis Anuncios
             </Text>
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => navigation.navigate("Messages")}>
+            <TouchableOpacity onPress={() => navigation.navigate("MessagesScreen")}>
             <Text style={{ color: "#000000", fontSize: 20, margin: 15 }}>
             <MaterialCommunityIcons
             name="comment-text"

@@ -1,5 +1,6 @@
 import React, { useState, setState } from "react";
 import {
+    ActivityIndicator,
     TouchableOpacity,
     StyleSheet,
     Image,
@@ -146,7 +147,7 @@ class UbicacionPage extends React.Component {
                             />
                         </TouchableOpacity>
                         <Input
-                            placeholder="Buscar..."
+                            placeholder="Buscar por localidad/provincia"
                             inputStyle={{
                                 justifyContent: "center",
                                 marginLeft: 25,
@@ -169,7 +170,7 @@ class UbicacionPage extends React.Component {
                         }}
                     >
                         <Input
-                            placeholder="Buscar..."
+                            placeholder="Buscar por localidad/provincia"
                             inputStyle={{
                                 justifyContent: "center",
                                 marginLeft: 25,
@@ -201,9 +202,11 @@ class UbicacionPage extends React.Component {
                         }}
                     >
                         {!this.state.ready && (
-                            <Text>Cargando localización</Text>
+                            <View style={{ padding: 10, marginTop: "20%" }}>
+                              <Text style={{ fontSize: 18, fontWeight: "bold", marginBottom: 15 }}>Cargando...</Text>
+                              <ActivityIndicator size="large" color="orange" />
+                            </View>
                         )}
-                        <Text>Ingresa una localidad/provincia</Text>
                         {this.state.error && (
                             <Text>{this.state.error}</Text>
                         )}
