@@ -29,37 +29,37 @@ let usuario, ultimoMensaje;
 let db = firebase.firestore();
 let chatsRef = db.collection("chats/");
 
-export default function MessagesScreen({ route }) {
-    useEffect(() => {
-        //if (user) {
-        /*chatsRef.get().then((snapshot) => {*/
-        //snapshot.docs.forEach(doc => {
-        //items.push({
-        //ultimoMensaje: doc.data().text,
-        //})
-        //})
-        /*})*/
+var itm = [];
 
-        Promise.all([
-            //chatsRef.where("_id", "==", user.uid).orderBy("createdAt")
-            chatsRef.get().then((snapshot) => {
-                snapshot.docs.forEach((doc) => {
-                    console.log(doc.data());
-                        //usuario: doc.data()._id,
-                        ultimoMensaje = doc.data().text;
+export default function MessagesScreen({ route }) { 
+    let [items, setItems] = useState([]);
+
+    useEffect(() => {
+        chatsRef.get().then((snapshot) => {
+            let items = [];
+            snapshot.docs.forEach((doc) => {
+                items.push({
+                    ultimoMensaje: doc.data().text,
                 });
-            }),
-        ]);
-        //}
-    })
+            });
+            itm = items;
+            setItems(items = items);
+        });
+    });
     return(
         <SafeAreaView style={{ flex: 1 }}>
-        <ListItem bottomDivider>
-        <ListItem.Content>
-        <ListItem.Title>Chat</ListItem.Title>
-        <ListItem.Subtitle>{ultimoMensaje}</ListItem.Subtitle>
-        </ListItem.Content>
-        </ListItem>
+        {items.map((u, i) => {
+            return(
+                <View key={i}>
+                    <ListItem bottomDivider>
+                    <ListItem.Content>
+                    <ListItem.Title>Chat</ListItem.Title>
+                    <ListItem.Subtitle>{u.ultimoMensaje}</ListItem.Subtitle>
+                    </ListItem.Content>
+                    </ListItem>
+                </View>
+            );
+        })}
         </SafeAreaView>
     );
 }

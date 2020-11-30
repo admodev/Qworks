@@ -35,6 +35,7 @@ import MisFavoritosScreen from "../components/MisFavoritos";
 import EditarAnuncioScreen from "../components/EditarAnuncio";
 import MisRecomendadosPage from "../components/MisRecomendados";
 import RecuperarPasswordScreen from "../components/RecuperarPassword";
+import UserMessagesList from "../pages/MessagesList";
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -68,7 +69,7 @@ export function MainTabNavigator({ navigation }) {
         />
         <Tab.Screen
         name="MessagesScreen"
-        component={MessagesScreen}
+        component={UserMessagesList}
         options={{
             tabBarLabel: "Mensajes",
                 tabBarIcon: ({ color, size }) => (
