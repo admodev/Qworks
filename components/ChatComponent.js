@@ -22,7 +22,7 @@ import LoginPage from "../pages/LoginPage";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import * as ImagePicker from "expo-image-picker";
 import * as Notifications from "expo-notifications";
-import { Stopwatch, Timer } from 'react-native-stopwatch-timer';
+import { Timer } from 'react-native-stopwatch-timer';
 
 if (firebase.apps.length === 0) {
     try {
@@ -226,7 +226,7 @@ export default function Chat({ route, navigation }) {
             />
             </TouchableOpacity>
             </View>
-            {chatActivo == true ? (
+            {totalDuration > 0 ? (
                 <View>
                   <GiftedChat
                   isAnimated

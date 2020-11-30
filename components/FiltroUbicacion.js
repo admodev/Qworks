@@ -51,7 +51,7 @@ class UbicacionPage extends React.Component {
                         idAnuncio: child.val().id,
                         localidad: child.val().localidad,
                         provincia: child.val().provincia,
-                        latidud: child.val().latitud,
+                        latitud: child.val().latitud,
                         longitud: child.val().longitud,
                     });
                 });
@@ -109,6 +109,15 @@ class UbicacionPage extends React.Component {
             _drawer.open();
         };
         var user = firebase.auth().currentUser;
+
+        const returnCloseUsers = (latitud, longitud) => {
+            let sumaLatLong = this.state.where.lat + this.state.where.lng;
+            let latitudMasLongitud = latitud + longitud;
+
+            for(i = latitudMasLongitud; i < sumaLatLong; i++) {
+                console.log(i);
+            }
+        }
         return (
             <SafeAreaView style={{ flex: 1 }}>
                 {Platform.OS === "ios" ? (
@@ -202,6 +211,16 @@ class UbicacionPage extends React.Component {
                             <View>
                                 <Text>Latitud: {this.state.where.lat}</Text>
                                 <Text>Longitud: {this.state.where.lng}</Text>
+
+                            {this.state.items.map((u, i) => {
+                                return(
+                                    <View>
+                                        <Text>Usuarios Cercanos:</Text>
+                                        <Text>LAT: {u.latitud}</Text>
+                                        <Text>LONG: {u.longitud}</Text>
+                                    </View>
+                                );
+                            })}
                             </View>
                         )}
                     </View>
