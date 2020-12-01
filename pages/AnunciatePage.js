@@ -1,6 +1,6 @@
 import React, { useState, useEffect, setState } from "react";
-import { Image, View, Platform, ScrollView, TextInput } from "react-native";
-import { Avatar, Button, CheckBox, Input, Text } from "react-native-elements";
+import { Image, View, Platform, ScrollView, TextInput, TouchableOpacity } from "react-native";
+import { Avatar, Button, CheckBox, Input, Overlay, Text } from "react-native-elements";
 import * as firebase from "firebase";
 import "firebase/auth";
 import "firebase/database";
@@ -94,6 +94,10 @@ const AnunciatePage = ({ navigation }) => {
     const [error, setError] = useState(null);
     let latitud = where.lat;
     let longitud = where.lng;
+    const [visible, setVisible] = useState(false);
+    const toggleOverlay = () => {
+        setVisible(!visible);
+    };
 
     useEffect(() => {
         (async () => {
@@ -776,6 +780,12 @@ const AnunciatePage = ({ navigation }) => {
         <Text h3 style={{ color: "#fff" }}>
         Términos y condiciones
         </Text>
+        <TouchableOpacity onPress={toggleOverlay}>
+            <Text style={{ color: "#ffffff", marginTop: "5%", fontSize: 24 }}>Leer</Text>
+        </TouchableOpacity>
+        <Overlay isVisible={visible} onBackdropPress={toggleOverlay}>
+            <Text>Acá van los términos.</Text>
+        </Overlay>
         <CheckBox
         title="Acepto los términos y condiciones y la política de privacidad"
         containerStyle={{
