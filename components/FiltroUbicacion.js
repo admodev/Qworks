@@ -10,7 +10,7 @@ import {
     Text,
     Platform,
 } from "react-native";
-import { Button, Card, Icon, Input } from "react-native-elements";
+import { Avatar, Button, Card, Icon, Input } from "react-native-elements";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import * as firebase from "firebase";
 import "firebase/firestore";
@@ -121,6 +121,16 @@ class UbicacionPage extends React.Component {
         }
         return (
             <SafeAreaView style={{ flex: 1 }}>
+              <Image
+              source={require("../assets/gradients/20x20.png")}
+              style={{
+                  flex: 1,
+                      position: "absolute",
+                      resizeMode: "cover",
+                      width: "100%",
+                      height: "3%",
+              }}
+              />
                 {Platform.OS === "ios" ? (
                     <View
                         style={{
@@ -212,18 +222,221 @@ class UbicacionPage extends React.Component {
                         )}
                         {this.state.ready && (
                             <View>
-                                <Text>Latitud: {this.state.where.lat}</Text>
-                                <Text>Longitud: {this.state.where.lng}</Text>
-
-                            {this.state.items.map((u, i) => {
-                                return(
-                                    <View>
-                                        <Text>Usuarios Cercanos:</Text>
-                                        <Text>LAT: {u.latitud}</Text>
-                                        <Text>LONG: {u.longitud}</Text>
-                                    </View>
-                                );
-                            })}
+                              <Text style={{ fontSize: 16, fontWeight: "bold", textAlign: "center" }}>Usuarios Cercanos:</Text>
+                              <ScrollView showsVerticalScrollIndicator="false">
+                                <Card
+              style={styles.card}
+              containerStyle={{
+                ...Platform.select({
+                  android: {
+                    padding: 0,
+                    borderRadius: 15,
+                    backgroundColor: "transparent",
+                    borderWidth: 0,
+                    marginTop: "2%",
+                    elevation: 0,
+                  },
+                  ios: {
+                    padding: 0,
+                    borderRadius: 15,
+                    backgroundColor: "transparent",
+                    borderWidth: 0,
+                    marginTop: "10%",
+                    elevation: 0,
+                  },
+                }),
+              }}
+            >
+                              {this.state.items.map((u, i) => {
+                                  return(
+                                      <View key={i} style={{ flexDirection: "row" }}>
+                                            <Image
+                        source={require("../assets/patron.jpg")}
+                        style={{
+                          flex: 1,
+                          position: "absolute",
+                          resizeMode: "cover",
+                          width: "100%",
+                          height: "100%",
+                          borderRadius: 10,
+                        }}
+                      />
+                      <Image
+                        source={require("../assets/gradients/20x20.png")}
+                        style={{
+                          flex: 1,
+                          position: "absolute",
+                          resizeMode: "cover",
+                          width: "100%",
+                          height: "100%",
+                          opacity: 0.9,
+                          borderRadius: 10,
+                        }}
+                      />
+                    {image == null || image == undefined ? (
+                      <Avatar
+                          size="large"
+                          rounded
+                          source={require("../assets/icon.png")}
+                          containerStyle={{
+                            marginTop: "10%",
+                            marginLeft: "10%",
+                            width: 100,
+                            height: 100,
+                            borderRadius: 100,
+                          }}
+                          avatarStyle={{
+                            width: 100,
+                            height: 100,
+                            borderRadius: 100,
+                          }}
+                        />
+                    ) : (
+                      <Avatar
+                          size="large"
+                          rounded
+                          source={{ uri: u.image }}
+                          containerStyle={{
+                            marginTop: "10%",
+                            marginLeft: "10%",
+                            width: 100,
+                            height: 100,
+                            borderRadius: 100,
+                          }}
+                          avatarStyle={{
+                            width: 100,
+                            height: 100,
+                            borderRadius: 100,
+                          }}
+                        />
+                    )}
+                    <View style={{ flexDirection: "column" }}>
+                      <View style={{
+                              ...Platform.select({
+                                android: {
+                                  flexDirection: "column",
+                                  maxWidth: "80%",
+                                },
+                                ios: {
+                                  flexDirection: "column",
+                                  maxWidth: "80%",
+                                  marginLeft: "12%",
+                                },
+                              }),
+                            }}
+                            >
+                            <Text
+                              style={{
+                                ...Platform.select({
+                                  android: {
+                                    marginLeft: "auto",
+                                    marginRight: "auto",
+                                    textAlign: "center",
+                                    fontSize: 20,
+                                    color: "#fff",
+                                    marginTop: "10%",
+                                  },
+                                  ios: {
+                                    marginLeft: "auto",
+                                    marginRight: "auto",
+                                    textAlign: "center",
+                                    fontSize: 20,
+                                    color: "#fff",
+                                    marginTop: "10%",
+                                  },
+                                }),
+                              }}
+                            >
+                              {u.nombre}
+                            </Text>
+                            <Text
+                              style={{
+                                ...Platform.select({
+                                  android: {
+                                    marginTop: "2%",
+                                    textAlign: "center",
+                                    fontSize: 18,
+                                    color: "#fff",
+                                  },
+                                  ios: {
+                                    marginTop: "2%",
+                                    marginLeft: "auto",
+                                    marginRight: "auto",
+                                    textAlign: "center",
+                                    fontSize: 18,
+                                    color: "#fff",
+                                  },
+                                }),
+                              }}
+                            >
+                              {u.actividad}
+                            </Text>
+                          </View>
+                          <View style={{
+                              ...Platform.select({
+                                android: {
+                                  flexDirection: "column",
+                                  maxWidth: "90%",
+                                },
+                                ios: {
+                                  flexDirection: "column",
+                                  maxWidth: "90%",
+                                },
+                              }),
+                            }}
+                            >
+                            <Text
+                              style={{
+                                ...Platform.select({
+                                  android: {
+                                    marginTop: "10%",
+                                    marginLeft: "8%",
+                                    textAlign: "center",
+                                    fontSize: 16,
+                                    color: "#fff",
+                                  },
+                                  ios: {
+                                    marginLeft: "auto",
+                                    marginRight: "auto",
+                                    marginTop: "10%",
+                                    textAlign: "center",
+                                    fontSize: 16,
+                                    color: "#fff",
+                                  },
+                                }),
+                              }}
+                            >
+                              {u.localidad}
+                            </Text>
+                            <Text
+                              style={{
+                                ...Platform.select({
+                                  android: {
+                                    marginTop: "2%",
+                                    textAlign: "center",
+                                    fontSize: 16,
+                                    color: "#fff",
+                                  },
+                                  ios: {
+                                    marginLeft: "auto",
+                                    marginRight: "auto",
+                                    marginTop: "2%",
+                                    textAlign: "center",
+                                    fontSize: 16,
+                                    color: "#fff",
+                                  },
+                                }),
+                              }}
+                            >
+                              {u.provincia}
+                            </Text>
+                          </View>
+                    </View>
+                                      </View>
+                                  );
+                              })}
+                            </Card>
+                              </ScrollView>
                             </View>
                         )}
                     </View>
