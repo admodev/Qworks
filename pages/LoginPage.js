@@ -1,6 +1,7 @@
 import React, { Component, useState, setState, useEffect } from "react";
 import Icon from "react-native-vector-icons/FontAwesome";
 import {
+    Dimensions,
     Image,
     Keyboard,
     KeyboardAvoidingView,
@@ -33,6 +34,9 @@ import {
 import * as RootNavigation from "../RootNavigation.js";
 import { StackActions } from "@react-navigation/native";
 import * as Updates from "expo-updates";
+
+const window = Dimensions.get("window");
+const screen = Dimensions.get("screen");
 
 async function signInWithGoogleAsync() {
     try {
@@ -94,6 +98,18 @@ export default function LoginPage({ navigation }) {
     let [password, setUserPassword] = useState("");
     var [isChecked, setChecked] = useState(false);
     const toggle = React.useCallback(() => setChecked(!isChecked));
+    const [dimensions, setDimensions] = useState({ window, screen });
+
+    const onChange = ({ window, screen }) => {
+        setDimensions({ window, screen });
+    };
+
+    useEffect(() => {
+        Dimensions.addEventListener("change", onChange);
+        return () => {
+            Dimensions.removeEventListener("change", onChange);
+        }; 
+    });
 
     if (isChecked == true) {
         firebase
@@ -172,7 +188,7 @@ export default function LoginPage({ navigation }) {
         placeholder="Correo Electrónico"
         keyboardType="email-address"
         autoCapitalize="none"
-        inputContainerStyle={{ marginTop: 100 }}
+        inputContainerStyle={{ marginTop: dimensions.screen.height * 0.12 }}
         style={{ color: "#ffffff", fontSize: 16 }}
         leftIcon={<Icon name="envelope-o" size={18} color="white" />}
         onChangeText={(email) => setUserEmail(email)}
@@ -180,7 +196,6 @@ export default function LoginPage({ navigation }) {
         />
         <Input
         placeholder="Contraseña"
-        inputContainerStyle={{}}
         leftIcon={<Icon name="lock" size={20} color="white" />}
         style={{ color: "#ffffff", fontSize: 16 }}
         secureTextEntry={true}
@@ -190,17 +205,17 @@ export default function LoginPage({ navigation }) {
         onSubmitEditing={() => loguearUsuarios()}
         />
         <CheckBox
-        title="Recordar Correo"
+        title="Recordar Sesión"
         containerStyle={{
             backgroundColor: "transparent",
                 borderColor: "transparent",
                 borderWidth: 0,
-                marginTop: -20,
+                marginTop: dimensions.screen.height * -0.03,
                 marginLeft: 0,
         }}
         textStyle={{ color: "#ffffff" }}
         checkedColor={"white"}
-        onPress={toggle}
+        onPress={() => toggle}
         checked={isChecked}
         />
         <Button
@@ -210,7 +225,7 @@ export default function LoginPage({ navigation }) {
             backgroundColor: "transparent",
                 borderColor: "transparent",
                 borderWidth: 0,
-                marginTop: 2,
+                marginTop: dimensions.screen.height * -0.01,
                 marginLeft: 0,
         }}
         titleStyle={{ color: "#ffffff", fontWeight: "bold" }}
@@ -219,7 +234,7 @@ export default function LoginPage({ navigation }) {
         </View>
         <View
         style={{
-            marginTop: Platform.OS === "android" ? 10 : 25,
+            marginTop: Platform.OS === "android" ? dimensions.screen.height * 0.02 : 25,
         }}
         >
         <Text style={{ color: "#ffffff", fontWeight: "bold" }}>
@@ -254,7 +269,7 @@ export default function LoginPage({ navigation }) {
         />
         </View>
         </View>
-        <View style={{ width: "70%", bottom: 50 }}>
+        <View style={{ width: "70%", bottom: dimensions.screen.height * 0.07 }}>
         <TouchableHighlight
         onPress={() => RootNavigation.navigate("RegisterPage")}
         >
