@@ -120,6 +120,7 @@ class CardsUsuarios extends React.Component {
                   marginTop: -10,
                 }}
                 containerStyle={{ marginLeft: 10, marginTop: -10 }}
+                placeholderTextColor="#000000"
                 onChangeText={(search) => this.setState({ search })}
               />
             </View>
@@ -154,6 +155,7 @@ class CardsUsuarios extends React.Component {
                   marginTop: -10,
                 }}
                 containerStyle={{ marginLeft: 10, marginTop: -10 }}
+                placeholderTextColor="#000000"
                 onChangeText={(search) => this.setState({ search })}
               />
             </View>
@@ -416,7 +418,7 @@ class CardsUsuarios extends React.Component {
                       }}
                     >
                       <Card.Image
-                        source={{ uri: image }}
+                        source={{ uri: `${image}` }}
                         style={{
                           ...Platform.select({
                             android: {

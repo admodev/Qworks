@@ -177,7 +177,7 @@ const ProfilePage = ({ navigation }) => {
             onBackdropPress={toggleOverlay}
             overlayStyle={{ width: "85%", height: "85%", borderRadius: 10 }}
             >
-            {image == null ? (
+            {image == null || image == undefined ? (
                 <Avatar
                 rounded
                 source={require("../assets/icon.png")}
@@ -190,7 +190,7 @@ const ProfilePage = ({ navigation }) => {
             ) : (
                 <Avatar
                 rounded
-                source={{ uri: image }}
+                source={{ uri: `${image}` }}
                 size="xlarge"
                 style={{
                     width: 60,
@@ -202,11 +202,11 @@ const ProfilePage = ({ navigation }) => {
             {image ? (
                 <Avatar
                 rounded
-                source={{ uri: image }}
+                source={{ uri: `${image}` }}
                 size="xlarge"
                 style={{
                     width: 60,
-                        height: 60,
+                    height: 60,
                 }}
                 />
             ) : (

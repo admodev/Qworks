@@ -86,6 +86,16 @@ class SearchPage extends React.Component {
     var user = firebase.auth().currentUser;
     return (
       <SafeAreaView style={{ flex: 1 }}>
+            <Image
+                source={require("../assets/gradients/20x20.png")}
+                style={{
+                    flex: 1,
+                    position: "absolute",
+                    resizeMode: "cover",
+                    width: "100%",
+                    height: "5%",
+            }}
+            />
         {Platform.OS === "ios" ? (
           <TouchableOpacity onPress={openControlPanel}>
             <View
@@ -130,7 +140,7 @@ class SearchPage extends React.Component {
                 flexDirection: "row",
                 alignContent: "center",
                 justifyContent: "center",
-                marginTop: "10%",
+                marginTop: "15%",
                 marginLeft: "8%",
                 width: "80%",
               }}
@@ -140,7 +150,7 @@ class SearchPage extends React.Component {
                 style={{
                   width: 35,
                   height: 35,
-                  marginTop: -15,
+                  marginTop: -10,
                   marginLeft: 10,
                 }}
               />
@@ -149,7 +159,7 @@ class SearchPage extends React.Component {
                 inputStyle={{
                   justifyContent: "center",
                   marginLeft: 25,
-                  marginTop: -10,
+                  marginTop: -5,
                 }}
                 autoFocus={true}
                 containerStyle={{ marginLeft: 10, marginTop: -10 }}
@@ -177,7 +187,7 @@ class SearchPage extends React.Component {
                   borderRadius: 15,
                   backgroundColor: "transparent",
                   borderWidth: 0,
-                  marginTop: "5%",
+                  marginTop: "18%",
                   elevation: 0,
                 },
                 ios: {

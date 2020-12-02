@@ -97,7 +97,7 @@ export default function Chat({ route, navigation }) {
                     const message = doc.data();
                     //createdAt is firebase.firestore.Timestamp instance
                     //https://firebase.google.com/docs/reference/js/firebase.firestore.Timestamp
-                    if (chatsRef.where("userTwo", "==", secondUserId)) {
+                    if (chatsRef.where("user", "==", currentUser)) {
                         return { ...message, createdAt: message.createdAt.toDate(), image };
                     } else {
                         return "Inicia un chat!";
