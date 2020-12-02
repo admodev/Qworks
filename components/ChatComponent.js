@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { GiftedChat, Actions, ActionsProps, Send } from "react-native-gifted-chat";
 import AsyncStorage from "@react-native-community/async-storage";
-import { Image, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { ActivityIndicator, Image, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import {
     FIREBASE_API_KEY,
     FIREBASE_AUTH_DOMAIN,
@@ -45,13 +45,14 @@ if (firebase.apps.length === 0) {
 
 export default function Chat({ route, navigation }) {
     let [timerStart, setTimerStart] = useState(false);
-    let [totalDuration, setTotalDuration] = useState(9000);
+    let [totalDuration, setTotalDuration] = useState(180000000);
     let [timerReset, setTimerReset] = useState(false);
 
     let firstUserId = route.params.userOne;
     let secondUserId = route.params.userTwo;
     const nombre = "placeholder";
     const [messages, setMessages] = useState([]);
+    const [text, setText] = useState(false);
     const currentUser = firebase.auth().currentUser.uid;
     const usersIds = firstUserId + secondUserId;
     const db = firebase.firestore();
@@ -85,23 +86,19 @@ export default function Chat({ route, navigation }) {
       let currentTime = time;
   };
 
-    totalDuration > 0 ? alert("El tiempo está corriendo") : console.log("Te quedaste sin tiempo!");
+    totalDuration > 0 ? console.log("El tiempo está corriendo") : console.log("Te quedaste sin tiempo!");
+
+    const textoChatVacio = "Empieza a hablar para iniciar una conversación!"
 
     useEffect(() => {
         toggleTimer();
-        const unsubscribe = chatsRef.onSnapshot((querySnapshot) => {
+        const unsubscribe = chatsRef.where('user.receiver', '==', receiver).onSnapshot((querySnapshot) => {
             const messagesFirestore = querySnapshot
                 .docChanges()
                 .filter(({ type }) => type === "added")
                 .map(({ doc }) => {
                     const message = doc.data();
-                    //createdAt is firebase.firestore.Timestamp instance
-                    //https://firebase.google.com/docs/reference/js/firebase.firestore.Timestamp
-                    if (chatsRef.where("user", "==", currentUser)) {
-                        return { ...message, createdAt: message.createdAt.toDate(), image };
-                    } else {
-                        return "Inicia un chat!";
-                    }
+                        return { ...message, createdAt: message.createdAt.toDate()};
                 })
                 .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
             appendMessages(messagesFirestore);
@@ -119,26 +116,29 @@ export default function Chat({ route, navigation }) {
                 }
             }
         })();
-
-        // Desactivar chat luego de que pasen 30 minutos:
-        setTimeout(() => {
-            (chatActivo) => setChatActivo(!chatActivo);
-        }, 1000 * 60 * 30);
     }, []);
 
     const appendMessages = useCallback(
         (messages) => {
             setMessages((previousMessages) =>
-                GiftedChat.append(previousMessages, messages),
-                image,
+                GiftedChat.append(previousMessages, messages, image),
             );
         },
         [messages]
     );
 
+    const receiver = secondUserId;
+
     async function handleSend(messages) {
+        const data = {
+            senderId: firebase.auth().currentUser && currentUser,
+            receiverType: 'user',
+            messageType: 'text',
+            receiverId: secondUserId,
+            content: messages,
+        };
         const writes = messages.map((m) => chatsRef.add(m));
-        await Promise.all(writes);
+        await Promise.all(writes, data);
     }
 
     const pickImage = async () => {
@@ -227,34 +227,41 @@ export default function Chat({ route, navigation }) {
             </TouchableOpacity>
             </View>
             {totalDuration > 0 ? (
-                <View>
-                  <GiftedChat
-                  isAnimated
-                  messages={messages}
-                  user={
-                      {
-                          _id: firstUserId,
-                              user: firstUserId,
-                      },
-                      {
-                          _id: secondUserId,
-                          user: secondUserId,
-                      }
-                  }
-                  onSend={handleSend}
-                  showUserAvatar={true}
-                  showAvatarForEveryMessage={true}
-                  placeholder="Escribe un mensaje..."
-                  renderActions={renderActions}
-                  renderSend={renderSend}
-                  />
-                <Timer totalDuration={totalDuration} msecs start={timerStart}
-                       reset={timerReset}
-                       handleFinish={handleTimerComplete}
-                       getTime={getFormattedTime}
-                       options={options}
-                />
-                </View>
+                <GiftedChat
+                messages={messages}
+                onSend={handleSend}
+                user={{
+                    _id: firebase.auth().currentUser && currentUser,
+                        name: firebase.auth().currentUser && firebase.auth().currentUser.displayName,
+                        receiver: receiver
+                }}
+                text={text}
+                alwaysShowSend={
+                    text ? true : false || image ? true : false
+                }
+                onInputTextChanged={text => setText(text)}
+                renderLoading={() => <ActivityIndicator size="large" color="orange" />}
+                isAnimated
+                renderAvatarOnTop
+                placeholder="Escribe tu mensaje..."
+                receiver={receiver}
+                loadEarlier={messages.length >= 20}
+                scrollToBottom
+                scrollToBottomComponent={() => (
+                    <MaterialCommunityIcons
+                        name="arrow-down"
+                        color={"orange"}
+                        size={20}
+                    />
+                )} 
+                renderActions={() => (
+                    <MaterialCommunityIcons
+                        name="camera"
+                        color={"orange"}
+                        size={20}
+                    />
+                )}
+                /> 
             ) : (
                 <View>
                 <Text style={{ alignItems: "center", justifyContent: "center", marginTop: "50%", marginLeft: "20%", marginRight: "20%", fontWeight: "bold", fontSize: 24 }}>Tu tiempo se acabó, adquiere más tiempo para continuar conversando...</Text>
