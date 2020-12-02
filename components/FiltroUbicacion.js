@@ -121,16 +121,27 @@ class UbicacionPage extends React.Component {
         }
         return (
             <SafeAreaView style={{ flex: 1 }}>
-              <Image
-              source={require("../assets/gradients/20x20.png")}
-              style={{
-                  flex: 1,
-                      position: "absolute",
-                      resizeMode: "cover",
-                      width: "100%",
-                      height: "3%",
-              }}
-              />
+            <Image
+            source={require("../assets/gradients/20x20.png")}
+            style={{
+                ...Platform.select({
+                    android: {
+                        flex: 1,
+                        position: "absolute",
+                        resizeMode: "cover",
+                        width: "100%",
+                        height: "5%",
+                    },
+                    ios: {
+                        flex: 1,
+                        position: "absolute",
+                        resizeMode: "cover",
+                        width: "100%",
+                        height: "3%",
+                    },
+                })
+            }}
+            />
                 {Platform.OS === "ios" ? (
                     <View
                         style={{
@@ -174,7 +185,7 @@ class UbicacionPage extends React.Component {
                             flexDirection: "row",
                             alignContent: "center",
                             justifyContent: "center",
-                            marginTop: "10%",
+                            marginTop: "20%",
                             marginLeft: "8%",
                             width: "80%",
                         }}
@@ -205,16 +216,42 @@ class UbicacionPage extends React.Component {
                     ))
                 ) : (
                     <View
-                        style={{
-                            alignItems: "center",
-                            justifyContent: "center",
-                            marginTop: "50%",
-                        }}
+                    style={{
+                        ...Platform.select({
+                            android: {
+                                alignItems: "center",
+                                justifyContent: "center",
+                                marginTop: "20%",
+                            },
+                            ios: {
+                                alignItems: "center",
+                                justifyContent: "center",
+                                marginTop: "50%",
+                            },
+                        })
+                    }}
                     >
                         {!this.state.ready && (
-                            <View style={{ padding: 10, marginTop: "20%" }}>
+                            <View style={{ 
+                                ...Platform.select({
+                                    android: {
+                                        padding: 10,
+                                        marginTop: "10%"
+                                    },
+                                    ios: {
+                                        padding: 10,
+                                        marginTop: "20%"
+                                    },
+                                }) 
+                            }}>
                               <Text style={{ fontSize: 18, fontWeight: "bold", marginBottom: 15 }}>Cargando...</Text>
-                              <ActivityIndicator size="large" color="orange" />
+                              <ActivityIndicator size="large" color="orange" style={{
+                                   ...Platform.select({
+                                       android: {
+                                           marginBottom: "50%" 
+                                       }, 
+                                   }) 
+                              }} />
                             </View>
                         )}
                         {this.state.error && (
@@ -223,7 +260,7 @@ class UbicacionPage extends React.Component {
                         {this.state.ready && (
                             <View>
                               <Text style={{ fontSize: 16, fontWeight: "bold", textAlign: "center" }}>Usuarios Cercanos:</Text>
-                              <ScrollView showsVerticalScrollIndicator="false">
+                              <ScrollView showsVerticalScrollIndicator={false}>
                                 <Card
               style={styles.card}
               containerStyle={{
@@ -234,6 +271,7 @@ class UbicacionPage extends React.Component {
                     backgroundColor: "transparent",
                     borderWidth: 0,
                     marginTop: "2%",
+                    marginBottom: "35%",
                     elevation: 0,
                   },
                   ios: {
