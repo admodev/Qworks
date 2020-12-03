@@ -33,5 +33,5 @@ Este proyecto está bajo la Licencia (End User License) - mira el archivo [LICEN
 ## Expresiones de Gratitud 🎁
 
 - Comenta a otros sobre este proyecto 📢
-- Da las gracias públicamente 🤓.
+- Da las gracias públicamente 🤓
 - Unete! ➕
