@@ -28,6 +28,7 @@ let items = [];
 let usuario, ultimoMensaje;
 let db = firebase.firestore();
 let chatsRef = db.collection("chats/");
+let currentUser = user.uid;
 
 var itm = [];
 
@@ -35,7 +36,7 @@ export default function MessagesScreen({ route }) {
     let [items, setItems] = useState([]);
 
     useEffect(() => {
-        chatsRef.get().then((snapshot) => {
+        chatsRef.where('user._id', '==', currentUser).get().then((snapshot) => {
             let items = [];
             snapshot.docs.forEach((doc) => {
                 items.push({

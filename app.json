@@ -25,7 +25,7 @@
             "icon": "./assets/icon.png"
         },
         "android": {
-            "versionCode": 2,
+            "versionCode": 3,
             "useNextNotificationsApi": true,
             "package": "com.admodev.quedeoficios",
             "icon": "./assets/icon.png"
