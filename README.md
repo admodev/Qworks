@@ -22,8 +22,9 @@ Usamos [SemVer](http://semver.org/) para el versionado. Para todas las versiones
 
 ## Autores ✒️
 
-- **Adolfo Moyano** - _Software Engineer_ - [admodev](https://github.com/admodev)
-- **Gonzalo Javier Sanchez Garcia** - _Fundador QuedeOficios_ - [gonzalo](#gonzalo)
+- **Adolfo Moyano** - _Software Engineer, Backend Development_ - [admodev](https://github.com/admodev)
+- **Gonzalo Javier Sanchez Garcia** - _Fundador QuedeOficios, Frontend Development_ - [gonzalo](https://github.com/exegesisbsas)
+- **Leandro** - _Tester_ - [lean](https://github.com/Lea-codern)
 
 ## Licencia 📄
 
@@ -32,5 +33,5 @@ Este proyecto está bajo la Licencia (End User License) - mira el archivo [LICEN
 ## Expresiones de Gratitud 🎁
 
 - Comenta a otros sobre este proyecto 📢
-- Da las gracias públicamente 🤓.
+- Da las gracias públicamente 🤓
 - Unete! ➕
