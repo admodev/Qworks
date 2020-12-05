@@ -34,6 +34,7 @@ let calificacion = "calificacion";
 const AnuncioSeleccionado = ({ route, navigation }) => {
     let id = route.params.id;
     let routeParamsToString = id.toString();
+    const naranjaQueDeOficios = '#fd5d13';
     let image,
         nombre,
         apellido,
@@ -250,27 +251,53 @@ const AnuncioSeleccionado = ({ route, navigation }) => {
             marginTop: "10%"
         }} onPress={toggleOverlay}>
         {image == null ? (
-            <Avatar
-            size="xlarge"
-            rounded
+            <View style={{ alignItems: "center", justifyContent: "center" }}>
+            <Card.Image
             source={require("../assets/icon.png")}
-            containerStyle={{
-                    marginTop: "2%",
-                    marginLeft: "auto",
-                    marginRight: "auto",
+            style={{
+                ...Platform.select({
+                    android: {
+                        borderRadius: 25,
+                        marginTop: "8%",
+                        marginBottom: "10%",
+                        width: 140,
+                        height: 120
+                    },
+                    ios: {
+                        borderRadius: 25,
+                        marginTop: "8%",
+                        marginBottom: "10%",
+                        width: 120,
+                        height: 90
+                    },
+                }),
             }}
             />
+            </View>
         ) : (
-            <Avatar
-            size="xlarge"
-            rounded
+            <View style={{ alignItems: "center", justifyContent: "center" }}>
+            <Card.Image
             source={{ uri: image }}
-            containerStyle={{
-                    marginTop: "7%",
-                    marginLeft: "auto",
-                    marginRight: "auto",
+            style={{
+                ...Platform.select({
+                    android: {
+                        borderRadius: 25,
+                        marginTop: "8%",
+                        marginBottom: "10%",
+                        width: 140,
+                        height: 120
+                    },
+                    ios: {
+                        borderRadius: 25,
+                        marginTop: "8%",
+                        marginBottom: "10%",
+                        width: 120,
+                        height: 90
+                    },
+                }),
             }}
             />
+            </View>
         )}
         </TouchableOpacity>
         <Overlay
@@ -306,27 +333,35 @@ const AnuncioSeleccionado = ({ route, navigation }) => {
             />
         )}
         </Overlay> 
-        <AirbnbRating
+        <Rating
         size={28}
         showRating={true}
+        type='custom'
+        ratingColor={naranjaQueDeOficios}
+        ratingBackgroundColor='#c8c7c8'
+        fractions={1}
         reviews={[""]}
-        type="star"
         onFinishRating={(rating) => setRating(rating)}
         style={{
             margin: 10,
         }}
         />
-        <Text
-        style={{
-            marginLeft: "auto",
-                marginRight: "auto",
-                textAlign: "center",
-                fontSize: 22,
-                marginTop: 10,
-                color: "#fff",
-        }}
-        >
+        <MaterialCommunityIcons
+        name="account-group"
+        color={naranjaQueDeOficios}
+        size={22}
+        style={{ marginTop: "5%", marginBottom: "2%", alignSelf: "center" }}
+        />
+        <View style={{ margin: "3%" }}>
+        <Text style={{ color: "#ffffff", textAlign: "center", fontSize: 30, fontWeight: "bold" }} >
         {nombre} {apellido}
+        </Text>
+        </View>
+        <Text style={{ color: "#ffffff", textAlign: "center", fontSize: 24 }} >
+        {actividad}
+        </Text>
+        <Text style={{ color: "#ffffff", textAlign: "center", fontSize: 16, marginTop: "5%" }}>
+        {localidad}, {provincia}
         </Text>
         <Text
         style={{
@@ -340,46 +375,12 @@ const AnuncioSeleccionado = ({ route, navigation }) => {
         >
         {emailPersonal}
         </Text>
-        <Text
-        style={{
-            marginLeft: "auto",
-                marginRight: "auto",
-                marginTop: 10,
-                textAlign: "center",
-                fontSize: 22,
-                color: "#fff",
-        }}
-        >
-        {actividad}
-        </Text>
-        <Text
-        style={{
-            ...Platform.select({
-                android: {
-                    marginLeft: "auto",
-                    marginRight: "auto",
-                    marginTop: 10,
-                    textAlign: "center",
-                    fontSize: 20,
-                    color: "#fff",
-                },
-                ios: {
-                    marginLeft: "auto",
-                    marginRight: "auto",
-                    marginTop: 10,
-                    textAlign: "center",
-                    fontSize: 20,
-                    color: "#fff",
-                },
-            }),
-        }}
-        >
-        {localidad}, {provincia}
-        </Text> 
         <View style={{
             flexDirection: "row",
                 alignItems: "center",
                 justifyContent: "center",
+                marginTop: "3%",
+                marginBottom: "3%"
         }}>
         <TouchableOpacity onPress={() => alert("Proximamente...")}>
         <Text
@@ -459,7 +460,7 @@ const AnuncioSeleccionado = ({ route, navigation }) => {
                 marginRight: "auto",
                 textAlign: "center",
                 fontSize: 24,
-                marginTop: 2,
+                marginTop: "5%",
                 color: "#fff",
                 fontWeight: "bold",
                 textTransform: "uppercase"
@@ -586,7 +587,7 @@ const AnuncioSeleccionado = ({ route, navigation }) => {
                 color: "#fff",
                 fontWeight: "bold",
         }}
-        >Acerca de {nombre}</Text>
+        >Resumen Personal</Text>
         <Card
         style={styles.card}
         containerStyle={{
@@ -620,7 +621,6 @@ const AnuncioSeleccionado = ({ route, navigation }) => {
                 color: "#fff",
         }}
         >
-        Resumen Personal:
         </Text>
         <Text
         style={{
@@ -628,11 +628,13 @@ const AnuncioSeleccionado = ({ route, navigation }) => {
                 marginRight: "auto",
                 textAlign: "center",
                 fontSize: 20,
-                marginTop: 10,
+                marginRight: 25,
+                marginLeft: 25,
+                marginBottom: 20,
                 color: "#fff",
         }}
         >
-        {descripcionPersonal}
+        "{descripcionPersonal}"
         </Text>
         </Card>
         {/* Card comentarios */}
@@ -646,7 +648,7 @@ const AnuncioSeleccionado = ({ route, navigation }) => {
                 color: "#fff",
                 fontWeight: "bold",
         }}
-        >Opiniones de {nombre}</Text>
+        >Opiniones sobre {nombre}</Text>
         <Card
         style={styles.card}
         containerStyle={{
@@ -672,42 +674,21 @@ const AnuncioSeleccionado = ({ route, navigation }) => {
             }),
         }}
         >
-        <Text
-        style={{
-            marginLeft: "auto",
-                marginRight: "auto",
-                textAlign: "center",
-                fontSize: 20,
-                marginTop: 10,
-                color: "#fff",
-        }}
-        >
-        Comentarios
-        </Text>
         {arr.map((u, i) => {
             return (
                 <View key={i}>
-                <Text
-                style={{
-                    marginLeft: "auto",
-                        marginRight: "auto",
-                        textAlign: "center",
-                        fontSize: 20,
-                        marginTop: 10,
-                        color: "#fff",
-                }}
-                >
-                Comentario de: {JSON.stringify(u.comentadoPor)}
-                </Text>
                 <Text style={{
-                    marginLeft: "auto",
-                        marginRight: "auto",
-                        textAlign: "center",
+                    textAlign: "left",
+                        marginLeft: 10,
                         fontSize: 20,
                         marginTop: 10,
+                        marginBottom: 10,
                         color: "#fff",
                 }}>
-                {JSON.stringify(u.comentario)}
+                - {JSON.stringify(u.comentario)}
+                </Text>
+                <Text style={{ marginLeft: 10, fontSize: 18, color: naranjaQueDeOficios }}>
+                De: emailaca@hotmail.com 
                 </Text>
                 </View>
             );
@@ -723,6 +704,7 @@ const AnuncioSeleccionado = ({ route, navigation }) => {
                     flexDirection: "row",
                     position: "absolute",
                     bottom: 0,
+                    marginBottom: "-2%"
                 },
                 ios: {
                     flex: 1,
@@ -730,6 +712,7 @@ const AnuncioSeleccionado = ({ route, navigation }) => {
                     flexDirection: "row",
                     position: "absolute",
                     bottom: 0,
+                    marginBottom: "-2%"
                 },
             }),
         }}
@@ -808,17 +791,6 @@ const AnuncioSeleccionado = ({ route, navigation }) => {
             }}
             />
         )}
-        <Image
-        source={require("../assets/icon.png")}
-        style={{
-            width: 60,
-                height: 60,
-                borderRadius: 100,
-                position: "absolute",
-                marginTop: -45,
-                marginLeft: 30,
-        }}
-        />
         </View>
         <View style={{ margin: 10 }}>
         {user == null ? (

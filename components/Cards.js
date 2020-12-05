@@ -303,9 +303,18 @@ class CardsUsuarios extends React.Component {
                         type="star"
                         onFinishRating={(rating) => setRating(rating)}
                         />
+                        <View style={{ flex: 1, flexDirection: "row", alignItems: "center", justifyContent: "center" }}>
+                            <MaterialCommunityIcons
+                                name="account-group"
+                                color={naranjaQueDeOficios}
+                                size={22}
+                                style={{ position: "absolute", marginLeft: 40, marginTop: 22 }}
+                            />
+                        <Text style={{ color: "#ffffff", textAlign: "center", fontSize: 18, marginLeft: 75 }}>123</Text>
+                        </View>
                         </View>
                         <View style={{ margin: "3%" }}>
-                        <Text style={{ color: "#ffffff", textAlign: "center", fontSize: 30, fontWeight: "bold" }}>Steve Jobs</Text>
+                        <Text style={{ color: "#ffffff", textAlign: "center", fontSize: 30, fontWeight: "bold" }}>{u.nombre}</Text>
                         </View>
                         <View style={{ marginTop: "-2%"}}>
                            <Text style={{ color: "#ffffff", textAlign: "center", fontSize: 24 }}>{u.actividad}</Text>
@@ -323,29 +332,32 @@ class CardsUsuarios extends React.Component {
                             borderRadius: 25,
                                 marginLeft: 0,
                                 marginRight: 0,
-                                marginBottom: 0,
+                                marginBottom: "5%",
                                 marginTop: "3%",
                                 backgroundColor: "transparent",
                                 borderWidth: 2,
-                                borderColor: "#ffffff"
+                                borderColor: "#ffffff",
+                                width: 150,
+                                alignSelf: "center"
                         }}
                         >
                         <View style={{ alignItems: "center", justifyContent: "center", flexDirection: "row", marginTop: "5%" }}>
-                        <View style={{ marginLeft: "30%", marginBottom: "8%" }}>
+                        <View style={{ marginLeft: "10%", marginBottom: "8%" }}>
                             <MaterialCommunityIcons
-                                name="eye"
+                                name="hand"
                                 color={naranjaQueDeOficios}
                                 size={20}
                             />
                         </View>
                         <Text
                         style={{
-                            color: naranjaQueDeOficios,
+                                color: naranjaQueDeOficios,
                                 marginLeft: "auto",
                                 marginRight: "auto",
                                 fontSize: 16,
                                 marginLeft: "3%",
-                                marginBottom: "8%"
+                                marginBottom: "8%",
+                                fontWeight: "bold"
                         }}
                         >
                         ¡Conoceme!

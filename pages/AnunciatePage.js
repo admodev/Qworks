@@ -537,7 +537,7 @@ const AnunciatePage = ({ navigation }) => {
         }}
         >
         <Text h3 style={{ color: "#fff", marginTop: 10, marginBottom: 25 }}>
-        Descripcion / Resumen Personal
+        Resumen Personal
         </Text>
         <Input
         placeholder="Ingrese una descripción personal..."
@@ -554,12 +554,16 @@ const AnunciatePage = ({ navigation }) => {
                 textAlign: "center"
         }}
         inputStyle={{ color: "#ffffff" }}
-        inputContainerStyle={{ borderBottomWidth: 0 }}
+        inputContainerStyle={{ borderBottomWidth: 0, margin: "5%" }}
         placeholderTextColor="white"
         multiline={true}
         onChangeText={(descripcionPersonal) =>
             setDescripcionPersonal(descripcionPersonal)
         }
+        paddingTop={20}
+        paddingRight={50}
+        paddingLeft={50}
+        maxLength={150}
         value={descripcionPersonal}
         />
         </View>
