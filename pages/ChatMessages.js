@@ -23,9 +23,7 @@ import * as RootNavigation from "../RootNavigation.js";
 import { StackActions } from "@react-navigation/native";
 import LoginPage from "./LoginPage";
 
-let currentUser = firebase.auth().currentUser;
-let user;
-currentUser ? user = firebase.auth().currentUser.uid : console.log("No user logged.");
+let user = firebase.auth().currentUser;
 let items = [];
 let usuario, ultimoMensaje;
 let db = firebase.firestore();
@@ -37,7 +35,7 @@ export default function MessagesScreen({ route }) {
     let [items, setItems] = useState([]);
 
     useEffect(() => {
-        chatsRef.where('user._id', '==', user).get().then((snapshot) => {
+        chatsRef.where('user._id', '==', firebase.auth().currentUser.uid).get().then((snapshot) => {
             let items = [];
             snapshot.docs.forEach((doc) => {
                 items.push({
