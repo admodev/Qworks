@@ -191,8 +191,9 @@ const AnuncioSeleccionado = ({ route, navigation }) => {
             width: 30,
                 height: 30,
                 alignItems: "center",
-                left: 5,
-                marginTop: 15,
+                justifyContent: "space-between",
+                flexDirection: "row",
+                marginTop: "10%",
                 marginLeft: 15,
                 backgroundColor: "transparent",
         }}
@@ -205,7 +206,18 @@ const AnuncioSeleccionado = ({ route, navigation }) => {
         name="arrow-left"
         color={"white"}
         size={32}
-        style={{ marginTop: "auto", marginBottom: "auto", backgroundColor: "transparent" }}
+        style={{ backgroundColor: "transparent" }}
+        />
+        </TouchableOpacity>
+        <TouchableOpacity
+        onPress={() => agregarFavorito(id)}
+        style={{ backgroundColor: "transparent", right: -280 }}
+        >
+        <MaterialCommunityIcons
+        name="account-star-outline"
+        color={"white"}
+        size={32}
+        style={{ backgroundColor: "transparent" }}
         />
         </TouchableOpacity>
         </View>
@@ -234,14 +246,16 @@ const AnuncioSeleccionado = ({ route, navigation }) => {
             }),
         }}
         >
-        <TouchableOpacity onPress={toggleOverlay}>
+        <TouchableOpacity style={{
+            marginTop: "10%"
+        }} onPress={toggleOverlay}>
         {image == null ? (
             <Avatar
             size="xlarge"
             rounded
             source={require("../assets/icon.png")}
             containerStyle={{
-                marginTop: "2%",
+                    marginTop: "2%",
                     marginLeft: "auto",
                     marginRight: "auto",
             }}
@@ -252,7 +266,7 @@ const AnuncioSeleccionado = ({ route, navigation }) => {
             rounded
             source={{ uri: image }}
             containerStyle={{
-                marginTop: "2%",
+                    marginTop: "7%",
                     marginLeft: "auto",
                     marginRight: "auto",
             }}
@@ -424,36 +438,6 @@ const AnuncioSeleccionado = ({ route, navigation }) => {
         </Text>
         </TouchableOpacity>
         </View>
-        <TouchableOpacity onPress={() => agregarFavorito(id)}>
-        <Text
-        style={{
-            ...Platform.select({
-                android: {
-                    color: "#fff",
-                    marginLeft: "auto",
-                    marginRight: "auto",
-                    marginTop: 10,
-                    marginBottom: 10,
-                    fontSize: 20,
-                },
-                ios: {
-                    color: "#fff",
-                    marginTop: 15,
-                    marginBottom: 15,
-                    fontSize: 20,
-                    alignSelf: "center",
-                    justifyContent: "center",
-                },
-            }),
-        }}
-        >
-        <MaterialCommunityIcons
-        name="book-open"
-        color={"orange"}
-        size={24}
-        /> Agregar a favoritos
-        </Text>
-        </TouchableOpacity>
         <View
         style={{
             ...Platform.select({
@@ -911,6 +895,7 @@ const styles = StyleSheet.create({
                 shadowOpacity: 0.25,
                 shadowRadius: 3.84,
                 elevation: 5,
+                borderWidth: 0,
                 shadowOffset: {
                     width: 0,
                     height: 2,
