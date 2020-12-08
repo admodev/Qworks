@@ -43,6 +43,10 @@ const AnunciatePage = ({ navigation }) => {
     const [diasHorarios, setDiasHorarios] = useState([]);
     const [desde, setDesde] = useState("");
     const [hasta, setHasta] = useState("");
+    const [efectivo, setEfectivo] = useState(false);
+    const toggleEfectivo = React.useCallback(() => setEfectivo(!efectivo));
+    const [pagosDigitales, setPagosDigitales] = useState(false);
+    const togglePagosDigitales = React.useCallback(() => setPagosDigitales(!pagosDigitales));
     const [terminos, setTerminos] = useState(false);
     const toggleTerminos = React.useCallback(() => setTerminos(!terminos));
     const [lunesChecked, setLunesChecked] = useState(false);
@@ -281,6 +285,29 @@ const AnunciatePage = ({ navigation }) => {
                 height: "100%",
         }}
         />
+            <TouchableOpacity
+        onPress={() => navigation.goBack()}
+        style={{ 
+            ...Platform.select({
+                android: {
+                    backgroundColor: "transparent", 
+                    left: 35
+                },
+                ios: {
+                    backgroundColor: "transparent", 
+                    marginTop: "10%",
+                    marginLeft: "5%"
+                }
+            }) 
+        }}
+        >
+        <MaterialCommunityIcons
+        name="arrow-left"
+        color={"#fd5d13"}
+        size={32}
+        style={{ backgroundColor: "transparent" }}
+        />
+        </TouchableOpacity>
         <ScrollView>
         <View
         style={{
@@ -294,7 +321,7 @@ const AnunciatePage = ({ navigation }) => {
         Foto de Perfil
         </Text>
         {image ? (
-            <Avatar rounded source={{ uri: image }} size="xlarge" />
+            <Avatar source={{ uri: image }} size="xlarge" avatarStyle={{ borderRadius: 25 }} />
         ) : (
             <Button
             buttonStyle={{ marginTop: 10, backgroundColor: "#F4743B" }}
@@ -318,7 +345,7 @@ const AnunciatePage = ({ navigation }) => {
         Información Personal
         </Text>
         <Input
-        placeholder="Nombre"
+        placeholder="Nombre *"
         inputStyle={{ color: "#ffffff" }}
         style={{ color: "#ffffff", fontSize: 16, textAlign: "center" }}
         inputContainerStyle={{ borderBottomColor: "#ffffff" }}
@@ -327,7 +354,7 @@ const AnunciatePage = ({ navigation }) => {
         value={nombre}
         />
         <Input
-        placeholder="Apellido"
+        placeholder="Apellido *"
         inputStyle={{ color: "#ffffff" }}
         style={{ color: "#ffffff", fontSize: 16, textAlign: "center" }}
         inputContainerStyle={{ borderBottomColor: "#ffffff" }}
@@ -365,17 +392,7 @@ const AnunciatePage = ({ navigation }) => {
         value={pisoDptoCasa}
         />
         <Input
-        placeholder="CUIL / CUIT"
-        inputStyle={{ color: "#ffffff" }}
-        style={{ color: "#ffffff", fontSize: 16, textAlign: "center" }}
-        inputContainerStyle={{ borderBottomColor: "#ffffff" }}
-        placeholderTextColor="white"
-        keyboardType="numeric"
-        onChangeText={(cuitCuil) => setCuitCuil(cuitCuil)}
-        value={cuitCuil}
-        />
-        <Input
-        placeholder="DNI"
+        placeholder="DNI *"
         inputStyle={{ color: "#ffffff" }}
         style={{ color: "#ffffff", fontSize: 16, textAlign: "center" }}
         inputContainerStyle={{ borderBottomColor: "#ffffff" }}
@@ -383,6 +400,16 @@ const AnunciatePage = ({ navigation }) => {
         keyboardType="numeric"
         onChangeText={(dni) => setDni(dni)}
         value={dni}
+        />
+        <Input
+        placeholder="CUIL / CUIT *"
+        inputStyle={{ color: "#ffffff" }}
+        style={{ color: "#ffffff", fontSize: 16, textAlign: "center" }}
+        inputContainerStyle={{ borderBottomColor: "#ffffff" }}
+        placeholderTextColor="white"
+        keyboardType="numeric"
+        onChangeText={(cuitCuil) => setCuitCuil(cuitCuil)}
+        value={cuitCuil}
         />
         </View>
         <View
@@ -400,7 +427,7 @@ const AnunciatePage = ({ navigation }) => {
         Información Laboral
         </Text>
         <Input
-        placeholder="Actividad"
+        placeholder="Actividad *"
         inputStyle={{ color: "#ffffff" }}
         style={{ color: "#ffffff", fontSize: 16, textAlign: "center" }}
         inputContainerStyle={{ borderBottomColor: "#ffffff" }}
@@ -579,7 +606,7 @@ const AnunciatePage = ({ navigation }) => {
         }}
         >
         <Text h3 style={{ color: "#fff", marginTop: 10, marginBottom: 25 }}>
-        Dias y horarios de atención
+        Dias y horarios
         </Text>
         <View style={{ flex: 1, flexDirection: "row" }}>
         <CheckBox
@@ -595,7 +622,7 @@ const AnunciatePage = ({ navigation }) => {
                 marginRight: "auto",
         }}
         textStyle={{ color: "#ffffff" }}
-        checkedColor={"white"}
+        checkedColor={"#fd5d13"}
         />
         <CheckBox
         title="Martes"
@@ -610,7 +637,7 @@ const AnunciatePage = ({ navigation }) => {
                 marginRight: "auto",
         }}
         textStyle={{ color: "#ffffff" }}
-        checkedColor={"white"}
+        checkedColor={"#fd5d13"}
         />
         <CheckBox
         title="Miercoles"
@@ -625,7 +652,7 @@ const AnunciatePage = ({ navigation }) => {
                 marginRight: "auto",
         }}
         textStyle={{ color: "#ffffff" }}
-        checkedColor={"white"}
+        checkedColor={"#fd5d13"}
         />
         </View>
         <View style={{ flex: 1, flexDirection: "row" }}>
@@ -642,7 +669,7 @@ const AnunciatePage = ({ navigation }) => {
                 marginRight: "auto",
         }}
         textStyle={{ color: "#ffffff" }}
-        checkedColor={"white"}
+        checkedColor={"#fd5d13"}
         />
         <CheckBox
         title="Viernes"
@@ -657,7 +684,7 @@ const AnunciatePage = ({ navigation }) => {
                 marginRight: "auto",
         }}
         textStyle={{ color: "#ffffff" }}
-        checkedColor={"white"}
+        checkedColor={"#fd5d13"}
         />
         <CheckBox
         title="Sábado"
@@ -672,10 +699,11 @@ const AnunciatePage = ({ navigation }) => {
                 marginRight: "auto",
         }}
         textStyle={{ color: "#ffffff" }}
-        checkedColor={"white"}
+        checkedColor={"#fd5d13"}
         />
         </View>
-        <CheckBox
+        <View style={{ flexDirection: "row" }}>
+            <CheckBox
         title="Domingo"
         onPress={() => concatDomingo()}
         checked={domingoChecked}
@@ -688,8 +716,22 @@ const AnunciatePage = ({ navigation }) => {
                 marginRight: "auto",
         }}
         textStyle={{ color: "#ffffff" }}
-        checkedColor={"white"}
+        checkedColor={"#fd5d13"}
         />
+        <CheckBox
+            title="Lunes a Viernes"
+            containerStyle={{
+                backgroundColor: "transparent",
+                borderColor: "transparent",
+                borderWidth: 0,
+                marginTop: 15,
+                marginLeft: "auto",
+                marginRight: "auto"
+            }}
+            textStyle={{ color: "#ffffff" }}
+            checkedColor={"#fd5d13"}
+        />
+        </View>
         <View style={{ width: "80%" }}>
         <Input
         placeholder="Desde ... hs"
@@ -719,8 +761,8 @@ const AnunciatePage = ({ navigation }) => {
         />
         </View>
         </View>
-        <Text h3 style={{ color: "#fff", textAlign: "center" }}>
-        Medios De Pago
+        <Text h3 style={{ color: "#fff", textAlign: "center", marginTop: "5%" }}>
+            ¿Qué medios de pago aceptas?
         </Text>
         <View
         style={{
@@ -749,8 +791,9 @@ const AnunciatePage = ({ navigation }) => {
                 marginRight: "auto",
         }}
         textStyle={{ color: "#ffffff" }}
-        checkedColor={"white"}
-        checked={true}
+        checkedColor={"#fd5d13"}
+        onPress={toggleEfectivo}
+        checked={efectivo}
         />
         <MaterialCommunityIcons
         name="card-bulleted-outline"
@@ -759,7 +802,7 @@ const AnunciatePage = ({ navigation }) => {
         style={{ marginTop: 20 }}
         />
         <CheckBox
-        title="Mercado Pago"
+        title="Pagos Digitales"
         containerStyle={{
             backgroundColor: "transparent",
                 borderColor: "transparent",
@@ -769,8 +812,9 @@ const AnunciatePage = ({ navigation }) => {
                 marginRight: "auto",
         }}
         textStyle={{ color: "#ffffff" }}
-        checkedColor={"white"}
-        checked={true}
+        checkedColor={"#fd5d13"}
+        onPress={togglePagosDigitales}
+        checked={pagosDigitales}
         />
         </View>
         <View
@@ -801,7 +845,7 @@ const AnunciatePage = ({ navigation }) => {
                 marginRight: "auto",
         }}
         textStyle={{ color: "#ffffff" }}
-        checkedColor={"white"}
+        checkedColor={"#fd5d13"}
         onPress={toggleTerminos}
         checked={terminos}
         />

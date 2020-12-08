@@ -201,7 +201,18 @@ const AnuncioSeleccionado = ({ route, navigation }) => {
         >
         <TouchableOpacity
         onPress={() => navigation.goBack()}
-        style={{ backgroundColor: "transparent" }}
+        style={{ 
+            ...Platform.select({
+                android: {
+                    backgroundColor: "transparent", 
+                    left: 35
+                },
+                ios: {
+                    backgroundColor: "transparent", 
+                    left: 25
+                }
+            }) 
+        }}
         >
         <MaterialCommunityIcons
         name="arrow-left"
@@ -212,7 +223,18 @@ const AnuncioSeleccionado = ({ route, navigation }) => {
         </TouchableOpacity>
         <TouchableOpacity
         onPress={() => agregarFavorito(id)}
-        style={{ backgroundColor: "transparent", right: -280 }}
+        style={{ 
+            ...Platform.select({
+                android: {
+                    backgroundColor: "transparent", 
+                    right: -240
+                },
+                ios: {
+                    backgroundColor: "transparent", 
+                    right: -250
+                }
+            }) 
+        }}
         >
         <MaterialCommunityIcons
         name="account-star-outline"
