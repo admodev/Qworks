@@ -255,7 +255,7 @@ const ProfilePage = ({ navigation }) => {
                 disabled
                 onPress={() => navigation.navigate("AnunciatePage")}
                 buttonStyle={{
-                    backgroundColor: "orange",
+                    backgroundColor: "#fd5d13",
                         marginRight: 15,
                         borderRadius: 5,
                         height: 60,
@@ -267,7 +267,7 @@ const ProfilePage = ({ navigation }) => {
                 title="Anunciarte"
                 onPress={() => navigation.navigate("AnunciatePage")}
                 buttonStyle={{
-                    backgroundColor: "orange",
+                    backgroundColor: "#fd5d13",
                         marginRight: 15,
                         borderRadius: 5,
                         height: 60,
@@ -288,7 +288,7 @@ const ProfilePage = ({ navigation }) => {
             <Text style={{ color: "#000000", fontSize: 20, margin: 15 }}>
             <MaterialCommunityIcons
             name="bullhorn"
-            color={"orange"}
+            color={"#fd5d13"}
             size={20}
             />{" "}
             Mis Anuncios
@@ -298,7 +298,7 @@ const ProfilePage = ({ navigation }) => {
             <Text style={{ color: "#000000", fontSize: 20, margin: 15 }}>
             <MaterialCommunityIcons
             name="comment-text"
-            color={"orange"}
+            color={"#fd5d13"}
             size={20}
             />{" "}
             Mensajes
@@ -310,7 +310,7 @@ const ProfilePage = ({ navigation }) => {
             <Text style={{ color: "#000000", fontSize: 20, margin: 15 }}>
             <MaterialCommunityIcons
             name="book-open"
-            color={"orange"}
+            color={"#fd5d13"}
             size={20}
             />{" "}
             Favoritos
@@ -322,7 +322,7 @@ const ProfilePage = ({ navigation }) => {
             <Text style={{ color: "#000000", fontSize: 20, margin: 15 }}>
             <MaterialCommunityIcons
             name="comment"
-            color={"orange"}
+            color={"#fd5d13"}
             size={20}
             />{" "}
             Comentarios
@@ -334,7 +334,7 @@ const ProfilePage = ({ navigation }) => {
             <Text style={{ color: "#000000", fontSize: 20, margin: 15 }}>
             <MaterialCommunityIcons
             name="account-group"
-            color={"orange"}
+            color={"#fd5d13"}
             size={20}
             />{" "}
             Recomendados
@@ -352,7 +352,7 @@ const ProfilePage = ({ navigation }) => {
             title="Cerrar Sesión"
             onPress={() => signUserOut()}
             buttonStyle={{
-                backgroundColor: "orange",
+                backgroundColor: "#fd5d13",
                     borderRadius: 12,
                     fontWeight: "bold",
                     padding: 10,

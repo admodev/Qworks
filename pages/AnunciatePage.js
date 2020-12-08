@@ -593,6 +593,56 @@ const AnunciatePage = ({ navigation }) => {
         maxLength={150}
         value={descripcionPersonal}
         />
+        <Text h4 style={{ color: "#ffffff" }}>
+            Palabras clave
+        </Text>
+        <View style={{ flexDirection: "row", marginTop: "10%" }}>
+            <Input placeholder="#Uno" paddingLeft={10} paddingRight={10} placeholderTextColor="#fd5d13" containerStyle={{ width: "35%" }} 
+        inputStyle={{
+                            color: "#ffffff",
+                            borderColor: "#ffffff",
+                            borderWidth: 1,
+                            borderRadius: 25,
+                            padding: 15,
+                        }}
+                        style={{ 
+                            textAlign: "center" 
+                        }}
+                        inputContainerStyle={{
+                            borderBottomWidth: 0,
+                        }}  
+        />
+            <Input placeholder="#Dos" paddingLeft={10} paddingRight={10} placeholderTextColor="#fd5d13" containerStyle={{ width: "35%" }} 
+            inputStyle={{
+                            color: "#ffffff",
+                            borderColor: "#ffffff",
+                            borderWidth: 1,
+                            borderRadius: 25,
+                            padding: 15,
+                        }}
+                        style={{ 
+                            textAlign: "center" 
+                        }}
+                        inputContainerStyle={{
+                            borderBottomWidth: 0,
+                        }}
+        />
+            <Input placeholder="#Tres" paddingLeft={10} paddingRight={10} placeholderTextColor="#fd5d13" containerStyle={{ width: "35%" }} 
+            inputStyle={{
+                            color: "#ffffff",
+                            borderColor: "#ffffff",
+                            borderWidth: 1,
+                            borderRadius: 25,
+                            padding: 15,
+                        }}
+                        style={{ 
+                            textAlign: "center" 
+                        }}
+                        inputContainerStyle={{
+                            borderBottomWidth: 0,
+                        }}
+        />
+        </View>
         </View>
         <View
         style={{

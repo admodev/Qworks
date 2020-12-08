@@ -303,21 +303,19 @@ class CardsUsuarios extends React.Component {
                         type="star"
                         onFinishRating={(rating) => setRating(rating)}
                         />
-                        <View style={{ flex: 1, flexDirection: "row", alignItems: "center", justifyContent: "center" }}>
-                            <MaterialCommunityIcons
-                                name="account-group"
-                                color={naranjaQueDeOficios}
-                                size={22}
-                                style={{ position: "absolute", marginLeft: 40, marginTop: 22 }}
-                            />
-                        <Text style={{ color: "#ffffff", textAlign: "center", fontSize: 18, marginLeft: 75 }}>123</Text>
-                        </View>
                         </View>
                         <View style={{ margin: "3%" }}>
                         <Text style={{ color: "#ffffff", textAlign: "center", fontSize: 30, fontWeight: "bold" }}>{u.nombre}</Text>
                         </View>
-                        <View style={{ marginTop: "-2%"}}>
-                           <Text style={{ color: "#ffffff", textAlign: "center", fontSize: 24 }}>{u.actividad}</Text>
+                        <View style={{ marginTop: "-2%", flexDirection: "row", alignItems: "center", justifyContent: "center" }}>
+                           <Text style={{ color: "#ffffff", textAlign: "center", fontSize: 24 }}>{u.actividad} -</Text>
+                            <MaterialCommunityIcons
+                                name="account-group"
+                                color={naranjaQueDeOficios}
+                                size={22}
+                                style={{ marginLeft: "3%" }}
+                            />
+                            <Text style={{ color: "#8DB600", textAlign: "center", fontSize: 14, marginLeft: "2%" }}>100</Text>
                         </View>
                         <View style={{ marginTop: "5%" }}>
                          <Text style={{ color: "#ffffff", textAlign: "center", fontSize: 16 }}>{u.localidad} - {u.provincia}</Text>

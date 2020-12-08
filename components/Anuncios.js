@@ -215,43 +215,9 @@ const AnunciosPage = ({ route, navigation }) => {
         >
         <MaterialCommunityIcons
         name="share-variant"
-        color={"orange"}
+        color={"#fd5d13"}
         size={24}
         /> Compartir
-        </Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => {
-            RootNavigation.navigate("AnuncioSeleccionado", {
-                id: anuncioId,
-            });
-        }}>
-        <Text
-        style={{
-            ...Platform.select({
-                android: {
-                    color: "#fff",
-                    marginLeft: "auto",
-                    marginRight: "auto",
-                    marginTop: 15,
-                    marginRight: "auto",
-                    marginLeft: "auto",
-                    fontSize: 20,
-                },
-                ios: {
-                    color: "#fff",
-                    marginTop: 15,
-                    marginRight: "auto",
-                    marginLeft: "auto",
-                    fontSize: 20,
-                },
-            }),
-        }}
-        >
-        <MaterialCommunityIcons
-        name="eye"
-        color={"orange"}
-        size={24}
-        /> Ver Anuncio
         </Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => RootNavigation.navigate('EditarAnuncioScreen')}>
@@ -279,7 +245,7 @@ const AnunciosPage = ({ route, navigation }) => {
         >
         <MaterialCommunityIcons
         name="lead-pencil"
-        color={"orange"}
+        color={"#fd5d13"}
         size={24}
         /> Editar Anuncio
         </Text>
@@ -309,7 +275,7 @@ const AnunciosPage = ({ route, navigation }) => {
         >
         <MaterialCommunityIcons
         name="eraser"
-        color={"orange"}
+        color={"#fd5d13"}
         size={24}
         /> Eliminar Anuncio
         </Text>
@@ -341,7 +307,7 @@ const AnunciosPage = ({ route, navigation }) => {
         >
         <MaterialCommunityIcons
         name="account-off"
-        color={"orange"}
+        color={"#fd5d13"}
         size={24}
         /> Eliminar Cuenta
         </Text>
