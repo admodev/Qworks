@@ -178,35 +178,32 @@ const ProfilePage = ({ navigation }) => {
             overlayStyle={{ width: "85%", height: "85%", borderRadius: 10 }}
             >
             {image == null || image == undefined ? (
-                <Avatar
-                rounded
+                <Image
                 source={require("../assets/icon.png")}
-                size="xlarge"
                 style={{
                     width: 60,
-                        height: 60,
+                    height: 60,
+                    borderRadius: 25,
                 }}
                 />
             ) : (
-                <Avatar
-                rounded
+                <Image
                 source={{ uri: `${image}` }}
-                size="xlarge"
                 style={{
                     width: 60,
-                        height: 60,
+                    height: 60,
+                    borderRadius: 25,
                 }}
                 />
             )}
             </Overlay>
             {image ? (
-                <Avatar
-                rounded
+                <Image
                 source={{ uri: `${image}` }}
-                size="xlarge"
                 style={{
                     width: 60,
                     height: 60,
+                    borderRadius: 25,
                 }}
                 />
             ) : (

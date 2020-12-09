@@ -368,20 +368,21 @@ const AnuncioSeleccionado = ({ route, navigation }) => {
             margin: 10,
         }}
         />
-        <MaterialCommunityIcons
-        name="account-group"
-        color={naranjaQueDeOficios}
-        size={22}
-        style={{ marginTop: "5%", marginBottom: "2%", alignSelf: "center" }}
-        />
         <View style={{ margin: "3%" }}>
         <Text style={{ color: "#ffffff", textAlign: "center", fontSize: 30, fontWeight: "bold" }} >
         {nombre} {apellido}
         </Text>
         </View>
-        <Text style={{ color: "#ffffff", textAlign: "center", fontSize: 24 }} >
-        {actividad}
-        </Text>
+        <View style={{ marginTop: "-2%", flexDirection: "row", alignItems: "center", justifyContent: "center" }}>
+                           <Text style={{ color: "#ffffff", textAlign: "center", fontSize: 24 }}>{actividad} -</Text>
+                            <MaterialCommunityIcons
+                                name="account-group"
+                                color={naranjaQueDeOficios}
+                                size={22}
+                                style={{ marginLeft: "3%" }}
+                            />
+                            <Text style={{ color: "#8DB600", textAlign: "center", fontSize: 14, marginLeft: "2%" }}>100</Text>
+                        </View>
         <Text style={{ color: "#ffffff", textAlign: "center", fontSize: 16, marginTop: "5%" }}>
         {localidad}, {provincia}
         </Text>
@@ -426,10 +427,10 @@ const AnuncioSeleccionado = ({ route, navigation }) => {
         }}
         >
         <MaterialCommunityIcons
-        name="google-maps"
-        color={"orange"}
+        name="map"
+        color={naranjaQueDeOficios}
         size={24}
-        /> Ubicación
+        /> Mapa
         </Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => shareContent()}>
@@ -441,7 +442,6 @@ const AnuncioSeleccionado = ({ route, navigation }) => {
                     marginLeft: "auto",
                     marginRight: "auto",
                     marginTop: 10,
-                    marginRight: 10,
                     fontSize: 20,
                 },
                 ios: {
@@ -455,7 +455,7 @@ const AnuncioSeleccionado = ({ route, navigation }) => {
         >
         <MaterialCommunityIcons
         name="share-variant"
-        color={"orange"}
+        color={naranjaQueDeOficios}
         size={24}
         /> Compartir
         </Text>
@@ -534,7 +534,7 @@ const AnuncioSeleccionado = ({ route, navigation }) => {
                 color: "#fff",
         }}
         >
-        Dias y horarios laborales:
+        Dias y horarios:
         </Text>
         <Text
         style={{
