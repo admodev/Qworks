@@ -193,7 +193,6 @@ class CardsUsuarios extends React.Component {
                             marginTop: "10%",
                             elevation: 0,
                             width: "85%",
-                            height: 356,
                             alignSelf: "center"
                         },
                     }),
