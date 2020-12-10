@@ -121,7 +121,7 @@ export default function Chat({ route, navigation }) {
     const appendMessages = useCallback(
         (messages) => {
             setMessages((previousMessages) =>
-                GiftedChat.append(previousMessages, messages, image),
+                GiftedChat.prepend(previousMessages, messages, image),
             );
         },
         [messages]
