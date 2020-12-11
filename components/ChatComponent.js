@@ -50,7 +50,6 @@ export default function Chat({ route, navigation }) {
 
     let firstUserId = route.params.userOne;
     let secondUserId = route.params.userTwo;
-    const nombre = "placeholder";
     const [messages, setMessages] = useState([]);
     const [text, setText] = useState(false);
     const currentUser = firebase.auth().currentUser.uid;
@@ -69,6 +68,21 @@ export default function Chat({ route, navigation }) {
     let [image, setImage] = useState("");
 
     const handleTimerComplete = () => alert("Te quedaste sin tiempo!");
+
+    let key;
+    let nombre;
+    let fotoPerfil;
+    let actividad;
+    let emailPersonal;
+
+    let fetchName = firebase.database().ref("anuncios/").orderByChild("id").equalTo(currentUser).on("value", (snap) => {
+            snap.forEach((child) => {
+                key: child.key, (nombre = child.val().nombre);
+                fotoPerfil = child.val().image;
+                actividad = child.val().actividad;
+                emailPersonal = child.val().emailPersonal;
+            });
+        })
 
     function toggleTimer() {
       setTimerStart(!timerStart);
@@ -232,13 +246,15 @@ export default function Chat({ route, navigation }) {
                 onSend={handleSend}
                 user={{
                     _id: firebase.auth().currentUser && currentUser,
-                        name: firebase.auth().currentUser && firebase.auth().currentUser.displayName,
+                        avatar: fotoPerfil,
+                        name: nombre,
                         receiver: receiver
                 }}
                 text={text}
                 alwaysShowSend={
                     text ? true : false || image ? true : false
                 }
+                renderUsernameOnMessage={true}
                 onInputTextChanged={text => setText(text)}
                 renderLoading={() => <ActivityIndicator size="large" color="#fd5d13" />}
                 isAnimated
