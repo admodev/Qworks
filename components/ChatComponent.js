@@ -162,7 +162,7 @@ export default function Chat({ route, navigation }) {
             <View style={{marginRight: 10, marginBottom: 10}}>
             <MaterialCommunityIcons
             name="send"
-            color={"#000000"}
+            color={"#fd5d13"}
             size={28}
             />
             </View>
@@ -220,7 +220,7 @@ export default function Chat({ route, navigation }) {
             >
             <MaterialCommunityIcons
             name="arrow-left"
-            color={"black"}
+            color={"#fd5d13"}
             size={32}
             style={{ marginTop: "auto", marginBottom: "auto", backgroundColor: "transparent" }}
             />
@@ -240,7 +240,7 @@ export default function Chat({ route, navigation }) {
                     text ? true : false || image ? true : false
                 }
                 onInputTextChanged={text => setText(text)}
-                renderLoading={() => <ActivityIndicator size="large" color="orange" />}
+                renderLoading={() => <ActivityIndicator size="large" color="#fd5d13" />}
                 isAnimated
                 renderAvatarOnTop
                 placeholder="Escribe tu mensaje..."
@@ -250,15 +250,22 @@ export default function Chat({ route, navigation }) {
                 scrollToBottomComponent={() => (
                     <MaterialCommunityIcons
                         name="arrow-down"
-                        color={"orange"}
+                        color={"#fd5d13"}
                         size={20}
                     />
-                )} 
+                )}
+                renderSend={renderSend}
                 renderActions={() => (
                     <MaterialCommunityIcons
                         name="camera"
-                        color={"orange"}
-                        size={20}
+                        color={"#fd5d13"}
+                        size={24}
+                        style={{
+                            marginTop: "auto",
+                            marginBottom: "auto",
+                            marginLeft: "3%"
+                        }}
+                        onPress={() => renderActions(ActionsProps)}
                     />
                 )}
                 /> 
