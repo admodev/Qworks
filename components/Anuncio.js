@@ -752,13 +752,13 @@ const AnuncioSeleccionado = ({ route, navigation }) => {
         }}
         />
         <View style={{ margin: 10, marginLeft: 20 }}>
-        {user == null ? (
+        {!user ? (
             <Button
             title="Recomendar"
             onPress={() =>
                 alert("Debes ingresar para recomendar a un usuario!")
             }
-            titleStyle={{ fontSize: 12, marginBottom: 15 }}
+            titleStyle={{ fontSize: 12, marginBottom: -20 }}
             buttonStyle={{
                 width: 120,
                     height: 50,
@@ -769,7 +769,7 @@ const AnuncioSeleccionado = ({ route, navigation }) => {
             <Button
             title="Recomendar"
             onPress={() => calificarUsuario(rating)}
-            titleStyle={{ fontSize: 12, marginBottom: 15 }}
+            titleStyle={{ fontSize: 12, marginBottom: -20 }}
             buttonStyle={{
                 width: 120,
                     height: 50,
@@ -781,7 +781,7 @@ const AnuncioSeleccionado = ({ route, navigation }) => {
         name="account-group"
         color={"white"}
         size={22}
-        style={{ position: "absolute", marginLeft: 40, marginTop: 22 }}
+        style={{ position: "absolute", marginLeft: 40, marginTop: 5 }}
         />
         </View>
         <View style={{ margin: 10 }}>
@@ -789,7 +789,7 @@ const AnuncioSeleccionado = ({ route, navigation }) => {
             <Button
             title="Enviar Mensaje"
             onPress={() => alert("Debes ingresar para iniciar un chat!")}
-            titleStyle={{ fontSize: 12, marginTop: 15 }}
+            titleStyle={{ fontSize: 12, marginTop: 18 }}
             buttonStyle={{
                 width: 120,
                     height: 50,
@@ -805,34 +805,7 @@ const AnuncioSeleccionado = ({ route, navigation }) => {
                     userTwo: routeParamsToString,
                 })
             }
-            titleStyle={{ fontSize: 12, marginTop: 15 }}
-            buttonStyle={{
-                width: 120,
-                    height: 50,
-                    backgroundColor: "transparent",
-            }}
-            />
-        )}
-        </View>
-        <View style={{ margin: 10 }}>
-        {user == null ? (
-            <Button
-            title="Comentar"
-            onPress={() => alert("Debes ingresar para comentar!")}
-            titleStyle={{ fontSize: 12, marginTop: 15 }}
-            buttonStyle={{
-                width: 120,
-                    height: 50,
-                    backgroundColor: "transparent",
-            }}
-            />
-        ) : (
-            <Button
-            title="Comentar"
-            onPress={() =>
-                RootNavigation.navigate("ComentarScreen", { id: id })
-            }
-            titleStyle={{ fontSize: 12, marginTop: 15 }}
+            titleStyle={{ fontSize: 12, marginTop: 18 }}
             buttonStyle={{
                 width: 120,
                     height: 50,
@@ -841,10 +814,43 @@ const AnuncioSeleccionado = ({ route, navigation }) => {
             />
         )}
         <MaterialCommunityIcons
-        name="comment-multiple-outline"
+        name="message-plus"
+        color={"white"}
+        size={22}
+        style={{ position: "absolute", marginLeft: 40, marginTop: 5 }}
+        />
+        </View>
+        <View style={{ margin: 10 }}>
+        {user == null ? (
+            <Button
+            title="Opinar"
+            onPress={() => alert("Debes ingresar para comentar!")}
+            titleStyle={{ fontSize: 12, marginTop: 18 }}
+            buttonStyle={{
+                width: 120,
+                    height: 50,
+                    backgroundColor: "transparent",
+            }}
+            />
+        ) : (
+            <Button
+            title="Opinar"
+            onPress={() =>
+                RootNavigation.navigate("ComentarScreen", { id: id })
+            }
+            titleStyle={{ fontSize: 12, marginTop: 18 }}
+            buttonStyle={{
+                width: 120,
+                    height: 50,
+                    backgroundColor: "transparent",
+            }}
+            />
+        )}
+        <MaterialCommunityIcons
+        name="bullhorn"
         color={"white"}
         size={18}
-        style={{ position: "absolute", marginLeft: 50, marginTop: 4 }}
+        style={{ position: "absolute", marginLeft: 50, marginTop: 7 }}
         />
         </View>
         </View>
