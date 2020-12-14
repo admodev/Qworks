@@ -748,10 +748,9 @@ const AnuncioSeleccionado = ({ route, navigation }) => {
                 width: "115%",
                 height: 55,
                 margin: 10,
-                borderRadius: 5,
         }}
         />
-        <View style={{ margin: 10, marginLeft: 20 }}>
+        <View style={{ margin: 10, marginLeft: 15 }}>
         {!user ? (
             <Button
             title="Recomendar"
@@ -781,7 +780,7 @@ const AnuncioSeleccionado = ({ route, navigation }) => {
         name="account-group"
         color={"white"}
         size={22}
-        style={{ position: "absolute", marginLeft: 40, marginTop: 5 }}
+        style={{ position: "absolute", marginLeft: 45, marginTop: 5 }}
         />
         </View>
         <View style={{ margin: 10 }}>
@@ -816,14 +815,14 @@ const AnuncioSeleccionado = ({ route, navigation }) => {
         <MaterialCommunityIcons
         name="message-plus"
         color={"white"}
-        size={22}
-        style={{ position: "absolute", marginLeft: 40, marginTop: 5 }}
+        size={24}
+        style={{ position: "absolute", marginLeft: 45, marginTop: 5 }}
         />
         </View>
         <View style={{ margin: 10 }}>
         {user == null ? (
             <Button
-            title="Opinar"
+            title="Comentar"
             onPress={() => alert("Debes ingresar para comentar!")}
             titleStyle={{ fontSize: 12, marginTop: 18 }}
             buttonStyle={{
@@ -834,7 +833,7 @@ const AnuncioSeleccionado = ({ route, navigation }) => {
             />
         ) : (
             <Button
-            title="Opinar"
+            title="Comentar"
             onPress={() =>
                 RootNavigation.navigate("ComentarScreen", { id: id })
             }
@@ -849,7 +848,7 @@ const AnuncioSeleccionado = ({ route, navigation }) => {
         <MaterialCommunityIcons
         name="bullhorn"
         color={"white"}
-        size={18}
+        size={20}
         style={{ position: "absolute", marginLeft: 50, marginTop: 7 }}
         />
         </View>
