@@ -33,6 +33,7 @@ import {
 } from "@env";
 import * as RootNavigation from "../RootNavigation.js";
 import { StackActions } from "@react-navigation/native";
+import * as Updates from 'expo-updates';
 
 async function signInWithGoogleAsync() {
   try {

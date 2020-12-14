@@ -40,6 +40,10 @@ const AnunciatePage = ({ navigation }) => {
     const [numeroDeMatricula, setNumeroDeMatricula] = useState("");
     const [emailLaboral, setEmailLaboral] = useState("");
     const [descripcionPersonal, setDescripcionPersonal] = useState("");
+    const [palabraClaveUno, setPalabraClaveUno] = useState("");
+    const [palabraClaveDos, setPalabraClaveDos] = useState("");
+    const [palabraClaveTres, setPalabraClaveTres] = useState("")
+    const [palabrasClave, setPalabrasclave] = useState([]);
     const [diasHorarios, setDiasHorarios] = useState([]);
     const [desde, setDesde] = useState("");
     const [hasta, setHasta] = useState("");
@@ -142,6 +146,18 @@ const AnunciatePage = ({ navigation }) => {
 
     }, []);
 
+    function concatPalabraClaveUno() {
+        setPalabrasClave(palabrasClave.concat(palabraClaveUno));
+    }
+
+    function concatPalabraClaveDos() {
+        setPalabrasClave(palabrasClave.concat(palabraClaveDos));
+    }
+
+    function concatPalabraClaveTres() {
+        setPalabrasClave(palabrasClave.concat(palabraClaveTres));
+    }
+
     function concatLunes() {
         setDiasHorarios(diasHorarios.concat("Lunes"));
         toggleLunesChecked();
@@ -193,6 +209,9 @@ const AnunciatePage = ({ navigation }) => {
         numeroDeMatricula,
         emailLaboral,
         descripcionPersonal,
+        palabraClaveUno,
+        palabraClaveDos,
+        palabraClaveTres,
         diasHorarios,
         desde,
         hasta,
@@ -241,6 +260,9 @@ const AnunciatePage = ({ navigation }) => {
                     numeroDeMatricula: numeroDeMatricula,
                     emailLaboral: emailLaboral,
                     descripcionPersonal: descripcionPersonal,
+                    palabraClaveUno,
+                    palabraClaveDos,
+                    palabraClaveTres,
                     diasHorarios: diasHorarios,
                     desde: desde,
                     hasta: hasta,
@@ -597,7 +619,7 @@ const AnunciatePage = ({ navigation }) => {
             Palabras clave
         </Text>
         <View style={{ flexDirection: "row", marginTop: "10%" }}>
-            <Input placeholder="#Uno" paddingLeft={10} paddingRight={10} placeholderTextColor="#fd5d13" containerStyle={{ width: "35%" }} 
+            <Input placeholder="#Uno" onChangeText={(palabraClaveUno) => setPalabraClaveUno(palabraClaveUno)} value={palabraClaveUno} paddingLeft={10} paddingRight={10} placeholderTextColor="#fd5d13" containerStyle={{ width: "35%" }} 
         inputStyle={{
                             color: "#ffffff",
                             borderColor: "#ffffff",
@@ -612,7 +634,7 @@ const AnunciatePage = ({ navigation }) => {
                             borderBottomWidth: 0,
                         }}  
         />
-            <Input placeholder="#Dos" paddingLeft={10} paddingRight={10} placeholderTextColor="#fd5d13" containerStyle={{ width: "35%" }} 
+            <Input placeholder="#Dos" onChangeText={(palabraClaveDos) => setPalabraClaveDos(palabraClaveDos)} value={palabraClaveDos} paddingLeft={10} paddingRight={10} placeholderTextColor="#fd5d13" containerStyle={{ width: "35%" }} 
             inputStyle={{
                             color: "#ffffff",
                             borderColor: "#ffffff",
@@ -627,7 +649,7 @@ const AnunciatePage = ({ navigation }) => {
                             borderBottomWidth: 0,
                         }}
         />
-            <Input placeholder="#Tres" paddingLeft={10} paddingRight={10} placeholderTextColor="#fd5d13" containerStyle={{ width: "35%" }} 
+            <Input placeholder="#Tres" onChangeText={(palabraClaveTres) => setPalabraClaveTres(palabraClaveTres)} value={palabraClaveTres} paddingLeft={10} paddingRight={10} placeholderTextColor="#fd5d13" containerStyle={{ width: "35%" }} 
             inputStyle={{
                             color: "#ffffff",
                             borderColor: "#ffffff",
@@ -934,6 +956,9 @@ const AnunciatePage = ({ navigation }) => {
                 numeroDeMatricula,
                 emailLaboral,
                 descripcionPersonal,
+                palabraClaveUno,
+                palabraClaveDos,
+                palabraClaveTres,
                 diasHorarios,
                 desde,
                 hasta,
