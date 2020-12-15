@@ -46,16 +46,6 @@ if (firebase.apps.length === 0) {
     }
 }
 
-// if (user) {
-//   let planDefault = standard;
-//
-//   firebase.database().ref("pagos/").orderByChild("id").equalTo(user.uid).on("value", function(dataSnapshot) {
-//
-//   })
-//
-//   firebase.database().ref("planes/").push()
-// }
-
 Notifications.setNotificationHandler({
     handleNotification: async () => ({
         shouldShowAlert: true,
