@@ -24,7 +24,7 @@ Usamos [SemVer](http://semver.org/) para el versionado. Para todas las versiones
 
 - **Adolfo Moyano** - _Software Engineer, Backend Development_ - [admodev](https://github.com/admodev)
 - **Gonzalo Javier Sanchez Garcia** - _Fundador QuedeOficios, Frontend Development_ - [gonzalo](https://github.com/exegesisbsas)
-- **Leandro** - _Tester_ - [lean](https://github.com/Lea-codern)
+- **Leandro** - _QA, Tester_ - [lean](https://github.com/Panabeen)
 
 ## Licencia 📄
 
