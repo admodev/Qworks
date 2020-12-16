@@ -148,6 +148,7 @@ export default function RegisterPage({ navigation }) {
                 style={{ color: "#ffffff", fontSize: 16 }}
                 leftIcon={<Icon name="envelope-o" size={18} color="white" />}
                 onChangeText={(email) => setUserEmail(email)}
+                value={email}
               />
               <Input
                 placeholder="Contraseña"
@@ -156,6 +157,7 @@ export default function RegisterPage({ navigation }) {
                 style={{ color: "#ffffff", fontSize: 16 }}
                 secureTextEntry={true}
                 onChangeText={(password) => setUserPassword(password)}
+                value={password}
               />
               <Button
                 title="Registrarme"

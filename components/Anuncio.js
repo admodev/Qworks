@@ -862,7 +862,7 @@ const AnuncioSeleccionado = ({ route, navigation }) => {
               onPress={() =>
                 RootNavigation.navigate("ChatComponent", {
                   userOne: firebase.auth().currentUser.uid,
-                  userTwo: routeParamsToString,
+                  userTwo: id,
                 })
               }
               titleStyle={{ fontSize: 12, marginTop: 18 }}
