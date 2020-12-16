@@ -59,7 +59,7 @@ const ProfilePage = ({ navigation }) => {
         })
         : console.log("No user");
 
-    nombre == null ? (nombre = "Nombre") : (nombre = nombre);
+    !nombre ? (nombre = "Nombre") : (nombre = nombre);
 
     useEffect(() => {
         (async () => {

@@ -150,7 +150,7 @@ export default function Chat({ route, navigation }) {
             senderId: firebase.auth().currentUser && currentUser,
             receiverType: 'user',
             messageType: 'text',
-            receiverId: secondUserId,
+            receiver: receiver,
             content: messages,
         };
         const writes = messages.map((m) => chatsRef.add(m));
@@ -248,9 +248,14 @@ export default function Chat({ route, navigation }) {
                 onSend={handleSend}
                 user={{
                     _id: firebase.auth().currentUser && currentUser,
-                        avatar: fotoPerfil,
+                        user: 1,
                         name: nombre,
                         receiver: receiver
+                    }}
+                receiver={{
+                        _id: secondUserId && receiver,
+                        user: 2,
+                        receiver: firstUserId
                 }}
                 text={text}
                 alwaysShowSend={
