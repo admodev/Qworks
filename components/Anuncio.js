@@ -794,7 +794,7 @@ const AnuncioSeleccionado = ({ route, navigation }) => {
                 <Text
                   style={{
                     marginLeft: 10,
-                    fontSize: 18,
+                    fontSize: 14,
                     color: naranjaQueDeOficios,
                   }}
                 >
