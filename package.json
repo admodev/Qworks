@@ -10,6 +10,7 @@
   "dependencies": {
     "@blackbox-vision/react-native-mercadopago-px": "^0.6.2",
     "@primer/octicons": "^11.0.0",
+    "@react-native-async-storage/async-storage": "^1.13.2",
     "@react-native-community/async-storage": "^1.12.1",
     "@react-native-community/masked-view": "0.1.10",
     "@react-navigation/bottom-tabs": "^5.9.1",
