@@ -35,6 +35,7 @@ const AnuncioSeleccionado = ({ route, navigation }) => {
   let id = route.params.id;
   let routeParamsToString = id.toString();
   const naranjaQueDeOficios = "#fd5d13";
+  const favoritosBackground = "transparent";
   const [favoritosTint, setFavoritosTint] = useState(false);
   let image,
     nombre,
@@ -177,6 +178,10 @@ const AnuncioSeleccionado = ({ route, navigation }) => {
     );
   }
 
+  function favoritosColor() {
+    setFavoritosTint(!favoritosTint);
+  }
+
   return (
     <SafeAreaView
       style={{
@@ -241,7 +246,7 @@ const AnuncioSeleccionado = ({ route, navigation }) => {
           />
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={() => agregarFavorito(id)}
+          onPress={() => favoritosColor()}
           style={{
             ...Platform.select({
               android: {
@@ -255,12 +260,21 @@ const AnuncioSeleccionado = ({ route, navigation }) => {
             }),
           }}
         >
-          <MaterialCommunityIcons
-            name="account-star-outline"
-            color={"white"}
-            size={32}
-            style={{ backgroundColor: "transparent" }}
-          />
+          {favoritosTint === false ? (
+            <MaterialCommunityIcons
+              name="account-star"
+              color={naranjaQueDeOficios}
+              size={32}
+              style={{ backgroundColor: "transparent" }}
+            />
+          ) : (
+            <MaterialCommunityIcons
+              name="account-star-outline"
+              color={"white"}
+              size={32}
+              style={{ backgroundColor: "transparent" }}
+            />
+          )}
         </TouchableOpacity>
       </View>
       <ScrollView showsHorizontalScrollIndicator={false}>
