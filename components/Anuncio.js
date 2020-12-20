@@ -35,6 +35,7 @@ const AnuncioSeleccionado = ({ route, navigation }) => {
   let id = route.params.id;
   let routeParamsToString = id.toString();
   const naranjaQueDeOficios = "#fd5d13";
+  const [favoritosTint, setFavoritosTint] = useState(false);
   let image,
     nombre,
     apellido,
@@ -195,14 +196,27 @@ const AnuncioSeleccionado = ({ route, navigation }) => {
       />
       <View
         style={{
-          width: 30,
-          height: 30,
-          alignItems: "center",
-          justifyContent: "space-between",
-          flexDirection: "row",
-          marginTop: "10%",
-          marginLeft: 15,
-          backgroundColor: "transparent",
+          ...Platform.select({
+            android: {
+              width: 30,
+              height: 30,
+              alignItems: "center",
+              justifyContent: "space-between",
+              flexDirection: "row",
+              marginTop: "10%",
+              marginLeft: "10%",
+            },
+            ios: {
+              width: 30,
+              height: 30,
+              alignItems: "center",
+              justifyContent: "space-between",
+              flexDirection: "row",
+              marginTop: "10%",
+              marginLeft: 15,
+              backgroundColor: "transparent",
+            },
+          }),
         }}
       >
         <TouchableOpacity
@@ -211,7 +225,6 @@ const AnuncioSeleccionado = ({ route, navigation }) => {
             ...Platform.select({
               android: {
                 backgroundColor: "transparent",
-                left: 35,
               },
               ios: {
                 backgroundColor: "transparent",
@@ -222,7 +235,7 @@ const AnuncioSeleccionado = ({ route, navigation }) => {
         >
           <MaterialCommunityIcons
             name="arrow-left"
-            color={"white"}
+            color={naranjaQueDeOficios}
             size={32}
             style={{ backgroundColor: "transparent" }}
           />
@@ -261,7 +274,7 @@ const AnuncioSeleccionado = ({ route, navigation }) => {
                 borderRadius: 15,
                 backgroundColor: "transparent",
                 borderWidth: 0,
-                marginTop: "3%",
+                marginTop: "2%",
               },
               ios: {
                 padding: 0,
