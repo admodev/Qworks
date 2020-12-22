@@ -253,6 +253,15 @@ const ProfilePage = ({ navigation }) => {
             </View>
           </View>
           {anunciosCountResult >= 3 ? (
+            <View
+              style={{
+                position: "absolute",
+                alignItems: "center",
+                justifyContent: "center",
+                alignSelf: "center",
+                marginTop: "30%",
+              }}
+            >
             <Button
               title="Anunciarte"
               disabled
@@ -265,6 +274,7 @@ const ProfilePage = ({ navigation }) => {
                 width: 120,
               }}
             />
+              </View>
           ) : (
             <View
               style={{

@@ -1,7 +1,7 @@
 // @refresh reset
 //
 import React, { useState, setState } from "react";
-import { SafeAreaView, StyleSheet, Button } from "react-native";
+import { SafeAreaView, StyleSheet, Button, Text, Image, TouchableOpacity, View } from "react-native";
 import { Input } from "react-native-elements";
 import {
   FIREBASE_API_KEY,
@@ -18,6 +18,7 @@ import "firebase/auth";
 import "firebase/firestore";
 import "firebase/database";
 import * as Updates from "expo-updates";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
 if (firebase.apps.length === 0) {
   try {
@@ -38,7 +39,7 @@ if (firebase.apps.length === 0) {
   }
 }
 
-export default function ComentarScreen({ route }) {
+export default function ComentarScreen({ route, navigation }) {
   let id = route.params.id;
   let user = firebase.auth().currentUser.uid;
   let [comentario, setComentario] = useState("");
@@ -66,12 +67,44 @@ export default function ComentarScreen({ route }) {
     <SafeAreaView
       style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
     >
+    <Image
+        source={require("../assets/gradients/20x20.png")}
+        style={{
+          flex: 1,
+          position: "absolute",
+          resizeMode: "cover",
+          width: "100%",
+          height: "5%",
+          top: 0
+        }}
+      />
+      <View
+        style={{
+            width: 30,
+                height: 30,
+                alignItems: "center",
+                top: 50,
+                left: 10,
+                position: "absolute"
+        }}
+        >
+        <TouchableOpacity
+        onPress={() => navigation.goBack()}
+        >
+        <MaterialCommunityIcons
+        name="arrow-left"
+        color={"#fd5d13"}
+        size={32}
+        style={{ marginTop: "auto", marginBottom: "auto" }}
+        />
+        </TouchableOpacity>
+        </View>
       <Input
         placeholder="Deja un comentario..."
         onChangeText={(comentario) => setComentario(comentario)}
         value={comentario}
       />
-      <Button title="Comentar" onPress={() => comentarUsuario(comentario)} />
+      <Button title="Comentar" onPress={() => alert("¡Enviado!")} />
     </SafeAreaView>
   );
 }
