@@ -14,7 +14,7 @@ import * as Updates from 'expo-updates';
 import * as Notifications from 'expo-notifications';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
-export default function RecuperarPasswordScreen() {
+export default function RecuperarPasswordScreen({ route, navigation }) {
   let [email, setEmail] = useState('');
 
   const naranjaQueDeOficios = '#fd5d13';
@@ -67,10 +67,13 @@ export default function RecuperarPasswordScreen() {
           ...Platform.select({
             android: {
               backgroundColor: 'transparent',
+              top: 50,
+              left: 15,
             },
             ios: {
               backgroundColor: 'transparent',
-              left: 25,
+              top: 40,
+              left: 15,
             },
           }),
         }}
@@ -110,7 +113,7 @@ export default function RecuperarPasswordScreen() {
           title='Cambiar contraseña'
           onPress={() => passwordRecovery(email)}
           buttonStyle={{
-            backgroundColor: 'orange',
+            backgroundColor: naranjaQueDeOficios,
             borderRadius: 10,
             alignSelf: 'center',
             marginTop: 10,

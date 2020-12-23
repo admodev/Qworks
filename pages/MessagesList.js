@@ -1,5 +1,5 @@
 import React, { useState, setState } from 'react';
-import { SafeAreaView, ScrollView, Text, View } from 'react-native';
+import { Image, SafeAreaView, ScrollView, Text, View } from 'react-native';
 import MessagesScreen from './ChatMessages';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Timer } from 'react-native-stopwatch-timer';
@@ -32,6 +32,16 @@ export default function UserMessagesList({ route, navigation }) {
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
+      <Image
+        source={require('../assets/gradients/20x20.png')}
+        style={{
+          flex: 1,
+          position: 'absolute',
+          resizeMode: 'cover',
+          width: '100%',
+          height: '5%',
+        }}
+      />
       <ScrollView>
         <MessagesScreen />
       </ScrollView>
