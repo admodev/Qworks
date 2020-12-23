@@ -254,7 +254,7 @@ export default function LoginPage({ navigation }) {
                 checked={isChecked}
               />
               <Button
-                title='Recuperar contraseña'
+                title='¿Olvidaste tu contraseña?'
                 onPress={() =>
                   RootNavigation.navigate('RecuperarPasswordScreen')
                 }
@@ -263,9 +263,14 @@ export default function LoginPage({ navigation }) {
                   borderColor: 'transparent',
                   borderWidth: 0,
                   marginTop: dimensions.screen.height * -0.01,
-                  marginLeft: 0,
+                  marginLeft: dimensions.screen.width * -0.35,
                 }}
-                titleStyle={{ color: '#ffffff', fontWeight: 'bold' }}
+                titleStyle={{
+                  color: '#ffffff',
+                  fontWeight: 'bold',
+                  fontSize: 12,
+                  fontStyle: 'italic',
+                }}
               />
             </KeyboardAvoidingView>
           </View>
@@ -278,7 +283,7 @@ export default function LoginPage({ navigation }) {
             }}
           >
             <Text style={{ color: '#ffffff', fontWeight: 'bold' }}>
-              Ingresar con...
+              Ingresar
             </Text>
           </View>
           <View
