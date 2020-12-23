@@ -10,7 +10,7 @@ import {
   Text,
   Share,
 } from 'react-native';
-import { Avatar, Button, Card, Icon, Input } from 'react-native-elements';
+import { Avatar, Button, Card, Icon, Input, Overlay } from 'react-native-elements';
 import * as firebase from 'firebase';
 import 'firebase/firestore';
 import 'firebase/database';
@@ -32,6 +32,19 @@ const AnunciosPage = ({ route, navigation }) => {
   let user = firebase.auth().currentUser;
   let id = user.uid;
   let anuncioId, image, nombre, apellido, actividad, emailPersonal;
+
+  const [eliminarAnuncioIsVisible, setEliminarAnuncioIsVisible] = useState(
+    false
+  );
+  const [eliminarCuentaIsVisible, setEliminarCuentaIsVisible] = useState(false);
+
+  const toggleEliminarAnuncio = () => {
+    setEliminarAnuncioIsVisible(!eliminarAnuncioIsVisible);
+  };
+
+  const toggleEliminarCuenta = () => {
+    setEliminarCuentaIsVisible(!eliminarCuentaIsVisible);
+  };
 
   useEffect(() => {
     firebase
@@ -65,16 +78,15 @@ const AnunciosPage = ({ route, navigation }) => {
   }
 
   function eliminarCuenta() {
-    console.log('placeholder');
-    //    admin
-    //      .auth()
-    //      .deleteUser(uid)
-    //      .then(function () {
-    //        console.log("Successfully deleted user");
-    //      })
-    //      .catch(function (error) {
-    //        console.log("Error deleting user:", error);
-    //      });
+    admin
+      .auth()
+      .deleteUser(id)
+      .then(function () {
+        console.log('Successfully deleted user');
+      })
+      .catch(function (error) {
+        console.log('Error deleting user:', error);
+      });
   }
 
   function shareContent() {
@@ -103,7 +115,7 @@ const AnunciosPage = ({ route, navigation }) => {
           height: '5%',
         }}
       />
-      <ScrollView showsVerticalScrollIndicator='false'>
+      <ScrollView>
         <Card
           style={styles.card}
           containerStyle={{
@@ -424,7 +436,7 @@ const AnunciosPage = ({ route, navigation }) => {
             width: '100%',
           }}
         />
-        <TouchableOpacity onPress={() => eliminarCuenta()}>
+        <TouchableOpacity onPress={toggleEliminarCuenta}>
           <Text
             style={{
               ...Platform.select({
@@ -457,6 +469,16 @@ const AnunciosPage = ({ route, navigation }) => {
             Eliminar Cuenta
           </Text>
         </TouchableOpacity>
+        <Overlay
+          isVisible={eliminarCuentaIsVisible}
+          onBackdropPress={toggleEliminarCuenta}
+        >
+          <Text style={{ fontSize: 14, marginTop: "5%", textAlign: 'center' }}>Todos tus datos se perderan ¿Deseas continuar?</Text>
+          <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
+            <Button title='No' buttonStyle={{ width: 80, height: 40, marginTop: "15%", marginRight: "5%" }} />
+            <Button title='Si' buttonStyle={{ width: 80, height: 40, marginTop: "15%", marginLeft: "5%" }} />
+          </View>
+        </Overlay>
       </View>
     </SafeAreaView>
   );
