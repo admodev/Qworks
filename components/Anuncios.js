@@ -103,7 +103,7 @@ const AnunciosPage = ({ route, navigation }) => {
           height: '5%',
         }}
       />
-      <ScrollView>
+      <ScrollView showsVerticalScrollIndicator='false'>
         <Card
           style={styles.card}
           containerStyle={{
@@ -284,101 +284,131 @@ const AnunciosPage = ({ route, navigation }) => {
                     {u.localidad} - {u.provincia}
                   </Text>
                 </View>
-                <TouchableOpacity onPress={() => shareContent()}>
-                  <Text
-                    style={{
-                      ...Platform.select({
-                        android: {
-                          color: '#fff',
-                          marginLeft: 'auto',
-                          marginRight: 'auto',
-                          marginTop: 15,
-                          marginRight: 'auto',
-                          marginLeft: 'auto',
-                          fontSize: 20,
-                        },
-                        ios: {
-                          color: '#fff',
-                          marginTop: 15,
-                          marginRight: 'auto',
-                          marginLeft: 'auto',
-                          fontSize: 20,
-                        },
-                      }),
-                    }}
-                  >
-                    <MaterialCommunityIcons
-                      name='share-variant'
-                      color={'#fd5d13'}
-                      size={24}
-                    />{' '}
-                    Compartir
-                  </Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  onPress={() => RootNavigation.navigate('EditarAnuncioScreen')}
+                <View
+                  style={{
+                    flex: 1,
+                    alignItems: 'flex-start',
+                    justifyContent: 'flex-start',
+                    marginLeft: '10%',
+                  }}
                 >
-                  <Text
-                    style={{
-                      ...Platform.select({
-                        android: {
-                          color: '#fff',
-                          marginLeft: 'auto',
-                          marginRight: 'auto',
-                          marginTop: 15,
-                          marginRight: 'auto',
-                          marginLeft: 'auto',
-                          fontSize: 20,
-                        },
-                        ios: {
-                          color: '#fff',
-                          marginTop: 15,
-                          marginRight: 'auto',
-                          marginLeft: 'auto',
-                          fontSize: 20,
-                        },
-                      }),
-                    }}
+                  <TouchableOpacity onPress={() => shareContent()}>
+                    <Text
+                      style={{
+                        ...Platform.select({
+                          android: {
+                            color: '#fff',
+                            marginLeft: 'auto',
+                            marginRight: 'auto',
+                            marginTop: 15,
+                            marginRight: 'auto',
+                            marginLeft: 'auto',
+                            fontSize: 20,
+                          },
+                          ios: {
+                            color: '#fff',
+                            marginTop: 15,
+                            marginRight: 'auto',
+                            marginLeft: 'auto',
+                            fontSize: 20,
+                          },
+                        }),
+                      }}
+                    >
+                      <MaterialCommunityIcons
+                        name='share-variant'
+                        color={'#fd5d13'}
+                        size={24}
+                      />{' '}
+                      - Compartir
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+                <View
+                  style={{
+                    flex: 1,
+                    alignItems: 'flex-start',
+                    justifyContent: 'flex-start',
+                    marginLeft: '10%',
+                  }}
+                >
+                  <TouchableOpacity
+                    onPress={() =>
+                      RootNavigation.navigate('EditarAnuncioScreen')
+                    }
                   >
-                    <MaterialCommunityIcons
-                      name='lead-pencil'
-                      color={'#fd5d13'}
-                      size={24}
-                    />{' '}
-                    Editar Anuncio
-                  </Text>
-                </TouchableOpacity>
-                <TouchableOpacity onPress={() => eliminarAnuncio()}>
-                  <Text
-                    style={{
-                      ...Platform.select({
-                        android: {
-                          color: '#fff',
-                          marginLeft: 'auto',
-                          marginRight: 'auto',
-                          marginTop: 15,
-                          marginRight: 'auto',
-                          marginLeft: 'auto',
-                          fontSize: 20,
-                        },
-                        ios: {
-                          color: '#fff',
-                          marginTop: 15,
-                          marginRight: 'auto',
-                          marginLeft: 'auto',
-                          fontSize: 20,
-                        },
-                      }),
-                    }}
-                  >
-                    <MaterialCommunityIcons
-                      name='eraser'
-                      color={'#fd5d13'}
-                      size={24}
-                    />{' '}
-                    Eliminar Anuncio
-                  </Text>
-                </TouchableOpacity>
+                    <Text
+                      style={{
+                        ...Platform.select({
+                          android: {
+                            color: '#fff',
+                            marginLeft: 'auto',
+                            marginRight: 'auto',
+                            marginTop: 15,
+                            marginRight: 'auto',
+                            marginLeft: 'auto',
+                            fontSize: 20,
+                          },
+                          ios: {
+                            color: '#fff',
+                            marginTop: 15,
+                            marginRight: 'auto',
+                            marginLeft: 'auto',
+                            fontSize: 20,
+                          },
+                        }),
+                      }}
+                    >
+                      <MaterialCommunityIcons
+                        name='lead-pencil'
+                        color={'#fd5d13'}
+                        size={24}
+                      />{' '}
+                      - Editar Anuncio
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+                <View
+                  style={{
+                    flex: 1,
+                    alignItems: 'flex-start',
+                    justifyContent: 'flex-start',
+                    marginLeft: '10%',
+                  }}
+                >
+                  <TouchableOpacity onPress={() => eliminarAnuncio()}>
+                    <Text
+                      style={{
+                        ...Platform.select({
+                          android: {
+                            color: '#fff',
+                            marginLeft: 'auto',
+                            marginRight: 'auto',
+                            marginTop: 15,
+                            marginRight: 'auto',
+                            marginLeft: 'auto',
+                            fontSize: 20,
+                          },
+                          ios: {
+                            color: '#fff',
+                            marginTop: 15,
+                            marginRight: 'auto',
+                            marginLeft: 'auto',
+                            fontSize: 20,
+                            marginBottom: '5%',
+                          },
+                        }),
+                      }}
+                    >
+                      <MaterialCommunityIcons
+                        name='eraser'
+                        color={'#fd5d13'}
+                        size={24}
+                      />{' '}
+                      - Eliminar Anuncio
+                    </Text>
+                  </TouchableOpacity>
+                </View>
               </View>
             );
           })}
