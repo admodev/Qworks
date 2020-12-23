@@ -93,6 +93,16 @@ const AnunciosPage = ({ route, navigation }) => {
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
+      <Image
+        source={require('../assets/gradients/20x20.png')}
+        style={{
+          flex: 1,
+          position: 'absolute',
+          resizeMode: 'cover',
+          width: '100%',
+          height: '5%',
+        }}
+      />
       <ScrollView>
         <Card
           style={styles.card}
@@ -274,60 +284,150 @@ const AnunciosPage = ({ route, navigation }) => {
                     {u.localidad} - {u.provincia}
                   </Text>
                 </View>
-                <TouchableOpacity
-                  onPress={() => {
-                    RootNavigation.navigate('AnuncioSeleccionado', {
-                      id: u.idAnuncio,
-                    });
-                  }}
-                  style={{
-                    borderRadius: 25,
-                    marginLeft: 0,
-                    marginRight: 0,
-                    marginBottom: '5%',
-                    marginTop: '3%',
-                    backgroundColor: 'transparent',
-                    borderWidth: 2,
-                    borderColor: '#ffffff',
-                    width: 150,
-                    alignSelf: 'center',
-                  }}
-                >
-                  <View
+                <TouchableOpacity onPress={() => shareContent()}>
+                  <Text
                     style={{
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      flexDirection: 'row',
-                      marginTop: '5%',
+                      ...Platform.select({
+                        android: {
+                          color: '#fff',
+                          marginLeft: 'auto',
+                          marginRight: 'auto',
+                          marginTop: 15,
+                          marginRight: 'auto',
+                          marginLeft: 'auto',
+                          fontSize: 20,
+                        },
+                        ios: {
+                          color: '#fff',
+                          marginTop: 15,
+                          marginRight: 'auto',
+                          marginLeft: 'auto',
+                          fontSize: 20,
+                        },
+                      }),
                     }}
                   >
-                    <View style={{ marginLeft: '10%', marginBottom: '8%' }}>
-                      <MaterialCommunityIcons
-                        name='hand'
-                        color={naranjaQueDeOficios}
-                        size={20}
-                      />
-                    </View>
-                    <Text
-                      style={{
-                        color: naranjaQueDeOficios,
-                        marginLeft: 'auto',
-                        marginRight: 'auto',
-                        fontSize: 16,
-                        marginLeft: '3%',
-                        marginBottom: '8%',
-                        fontWeight: 'bold',
-                      }}
-                    >
-                      ¡Conóceme!
-                    </Text>
-                  </View>
+                    <MaterialCommunityIcons
+                      name='share-variant'
+                      color={'#fd5d13'}
+                      size={24}
+                    />{' '}
+                    Compartir
+                  </Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() => RootNavigation.navigate('EditarAnuncioScreen')}
+                >
+                  <Text
+                    style={{
+                      ...Platform.select({
+                        android: {
+                          color: '#fff',
+                          marginLeft: 'auto',
+                          marginRight: 'auto',
+                          marginTop: 15,
+                          marginRight: 'auto',
+                          marginLeft: 'auto',
+                          fontSize: 20,
+                        },
+                        ios: {
+                          color: '#fff',
+                          marginTop: 15,
+                          marginRight: 'auto',
+                          marginLeft: 'auto',
+                          fontSize: 20,
+                        },
+                      }),
+                    }}
+                  >
+                    <MaterialCommunityIcons
+                      name='lead-pencil'
+                      color={'#fd5d13'}
+                      size={24}
+                    />{' '}
+                    Editar Anuncio
+                  </Text>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => eliminarAnuncio()}>
+                  <Text
+                    style={{
+                      ...Platform.select({
+                        android: {
+                          color: '#fff',
+                          marginLeft: 'auto',
+                          marginRight: 'auto',
+                          marginTop: 15,
+                          marginRight: 'auto',
+                          marginLeft: 'auto',
+                          fontSize: 20,
+                        },
+                        ios: {
+                          color: '#fff',
+                          marginTop: 15,
+                          marginRight: 'auto',
+                          marginLeft: 'auto',
+                          fontSize: 20,
+                        },
+                      }),
+                    }}
+                  >
+                    <MaterialCommunityIcons
+                      name='eraser'
+                      color={'#fd5d13'}
+                      size={24}
+                    />{' '}
+                    Eliminar Anuncio
+                  </Text>
                 </TouchableOpacity>
               </View>
             );
           })}
         </Card>
       </ScrollView>
+      <View>
+        <Image
+          source={require('../assets/gradients/20x20.png')}
+          style={{
+            flex: 1,
+            position: 'absolute',
+            resizeMode: 'cover',
+            width: '100%',
+          }}
+        />
+        <TouchableOpacity onPress={() => eliminarCuenta()}>
+          <Text
+            style={{
+              ...Platform.select({
+                android: {
+                  color: '#fff',
+                  marginLeft: 'auto',
+                  marginRight: 'auto',
+                  marginTop: 15,
+                  marginRight: 'auto',
+                  marginLeft: 'auto',
+                  marginBottom: 20,
+                  fontSize: 20,
+                },
+                ios: {
+                  color: '#fff',
+                  marginTop: 15,
+                  marginRight: 'auto',
+                  marginLeft: 'auto',
+                  marginBottom: 20,
+                  fontSize: 20,
+                },
+              }),
+            }}
+          >
+            <MaterialCommunityIcons
+              name='account-off'
+              color={'#fd5d13'}
+              size={24}
+            />{' '}
+            Eliminar Cuenta
+          </Text>
+        </TouchableOpacity>
+      </View>
     </SafeAreaView>
   );
 };
