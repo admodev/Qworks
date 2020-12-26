@@ -45,20 +45,21 @@ const ProfilePage = ({ navigation }) => {
   let dato = [];
 
   let id, image, nombre, apellido, actividad, emailPersonal;
-  user ? (id = user.uid) : console.log("No user logged in");
-  user ? dbRef.orderByChild("id").equalTo(id) : console.log("No user");
-  user
-    ? dbRef.on("value", (snap) => {
+  
+    if (user) {
+       id = user.uid;
+       dbRef.orderByChild("id").equalTo(id);
+       dbRef.on("value", (snap) => {
         snap.forEach((child) => {
-          key = child.key;
-          nombre = child.val().nombre;
-          image = child.val().image;
-          apellido = child.val().apellido;
-          actividad = child.val().actividad;
-          emailPersonal = child.val().emailPersonal;
+           key = child.key;
+           nombre = child.val().nombre;
+           image = child.val().image;
+           apellido = child.val().apellido;
+           actividad = child.val().actividad;
+           emailPersonal = child.val().emailPersonal;
         });
-      })
-    : console.log("No user");
+       });
+    }
 
   !nombre ? (nombre = "Nombre") : (nombre = nombre);
 
@@ -182,7 +183,7 @@ const ProfilePage = ({ navigation }) => {
               onBackdropPress={toggleOverlay}
               overlayStyle={{ width: "85%", height: "85%", borderRadius: 10 }}
             >
-              {image == null || image == undefined ? (
+              {!image ? (
                 <Image
                   source={require("../assets/icon.png")}
                   style={{

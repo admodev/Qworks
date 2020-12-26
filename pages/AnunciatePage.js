@@ -125,14 +125,10 @@ const AnunciatePage = ({ navigation }) => {
 
   useEffect(() => {
     (async () => {
-      if (Platform.OS !== "web") {
-        const {
-          status,
-        } = await ImagePicker.requestCameraRollPermissionsAsync();
-        if (status !== "granted") {
-          alert(
-            "Perdón, necesitamos tu permiso para que puedas subir una foto!"
-          );
+      if (Platform.OS !== 'web') {
+        const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+        if (status !== 'granted') {
+          alert('¡Perdón, necesitamos acceder a la galería para que pueda subir una foto!');
         }
       }
     })();
@@ -307,10 +303,7 @@ const AnunciatePage = ({ navigation }) => {
     });
     console.log(result);
     if (!result.cancelled) {
-      setImage(result.uri);
-    }
-    if (result.uri) {
-      setImage(result.uri);
+      setImage(result.uri.toString());
     }
   };
 
