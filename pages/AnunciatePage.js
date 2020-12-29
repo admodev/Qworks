@@ -166,6 +166,36 @@ const AnunciatePage = ({ navigation }) => {
     );
   }, []);
 
+  let anunciosIdsCount = [];
+  let idRefAnuncios = firebase
+    .database()
+    .ref('anuncios/')
+    .orderByKey()
+    .on('value', (snap) => {
+      snap.forEach((child) => {
+        anunciosIdsCount.push({
+          ids: child.val().id,
+        });
+      });
+    });
+
+  let anunciosCount = anunciosIdsCount.reduce(
+    (arr, elem) => arr.concat(elem.ids),
+    []
+  );
+
+  function countTrue(array) {
+    var trueCounter = [];
+    for (var i = 0; i < array.length; i++) {
+      if (array[i] === id) {
+        trueCounter.push(array[i]);
+      }
+    }
+    return trueCounter.length;
+  }
+
+  let anunciosCountResult = countTrue(anunciosCount);
+
   function concatPalabraClaveUno() {
     setPalabrasClave(palabrasClave.concat(palabraClaveUno));
   }
@@ -206,6 +236,8 @@ const AnunciatePage = ({ navigation }) => {
     setDiasHorarios(diasHorarios.concat('Domingo'));
     toggleDomingoChecked();
   }
+
+  let idAnuncio;
 
   function writeUserData(
     image,
@@ -255,6 +287,7 @@ const AnunciatePage = ({ navigation }) => {
 
       anunciosRef
         .set({
+          anuncioId: anunciosCountResult,
           id: user.uid,
           image,
           nombre: nombre,
