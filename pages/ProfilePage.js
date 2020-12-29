@@ -165,7 +165,7 @@ const ProfilePage = ({ navigation }) => {
           height: '5%',
         }}
       />
-      {user ? (
+      {firebase.auth().currentUser ? (
         <SafeAreaView style={{ flex: 1 }}>
           <Image
             source={require('../assets/gradients/20x20.png')}
@@ -236,12 +236,24 @@ const ProfilePage = ({ navigation }) => {
                 <TouchableOpacity
                   onPress={() => RootNavigation.navigate('CambiarNombreScreen')}
                 >
-                  <Text
-                    style={{ color: '#000000', fontSize: 14, marginLeft: 20 }}
-                  >
-                    <Badge value='Editar' status='primary' />
-                    Usuario
-                  </Text>
+                  <View style={{ flexDirection: 'row' }}>
+                    <View style={{ marginLeft: '5%' }}>
+                      <MaterialCommunityIcons
+                        name='pen'
+                        color={'#fd5d13'}
+                        size={20}
+                      />
+                    </View>
+                    <Text
+                      style={{
+                        color: '#000000',
+                        fontSize: 14,
+                        marginLeft: '2%',
+                      }}
+                    >
+                      Usuario
+                    </Text>
+                  </View>
                 </TouchableOpacity>
               ) : (
                 <TouchableOpacity
