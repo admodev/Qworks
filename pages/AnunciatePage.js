@@ -287,7 +287,7 @@ const AnunciatePage = ({ navigation }) => {
 
       anunciosRef
         .set({
-          anuncioId: anunciosCountResult,
+          anuncioId: anunciosCountResult + 1,
           id: user.uid,
           image,
           nombre: nombre,
