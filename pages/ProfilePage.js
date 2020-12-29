@@ -95,7 +95,24 @@ const ProfilePage = ({ navigation }) => {
       aspect: [4, 3],
       quality: 0.5,
     });
-    (newImage) => setNewImage(result.uri);
+
+    if (!result.cancelled) {
+      user
+        .updateProfile({
+          photoURL: result.uri,
+        })
+        .then(
+          function () {
+            var photoURL = user.photoURL;
+            Updates.reloadAsync();
+          },
+          function (error) {
+            alert(
+              'Hubo un error al subir su foto, compruebe el formato de la misma y vuelva a intentarlo.'
+            );
+          }
+        );
+    }
   };
 
   function updateImage(newImage) {
@@ -191,7 +208,7 @@ const ProfilePage = ({ navigation }) => {
               onBackdropPress={toggleOverlay}
               overlayStyle={{ width: '85%', height: '85%', borderRadius: 10 }}
             >
-              {!image ? (
+              {!user.photoURL ? (
                 <Image
                   source={require('../assets/icon.png')}
                   style={{
@@ -202,7 +219,7 @@ const ProfilePage = ({ navigation }) => {
                 />
               ) : (
                 <Image
-                  source={{ uri: fotoDePerfil }}
+                  source={{ uri: user.photoURL }}
                   style={{
                     width: 60,
                     height: 60,
@@ -211,15 +228,17 @@ const ProfilePage = ({ navigation }) => {
                 />
               )}
             </Overlay>
-            {image ? (
-              <Image
-                source={require('../assets/icon.png')}
-                style={{
-                  width: 60,
-                  height: 60,
-                  borderRadius: 15,
-                }}
-              />
+            {user.photoURL ? (
+              <TouchableOpacity onPress={pickImage}>
+                <Image
+                  source={{ uri: user.photoURL }}
+                  style={{
+                    width: 60,
+                    height: 60,
+                    borderRadius: 15,
+                  }}
+                />
+              </TouchableOpacity>
             ) : (
               <TouchableOpacity onPress={pickImage}>
                 <Image
