@@ -10,7 +10,14 @@ import {
   Text,
   Share,
 } from 'react-native';
-import { Avatar, Button, Card, Icon, Input, Overlay } from 'react-native-elements';
+import {
+  Avatar,
+  Button,
+  Card,
+  Icon,
+  Input,
+  Overlay,
+} from 'react-native-elements';
 import * as firebase from 'firebase';
 import 'firebase/firestore';
 import 'firebase/database';
@@ -73,7 +80,12 @@ const AnunciosPage = ({ route, navigation }) => {
   }, []);
 
   function eliminarAnuncio() {
-    firebase.database().ref('anuncios/').child(id).remove();
+    firebase
+      .database()
+      .ref('anuncios/')
+      .orderByChild('id')
+      .equalTo(id)
+      .remove();
     Updates.reloadAsync();
   }
 
@@ -115,6 +127,52 @@ const AnunciosPage = ({ route, navigation }) => {
           height: '5%',
         }}
       />
+      <View
+        style={{
+          ...Platform.select({
+            android: {
+              width: 30,
+              height: 20,
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              flexDirection: 'row',
+              marginTop: '15%',
+              marginLeft: '5%',
+            },
+            ios: {
+              width: 30,
+              height: 30,
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              flexDirection: 'row',
+              marginTop: '8%',
+              backgroundColor: 'transparent',
+            },
+          }),
+        }}
+      >
+        <TouchableOpacity
+          onPress={() => navigation.goBack()}
+          style={{
+            ...Platform.select({
+              android: {
+                backgroundColor: 'transparent',
+              },
+              ios: {
+                backgroundColor: 'transparent',
+                left: 25,
+              },
+            }),
+          }}
+        >
+          <MaterialCommunityIcons
+            name='arrow-left'
+            color={naranjaQueDeOficios}
+            size={32}
+            style={{ backgroundColor: 'transparent' }}
+          />
+        </TouchableOpacity>
+      </View>
       <ScrollView>
         <Card
           style={styles.card}
@@ -125,7 +183,7 @@ const AnunciosPage = ({ route, navigation }) => {
                 borderRadius: 15,
                 backgroundColor: 'transparent',
                 borderWidth: 0,
-                marginTop: '2%',
+                marginTop: '10%',
                 elevation: 0,
               },
               ios: {
@@ -133,7 +191,7 @@ const AnunciosPage = ({ route, navigation }) => {
                 borderRadius: 15,
                 backgroundColor: 'transparent',
                 borderWidth: 0,
-                marginTop: '10%',
+                marginTop: '5%',
                 elevation: 0,
                 width: '85%',
                 alignSelf: 'center',
@@ -400,6 +458,7 @@ const AnunciosPage = ({ route, navigation }) => {
                             marginRight: 'auto',
                             marginLeft: 'auto',
                             fontSize: 20,
+                            marginBottom: '5%',
                           },
                           ios: {
                             color: '#fff',
@@ -473,10 +532,34 @@ const AnunciosPage = ({ route, navigation }) => {
           isVisible={eliminarCuentaIsVisible}
           onBackdropPress={toggleEliminarCuenta}
         >
-          <Text style={{ fontSize: 14, marginTop: "5%", textAlign: 'center' }}>Todos tus datos se perderan ¿Deseas continuar?</Text>
-          <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
-            <Button title='No' buttonStyle={{ width: 80, height: 40, marginTop: "15%", marginRight: "5%" }} />
-            <Button title='Si' buttonStyle={{ width: 80, height: 40, marginTop: "15%", marginLeft: "5%" }} />
+          <Text style={{ fontSize: 14, marginTop: '5%', textAlign: 'center' }}>
+            Todos tus datos se perderan ¿Deseas continuar?
+          </Text>
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            <Button
+              title='No'
+              buttonStyle={{
+                width: 80,
+                height: 40,
+                marginTop: '15%',
+                marginRight: '5%',
+              }}
+            />
+            <Button
+              title='Si'
+              buttonStyle={{
+                width: 80,
+                height: 40,
+                marginTop: '15%',
+                marginLeft: '5%',
+              }}
+            />
           </View>
         </Overlay>
       </View>

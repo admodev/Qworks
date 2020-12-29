@@ -44,14 +44,18 @@ const Tab = createBottomTabNavigator();
 
 export function MainTabNavigator({ navigation }) {
   return (
-    <Tab.Navigator>
+    <Tab.Navigator
+      tabBarOptions={{
+        activeTintColor: '#fd5d13',
+      }}
+    >
       <Tab.Screen
         name='OnboardingPage'
         component={OnboardingPage}
         options={{
           tabBarLabel: 'Inicio',
           tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name='home' color={'#000000'} size={size} />
+            <MaterialCommunityIcons name='home' color={'#fd5d13'} size={size} />
           ),
         }}
       />
@@ -63,7 +67,7 @@ export function MainTabNavigator({ navigation }) {
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons
               name='magnify'
-              color={'#000000'}
+              color={'#fd5d13'}
               size={size}
             />
           ),
@@ -90,8 +94,8 @@ export function MainTabNavigator({ navigation }) {
                 />
               )}
               <MaterialCommunityIcons
-                name='message'
-                color={'#000000'}
+                name='comment-text'
+                color={'#fd5d13'}
                 size={35}
               />
             </View>
@@ -106,7 +110,7 @@ export function MainTabNavigator({ navigation }) {
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons
               name='shopping'
-              color={'#000000'}
+              color={'#fd5d13'}
               size={size}
             />
           ),
@@ -117,11 +121,11 @@ export function MainTabNavigator({ navigation }) {
           name='ProfilePage'
           component={ProfilePage}
           options={{
-            tabBarLabel: 'Mi Perfil',
+            tabBarLabel: 'Perfil',
             tabBarIcon: ({ color, size }) => (
               <MaterialCommunityIcons
                 name='account'
-                color={'#000000'}
+                color={'#fd5d13'}
                 size={size}
               />
             ),

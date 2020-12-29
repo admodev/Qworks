@@ -1,18 +1,18 @@
-import React from "react";
-import { SafeAreaView, TouchableOpacity } from "react-native";
-import { Card, Text } from "react-native-elements";
+import React from 'react';
+import { SafeAreaView, TouchableOpacity } from 'react-native';
+import { Card, Text } from 'react-native-elements';
 
 export default class ShopPage extends React.Component {
   render() {
     return (
       <SafeAreaView
-        style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
+        style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}
       >
         <Card>
-          <Text style={{ textAlign: "center", marginTop: 25 }} h3>
+          <Text style={{ textAlign: 'center', marginTop: 25 }} h3>
             ¡Hola!
           </Text>
-          <Text style={{ margin: 20, textAlign: "justify" }} h3>
+          <Text style={{ margin: 20, textAlign: 'justify' }} h3>
             En breve vas a poder disfrutar de esta sección.
           </Text>
           <TouchableOpacity
@@ -22,17 +22,17 @@ export default class ShopPage extends React.Component {
               style={{
                 ...Platform.select({
                   android: {
-                    color: "orange",
+                    color: '#fd5d13',
                     fontSize: 20,
-                    fontWeight: "bold",
-                    alignSelf: "center",
+                    fontWeight: 'bold',
+                    alignSelf: 'center',
                     margin: 20,
                   },
                   ios: {
-                    color: "orange",
+                    color: '#fd5d13',
                     fontSize: 20,
-                    fontWeight: "bold",
-                    alignSelf: "center",
+                    fontWeight: 'bold',
+                    alignSelf: 'center',
                     margin: 20,
                   },
                 }),
