@@ -244,22 +244,56 @@ const ProfilePage = ({ navigation }) => {
                   </Text>
                 </TouchableOpacity>
               ) : (
-                <Text
-                  style={{ color: '#000000', fontSize: 14, marginLeft: 20 }}
+                <TouchableOpacity
+                  onPress={() => RootNavigation.navigate('CambiarNombreScreen')}
                 >
-                  {user.displayName}
-                </Text>
+                  <View style={{ flexDirection: 'row' }}>
+                    <View style={{ marginLeft: '5%' }}>
+                      <MaterialCommunityIcons
+                        name='pen'
+                        color={'#fd5d13'}
+                        size={20}
+                      />
+                    </View>
+                    <Text
+                      style={{
+                        color: '#000000',
+                        fontSize: 14,
+                        marginLeft: '2%',
+                      }}
+                    >
+                      {user.displayName}
+                    </Text>
+                  </View>
+                </TouchableOpacity>
               )}
-              <Text
-                style={{
-                  color: '#000000',
-                  fontSize: 14,
-                  marginLeft: 20,
-                  marginTop: 10,
-                }}
-              >
-                {user.email}
-              </Text>
+              <View style={{ flexDirection: 'row', marginTop: '2%' }}>
+                <View style={{ marginLeft: '5%' }}>
+                  <MaterialCommunityIcons
+                    name='email'
+                    color={'#000000'}
+                    size={20}
+                  />
+                </View>
+                <Text
+                  style={{
+                    ...Platform.select({
+                      android: {
+                        color: '#000000',
+                        fontSize: 14,
+                        marginLeft: '2%',
+                      },
+                      ios: {
+                        color: '#000000',
+                        fontSize: 14,
+                        marginLeft: '2%',
+                      },
+                    }),
+                  }}
+                >
+                  {user.email}
+                </Text>
+              </View>
             </View>
           </View>
           {anunciosCountResult >= 3 ? (
