@@ -149,7 +149,7 @@ export default function LoginPage({ navigation }) {
           'Hubo un error al ingresar, por favor compruebe sus datos e intentelo de nuevo.'
         );
       } else {
-        alert('Está siendo logueado, por favor espere...');
+        alert('Iniciando sesión, por favor espere...');
         setTimeout(() => {
           Updates.reloadAsync();
         }, 3000);
