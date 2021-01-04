@@ -30,6 +30,7 @@ import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityI
 import * as Updates from "expo-updates";
 
 let calificacion = "calificacion";
+let favs = [];
 
 const AnuncioSeleccionado = ({ route, navigation }) => {
     let id = route.params.id;
@@ -123,16 +124,17 @@ const AnuncioSeleccionado = ({ route, navigation }) => {
 
     let user = firebase.auth().currentUser;
 
-    function agregarFavorito(id) {
-        firebase
-            .database()
-            .ref("favoritos/" + user.uid)
-            .set({
-                favoritos: id,
-            })
-            .then(function () {
-                Updates.reloadAsync();
-            });
+    const agregarFavorito = id => { firebase
+        .database()
+        .ref("favoritos/")
+        .push()
+        .set({
+            user: firebase.auth().currentUser.uid,
+            favs: id,
+        })
+        .then(() => {
+            setFavoritosTint(!favoritosTint);
+        });
     }
 
     let [rating, setRating] = useState(0);
@@ -177,10 +179,6 @@ const AnuncioSeleccionado = ({ route, navigation }) => {
                 dialogTitle: `Mira el perfil de ${nombre}`,
             }
         );
-    }
-
-    function favoritosColor() {
-        setFavoritosTint(!favoritosTint);
     }
 
     return (
@@ -247,7 +245,7 @@ const AnuncioSeleccionado = ({ route, navigation }) => {
         />
         </TouchableOpacity>
         <TouchableOpacity
-        onPress={() => favoritosColor()}
+        onPress={() => agregarFavorito(id)}
         style={{
             ...Platform.select({
                 android: {
