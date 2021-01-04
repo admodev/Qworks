@@ -88,7 +88,7 @@ export function MainTabNavigator({ navigation }) {
                     height: 15,
                     borderRadius: 100,
                     position: 'absolute',
-                    backgroundColor: 'orange',
+                    backgroundColor: '#fd5d13',
                   }}
                   containerStyle={{ position: 'absolute', top: -4, left: -4 }}
                 />
@@ -140,7 +140,7 @@ export function MainTabNavigator({ navigation }) {
             tabBarIcon: ({ color, size }) => (
               <MaterialCommunityIcons
                 name='account'
-                color={'#000000'}
+                color={'#fd5d13'}
                 size={size}
               />
             ),

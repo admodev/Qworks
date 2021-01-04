@@ -97,6 +97,10 @@ const AnunciatePage = ({ navigation }) => {
   const toggleDomingoChecked = React.useCallback(() =>
     setDomingoChecked(!domingoChecked)
   );
+  const [lunesViernesChecked, setLunesViernesChecked] = useState(false);
+  const toggleLunesViernesChecked = React.useCallback(() => {
+    setLunesViernesChecked(!lunesViernesChecked);
+  });
   const [desdeAmChecked, setDesdeAmChecked] = useState(false);
   const toggleDesdeAmChecked = React.useCallback(() =>
     setDesdeAmChecked(!desdeAmChecked)
@@ -235,6 +239,11 @@ const AnunciatePage = ({ navigation }) => {
   function concatDomingo() {
     setDiasHorarios(diasHorarios.concat('Domingo'));
     toggleDomingoChecked();
+  }
+
+  function concatLunesViernes() {
+    setDiasHorarios(diasHorarios.concat('Lunes a Viernes'));
+    toggleLunesViernesChecked();
   }
 
   let idAnuncio;
@@ -871,6 +880,8 @@ const AnunciatePage = ({ navigation }) => {
             />
             <CheckBox
               title='Lunes a Viernes'
+              onPress={() => concatLunesViernes()}
+              checked={lunesViernesChecked}
               containerStyle={{
                 backgroundColor: 'transparent',
                 borderColor: 'transparent',

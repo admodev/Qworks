@@ -75,11 +75,10 @@ export default function Chat({ route, navigation }) {
     let actividad;
     let emailPersonal;
 
-    //TODO: probar funciones de chat y notificaciones en alpha abierta.
-
     let fetchName = firebase.database().ref("anuncios/").orderByChild("id").equalTo(currentUser).on("value", (snap) => {
             snap.forEach((child) => {
-                key: child.key, (nombre = child.val().nombre);
+                key = child.key;
+                nombre = child.val().nombre;
                 fotoPerfil = child.val().image;
                 actividad = child.val().actividad;
                 emailPersonal = child.val().emailPersonal;
@@ -120,6 +119,7 @@ export default function Chat({ route, navigation }) {
             appendMessages(messagesFirestore);
         });
         return () => unsubscribe();
+
         (async () => {
             if (Platform.OS !== "web") {
                 const {
