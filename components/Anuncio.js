@@ -59,7 +59,8 @@ const AnuncioSeleccionado = ({ route, navigation }) => {
         numeroDeMatricula,
         pisoDptoCasa,
         provincia,
-        telefono;
+        telefono,
+        recomendaciones;
     let dbRef = firebase
         .database()
         .ref("anuncios/")
@@ -87,8 +88,11 @@ const AnuncioSeleccionado = ({ route, navigation }) => {
             localidad = child.val().localidad;
             provincia = child.val().provincia;
             nombreDeLaEmpresa = child.val().nombreDeLaEmpresa;
+            recomendaciones = child.val().recomendaciones;
         });
     });
+    !recomendaciones ? recomendaciones = 0 : console.log(recomendaciones);
+    const [count, setCount] = useState(recomendaciones);
     let key, userId, comentario;
     var arr = [];
     let comentariosRef = firebase
@@ -179,6 +183,11 @@ const AnuncioSeleccionado = ({ route, navigation }) => {
                 dialogTitle: `Mira el perfil de ${nombre}`,
             }
         );
+    }
+
+    const handleRecommend = () => {
+        setCount(prevCount => prevCount+1);
+        alert(`Cantidad de recomendaciones: ${count}`);
     }
 
     return (
@@ -903,7 +912,7 @@ const AnuncioSeleccionado = ({ route, navigation }) => {
         ) : (
             <Button
             title="Recomendar"
-            onPress={() => calificarUsuario(rating)}
+            onPress={handleRecommend}
             titleStyle={{ fontSize: 12, marginBottom: -20 }}
             buttonStyle={{
                 width: 120,
