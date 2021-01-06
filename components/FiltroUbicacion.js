@@ -136,10 +136,16 @@ class UbicacionPage extends Component {
                             initialRegion={region}
                         >
                         <MapView.Marker
-                            title="This is a title"
-                            description="This is a description"
+                            title={firebase.auth().currentUser.displayName}
+                            description="A tu alrededor encontrarás profesionales cercanos."
                             coordinate={region}
+                        >
+                        <MaterialCommunityIcons
+                            name="account"
+                            color={"#fd5d13"}
+                            size={32}
                         />
+                        </MapView.Marker>
                         </MapView>
                     )}
                     </ScrollView>
@@ -160,7 +166,8 @@ const styles = StyleSheet.create({
     },
     map: {
         width: SCREEN_WIDTH,
-        height: 250,
+        height: 500,
+        marginTop: '5%'
     },
 });
 
