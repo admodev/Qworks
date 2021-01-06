@@ -88,56 +88,62 @@ class UbicacionPage extends Component {
 
         return(
             <SafeAreaView style={{ flex: 1 }}>
-            <View style={styles.container}>
-            <ScrollView
-            style={StyleSheet.absoluteFill}
-            contentContainerStyle={styles.scrollview}
-            >
-            {!this.state.ready && (
-                <View style={{ 
-                    ...Platform.select({
-                        android: {
-                            padding: 10,
-                            marginTop: "10%"
-                        },
-                        ios: {
-                            padding: 10,
-                            marginTop: "20%"
-                        },
-                    }) 
-                }}>
-                <Text style={{ fontSize: 18, fontWeight: "bold", marginBottom: 15 }}>Cargando...</Text>
-                <ActivityIndicator size="large" color="orange" style={{
-                    ...Platform.select({
-                        android: {
-                            marginBottom: "50%" 
-                        }, 
-                    }) 
-                }} />
+                <View style={styles.container}>
+                    <ScrollView
+                        style={StyleSheet.absoluteFill}
+                        contentContainerStyle={styles.scrollview}
+                    >
+                    {!this.state.ready && (
+                        <View 
+                            style={{ 
+                                ...Platform.select({
+                                    android: {
+                                        padding: 10,
+                                        marginTop: "10%"
+                                    },
+                                    ios: {
+                                        padding: 10,
+                                        marginTop: "20%"
+                                    },
+                                }) 
+                            }}
+                        >
+                            <Text style={{ fontSize: 18, fontWeight: "bold", marginBottom: 15 }}>Cargando...</Text>
+                            <ActivityIndicator
+                                size="large"
+                                color="orange"
+                                style={{
+                                    ...Platform.select({
+                                        android: {
+                                            marginBottom: "50%" 
+                                        }, 
+                                    }) 
+                                }} 
+                            />
+                        </View>
+                    )}
+                    {this.state.error && (
+                        <Text>{this.state.error}</Text>
+                    )}
+                    {this.state.ready && (
+                        <MapView
+                            provider={this.props.provider}
+                            style={styles.map}
+                            scrollEnabled={true}
+                            zoomEnabled={true}
+                            pitchEnabled={true}
+                            rotateEnabled={true}
+                            initialRegion={region}
+                        >
+                        <MapView.Marker
+                            title="This is a title"
+                            description="This is a description"
+                            coordinate={region}
+                        />
+                        </MapView>
+                    )}
+                    </ScrollView>
                 </View>
-            )}
-            {this.state.error && (
-                <Text>{this.state.error}</Text>
-            )}
-            {this.state.ready && (
-                <MapView
-                provider={this.props.provider}
-                style={styles.map}
-                scrollEnabled={true}
-                zoomEnabled={true}
-                pitchEnabled={true}
-                rotateEnabled={true}
-                initialRegion={region}
-                >
-                <MapView.Marker
-                title="This is a title"
-                description="This is a description"
-                coordinate={region}
-                />
-                </MapView>
-            )}
-            </ScrollView>
-            </View>
             </SafeAreaView>
         );
     }
