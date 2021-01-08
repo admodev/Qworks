@@ -125,70 +125,25 @@ class RenderCards extends Component {
               }}
             />
           )}
-          <View style={{ marginTop: "-8%" }}>
-            <AirbnbRating
-              size={18}
-              showRating={true}
-              reviews={[""]}
-              type="star"
-              onFinishRating={(rating) => setRating(rating)}
-            />
-          </View>
           <View style={{ margin: "3%" }}>
             <Text
               style={{
                 color: "#ffffff",
                 textAlign: "center",
-                fontSize: 30,
+                fontSize: 24,
                 fontWeight: "bold",
               }}
             >
               {this.props.name}
             </Text>
-          </View>
-          <View
-            style={{
-              marginTop: "-2%",
-              flexDirection: "row",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
             <Text
               style={{
                 color: "#ffffff",
                 textAlign: "center",
-                fontSize: 24,
+                fontSize: 18,
               }}
             >
-              {this.props.actividad}
-            </Text>
-            <MaterialCommunityIcons
-              name="account-group"
-              color={naranjaQueDeOficios}
-              size={22}
-              style={{ marginLeft: "3%" }}
-            />
-            <Text
-              style={{
-                color: "#8DB600",
-                textAlign: "center",
-                fontSize: 14,
-                marginLeft: "2%",
-              }}
-            >
-              {this.props.recomendaciones}
-            </Text>
-          </View>
-          <View style={{ marginTop: "5%" }}>
-            <Text
-              style={{
-                color: "#ffffff",
-                textAlign: "center",
-                fontSize: 16,
-              }}
-            >
-              {this.props.localidad} - {this.props.provincia}
+              {this.props.email}
             </Text>
           </View>
           <TouchableOpacity
@@ -218,13 +173,6 @@ class RenderCards extends Component {
                 marginTop: "5%",
               }}
             >
-              <View style={{ marginLeft: "10%", marginBottom: "8%" }}>
-                <MaterialCommunityIcons
-                  name="hand"
-                  color={naranjaQueDeOficios}
-                  size={20}
-                />
-              </View>
               <Text
                 style={{
                   color: naranjaQueDeOficios,
@@ -234,9 +182,11 @@ class RenderCards extends Component {
                   marginLeft: "3%",
                   marginBottom: "8%",
                   fontWeight: "bold",
+                  marginLeft: "auto",
+                  marginRight: "auto",
                 }}
               >
-                Consultar
+                ¡Consultar!
               </Text>
             </View>
           </TouchableOpacity>
