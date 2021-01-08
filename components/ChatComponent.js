@@ -127,7 +127,7 @@ export default function Chat({ route, navigation }) {
 
   const receiver = secondUserId;
 
-  let token = useEffect(() => {
+  useEffect(() => {
     toggleTimer();
 
     if (chatsRef.where("user.receiver", "==", receiver)) {
