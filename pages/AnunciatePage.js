@@ -34,7 +34,6 @@ const AnunciatePage = ({ navigation }) => {
   const [errorMsg, setErrorMsg] = useState(null);
 
   const [image, setImage] = useState(null);
-  const [photoCounter, setPhotoCounter] = useState(1);
   const [nombre, setNombre] = useState("");
   const [apellido, setApellido] = useState("");
   const [emailPersonal, setEmailPersonal] = useState("");
@@ -272,19 +271,16 @@ const AnunciatePage = ({ navigation }) => {
     const response = await fetch(uri);
     const blob = await response.blob();
 
-    setPhotoCounter(photoCounter + 1);
-
     var photoRef = firebase
       .storage()
       .ref()
-      .child("profilePictures/" + user.uid + '-' + photoCounter);
+      .child("profilePictures/" + user.uid + "-" + ++anunciosCountResult);
     return photoRef.put(blob);
   }
 
   let idAnuncio;
 
   function writeUserData(
-    image,
     nombre,
     apellido,
     emailPersonal,
@@ -333,7 +329,6 @@ const AnunciatePage = ({ navigation }) => {
         .set({
           anuncioId: anunciosCountResult + 1,
           id: user.uid,
-          image,
           nombre: nombre,
           apellido: apellido,
           emailPersonal: emailPersonal,
@@ -1053,7 +1048,6 @@ const AnunciatePage = ({ navigation }) => {
           <Button
             onPress={() =>
               writeUserData(
-                image,
                 nombre,
                 apellido,
                 emailPersonal,

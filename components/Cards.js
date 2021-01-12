@@ -55,9 +55,31 @@ class CardsUsuarios extends React.Component {
             actividad: child.val().actividad,
             emailPersonal: child.val().emailPersonal,
             idAnuncio: child.val().id,
+            contadorAnuncio: child.val().anuncioId,
             localidad: child.val().localidad,
             provincia: child.val().provincia,
           });
+          var photoRef = firebase
+            .storage()
+            .ref(
+              "profilePictures/" + items.idAnuncio + "-" + items.contadorAnuncio
+            );
+          photoRef
+            .getDownloadURL()
+            .then((url) => {
+              var xhr = new XMLHttpRequest();
+              xhr.responseType = "blob";
+              xhr.onload = function (event) {
+                var blob = xhr.response;
+              };
+              xhr.open("GET", url);
+              xhr.send();
+
+              this.setState({ fotoDePerfil: url });
+            })
+            .catch((error) => {
+              console.log(error.message);
+            });
         });
         itm = items;
         this.setState({ items: items });
@@ -100,25 +122,6 @@ class CardsUsuarios extends React.Component {
 
     const naranjaQueDeOficios = "#fd5d13";
 
-    var photoRef = firebase
-      .storage()
-      .ref("profilePictures/PlsfYMo9kDdPKnHIuZ0uPJkTyeL20");
-    photoRef
-      .getDownloadURL()
-      .then((url) => {
-        var xhr = new XMLHttpRequest();
-        xhr.responseType = "blob";
-        xhr.onload = function (event) {
-          var blob = xhr.response;
-        };
-        xhr.open("GET", url);
-        xhr.send();
-
-        this.setState({ fotoDePerfil: url });
-      })
-      .catch((error) => {
-        alert(error.message);
-      });
     return (
       <SafeAreaView style={{ flex: 1 }}>
         {Platform.OS === "ios" ? (

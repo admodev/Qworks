@@ -22,6 +22,7 @@ import * as firebase from "firebase";
 import "firebase/firestore";
 import "firebase/database";
 import "firebase/auth";
+import "firebase/storage";
 import * as RootNavigation from "../RootNavigation.js";
 import { StackActions } from "@react-navigation/native";
 import CardsUsuarios from "./Cards";
@@ -35,6 +36,7 @@ let favs = [];
 const AnuncioSeleccionado = ({ route, navigation }) => {
   let id = route.params.id;
   let routeParamsToString = id.toString();
+  let [fotoDePerfil, setFotoDePerfil] = useState("");
   const naranjaQueDeOficios = "#fd5d13";
   const favoritosBackground = "transparent";
   const [favoritosTint, setFavoritosTint] = useState(false);
@@ -42,6 +44,7 @@ const AnuncioSeleccionado = ({ route, navigation }) => {
     nombre,
     apellido,
     actividad,
+    contadorAnuncio,
     emailPersonal,
     celular,
     descripcionPersonal,
@@ -75,6 +78,7 @@ const AnuncioSeleccionado = ({ route, navigation }) => {
       actividad = child.val().actividad;
       emailPersonal = child.val().emailPersonal;
       id = child.val().id;
+      contadorAnuncio = child.val().anuncioId;
       celular = child.val().celular;
       descripcionPersonal = child.val().descripcionPersonal;
       desde = child.val().desde;
@@ -190,6 +194,26 @@ const AnuncioSeleccionado = ({ route, navigation }) => {
     setCount((prevCount) => prevCount + 1);
     alert(`Cantidad de recomendaciones: ${count}`);
   };
+
+  var photoRef = firebase
+    .storage()
+    .ref("profilePictures/" + id + "-" + contadorAnuncio);
+  photoRef
+    .getDownloadURL()
+    .then((url) => {
+      var xhr = new XMLHttpRequest();
+      xhr.responseType = "blob";
+      xhr.onload = function (event) {
+        var blob = xhr.response;
+      };
+      xhr.open("GET", url);
+      xhr.send();
+
+      setFotoDePerfil(url);
+    })
+    .catch((error) => {
+      console.log(error.message);
+    });
 
   return (
     <SafeAreaView
@@ -315,7 +339,7 @@ const AnuncioSeleccionado = ({ route, navigation }) => {
             {image == null ? (
               <View style={{ alignItems: "center", justifyContent: "center" }}>
                 <Card.Image
-                  source={require("../assets/icon.png")}
+                  source={{ uri: fotoDePerfil }}
                   style={{
                     ...Platform.select({
                       android: {
