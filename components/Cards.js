@@ -21,6 +21,7 @@ import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityI
 import * as firebase from "firebase";
 import "firebase/firestore";
 import "firebase/database";
+import "firebase/storage";
 import "firebase/auth";
 import * as RootNavigation from "../RootNavigation.js";
 import { StackActions } from "@react-navigation/native";
@@ -35,6 +36,7 @@ class CardsUsuarios extends React.Component {
     this.state = {
       items: [],
       search: "",
+      fotoDePerfil: "",
     };
   }
 
@@ -75,6 +77,7 @@ class CardsUsuarios extends React.Component {
       }
     });
   }
+
   filterList(items) {
     return items.filter(
       (itm) =>
@@ -96,6 +99,26 @@ class CardsUsuarios extends React.Component {
     var user = firebase.auth().currentUser;
 
     const naranjaQueDeOficios = "#fd5d13";
+
+    var photoRef = firebase
+      .storage()
+      .ref("profilePictures/PlsfYMo9kDdPKnHIuZ0uPJkTyeL20");
+    photoRef
+      .getDownloadURL()
+      .then((url) => {
+        var xhr = new XMLHttpRequest();
+        xhr.responseType = "blob";
+        xhr.onload = function (event) {
+          var blob = xhr.response;
+        };
+        xhr.open("GET", url);
+        xhr.send();
+
+        this.setState({ fotoDePerfil: url });
+      })
+      .catch((error) => {
+        alert(error.message);
+      });
     return (
       <SafeAreaView style={{ flex: 1 }}>
         {Platform.OS === "ios" ? (
@@ -254,7 +277,7 @@ class CardsUsuarios extends React.Component {
                       borderRadius: 10,
                     }}
                   />
-                  {!image ? (
+                  {!this.state.fotoDePerfil ? (
                     <View
                       style={{ alignItems: "center", justifyContent: "center" }}
                     >
@@ -282,18 +305,18 @@ class CardsUsuarios extends React.Component {
                     </View>
                   ) : (
                     <Card.Image
-                      source={{ uri: image }}
+                      source={{ uri: this.state.fotoDePerfil }}
                       style={{
                         ...Platform.select({
                           android: {
-                            borderRadius: 100,
+                            borderRadius: 25,
                             marginTop: 10,
                             marginBottom: 20,
                             marginLeft: 60,
                             marginRight: 60,
                           },
                           ios: {
-                            borderRadius: 100,
+                            borderRadius: 25,
                             marginTop: 10,
                             marginBottom: 20,
                             marginLeft: 60,

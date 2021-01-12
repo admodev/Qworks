@@ -34,7 +34,7 @@ const AnunciatePage = ({ navigation }) => {
   const [errorMsg, setErrorMsg] = useState(null);
 
   const [image, setImage] = useState(null);
-  const [photoCounter, setPhotoCounter] = useState(0);
+  const [photoCounter, setPhotoCounter] = useState(1);
   const [nombre, setNombre] = useState("");
   const [apellido, setApellido] = useState("");
   const [emailPersonal, setEmailPersonal] = useState("");
@@ -277,7 +277,7 @@ const AnunciatePage = ({ navigation }) => {
     var photoRef = firebase
       .storage()
       .ref()
-      .child("profilePictures/" + user.uid + photoCounter);
+      .child("profilePictures/" + user.uid + '-' + photoCounter);
     return photoRef.put(blob);
   }
 
