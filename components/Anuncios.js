@@ -69,6 +69,7 @@ const AnunciosPage = ({ route, navigation }) => {
             actividad: child.val().actividad,
             emailPersonal: child.val().emailPersonal,
             idAnuncio: child.val().id,
+            anuncioId: child.val().anuncioId,
             localidad: child.val().localidad,
             provincia: child.val().provincia,
           });
@@ -78,16 +79,6 @@ const AnunciosPage = ({ route, navigation }) => {
         console.log(itm);
       });
   }, []);
-
-  function eliminarAnuncio() {
-    firebase
-      .database()
-      .ref('anuncios/')
-      .orderByChild('id')
-      .equalTo(id)
-      .remove();
-    Updates.reloadAsync();
-  }
 
   function eliminarCuenta() {
     admin
@@ -166,7 +157,7 @@ const AnunciosPage = ({ route, navigation }) => {
           }}
         >
           <MaterialCommunityIcons
-            name='arrow-left'
+            name="arrow-left"
             color={naranjaQueDeOficios}
             size={32}
             style={{ backgroundColor: 'transparent' }}
@@ -208,6 +199,29 @@ const AnunciosPage = ({ route, navigation }) => {
             let userProfilePic = storageRef
               .child('userProfilePics/')
               .child(u.idAnuncio).child;
+
+            function eliminarAnuncio(anuncioId) {
+              try {
+                firebase
+                  .database()
+                  .ref('anuncios/')
+                  .orderByChild('anuncioId')
+                  .equalTo(u.anuncioId)
+                  .once('value')
+                  .then(function (snapshot) {
+                    var promises = [];
+                    snapshot.forEach(function (child) {
+                      promises.push(child.ref.remove());
+                    });
+                    Promise.all(promises).then(function () {
+                      console.log('All removed!');
+                    });
+                  });
+                // Updates.reloadAsync();
+              } catch (error) {
+                console.log(error.message);
+              }
+            }
             return (
               <View
                 key={i}
@@ -327,7 +341,7 @@ const AnunciosPage = ({ route, navigation }) => {
                     {u.actividad} -
                   </Text>
                   <MaterialCommunityIcons
-                    name='account-group'
+                    name="account-group"
                     color={naranjaQueDeOficios}
                     size={22}
                     style={{ marginLeft: '3%' }}
@@ -386,7 +400,7 @@ const AnunciosPage = ({ route, navigation }) => {
                       }}
                     >
                       <MaterialCommunityIcons
-                        name='share-variant'
+                        name="share-variant"
                         color={'#fd5d13'}
                         size={24}
                       />{' '}
@@ -430,7 +444,7 @@ const AnunciosPage = ({ route, navigation }) => {
                       }}
                     >
                       <MaterialCommunityIcons
-                        name='lead-pencil'
+                        name="lead-pencil"
                         color={'#fd5d13'}
                         size={24}
                       />{' '}
@@ -446,7 +460,9 @@ const AnunciosPage = ({ route, navigation }) => {
                     marginLeft: '10%',
                   }}
                 >
-                  <TouchableOpacity onPress={() => eliminarAnuncio()}>
+                  <TouchableOpacity
+                    onPress={() => eliminarAnuncio(u.anuncioId)}
+                  >
                     <Text
                       style={{
                         ...Platform.select({
@@ -472,7 +488,7 @@ const AnunciosPage = ({ route, navigation }) => {
                       }}
                     >
                       <MaterialCommunityIcons
-                        name='eraser'
+                        name="eraser"
                         color={'#fd5d13'}
                         size={24}
                       />{' '}
@@ -521,7 +537,7 @@ const AnunciosPage = ({ route, navigation }) => {
             }}
           >
             <MaterialCommunityIcons
-              name='account-off'
+              name="account-off"
               color={'#fd5d13'}
               size={24}
             />{' '}
@@ -543,7 +559,7 @@ const AnunciosPage = ({ route, navigation }) => {
             }}
           >
             <Button
-              title='No'
+              title="No"
               buttonStyle={{
                 width: 80,
                 height: 40,
@@ -552,7 +568,7 @@ const AnunciosPage = ({ route, navigation }) => {
               }}
             />
             <Button
-              title='Si'
+              title="Si"
               buttonStyle={{
                 width: 80,
                 height: 40,
