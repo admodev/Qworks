@@ -62,6 +62,7 @@ class CardsUsuarios extends React.Component {
             palabraClaveUno: child.val().palabraClaveUno,
             palabraClaveDos: child.val().palabraClaveDos,
             palabraClaveTres: child.val().palabraClaveTres,
+            descripcionPersonal: child.val().descripcionPersonal,
           });
         });
         itm = items;
@@ -97,6 +98,9 @@ class CardsUsuarios extends React.Component {
           .toLowerCase()
           .includes(this.state.search.toLowerCase()) ||
         itm.palabraClaveTres
+          .toLowerCase()
+          .includes(this.state.search.toLowerCase()) ||
+        itm.descripcionPersonal
           .toLowerCase()
           .includes(this.state.search.toLowerCase()) ||
         itm.localidad.toLowerCase().includes(this.state.search.toLowerCase()) ||
@@ -196,9 +200,6 @@ class CardsUsuarios extends React.Component {
               name={itm.nombre}
               actividad={itm.actividad}
               idAnuncio={itm.idAnuncio}
-              palabraClaveUno={itm.palabraClaveUno}
-              palabraClaveDos={itm.palabraClaveDos}
-              palabraClaveTres={itm.palabraClaveTres}
             />
           ))
         ) : (
