@@ -1,29 +1,29 @@
-import * as React from "react";
-import { StyleSheet, Image, ScrollView, SafeAreaView } from "react-native";
-import CardsUsuarios from "../components/Cards";
-import Drawer from "react-native-drawer";
-import ControlPanel from "../components/DrawerControlPanel";
+import * as React from 'react';
+import { StyleSheet, Image, ScrollView, SafeAreaView } from 'react-native';
+import CardsUsuarios from '../components/Cards';
+import Drawer from 'react-native-drawer';
+import ControlPanel from '../components/DrawerControlPanel';
 
 const OnboardingPage = ({ navigation }) => {
   let state = {
     shows: [],
     isLoading: true,
     search: false,
-    title: "",
+    title: '',
     data: [],
   };
 
   return (
     <Drawer ref={(ref) => (_drawer = ref)} content={<ControlPanel />}>
-      <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
+      <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }}>
         <Image
-          source={require("../assets/gradients/20x20.png")}
+          source={require('../assets/gradients/20x20.png')}
           style={{
             flex: 1,
-            position: "absolute",
-            resizeMode: "cover",
-            width: "100%",
-            height: "5%",
+            position: 'absolute',
+            resizeMode: 'cover',
+            width: '100%',
+            height: '5%',
           }}
         />
         <ScrollView
@@ -39,16 +39,16 @@ const OnboardingPage = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   button: {
-    alignItems: "center",
-    backgroundColor: "#DDDDDD",
+    alignItems: 'center',
+    backgroundColor: '#DDDDDD',
     padding: 10,
     width: 300,
     marginTop: 16,
   },
   primeraCard: {
     marginTop: 50,
-    backgroundColor: "#483D8B",
-    shadowColor: "#000",
+    backgroundColor: '#483D8B',
+    shadowColor: '#000',
     borderRadius: 15,
     paddingTop: -5,
     paddingBottom: 2,
@@ -62,8 +62,8 @@ const styles = StyleSheet.create({
     },
   },
   card: {
-    backgroundColor: "#483D8B",
-    shadowColor: "#000",
+    backgroundColor: '#483D8B',
+    shadowColor: '#000',
     borderRadius: 15,
     paddingTop: -5,
     paddingBottom: 2,
