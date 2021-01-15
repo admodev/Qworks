@@ -25,7 +25,7 @@ import 'firebase/storage';
 import 'firebase/auth';
 import * as RootNavigation from '../RootNavigation.js';
 import { StackActions } from '@react-navigation/native';
-import SearchedCardResult from './searchedCard';
+import CardSearchRender from './SearchRender';
 
 var itm = [];
 var foto = [];
@@ -59,6 +59,9 @@ class CardsUsuarios extends React.Component {
             contadorAnuncio: child.val().anuncioId,
             localidad: child.val().localidad,
             provincia: child.val().provincia,
+            palabraClaveUno: child.val().palabraClaveUno,
+            palabraClaveDos: child.val().palabraClaveDos,
+            palabraClaveTres: child.val().palabraClaveTres,
           });
         });
         itm = items;
@@ -87,6 +90,15 @@ class CardsUsuarios extends React.Component {
         itm.nombre.toLowerCase().includes(this.state.search.toLowerCase()) ||
         itm.apellido.toLowerCase().includes(this.state.search.toLowerCase()) ||
         itm.actividad.toLowerCase().includes(this.state.search.toLowerCase()) ||
+        itm.palabraClaveUno
+          .toLowerCase()
+          .includes(this.state.search.toLowerCase()) ||
+        itm.palabraClaveDos
+          .toLowerCase()
+          .includes(this.state.search.toLowerCase()) ||
+        itm.palabraClaveTres
+          .toLowerCase()
+          .includes(this.state.search.toLowerCase()) ||
         itm.localidad.toLowerCase().includes(this.state.search.toLowerCase()) ||
         itm.provincia.toLowerCase().includes(this.state.search.toLowerCase())
     );
@@ -179,11 +191,14 @@ class CardsUsuarios extends React.Component {
         )}
         {this.state.search ? (
           this.filterList(this.state.items).map((itm, index) => (
-            <SearchedCardResult
+            <CardSearchRender
               key={index}
-              nombre={itm.nombre}
-              apellido={itm.apellido}
+              name={itm.nombre}
               actividad={itm.actividad}
+              idAnuncio={itm.idAnuncio}
+              palabraClaveUno={itm.palabraClaveUno}
+              palabraClaveDos={itm.palabraClaveDos}
+              palabraClaveTres={itm.palabraClaveTres}
             />
           ))
         ) : (
