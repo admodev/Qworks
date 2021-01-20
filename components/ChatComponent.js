@@ -1,13 +1,13 @@
 // @refresh reset
 //
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback } from 'react';
 import {
   GiftedChat,
   Actions,
   ActionsProps,
   Send,
-} from "react-native-gifted-chat";
-import AsyncStorage from "@react-native-community/async-storage";
+} from 'react-native-gifted-chat';
+import AsyncStorage from '@react-native-community/async-storage';
 import {
   ActivityIndicator,
   Image,
@@ -16,7 +16,7 @@ import {
   Text,
   TouchableOpacity,
   View,
-} from "react-native";
+} from 'react-native';
 import {
   FIREBASE_API_KEY,
   FIREBASE_AUTH_DOMAIN,
@@ -26,16 +26,16 @@ import {
   FIREBASE_MESSAGING_SENDER_ID,
   FIREBASE_APP_ID,
   FIREBASE_MEASUREMENT_ID,
-} from "@env";
-import * as firebase from "firebase";
-import "firebase/auth";
-import "firebase/firestore";
-import "firebase/database";
-import LoginPage from "../pages/LoginPage";
-import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-import * as ImagePicker from "expo-image-picker";
-import * as Notifications from "expo-notifications";
-import { Timer } from "react-native-stopwatch-timer";
+} from '@env';
+import * as firebase from 'firebase';
+import 'firebase/auth';
+import 'firebase/firestore';
+import 'firebase/database';
+import LoginPage from '../pages/LoginPage';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import * as ImagePicker from 'expo-image-picker';
+import * as Notifications from 'expo-notifications';
+import { Timer } from 'react-native-stopwatch-timer';
 
 if (firebase.apps.length === 0) {
   try {
@@ -51,7 +51,7 @@ if (firebase.apps.length === 0) {
     });
   } catch (err) {
     if (!/already exists/.test(err.message)) {
-      console.error("Firebase initialization error raised", err.stack);
+      console.error('Firebase initialization error raised', err.stack);
     }
   }
 }
@@ -68,19 +68,19 @@ export default function Chat({ route, navigation }) {
   const currentUser = firebase.auth().currentUser.uid;
   const usersIds = firstUserId + secondUserId;
   const db = firebase.firestore();
-  const chatsRef = db.collection("chats/");
+  const chatsRef = db.collection('chats/');
   const chatsArray = chatsRef.doc(usersIds);
-  const chat = chatsArray.collection("/chat/");
-  const selectedChat = chat.where("user", "==", currentUser);
+  const chat = chatsArray.collection('/chat/');
+  const selectedChat = chat.where('user', '==', currentUser);
   const database = firebase.database();
   const storage = firebase.storage();
   // Estado del chat mediante la función setTimeOut().
   const [chatActivo, setChatActivo] = useState(true);
   const storageRef = storage.ref();
-  const defaultImageRef = storageRef.child("/defaultUserImage/icon.png");
-  let [image, setImage] = useState("");
+  const defaultImageRef = storageRef.child('/defaultUserImage/icon.png');
+  let [image, setImage] = useState('');
 
-  const handleTimerComplete = () => alert("Te quedaste sin tiempo!");
+  const handleTimerComplete = () => alert('Te quedaste sin tiempo!');
 
   let key;
   let nombre;
@@ -90,10 +90,10 @@ export default function Chat({ route, navigation }) {
 
   let fetchName = firebase
     .database()
-    .ref("anuncios/")
-    .orderByChild("id")
+    .ref('anuncios/')
+    .orderByChild('id')
     .equalTo(currentUser)
-    .on("value", (snap) => {
+    .on('value', (snap) => {
       snap.forEach((child) => {
         key = child.key;
         nombre = child.val().nombre;
@@ -120,23 +120,23 @@ export default function Chat({ route, navigation }) {
   }
 
   totalDuration > 0
-    ? console.log("El tiempo está corriendo")
-    : console.log("Te quedaste sin tiempo!");
+    ? console.log('El tiempo está corriendo')
+    : console.log('Te quedaste sin tiempo!');
 
-  const textoChatVacio = "Empieza a hablar para iniciar una conversación!";
+  const textoChatVacio = 'Empieza a hablar para iniciar una conversación!';
 
   const receiver = secondUserId;
 
   useEffect(() => {
     toggleTimer();
 
-    if (chatsRef.where("user.receiver", "==", receiver)) {
+    if (chatsRef.where('user.receiver', '==', receiver)) {
       const unsubscribe = chatsRef
-        .where("user.receiver", "==", receiver)
+        .where('user.receiver', '==', receiver)
         .onSnapshot((querySnapshot) => {
           const messagesFirestore = querySnapshot
             .docChanges()
-            .filter(({ type }) => type === "added")
+            .filter(({ type }) => type === 'added')
             .map(({ doc }) => {
               const message = doc.data();
               return { ...message, createdAt: message.createdAt.toDate() };
@@ -145,13 +145,13 @@ export default function Chat({ route, navigation }) {
           appendMessages(messagesFirestore);
         });
       return () => unsubscribe();
-    } else if (chatsRef.where("user.receiver", "==", currentUser)) {
+    } else if (chatsRef.where('user.receiver', '==', currentUser)) {
       const unsubscribe = chatsRef
-        .where("user.receiver", "==", receiver)
+        .where('user.receiver', '==', receiver)
         .onSnapshot((querySnapshot) => {
           const messagesFirestore = querySnapshot
             .docChanges()
-            .filter(({ type }) => type === "added")
+            .filter(({ type }) => type === 'added')
             .map(({ doc }) => {
               const message = doc.data();
               return { ...message, createdAt: message.createdAt.toDate() };
@@ -163,13 +163,13 @@ export default function Chat({ route, navigation }) {
     }
 
     (async () => {
-      if (Platform.OS !== "web") {
+      if (Platform.OS !== 'web') {
         const {
           status,
         } = await ImagePicker.requestCameraRollPermissionsAsync();
-        if (status !== "granted") {
+        if (status !== 'granted') {
           alert(
-            "Perdón, necesitamos tu permiso para que puedas subir una foto!"
+            'Perdón, necesitamos tu permiso para que puedas subir una foto!'
           );
         }
       }
@@ -188,8 +188,8 @@ export default function Chat({ route, navigation }) {
   async function handleSend(messages) {
     const data = {
       senderId: firebase.auth().currentUser && currentUser,
-      receiverType: "user",
-      messageType: "text",
+      receiverType: 'user',
+      messageType: 'text',
       receiver: receiver,
       content: messages,
     };
@@ -197,24 +197,11 @@ export default function Chat({ route, navigation }) {
     await Promise.all([writes, data]);
   }
 
-  const pickImage = async () => {
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
-      allowsEditing: true,
-      aspect: [4, 3],
-      quality: 0.5,
-    });
-
-    console.log(result);
-
-    setImage(result.uri);
-  };
-
   function renderSend(props) {
     return (
       <Send {...props}>
         <View style={{ marginRight: 10, marginBottom: 10 }}>
-          <MaterialCommunityIcons name="send" color={"#fd5d13"} size={28} />
+          <MaterialCommunityIcons name="send" color={'#fd5d13'} size={28} />
         </View>
       </Send>
     );
@@ -225,12 +212,12 @@ export default function Chat({ route, navigation }) {
       <Actions
         {...ActionsProps}
         options={{
-          ["Enviar Imágen"]: pickImage,
+          ['Enviar Imágen']: () => pickImage,
         }}
         icon={() => (
           <MaterialCommunityIcons
             name="plus-circle"
-            color={"#000000"}
+            color={'#000000'}
             size={24}
           />
         )}
@@ -239,16 +226,36 @@ export default function Chat({ route, navigation }) {
     );
   }
 
+  const pickImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 0.5,
+    });
+    console.log(result);
+    if (!result.cancelled) {
+      setImage(result.uri.toString());
+      const response = await fetch(uri);
+      const blob = await response.blob();
+      var photoRef = firebase
+        .storage()
+        .ref()
+        .child('profilePictures/' + user.uid + '-' + ++anunciosCountResult);
+      return photoRef.put(blob);
+    }
+  };
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <Image
-        source={require("../assets/gradients/20x20.png")}
+        source={require('../assets/gradients/20x20.png')}
         style={{
           flex: 1,
-          position: "absolute",
-          resizeMode: "cover",
-          width: "100%",
-          height: "5%",
+          position: 'absolute',
+          resizeMode: 'cover',
+          width: '100%',
+          height: '5%',
         }}
       />
       {currentUser ? (
@@ -257,25 +264,25 @@ export default function Chat({ route, navigation }) {
             style={{
               width: 30,
               height: 30,
-              alignItems: "center",
+              alignItems: 'center',
               left: 5,
               marginTop: 25,
               marginLeft: 15,
-              backgroundColor: "transparent",
+              backgroundColor: 'transparent',
             }}
           >
             <TouchableOpacity
               onPress={() => navigation.goBack()}
-              style={{ backgroundColor: "transparent" }}
+              style={{ backgroundColor: 'transparent' }}
             >
               <MaterialCommunityIcons
                 name="arrow-left"
-                color={"#fd5d13"}
+                color={'#fd5d13'}
                 size={32}
                 style={{
-                  marginTop: "auto",
-                  marginBottom: "auto",
-                  backgroundColor: "transparent",
+                  marginTop: 'auto',
+                  marginBottom: 'auto',
+                  backgroundColor: 'transparent',
                 }}
               />
             </TouchableOpacity>
@@ -300,13 +307,16 @@ export default function Chat({ route, navigation }) {
               isAnimated
               renderAvatarOnTop
               placeholder="Escribe tu mensaje..."
-              receiver={receiver}
+              receiver={{
+                receiver: receiver,
+                user: 2,
+              }}
               loadEarlier={messages.length >= 20}
               scrollToBottom
               scrollToBottomComponent={() => (
                 <MaterialCommunityIcons
                   name="arrow-down"
-                  color={"#fd5d13"}
+                  color={'#fd5d13'}
                   size={20}
                 />
               )}
@@ -314,12 +324,12 @@ export default function Chat({ route, navigation }) {
               renderActions={() => (
                 <MaterialCommunityIcons
                   name="camera"
-                  color={"#fd5d13"}
+                  color={'#fd5d13'}
                   size={24}
                   style={{
-                    marginTop: "auto",
-                    marginBottom: "auto",
-                    marginLeft: "3%",
+                    marginTop: 'auto',
+                    marginBottom: 'auto',
+                    marginLeft: '3%',
                   }}
                   onPress={() => renderActions(ActionsProps)}
                 />
@@ -329,29 +339,29 @@ export default function Chat({ route, navigation }) {
             <View>
               <Text
                 style={{
-                  alignItems: "center",
-                  justifyContent: "center",
-                  marginTop: "50%",
-                  marginLeft: "20%",
-                  marginRight: "20%",
-                  fontWeight: "bold",
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  marginTop: '50%',
+                  marginLeft: '20%',
+                  marginRight: '20%',
+                  fontWeight: 'bold',
                   fontSize: 24,
                 }}
               >
                 Tu tiempo se acabó, adquiere más tiempo para continuar
                 conversando...
               </Text>
-              <TouchableOpacity onPress={() => alert("Proximamente...")}>
+              <TouchableOpacity onPress={() => alert('Proximamente...')}>
                 <Text
                   style={{
-                    alignItems: "center",
-                    justifyContent: "center",
-                    marginTop: "10%",
-                    marginLeft: "20%",
-                    marginRight: "20%",
-                    fontWeight: "bold",
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    marginTop: '10%',
+                    marginLeft: '20%',
+                    marginRight: '20%',
+                    fontWeight: 'bold',
                     fontSize: 24,
-                    color: "orange",
+                    color: 'orange',
                   }}
                 >
                   Comprar más tiempo.
@@ -369,27 +379,27 @@ export default function Chat({ route, navigation }) {
 
 const options = {
   container: {
-    display: "none",
+    display: 'none',
   },
   text: {
-    display: "none",
+    display: 'none',
   },
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
     padding: 30,
   },
   input: {
     height: 50,
-    width: "100%",
+    width: '100%',
     borderWidth: 1,
     padding: 15,
     marginBottom: 20,
-    borderColor: "gray",
+    borderColor: 'gray',
   },
 });
