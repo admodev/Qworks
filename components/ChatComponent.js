@@ -216,9 +216,14 @@ export default function Chat({ route, navigation }) {
         }}
         icon={() => (
           <MaterialCommunityIcons
-            name="plus-circle"
-            color={'#000000'}
+            name="camera"
+            color={'#fd5d13'}
             size={24}
+            style={{
+              marginTop: 'auto',
+              marginBottom: 'auto',
+              marginLeft: '3%',
+            }}
           />
         )}
         onSend={() => console.log(handleSend)}
@@ -321,19 +326,7 @@ export default function Chat({ route, navigation }) {
                 />
               )}
               renderSend={renderSend}
-              renderActions={() => (
-                <MaterialCommunityIcons
-                  name="camera"
-                  color={'#fd5d13'}
-                  size={24}
-                  style={{
-                    marginTop: 'auto',
-                    marginBottom: 'auto',
-                    marginLeft: '3%',
-                  }}
-                  onPress={() => renderActions(ActionsProps)}
-                />
-              )}
+              renderActions={() => renderActions()}
             />
           ) : (
             <View>
