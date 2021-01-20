@@ -27,9 +27,9 @@ import * as RootNavigation from '../RootNavigation.js';
 import { StackActions } from '@react-navigation/native';
 import CardSearchRender from './SearchRender';
 
+const defaultPhoto = '../assets/icon.png';
 var itm = [];
 var foto = [];
-let image;
 
 class CardsUsuarios extends React.Component {
   constructor(props) {
@@ -50,7 +50,6 @@ class CardsUsuarios extends React.Component {
         let items = [];
         snap.forEach((child) => {
           items.push({
-            image: child.val().image,
             nombre: child.val().nombre,
             apellido: child.val().apellido,
             actividad: child.val().actividad,
@@ -231,9 +230,6 @@ class CardsUsuarios extends React.Component {
             {this.state.items.map((u, i) => {
               let storage = firebase.storage();
               let storageRef = storage.ref();
-              let defaultImageRef = storageRef
-                .child('defaultUserImage/icon.png')
-                .toString();
               let userProfilePic = storageRef
                 .child('userProfilePics/')
                 .child(u.idAnuncio).child;
@@ -303,7 +299,7 @@ class CardsUsuarios extends React.Component {
                       borderRadius: 10,
                     }}
                   />
-                  {!this.state.fotoDePerfil ? (
+                  {!u.fotoDePerfil ? (
                     <View
                       style={{ alignItems: 'center', justifyContent: 'center' }}
                     >

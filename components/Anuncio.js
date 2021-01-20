@@ -336,10 +336,10 @@ const AnuncioSeleccionado = ({ route, navigation }) => {
             }}
             onPress={toggleOverlay}
           >
-            {image == null ? (
+            {!fotoDePerfil ? (
               <View style={{ alignItems: 'center', justifyContent: 'center' }}>
                 <Card.Image
-                  source={{ uri: fotoDePerfil }}
+                  source={require('../assets/icon.png')}
                   style={{
                     ...Platform.select({
                       android: {
@@ -363,7 +363,7 @@ const AnuncioSeleccionado = ({ route, navigation }) => {
             ) : (
               <View style={{ alignItems: 'center', justifyContent: 'center' }}>
                 <Card.Image
-                  source={{ uri: image }}
+                  source={{ uri: fotoDePerfil }}
                   style={{
                     ...Platform.select({
                       android: {
@@ -391,7 +391,7 @@ const AnuncioSeleccionado = ({ route, navigation }) => {
             onBackdropPress={toggleOverlay}
             overlayStyle={{ width: '85%', height: '85%', borderRadius: 10 }}
           >
-            {image == null ? (
+            {!fotoDePerfil ? (
               <Card.Image
                 source={require('../assets/icon.png')}
                 style={{
@@ -406,7 +406,7 @@ const AnuncioSeleccionado = ({ route, navigation }) => {
               />
             ) : (
               <Card.Image
-                source={{ uri: image }}
+                source={{ uri: fotoDePerfil }}
                 style={{
                   borderRadius: 100,
                   marginTop: 'auto',
