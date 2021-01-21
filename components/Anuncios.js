@@ -81,14 +81,23 @@ const AnunciosPage = ({ route, navigation }) => {
   }, []);
 
   function eliminarCuenta() {
-    admin
-      .auth()
-      .deleteUser(id)
+    user
+      .delete()
       .then(function () {
-        console.log('Successfully deleted user');
+        Notifications.scheduleNotificationAsync({
+          content: {
+            title: '¡QuedeOficios! 📬',
+            body: '¡Te esperamos Pronto!',
+            data: { data: 'El equipo de ¡QuedeOficios!' },
+          },
+          trigger: { seconds: 5 },
+        });
+        Updates.reloadAsync();
       })
       .catch(function (error) {
-        console.log('Error deleting user:', error);
+        alert(
+          'Hubo un error al eliminar su cuenta! por favor cierre sesión y vuelva a ingresar antes de intentarlo nuevamente.'
+        );
       });
   }
 
@@ -511,7 +520,7 @@ const AnunciosPage = ({ route, navigation }) => {
             width: '100%',
           }}
         />
-        <TouchableOpacity onPress={toggleEliminarCuenta}>
+        <TouchableOpacity onPress={() => eliminarCuenta()}>
           <Text
             style={{
               ...Platform.select({
