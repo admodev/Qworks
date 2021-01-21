@@ -29,6 +29,7 @@ import { concat } from 'react-native-reanimated';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import * as Sharing from 'expo-sharing';
 import * as Updates from 'expo-updates';
+import * as Notifications from 'expo-notifications';
 
 var itm = [];
 

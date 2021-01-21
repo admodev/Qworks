@@ -62,6 +62,7 @@ class CardsUsuarios extends React.Component {
             palabraClaveDos: child.val().palabraClaveDos,
             palabraClaveTres: child.val().palabraClaveTres,
             descripcionPersonal: child.val().descripcionPersonal,
+            recomendacionesTotales: child.val().recomendacionesTotales,
           });
         });
         itm = items;
@@ -405,7 +406,9 @@ class CardsUsuarios extends React.Component {
                           marginLeft: '2%',
                         }}
                       >
-                        100
+                        {!u.recomendacionesTotales
+                          ? 0
+                          : u.recomendacionesTotales}
                       </Text>
                     </TouchableOpacity>
                   </View>

@@ -41,6 +41,7 @@ export default function AnuncioSeleccionado({ route, navigation }) {
   const naranjaQueDeOficios = '#fd5d13';
   const favoritosBackground = 'transparent';
   const [favoritosTint, setFavoritosTint] = useState(false);
+  const [prevCount, setCount] = useState(recomendacionesTotales);
   let image,
     nombre,
     apellido,
@@ -64,7 +65,7 @@ export default function AnuncioSeleccionado({ route, navigation }) {
     pisoDptoCasa,
     provincia,
     telefono,
-    recomendaciones;
+    recomendacionesTotales;
   let dbRef = firebase
     .database()
     .ref('anuncios/')
@@ -93,11 +94,12 @@ export default function AnuncioSeleccionado({ route, navigation }) {
       localidad = child.val().localidad;
       provincia = child.val().provincia;
       nombreDeLaEmpresa = child.val().nombreDeLaEmpresa;
-      recomendaciones = child.val().recomendaciones;
+      recomendacionesTotales = child.val().recomendacionesTotales;
     });
   });
-  !recomendaciones ? (recomendaciones = 0) : console.log(recomendaciones);
-  const [count, setCount] = useState(recomendaciones);
+  if (!recomendacionesTotales) {
+    recomendacionesTotales = 0;
+  }
   let key, userId, comentario;
   var arr = [];
   let comentariosRef = firebase
@@ -231,10 +233,18 @@ export default function AnuncioSeleccionado({ route, navigation }) {
     );
   }
 
-  const handleRecommend = () => {
+  function handleRecommend(recomendacionesTotales) {
     setCount((prevCount) => prevCount + 1);
-    alert(`Cantidad de recomendaciones: ${count}`);
-  };
+    firebase
+      .database()
+      .ref('anuncios/')
+      .orderByChild('id')
+      .equalTo(id)
+      .on('value', (snapshot) => {
+        const data = snapshot.val();
+        recomendacionesTotales = prevCount;
+      });
+  }
 
   var photoRef = firebase
     .storage()
@@ -534,7 +544,7 @@ export default function AnuncioSeleccionado({ route, navigation }) {
                   marginLeft: '2%',
                 }}
               >
-                100
+                {recomendacionesTotales}
               </Text>
             </TouchableOpacity>
           </View>
@@ -998,7 +1008,7 @@ export default function AnuncioSeleccionado({ route, navigation }) {
           ) : (
             <Button
               title="Recomendar"
-              onPress={handleRecommend}
+              onPress={() => handleRecommend(recomendacionesTotales)}
               titleStyle={{ fontSize: 12, marginBottom: -20 }}
               buttonStyle={{
                 width: 120,
