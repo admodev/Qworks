@@ -266,6 +266,10 @@ export default function AnuncioSeleccionado({ route, navigation }) {
       console.log(error.message);
     });
 
+  function onlyUnique(value, index, self) {
+    return self.indexOf(value) === index;
+  }
+
   return (
     <SafeAreaView
       style={{
@@ -730,7 +734,7 @@ export default function AnuncioSeleccionado({ route, navigation }) {
                 color: '#fff',
               }}
             >
-              {diasHorarios.join(', ')}
+              {diasHorarios.filter(onlyUnique).join(', ')}
             </Text>
           </View>
           {local && (
