@@ -48,6 +48,7 @@ export default function UserMessagesList({ route, navigation }) {
           items.push({
             ultimoMensaje: doc.data().text,
             nombreDelUsuario: doc.data().user.name,
+            emailDelUsuario: doc.data().user.email,
             usuario: doc.data().user._id,
           });
         });
@@ -102,7 +103,11 @@ export default function UserMessagesList({ route, navigation }) {
                       })
                     }
                   >
-                    <ListItem.Title>{u.nombreDelUsuario}</ListItem.Title>
+                    <ListItem.Title>
+                      {!u.nombreDelUsuario
+                        ? u.emailDelUsuario
+                        : u.nombreDelUsuario}
+                    </ListItem.Title>
                     <ListItem.Subtitle>{u.ultimoMensaje}</ListItem.Subtitle>
                   </TouchableOpacity>
                 </ListItem.Content>

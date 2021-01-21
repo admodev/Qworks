@@ -31,12 +31,13 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import * as Updates from 'expo-updates';
 
 let calificacion = 'calificacion';
-let favs = [];
+let favs;
 
-const AnuncioSeleccionado = ({ route, navigation }) => {
+export default function AnuncioSeleccionado({ route, navigation }) {
   let id = route.params.id;
   let routeParamsToString = id.toString();
   let [fotoDePerfil, setFotoDePerfil] = useState('');
+  const [isFavorite, setFavorites] = useState([]);
   const naranjaQueDeOficios = '#fd5d13';
   const favoritosBackground = 'transparent';
   const [favoritosTint, setFavoritosTint] = useState(false);
@@ -132,6 +133,23 @@ const AnuncioSeleccionado = ({ route, navigation }) => {
 
   let user = firebase.auth().currentUser;
 
+  useEffect(() => {
+    firebase
+      .database()
+      .ref('favoritos/')
+      .orderByChild('favs')
+      .equalTo(id)
+      .on('value', (snap) => {
+        let isFavorite = [];
+        snap.forEach((child) => {
+          isFavorite.push(child.val().favs);
+        });
+        setFavorites(isFavorite);
+      });
+  }, []);
+
+  console.log(isFavorite);
+
   const agregarFavorito = (id) => {
     firebase
       .database()
@@ -142,9 +160,32 @@ const AnuncioSeleccionado = ({ route, navigation }) => {
         favs: id,
       })
       .then(() => {
-        setFavoritosTint(!favoritosTint);
+        Updates.reloadAsync();
       });
   };
+
+  function quitarFavorito(id) {
+    try {
+      firebase
+        .database()
+        .ref('favoritos/')
+        .orderByChild('favs')
+        .equalTo(id)
+        .once('value')
+        .then(function (snapshot) {
+          var promises = [];
+          snapshot.forEach(function (child) {
+            promises.push(child.ref.remove());
+          });
+          Promise.all(promises).then(function () {
+            console.log('All removed!');
+          });
+          Updates.reloadAsync();
+        });
+    } catch (error) {
+      console.log(error.message);
+    }
+  }
 
   let [rating, setRating] = useState(0);
 
@@ -275,37 +316,54 @@ const AnuncioSeleccionado = ({ route, navigation }) => {
             style={{ backgroundColor: 'transparent' }}
           />
         </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => agregarFavorito(id)}
-          style={{
-            ...Platform.select({
-              android: {
-                backgroundColor: 'transparent',
-                right: -240,
-              },
-              ios: {
-                backgroundColor: 'transparent',
-                right: -250,
-              },
-            }),
-          }}
-        >
-          {favoritosTint === false ? (
+        {isFavorite.length == 0 && (
+          <TouchableOpacity
+            onPress={() => agregarFavorito(id)}
+            style={{
+              ...Platform.select({
+                android: {
+                  backgroundColor: 'transparent',
+                  right: -240,
+                },
+                ios: {
+                  backgroundColor: 'transparent',
+                  right: -250,
+                },
+              }),
+            }}
+          >
+            <MaterialCommunityIcons
+              name="account-star-outline"
+              color={naranjaQueDeOficios}
+              size={32}
+              style={{ backgroundColor: 'transparent' }}
+            />
+          </TouchableOpacity>
+        )}
+        {isFavorite.includes(id) && (
+          <TouchableOpacity
+            onPress={() => quitarFavorito(id)}
+            style={{
+              ...Platform.select({
+                android: {
+                  backgroundColor: 'transparent',
+                  right: -240,
+                },
+                ios: {
+                  backgroundColor: 'transparent',
+                  right: -250,
+                },
+              }),
+            }}
+          >
             <MaterialCommunityIcons
               name="account-star"
               color={naranjaQueDeOficios}
               size={32}
               style={{ backgroundColor: 'transparent' }}
             />
-          ) : (
-            <MaterialCommunityIcons
-              name="account-star-outline"
-              color={'white'}
-              size={32}
-              style={{ backgroundColor: 'transparent' }}
-            />
-          )}
-        </TouchableOpacity>
+          </TouchableOpacity>
+        )}
       </View>
       <ScrollView showsHorizontalScrollIndicator={false}>
         {/* Card principal */}
@@ -1028,7 +1086,7 @@ const AnuncioSeleccionado = ({ route, navigation }) => {
       </View>
     </SafeAreaView>
   );
-};
+}
 
 const styles = StyleSheet.create({
   button: {
@@ -1076,5 +1134,3 @@ const styles = StyleSheet.create({
     }),
   },
 });
-
-export default AnuncioSeleccionado;
