@@ -105,13 +105,13 @@ const AnunciosPage = ({ route, navigation }) => {
   function shareContent() {
     Share.share(
       {
-        message: `Dale un vistazo al perfil de ${nombre} en QuedeOficios!`,
+        message: `Mira mi perfil en ¡QuedeOficios!`,
         url: 'http://dominioquedeoficios.com',
-        title: 'QuedeOficios!',
+        title: '¡QuedeOficios!',
       },
       {
         // Android only:
-        dialogTitle: `Mira el perfil de ${nombre}`,
+        dialogTitle: `Mira mi perfil en ¡QuedeOficios!`,
       }
     );
   }
@@ -212,21 +212,30 @@ const AnunciosPage = ({ route, navigation }) => {
 
             function eliminarAnuncio(anuncioId) {
               try {
-                firebase
-                  .database()
-                  .ref('anuncios/')
-                  .orderByChild('anuncioId')
-                  .equalTo(u.anuncioId)
-                  .once('value')
-                  .then(function (snapshot) {
-                    var promises = [];
-                    snapshot.forEach(function (child) {
-                      promises.push(child.ref.remove());
+                do {
+                  firebase
+                    .database()
+                    .ref('anuncios/')
+                    .orderByChild('id')
+                    .equalTo(id)
+                    .once('value')
+                    .then(function (snapshot) {
+                      var promises = [];
+                      snapshot.forEach(function (child) {
+                        promises.push(child.ref.remove());
+                      });
+                      Promise.all(promises).then(function () {
+                        console.log('All removed!');
+                      });
                     });
-                    Promise.all(promises).then(function () {
-                      console.log('All removed!');
-                    });
-                  });
+                } while (
+                  firebase
+                    .database()
+                    .ref('anuncios/')
+                    .orderByKey()
+                    .child('anuncioId')
+                    .equalTo(u.anuncioId)
+                );
                 // Updates.reloadAsync();
               } catch (error) {
                 console.log(error.message);
