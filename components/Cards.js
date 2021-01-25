@@ -235,7 +235,7 @@ class CardsUsuarios extends React.Component {
                 .child('userProfilePics/')
                 .child(u.idAnuncio).child;
 
-              let fetchPhoto = firebase
+              firebase
                 .storage()
                 .ref('profilePictures/' + u.idAnuncio + '-' + u.contadorAnuncio)
                 .getDownloadURL()
@@ -247,14 +247,7 @@ class CardsUsuarios extends React.Component {
                   };
                   xhr.open('GET', url);
                   xhr.send();
-                  let fotoDePerfil = [];
-                  fetchPhoto.forEach((url) => {
-                    fotoDePerfil.push({
-                      fotos: url,
-                    });
-                  });
-                  foto = fotoDePerfil;
-                  this.setState({ fotoDePerfil: fotoDePerfil });
+                  this.setState({ fotoDePerfil: url });
                 })
                 .catch((error) => {
                   console.log(error.message);
@@ -300,7 +293,7 @@ class CardsUsuarios extends React.Component {
                       borderRadius: 10,
                     }}
                   />
-                  {!u.fotoDePerfil ? (
+                  {!this.state.fotoDePerfil ? (
                     <View
                       style={{ alignItems: 'center', justifyContent: 'center' }}
                     >
@@ -328,7 +321,7 @@ class CardsUsuarios extends React.Component {
                     </View>
                   ) : (
                     <Card.Image
-                      source={{ uri: u.fotoDePerfil }}
+                      source={{ uri: this.state.fotoDePerfil }}
                       style={{
                         ...Platform.select({
                           android: {

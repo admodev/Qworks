@@ -387,7 +387,8 @@ const AnunciatePage = ({ navigation }) => {
           ...Platform.select({
             android: {
               backgroundColor: 'transparent',
-              left: 35,
+              marginTop: '10%',
+              marginLeft: '5%',
             },
             ios: {
               backgroundColor: 'transparent',
@@ -526,16 +527,29 @@ const AnunciatePage = ({ navigation }) => {
           <Text h3 style={{ color: '#fff', marginTop: 10, marginBottom: 25 }}>
             Información Laboral
           </Text>
-          <Input
-            placeholder="Actividad *"
-            inputStyle={{ color: '#ffffff' }}
-            style={{ color: '#ffffff', fontSize: 16, textAlign: 'center' }}
-            inputContainerStyle={{ borderBottomColor: '#ffffff' }}
-            placeholderTextColor="white"
-            onChangeText={(actividad) => setActividad(actividad)}
-            value={actividad}
-            maxLength="15"
-          />
+          {Platform.os === 'ios' ? (
+            <Input
+              placeholder="Actividad *"
+              inputStyle={{ color: '#ffffff' }}
+              style={{ color: '#ffffff', fontSize: 16, textAlign: 'center' }}
+              inputContainerStyle={{ borderBottomColor: '#ffffff' }}
+              placeholderTextColor="white"
+              onChangeText={(actividad) => setActividad(actividad)}
+              value={actividad}
+              maxLength="15"
+            />
+          ) : (
+            <Input
+              placeholder="Actividad *"
+              inputStyle={{ color: '#ffffff' }}
+              style={{ color: '#ffffff', fontSize: 16, textAlign: 'center' }}
+              inputContainerStyle={{ borderBottomColor: '#ffffff' }}
+              placeholderTextColor="white"
+              onChangeText={(actividad) => setActividad(actividad)}
+              value={actividad}
+              maxLength={15}
+            />
+          )}
           <Input
             placeholder="Teléfono"
             inputStyle={{ color: '#ffffff' }}
