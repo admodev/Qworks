@@ -30,9 +30,9 @@ const AnunciatePage = ({ navigation }) => {
   let storage = firebase.storage();
   let storageRef = storage.ref();
   var userDefaultImage = storageRef.child('userDefaultImage/icon.png');
+  const [photoJSONValue, setPhotoJSONValue] = useState([]);
   const [location, setLocation] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
-
   const [image, setImage] = useState(null);
   const [nombre, setNombre] = useState('');
   const [apellido, setApellido] = useState('');
@@ -257,25 +257,27 @@ const AnunciatePage = ({ navigation }) => {
     console.log(result);
     if (!result.cancelled) {
       setImage(result.uri.toString());
-      uploadImage(result.uri)
-        .then(() => {
-          console.log('Subiste tu foto!');
-        })
-        .catch((error) => {
-          console.log(error.message);
-        });
+      console.log('Subiste tu foto!');
+      console.log(result);
+      setPhotoJSONValue({
+        cancelled: result.cancelled.toString(),
+        height: result.height.toString(),
+        type: result.type.toString(),
+        uri: result.uri.toString(),
+        width: result.width.toString(),
+      });
+      console.log(photoJSONValue);
     }
   };
 
-  async function uploadImage(uri) {
-    const response = await fetch(uri);
+  async function uploadImage(result) {
+    const response = await fetch(result);
     const blob = await response.blob();
-
-    var photoRef = firebase
-      .storage()
-      .ref()
-      .child('profilePictures/' + user.uid + '-' + ++anunciosCountResult);
-    return photoRef.put(blob);
+    //var photoRef = firebase
+    //.storage()
+    //.ref()
+    //.child('profilePictures/' + user.uid + '-' + ++anunciosCountResult);
+    //return photoRef.put(blob);
   }
 
   let idAnuncio;
@@ -310,7 +312,8 @@ const AnunciatePage = ({ navigation }) => {
     hasta,
     terminos,
     latitud,
-    longitud
+    longitud,
+    photoJSONValue
   ) {
     if (!cuitCuil.trim()) {
       alert('Por favor ingrese su cuit/cuil');
@@ -359,6 +362,7 @@ const AnunciatePage = ({ navigation }) => {
           terminos: terminos,
           latitud: latitud,
           longitud: longitud,
+          photoJSONValue: photoJSONValue,
         })
         .then(function () {
           user.displayName = nombre;
@@ -1092,7 +1096,8 @@ const AnunciatePage = ({ navigation }) => {
                 hasta,
                 terminos,
                 latitud,
-                longitud
+                longitud,
+                photoJSONValue
               )
             }
             title="Continuar"

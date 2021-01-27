@@ -63,6 +63,7 @@ class CardsUsuarios extends React.Component {
             palabraClaveTres: child.val().palabraClaveTres,
             descripcionPersonal: child.val().descripcionPersonal,
             recomendacionesTotales: child.val().recomendacionesTotales,
+            photoJSONValue: child.val().photoJSONValue,
           });
         });
         itm = items;
@@ -229,30 +230,6 @@ class CardsUsuarios extends React.Component {
             }}
           >
             {this.state.items.map((u, i) => {
-              let storage = firebase.storage();
-              let storageRef = storage.ref();
-              let userProfilePic = storageRef
-                .child('userProfilePics/')
-                .child(u.idAnuncio).child;
-
-              firebase
-                .storage()
-                .ref('profilePictures/' + u.idAnuncio + '-' + u.contadorAnuncio)
-                .getDownloadURL()
-                .then((url) => {
-                  var xhr = new XMLHttpRequest();
-                  xhr.responseType = 'blob';
-                  xhr.onload = function (event) {
-                    var blob = xhr.response;
-                  };
-                  xhr.open('GET', url);
-                  xhr.send();
-                  this.setState({ fotoDePerfil: url });
-                })
-                .catch((error) => {
-                  console.log(error.message);
-                });
-
               return (
                 <View
                   key={i}
@@ -293,7 +270,7 @@ class CardsUsuarios extends React.Component {
                       borderRadius: 10,
                     }}
                   />
-                  {!this.state.fotoDePerfil ? (
+                  {!u.photoJSONValue ? (
                     <View
                       style={{ alignItems: 'center', justifyContent: 'center' }}
                     >
@@ -321,7 +298,7 @@ class CardsUsuarios extends React.Component {
                     </View>
                   ) : (
                     <Card.Image
-                      source={{ uri: this.state.fotoDePerfil }}
+                      source={{ uri: u.photoJSONValue.uri }}
                       style={{
                         ...Platform.select({
                           android: {
