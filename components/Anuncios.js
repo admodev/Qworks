@@ -116,6 +116,29 @@ const AnunciosPage = ({ route, navigation }) => {
     );
   }
 
+  function eliminarAnuncio(anuncioId) {
+    try {
+      firebase
+        .database()
+        .ref('anuncios/')
+        .orderByKey()
+        .equalTo(firebase.auth().currentUser.uid + '-' + anuncioId)
+        .once('value')
+        .then(function (snapshot) {
+          var promises = [];
+          snapshot.forEach(function (child) {
+            promises.push(child.ref.remove());
+          });
+          Promise.all(promises).then(function () {
+            console.log('All removed!');
+          });
+        });
+      // Updates.reloadAsync();
+    } catch (error) {
+      console.log(error.message);
+    }
+  }
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <Image
@@ -209,38 +232,6 @@ const AnunciosPage = ({ route, navigation }) => {
             let userProfilePic = storageRef
               .child('userProfilePics/')
               .child(u.idAnuncio).child;
-
-            function eliminarAnuncio(anuncioId) {
-              try {
-                do {
-                  firebase
-                    .database()
-                    .ref('anuncios/')
-                    .orderByChild('id')
-                    .equalTo(id)
-                    .once('value')
-                    .then(function (snapshot) {
-                      var promises = [];
-                      snapshot.forEach(function (child) {
-                        promises.push(child.ref.remove());
-                      });
-                      Promise.all(promises).then(function () {
-                        console.log('All removed!');
-                      });
-                    });
-                } while (
-                  firebase
-                    .database()
-                    .ref('anuncios/')
-                    .orderByKey()
-                    .child('anuncioId')
-                    .equalTo(u.anuncioId)
-                );
-                // Updates.reloadAsync();
-              } catch (error) {
-                console.log(error.message);
-              }
-            }
             return (
               <View
                 key={i}

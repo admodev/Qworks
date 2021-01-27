@@ -354,11 +354,15 @@ const AnunciatePage = ({ navigation }) => {
     } else if (terminos == false) {
       alert('Tiene que aceptar los terminos para continuar');
     } else {
-      let anunciosRef = firebase.database().ref('anuncios/').push();
-
       let userRef = user.uid;
-
-      anunciosRef
+      let anunciosRef = firebase
+        .database()
+        .ref(
+          'anuncios/' +
+            firebase.auth().currentUser.uid +
+            '-' +
+            ++anunciosCountResult
+        )
         .set({
           anuncioId: anunciosCountResult + 1,
           id: user.uid,
