@@ -257,14 +257,44 @@ const AnunciatePage = ({ navigation }) => {
     console.log(result);
     if (!result.cancelled) {
       setImage(result.uri.toString());
-      console.log('Subiste tu foto!');
-      console.log(result);
+      const createFormData = (result, body) => {
+        const data = new FormData();
+
+        data.append('result', {
+          name: result.fileName,
+          type: result.type,
+          uri:
+            Platform.OS === 'android'
+              ? result.uri
+              : result.uri.replace('file://', ''),
+        });
+
+        Object.keys(body).forEach((key) => {
+          data.append(key, body[key]);
+        });
+
+        return data;
+      };
+      fetch('http://192.168.0.24:3300/api/upload', {
+        method: 'POST',
+        body: createFormData(result, { userId: '123' }),
+      })
+        .then((response) => response.json())
+        .then((response) => {
+          console.log('upload succes', response);
+          alert('Upload success!');
+        })
+        .catch((error) => {
+          console.log('upload error', error);
+          alert('Upload failed!');
+        });
       setPhotoJSONValue({
         cancelled: result.cancelled.toString(),
         height: result.height.toString(),
         type: result.type.toString(),
         uri: result.uri.toString(),
         width: result.width.toString(),
+        elBlob: photoToUri.toString(),
       });
       console.log(photoJSONValue);
     }
