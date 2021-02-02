@@ -26,6 +26,7 @@ import {
   FIREBASE_APP_ID,
   FIREBASE_MEASUREMENT_ID,
 } from '@env';
+import { StatusBar } from 'expo-status-bar';
 
 if (firebase.apps.length === 0) {
   try {
@@ -118,7 +119,12 @@ export default function App() {
     );
   }
 
-  return <MainStackNavigator />;
+  return (
+    <>
+      <MainStackNavigator />
+      <StatusBar style="light" />
+    </>
+  );
 }
 
 async function cacheResourcesAsync() {

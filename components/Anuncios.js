@@ -30,6 +30,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import * as Sharing from 'expo-sharing';
 import * as Updates from 'expo-updates';
 import * as Notifications from 'expo-notifications';
+import Dialog from 'react-native-dialog';
 
 var itm = [];
 
@@ -37,6 +38,7 @@ const naranjaQueDeOficios = '#fd5d13';
 
 const AnunciosPage = ({ route, navigation }) => {
   const [items, setItems] = useState([]);
+  const [visible, setVisible] = useState(false);
   let user = firebase.auth().currentUser;
   let id = user.uid;
   let anuncioId, image, nombre, apellido, actividad, emailPersonal;
@@ -138,6 +140,14 @@ const AnunciosPage = ({ route, navigation }) => {
       console.log(error.message);
     }
   }
+
+  const showDialog = () => {
+    setVisible(true);
+  };
+
+  const handleCancel = () => {
+    setVisible(false);
+  };
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -472,9 +482,18 @@ const AnunciosPage = ({ route, navigation }) => {
                     marginLeft: '10%',
                   }}
                 >
-                  <TouchableOpacity
-                    onPress={() => eliminarAnuncio(u.anuncioId)}
-                  >
+                  <Dialog.Container visible={visible}>
+                    <Dialog.Title>Eliminar Anuncio</Dialog.Title>
+                    <Dialog.Description>
+                      Todos tus datos se perderán ¿Deseas continuar?
+                    </Dialog.Description>
+                    <Dialog.Button label="No" onPress={handleCancel} />
+                    <Dialog.Button
+                      label="Si"
+                      onPress={() => eliminarAnuncio(u.anuncioId)}
+                    />
+                  </Dialog.Container>
+                  <TouchableOpacity onPress={showDialog}>
                     <Text
                       style={{
                         ...Platform.select({

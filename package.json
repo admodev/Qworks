@@ -39,6 +39,7 @@
     "react": "16.13.1",
     "react-dom": "16.13.1",
     "react-native": "https://github.com/expo/react-native/archive/sdk-40.0.1.tar.gz",
+    "react-native-dialog": "^6.1.2",
     "react-native-dotenv": "^2.4.0",
     "react-native-drawer": "^2.5.1",
     "react-native-elements": "^2.3.2",
