@@ -345,6 +345,16 @@ const AnunciatePage = ({ navigation }) => {
     longitud,
     photoJSONValue
   ) {
+    if (!anunciosCountResult) {
+      anunciosCountResult = 0;
+    } else if (anunciosCountResult < 1) {
+      anunciosCountResult = 1;
+    } else if (anunciosCountResult < 2) {
+      anunciosCountResult = 2;
+    } else if (anunciosCountResult < 3) {
+      anunciosCountResult = 3;
+    }
+
     if (!cuitCuil.trim()) {
       alert('Por favor ingrese su cuit/cuil');
       return;
@@ -361,10 +371,10 @@ const AnunciatePage = ({ navigation }) => {
           'anuncios/' +
             firebase.auth().currentUser.uid +
             '-' +
-            ++anunciosCountResult
+            anunciosCountResult
         )
         .set({
-          anuncioId: anunciosCountResult + 1,
+          anuncioId: anunciosCountResult,
           id: user.uid,
           nombre: nombre,
           apellido: apellido,

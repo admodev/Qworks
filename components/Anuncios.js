@@ -232,6 +232,8 @@ const AnunciosPage = ({ route, navigation }) => {
             let userProfilePic = storageRef
               .child('userProfilePics/')
               .child(u.idAnuncio).child;
+            console.log(firebase.auth().currentUser.uid + '-' + u.anuncioId);
+            //console.log(i);
             return (
               <View
                 key={i}
