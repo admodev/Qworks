@@ -1,14 +1,61 @@
-import React, { useState, setState } from 'react';
-import { Image, SafeAreaView, ScrollView, Text, View } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import {
+  Image,
+  SafeAreaView,
+  ScrollView,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
+import {
+  Avatar,
+  Button,
+  Card,
+  Icon,
+  Input,
+  ListItem,
+} from 'react-native-elements';
 import MessagesScreen from './ChatMessages';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Timer } from 'react-native-stopwatch-timer';
+import * as firebase from 'firebase';
+import 'firebase/auth';
+import 'firebase/firestore';
+import 'firebase/database';
+
+let user = firebase.auth().currentUser;
+let items = [];
+let usuario, ultimoMensaje;
+let db = firebase.firestore();
+let chatsRef = db.collection('chats/');
+
+var itm = [];
 
 export default function UserMessagesList({ route, navigation }) {
   let [timerStart, setTimerStart] = useState(false);
   let [totalDuration, setTotalDuration] = useState(1800000);
   let [timerReset, setTimerReset] = useState(false);
   const handleTimerComplete = () => alert('Te quedaste sin tiempo!');
+  let [items, setItems] = useState([]);
+
+  useEffect(() => {
+    chatsRef
+      .where('user._id', '==', firebase.auth().currentUser.uid)
+      .get()
+      .then((snapshot) => {
+        let items = [];
+        snapshot.docs.forEach((doc) => {
+          items.push({
+            ultimoMensaje: doc.data().text,
+            nombreDelUsuario: doc.data().user.name,
+            emailDelUsuario: doc.data().user.email,
+            usuario: doc.data().user._id,
+          });
+        });
+        itm = items;
+        setItems((items = items));
+      });
+  });
 
   function toggleTimer() {
     setTimerStart(!timerStart);
@@ -26,9 +73,9 @@ export default function UserMessagesList({ route, navigation }) {
     let currentTime = time;
   }
 
-  timerStart == false
-    ? toggleTimer()
-    : console.log('El tiempo esta corriendo...');
+  if (timerStart === false) {
+    toggleTimer();
+  }
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -43,7 +90,31 @@ export default function UserMessagesList({ route, navigation }) {
         }}
       />
       <ScrollView>
-        <MessagesScreen />
+        {items.map((u, i) => {
+          return (
+            <View key={i}>
+              <ListItem bottomDivider>
+                <ListItem.Content>
+                  <TouchableOpacity
+                    onPress={() =>
+                      navigation.navigate('ChatComponent', {
+                        userOne: firebase.auth().currentUser.uid,
+                        userTwo: u.usuario,
+                      })
+                    }
+                  >
+                    <ListItem.Title>
+                      {!u.nombreDelUsuario
+                        ? u.emailDelUsuario
+                        : u.nombreDelUsuario}
+                    </ListItem.Title>
+                    <ListItem.Subtitle>{u.ultimoMensaje}</ListItem.Subtitle>
+                  </TouchableOpacity>
+                </ListItem.Content>
+              </ListItem>
+            </View>
+          );
+        })}
       </ScrollView>
       <View
         style={{
@@ -62,7 +133,7 @@ export default function UserMessagesList({ route, navigation }) {
             flexDirection: 'row',
           }}
         >
-          <MaterialCommunityIcons name='clock' color={'orange'} size={35} />
+          <MaterialCommunityIcons name="clock" color={'orange'} size={35} />
           <Timer
             totalDuration={totalDuration}
             msecs

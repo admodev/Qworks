@@ -34,6 +34,7 @@ import {
 import * as RootNavigation from '../RootNavigation.js';
 import { StackActions } from '@react-navigation/native';
 import * as Updates from 'expo-updates';
+import * as Notifications from 'expo-notifications';
 
 async function signInWithGoogleAsync() {
   try {
@@ -99,13 +100,21 @@ export default function RegisterPage({ navigation }) {
       .auth()
       .createUserWithEmailAndPassword(email, password)
       .then(function () {
+        Notifications.scheduleNotificationAsync({
+          content: {
+            title: '¡QuedeOficios! 📬',
+            body: '¡Bienvenido@!',
+            data: { data: 'El equipo de ¡QuedeOficios!' },
+          },
+          trigger: { seconds: 3 },
+        });
         Updates.reloadAsync();
       });
   }
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-      <SafeAreaView style={{ flex: 1 }} keyboardShouldPersistTaps='handled'>
+      <SafeAreaView style={{ flex: 1 }} keyboardShouldPersistTaps="handled">
         <Image
           source={require('../assets/gradients/20x20.png')}
           style={{
@@ -135,32 +144,32 @@ export default function RegisterPage({ navigation }) {
           />
           <View
             style={{ width: '80%', marginTop: 70, bottom: 0 }}
-            keyboardShouldPersistTaps='handled'
+            keyboardShouldPersistTaps="handled"
           >
             <KeyboardAvoidingView
               behavior={Platform.OS == 'ios' ? 'padding' : 'height'}
             >
               <Input
-                placeholder='Correo Electrónico'
-                keyboardType='email-address'
-                autoCapitalize='none'
+                placeholder="Correo Electrónico"
+                keyboardType="email-address"
+                autoCapitalize="none"
                 inputContainerStyle={{ marginTop: 100 }}
                 style={{ color: '#ffffff', fontSize: 16 }}
-                leftIcon={<Icon name='envelope-o' size={18} color='white' />}
+                leftIcon={<Icon name="envelope-o" size={18} color="white" />}
                 onChangeText={(email) => setUserEmail(email)}
                 value={email}
               />
               <Input
-                placeholder='Contraseña'
+                placeholder="Contraseña"
                 inputContainerStyle={{}}
-                leftIcon={<Icon name='lock' size={20} color='white' />}
+                leftIcon={<Icon name="lock" size={20} color="white" />}
                 style={{ color: '#ffffff', fontSize: 16 }}
                 secureTextEntry={true}
                 onChangeText={(password) => setUserPassword(password)}
                 value={password}
               />
               <Button
-                title='Registrarme'
+                title="Registrarme"
                 onPress={() => registrarUsuarios(email, password)}
                 buttonStyle={{
                   backgroundColor: 'orange',
@@ -188,7 +197,7 @@ export default function RegisterPage({ navigation }) {
             <View>
               <SocialIcon
                 button
-                type='google'
+                type="google"
                 style={{ padding: 25 }}
                 onPress={() => signInWithGoogle()}
               />
@@ -199,7 +208,7 @@ export default function RegisterPage({ navigation }) {
             <View>
               <SocialIcon
                 button
-                type='facebook'
+                type="facebook"
                 style={{ padding: 30 }}
                 onPress={() => signInWithFacebook()}
               />

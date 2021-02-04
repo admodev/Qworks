@@ -10,7 +10,14 @@ import {
   Text,
   Share,
 } from 'react-native';
-import { Avatar, Button, Card, Icon, Input, Overlay } from 'react-native-elements';
+import {
+  Avatar,
+  Button,
+  Card,
+  Icon,
+  Input,
+  Overlay,
+} from 'react-native-elements';
 import * as firebase from 'firebase';
 import 'firebase/firestore';
 import 'firebase/database';
@@ -22,6 +29,8 @@ import { concat } from 'react-native-reanimated';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import * as Sharing from 'expo-sharing';
 import * as Updates from 'expo-updates';
+import * as Notifications from 'expo-notifications';
+import Dialog from 'react-native-dialog';
 
 var itm = [];
 
@@ -29,6 +38,7 @@ const naranjaQueDeOficios = '#fd5d13';
 
 const AnunciosPage = ({ route, navigation }) => {
   const [items, setItems] = useState([]);
+  const [visible, setVisible] = useState(false);
   let user = firebase.auth().currentUser;
   let id = user.uid;
   let anuncioId, image, nombre, apellido, actividad, emailPersonal;
@@ -62,6 +72,7 @@ const AnunciosPage = ({ route, navigation }) => {
             actividad: child.val().actividad,
             emailPersonal: child.val().emailPersonal,
             idAnuncio: child.val().id,
+            anuncioId: child.val().anuncioId,
             localidad: child.val().localidad,
             provincia: child.val().provincia,
           });
@@ -72,36 +83,72 @@ const AnunciosPage = ({ route, navigation }) => {
       });
   }, []);
 
-  function eliminarAnuncio() {
-    firebase.database().ref('anuncios/').child(id).remove();
-    Updates.reloadAsync();
-  }
-
   function eliminarCuenta() {
-    admin
-      .auth()
-      .deleteUser(id)
+    user
+      .delete()
       .then(function () {
-        console.log('Successfully deleted user');
+        Notifications.scheduleNotificationAsync({
+          content: {
+            title: '¡QuedeOficios! 📬',
+            body: '¡Te esperamos Pronto!',
+            data: { data: 'El equipo de ¡QuedeOficios!' },
+          },
+          trigger: { seconds: 5 },
+        });
+        Updates.reloadAsync();
       })
       .catch(function (error) {
-        console.log('Error deleting user:', error);
+        alert(
+          'Hubo un error al eliminar su cuenta! por favor cierre sesión y vuelva a ingresar antes de intentarlo nuevamente.'
+        );
       });
   }
 
   function shareContent() {
     Share.share(
       {
-        message: `Dale un vistazo al perfil de ${nombre} en QuedeOficios!`,
+        message: `Mira mi perfil en ¡QuedeOficios!`,
         url: 'http://dominioquedeoficios.com',
-        title: 'QuedeOficios!',
+        title: '¡QuedeOficios!',
       },
       {
         // Android only:
-        dialogTitle: `Mira el perfil de ${nombre}`,
+        dialogTitle: `Mira mi perfil en ¡QuedeOficios!`,
       }
     );
   }
+
+  function eliminarAnuncio(anuncioId) {
+    try {
+      firebase
+        .database()
+        .ref('anuncios/')
+        .orderByKey()
+        .equalTo(firebase.auth().currentUser.uid + '-' + anuncioId)
+        .once('value')
+        .then(function (snapshot) {
+          var promises = [];
+          snapshot.forEach(function (child) {
+            promises.push(child.ref.remove());
+          });
+          Promise.all(promises).then(function () {
+            console.log('All removed!');
+            setVisible(false);
+          });
+        });
+      // Updates.reloadAsync();
+    } catch (error) {
+      console.log(error.message);
+    }
+  }
+
+  const showDialog = () => {
+    setVisible(true);
+  };
+
+  const handleCancel = () => {
+    setVisible(false);
+  };
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -115,6 +162,52 @@ const AnunciosPage = ({ route, navigation }) => {
           height: '5%',
         }}
       />
+      <View
+        style={{
+          ...Platform.select({
+            android: {
+              width: 30,
+              height: 20,
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              flexDirection: 'row',
+              marginTop: '15%',
+              marginLeft: '5%',
+            },
+            ios: {
+              width: 30,
+              height: 30,
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              flexDirection: 'row',
+              marginTop: '8%',
+              backgroundColor: 'transparent',
+            },
+          }),
+        }}
+      >
+        <TouchableOpacity
+          onPress={() => navigation.goBack()}
+          style={{
+            ...Platform.select({
+              android: {
+                backgroundColor: 'transparent',
+              },
+              ios: {
+                backgroundColor: 'transparent',
+                left: 25,
+              },
+            }),
+          }}
+        >
+          <MaterialCommunityIcons
+            name="arrow-left"
+            color={naranjaQueDeOficios}
+            size={32}
+            style={{ backgroundColor: 'transparent' }}
+          />
+        </TouchableOpacity>
+      </View>
       <ScrollView>
         <Card
           style={styles.card}
@@ -125,7 +218,7 @@ const AnunciosPage = ({ route, navigation }) => {
                 borderRadius: 15,
                 backgroundColor: 'transparent',
                 borderWidth: 0,
-                marginTop: '2%',
+                marginTop: '10%',
                 elevation: 0,
               },
               ios: {
@@ -133,7 +226,7 @@ const AnunciosPage = ({ route, navigation }) => {
                 borderRadius: 15,
                 backgroundColor: 'transparent',
                 borderWidth: 0,
-                marginTop: '10%',
+                marginTop: '5%',
                 elevation: 0,
                 width: '85%',
                 alignSelf: 'center',
@@ -150,6 +243,8 @@ const AnunciosPage = ({ route, navigation }) => {
             let userProfilePic = storageRef
               .child('userProfilePics/')
               .child(u.idAnuncio).child;
+            console.log(firebase.auth().currentUser.uid + '-' + u.anuncioId);
+            //console.log(i);
             return (
               <View
                 key={i}
@@ -269,7 +364,7 @@ const AnunciosPage = ({ route, navigation }) => {
                     {u.actividad} -
                   </Text>
                   <MaterialCommunityIcons
-                    name='account-group'
+                    name="account-group"
                     color={naranjaQueDeOficios}
                     size={22}
                     style={{ marginLeft: '3%' }}
@@ -328,7 +423,7 @@ const AnunciosPage = ({ route, navigation }) => {
                       }}
                     >
                       <MaterialCommunityIcons
-                        name='share-variant'
+                        name="share-variant"
                         color={'#fd5d13'}
                         size={24}
                       />{' '}
@@ -372,7 +467,7 @@ const AnunciosPage = ({ route, navigation }) => {
                       }}
                     >
                       <MaterialCommunityIcons
-                        name='lead-pencil'
+                        name="lead-pencil"
                         color={'#fd5d13'}
                         size={24}
                       />{' '}
@@ -388,7 +483,18 @@ const AnunciosPage = ({ route, navigation }) => {
                     marginLeft: '10%',
                   }}
                 >
-                  <TouchableOpacity onPress={() => eliminarAnuncio()}>
+                  <Dialog.Container visible={visible}>
+                    <Dialog.Title>Eliminar Anuncio</Dialog.Title>
+                    <Dialog.Description>
+                      Todos tus datos se perderán ¿Deseas continuar?
+                    </Dialog.Description>
+                    <Dialog.Button label="No" onPress={handleCancel} />
+                    <Dialog.Button
+                      label="Si"
+                      onPress={() => eliminarAnuncio(u.anuncioId)}
+                    />
+                  </Dialog.Container>
+                  <TouchableOpacity onPress={showDialog}>
                     <Text
                       style={{
                         ...Platform.select({
@@ -400,6 +506,7 @@ const AnunciosPage = ({ route, navigation }) => {
                             marginRight: 'auto',
                             marginLeft: 'auto',
                             fontSize: 20,
+                            marginBottom: '5%',
                           },
                           ios: {
                             color: '#fff',
@@ -413,7 +520,7 @@ const AnunciosPage = ({ route, navigation }) => {
                       }}
                     >
                       <MaterialCommunityIcons
-                        name='eraser'
+                        name="eraser"
                         color={'#fd5d13'}
                         size={24}
                       />{' '}
@@ -436,7 +543,7 @@ const AnunciosPage = ({ route, navigation }) => {
             width: '100%',
           }}
         />
-        <TouchableOpacity onPress={toggleEliminarCuenta}>
+        <TouchableOpacity onPress={() => eliminarCuenta()}>
           <Text
             style={{
               ...Platform.select({
@@ -462,7 +569,7 @@ const AnunciosPage = ({ route, navigation }) => {
             }}
           >
             <MaterialCommunityIcons
-              name='account-off'
+              name="account-off"
               color={'#fd5d13'}
               size={24}
             />{' '}
@@ -473,10 +580,34 @@ const AnunciosPage = ({ route, navigation }) => {
           isVisible={eliminarCuentaIsVisible}
           onBackdropPress={toggleEliminarCuenta}
         >
-          <Text style={{ fontSize: 14, marginTop: "5%", textAlign: 'center' }}>Todos tus datos se perderan ¿Deseas continuar?</Text>
-          <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
-            <Button title='No' buttonStyle={{ width: 80, height: 40, marginTop: "15%", marginRight: "5%" }} />
-            <Button title='Si' buttonStyle={{ width: 80, height: 40, marginTop: "15%", marginLeft: "5%" }} />
+          <Text style={{ fontSize: 14, marginTop: '5%', textAlign: 'center' }}>
+            Todos tus datos se perderan ¿Deseas continuar?
+          </Text>
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            <Button
+              title="No"
+              buttonStyle={{
+                width: 80,
+                height: 40,
+                marginTop: '15%',
+                marginRight: '5%',
+              }}
+            />
+            <Button
+              title="Si"
+              buttonStyle={{
+                width: 80,
+                height: 40,
+                marginTop: '15%',
+                marginLeft: '5%',
+              }}
+            />
           </View>
         </Overlay>
       </View>

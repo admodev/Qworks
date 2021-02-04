@@ -21,13 +21,15 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import * as firebase from 'firebase';
 import 'firebase/firestore';
 import 'firebase/database';
+import 'firebase/storage';
 import 'firebase/auth';
 import * as RootNavigation from '../RootNavigation.js';
 import { StackActions } from '@react-navigation/native';
-import SearchedCardResult from './searchedCard';
+import CardSearchRender from './SearchRender';
 
+const defaultPhoto = '../assets/icon.png';
 var itm = [];
-let image;
+var foto = [];
 
 class CardsUsuarios extends React.Component {
   constructor(props) {
@@ -35,6 +37,7 @@ class CardsUsuarios extends React.Component {
     this.state = {
       items: [],
       search: '',
+      fotoDePerfil: [],
     };
   }
 
@@ -47,14 +50,20 @@ class CardsUsuarios extends React.Component {
         let items = [];
         snap.forEach((child) => {
           items.push({
-            image: child.val().image,
             nombre: child.val().nombre,
             apellido: child.val().apellido,
             actividad: child.val().actividad,
             emailPersonal: child.val().emailPersonal,
             idAnuncio: child.val().id,
+            contadorAnuncio: child.val().anuncioId,
             localidad: child.val().localidad,
             provincia: child.val().provincia,
+            palabraClaveUno: child.val().palabraClaveUno,
+            palabraClaveDos: child.val().palabraClaveDos,
+            palabraClaveTres: child.val().palabraClaveTres,
+            descripcionPersonal: child.val().descripcionPersonal,
+            recomendacionesTotales: child.val().recomendacionesTotales,
+            photoJSONValue: child.val().photoJSONValue,
           });
         });
         itm = items;
@@ -65,6 +74,7 @@ class CardsUsuarios extends React.Component {
           console.log('title*' + itms.title);
         });
       });
+
     firebase.auth().onAuthStateChanged(function (user) {
       if (user) {
         var email = user.email;
@@ -75,12 +85,25 @@ class CardsUsuarios extends React.Component {
       }
     });
   }
+
   filterList(items) {
     return items.filter(
       (itm) =>
         itm.nombre.toLowerCase().includes(this.state.search.toLowerCase()) ||
         itm.apellido.toLowerCase().includes(this.state.search.toLowerCase()) ||
         itm.actividad.toLowerCase().includes(this.state.search.toLowerCase()) ||
+        itm.palabraClaveUno
+          .toLowerCase()
+          .includes(this.state.search.toLowerCase()) ||
+        itm.palabraClaveDos
+          .toLowerCase()
+          .includes(this.state.search.toLowerCase()) ||
+        itm.palabraClaveTres
+          .toLowerCase()
+          .includes(this.state.search.toLowerCase()) ||
+        itm.descripcionPersonal
+          .toLowerCase()
+          .includes(this.state.search.toLowerCase()) ||
         itm.localidad.toLowerCase().includes(this.state.search.toLowerCase()) ||
         itm.provincia.toLowerCase().includes(this.state.search.toLowerCase())
     );
@@ -96,6 +119,7 @@ class CardsUsuarios extends React.Component {
     var user = firebase.auth().currentUser;
 
     const naranjaQueDeOficios = '#fd5d13';
+
     return (
       <SafeAreaView style={{ flex: 1 }}>
         {Platform.OS === 'ios' ? (
@@ -122,14 +146,14 @@ class CardsUsuarios extends React.Component {
                 }}
               />
               <Input
-                placeholder='Buscar en  ¡QuedeOficios!'
+                placeholder="Buscar en  ¡QuedeOficios!"
                 inputStyle={{
                   justifyContent: 'center',
                   marginLeft: 25,
                   marginTop: -10,
                 }}
                 containerStyle={{ marginLeft: 10, marginTop: -10 }}
-                placeholderTextColor='#000000'
+                placeholderTextColor="#000000"
                 onChangeText={(search) => this.setState({ search })}
               />
             </View>
@@ -157,14 +181,14 @@ class CardsUsuarios extends React.Component {
                 }}
               />
               <Input
-                placeholder='Buscar en  ¡QuedeOficios!'
+                placeholder="Buscar en  ¡QuedeOficios!"
                 inputStyle={{
                   justifyContent: 'center',
                   marginLeft: 25,
                   marginTop: -10,
                 }}
                 containerStyle={{ marginLeft: 10, marginTop: -10 }}
-                placeholderTextColor='#000000'
+                placeholderTextColor="#000000"
                 onChangeText={(search) => this.setState({ search })}
               />
             </View>
@@ -172,11 +196,11 @@ class CardsUsuarios extends React.Component {
         )}
         {this.state.search ? (
           this.filterList(this.state.items).map((itm, index) => (
-            <SearchedCardResult
+            <CardSearchRender
               key={index}
-              nombre={itm.nombre}
-              apellido={itm.apellido}
+              name={itm.nombre}
               actividad={itm.actividad}
+              idAnuncio={itm.idAnuncio}
             />
           ))
         ) : (
@@ -206,14 +230,6 @@ class CardsUsuarios extends React.Component {
             }}
           >
             {this.state.items.map((u, i) => {
-              let storage = firebase.storage();
-              let storageRef = storage.ref();
-              let defaultImageRef = storageRef
-                .child('defaultUserImage/icon.png')
-                .toString();
-              let userProfilePic = storageRef
-                .child('userProfilePics/')
-                .child(u.idAnuncio).child;
               return (
                 <View
                   key={i}
@@ -254,7 +270,7 @@ class CardsUsuarios extends React.Component {
                       borderRadius: 10,
                     }}
                   />
-                  {!image ? (
+                  {!u.photoJSONValue ? (
                     <View
                       style={{ alignItems: 'center', justifyContent: 'center' }}
                     >
@@ -282,18 +298,18 @@ class CardsUsuarios extends React.Component {
                     </View>
                   ) : (
                     <Card.Image
-                      source={{ uri: image }}
+                      source={{ uri: u.photoJSONValue.uri }}
                       style={{
                         ...Platform.select({
                           android: {
-                            borderRadius: 100,
+                            borderRadius: 25,
                             marginTop: 10,
                             marginBottom: 20,
                             marginLeft: 60,
                             marginRight: 60,
                           },
                           ios: {
-                            borderRadius: 100,
+                            borderRadius: 25,
                             marginTop: 10,
                             marginBottom: 20,
                             marginLeft: 60,
@@ -308,7 +324,7 @@ class CardsUsuarios extends React.Component {
                       size={18}
                       showRating={true}
                       reviews={['']}
-                      type='star'
+                      type="star"
                       onFinishRating={(rating) => setRating(rating)}
                     />
                   </View>
@@ -342,21 +358,29 @@ class CardsUsuarios extends React.Component {
                       {u.actividad} -
                     </Text>
                     <MaterialCommunityIcons
-                      name='account-group'
+                      name="account-group"
                       color={naranjaQueDeOficios}
                       size={22}
                       style={{ marginLeft: '3%' }}
                     />
-                    <Text
-                      style={{
-                        color: '#8DB600',
-                        textAlign: 'center',
-                        fontSize: 14,
-                        marginLeft: '2%',
-                      }}
+                    <TouchableOpacity
+                      onPress={() =>
+                        RootNavigation.navigate('RecomendacionesRenderizadas')
+                      }
                     >
-                      100
-                    </Text>
+                      <Text
+                        style={{
+                          color: '#8DB600',
+                          textAlign: 'center',
+                          fontSize: 14,
+                          marginLeft: '2%',
+                        }}
+                      >
+                        {!u.recomendacionesTotales
+                          ? 0
+                          : u.recomendacionesTotales}
+                      </Text>
+                    </TouchableOpacity>
                   </View>
                   <View style={{ marginTop: '5%' }}>
                     <Text
@@ -398,7 +422,7 @@ class CardsUsuarios extends React.Component {
                     >
                       <View style={{ marginLeft: '10%', marginBottom: '8%' }}>
                         <MaterialCommunityIcons
-                          name='hand'
+                          name="hand"
                           color={naranjaQueDeOficios}
                           size={20}
                         />

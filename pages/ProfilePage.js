@@ -1,6 +1,6 @@
-import Constants from "expo-constants";
-import * as Permissions from "expo-permissions";
-import React, { useState, useEffect, useRef } from "react";
+import Constants from 'expo-constants';
+import * as Permissions from 'expo-permissions';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   Image,
   FlatList,
@@ -9,22 +9,29 @@ import {
   Text,
   TouchableOpacity,
   View,
-} from "react-native";
-import { Avatar, Button, Overlay, SocialIcon } from "react-native-elements";
-import Icon from "react-native-vector-icons/FontAwesome";
-import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-import * as Location from "expo-location";
-import { ScrollView } from "react-native-gesture-handler";
-import * as firebase from "firebase";
-import "firebase/storage";
-import * as ImagePicker from "expo-image-picker";
-import * as RootNavigation from "../RootNavigation.js";
-import * as LoginPageData from "./LoginPage";
-import LoginPage from "./LoginPage";
-import * as Updates from "expo-updates";
+} from 'react-native';
+import {
+  Avatar,
+  Badge,
+  Button,
+  Overlay,
+  SocialIcon,
+} from 'react-native-elements';
+import Icon from 'react-native-vector-icons/FontAwesome';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import * as Location from 'expo-location';
+import { ScrollView } from 'react-native-gesture-handler';
+import * as firebase from 'firebase';
+import 'firebase/storage';
+import * as ImagePicker from 'expo-image-picker';
+import * as RootNavigation from '../RootNavigation.js';
+import * as LoginPageData from './LoginPage';
+import LoginPage from './LoginPage';
+import * as Updates from 'expo-updates';
 
-const ProfilePage = ({ navigation }) => {
-  let user = firebase.auth().currentUser;
+export default function ProfilePage({ navigation }) {
+  const [isLogged, setIsLogged] = useState(false);
+  const user = firebase.auth().currentUser;
   const signUserOut = () => {
     firebase
       .auth()
@@ -33,46 +40,47 @@ const ProfilePage = ({ navigation }) => {
         alert(error);
       })
       .then(function () {
-        navigation.replace("LoginPage");
+        setIsLogged(false);
+        //navigation.replace('LoginPage');
       });
-    Updates.reloadAsync();
   };
 
-  let dbRef = firebase.database().ref("anuncios/");
+  let dbRef = firebase.database().ref('anuncios/');
 
   let [newImage, setNewImage] = useState(null);
 
   let dato = [];
 
   let id, image, nombre, apellido, actividad, emailPersonal;
-  user ? (id = user.uid) : console.log("No user logged in");
-  user ? dbRef.orderByChild("id").equalTo(id) : console.log("No user");
-  user
-    ? dbRef.on("value", (snap) => {
-        snap.forEach((child) => {
-          key = child.key;
-          nombre = child.val().nombre;
-          image = child.val().image;
-          apellido = child.val().apellido;
-          actividad = child.val().actividad;
-          emailPersonal = child.val().emailPersonal;
-        });
-      })
-    : console.log("No user");
 
-  !nombre ? (nombre = "Nombre") : (nombre = nombre);
+  id = user.uid;
+  firebase
+    .database()
+    .ref('anuncios/')
+    .orderByChild('id')
+    .equalTo(id)
+    .on('value', (snap) => {
+      snap.forEach((child) => {
+        key = child.key;
+        nombre = child.val().nombre;
+        image = child.val().image;
+        apellido = child.val().apellido;
+        actividad = child.val().actividad;
+        emailPersonal = child.val().emailPersonal;
+      });
+    });
 
   const fotoDePerfil = JSON.stringify(image);
 
   useEffect(() => {
     (async () => {
-      if (Platform.OS !== "web") {
+      if (Platform.OS !== 'web') {
         const {
           status,
         } = await ImagePicker.requestCameraRollPermissionsAsync();
-        if (status !== "granted") {
+        if (status !== 'granted') {
           alert(
-            "Perdón, necesitamos tu permiso para que puedas subir una foto!"
+            'Perdón, necesitamos tu permiso para que puedas subir una foto!'
           );
         }
       }
@@ -86,21 +94,38 @@ const ProfilePage = ({ navigation }) => {
       aspect: [4, 3],
       quality: 0.5,
     });
-    (newImage) => setNewImage(result.uri);
+
+    if (!result.cancelled) {
+      user
+        .updateProfile({
+          photoURL: result.uri,
+        })
+        .then(
+          function () {
+            var photoURL = user.photoURL;
+            Updates.reloadAsync();
+          },
+          function (error) {
+            alert(
+              'Hubo un error al subir su foto, compruebe el formato de la misma y vuelva a intentarlo.'
+            );
+          }
+        );
+    }
   };
 
   function updateImage(newImage) {
     let dbRef = firebase
       .database()
-      .ref("anuncios/")
-      .orderByChild("id")
+      .ref('anuncios/')
+      .orderByChild('id')
       .equalTo(id);
     dbRef
       .set({
         image: newImage,
       })
       .then(function () {
-        error == true ? console.log(error) : console.log("success!");
+        error == true ? console.log(error) : console.log('success!');
       })
       .finally(function () {
         Updates.reloadAsync();
@@ -115,9 +140,9 @@ const ProfilePage = ({ navigation }) => {
   let anunciosIdsCount = [];
   let idRefAnuncios = firebase
     .database()
-    .ref("anuncios/")
+    .ref('anuncios/')
     .orderByKey()
-    .on("value", (snap) => {
+    .on('value', (snap) => {
       snap.forEach((child) => {
         anunciosIdsCount.push({
           ids: child.val().id,
@@ -147,32 +172,32 @@ const ProfilePage = ({ navigation }) => {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <Image
-        source={require("../assets/gradients/20x20.png")}
+        source={require('../assets/gradients/20x20.png')}
         style={{
           flex: 1,
-          position: "absolute",
-          resizeMode: "cover",
-          width: "100%",
-          height: "5%",
+          position: 'absolute',
+          resizeMode: 'cover',
+          width: '100%',
+          height: '5%',
         }}
       />
-      {user ? (
+      {firebase.auth().currentUser ? (
         <SafeAreaView style={{ flex: 1 }}>
           <Image
-            source={require("../assets/gradients/20x20.png")}
+            source={require('../assets/gradients/20x20.png')}
             style={{
               flex: 1,
-              position: "absolute",
-              resizeMode: "cover",
-              width: "100%",
-              height: "3%",
+              position: 'absolute',
+              resizeMode: 'cover',
+              width: '100%',
+              height: '3%',
             }}
           />
           <View
             style={{
               flex: 1,
-              justifyContent: "flex-start",
-              flexDirection: "row",
+              justifyContent: 'flex-start',
+              flexDirection: 'row',
               marginTop: 70,
               marginLeft: 15,
             }}
@@ -180,11 +205,11 @@ const ProfilePage = ({ navigation }) => {
             <Overlay
               isVisible={visible}
               onBackdropPress={toggleOverlay}
-              overlayStyle={{ width: "85%", height: "85%", borderRadius: 10 }}
+              overlayStyle={{ width: '85%', height: '85%', borderRadius: 10 }}
             >
-              {image == null || image == undefined ? (
+              {!user.photoURL ? (
                 <Image
-                  source={require("../assets/icon.png")}
+                  source={require('../assets/icon.png')}
                   style={{
                     width: 60,
                     height: 60,
@@ -193,7 +218,7 @@ const ProfilePage = ({ navigation }) => {
                 />
               ) : (
                 <Image
-                  source={{ uri: fotoDePerfil }}
+                  source={{ uri: user.photoURL }}
                   style={{
                     width: 60,
                     height: 60,
@@ -202,19 +227,21 @@ const ProfilePage = ({ navigation }) => {
                 />
               )}
             </Overlay>
-            {image ? (
-              <Image
-                source={require("../assets/icon.png")}
-                style={{
-                  width: 60,
-                  height: 60,
-                  borderRadius: 15,
-                }}
-              />
+            {user.photoURL ? (
+              <TouchableOpacity onPress={pickImage}>
+                <Image
+                  source={{ uri: user.photoURL }}
+                  style={{
+                    width: 60,
+                    height: 60,
+                    borderRadius: 15,
+                  }}
+                />
+              </TouchableOpacity>
             ) : (
               <TouchableOpacity onPress={pickImage}>
                 <Image
-                  source={require("../assets/icon.png")}
+                  source={require('../assets/icon.png')}
                   style={{
                     width: 60,
                     height: 60,
@@ -222,74 +249,121 @@ const ProfilePage = ({ navigation }) => {
                 />
               </TouchableOpacity>
             )}
-            <View style={{ flex: 1, flexDirection: "column", marginTop: 5 }}>
-              {nombre == "Nombre" ? (
+            <View style={{ flex: 1, flexDirection: 'column', marginTop: 5 }}>
+              {!user.displayName ? (
                 <TouchableOpacity
-                  onPress={() => RootNavigation.navigate("CambiarNombreScreen")}
+                  onPress={() => RootNavigation.navigate('CambiarNombreScreen')}
                 >
-                  <Text
-                    style={{ color: "#000000", fontSize: 14, marginLeft: 20 }}
-                  >
-                    Nombre
-                  </Text>
+                  <View style={{ flexDirection: 'row' }}>
+                    <View style={{ marginLeft: '5%' }}>
+                      <MaterialCommunityIcons
+                        name="pen"
+                        color={'#fd5d13'}
+                        size={20}
+                      />
+                    </View>
+                    <Text
+                      style={{
+                        color: '#000000',
+                        fontSize: 14,
+                        marginLeft: '2%',
+                      }}
+                    >
+                      Usuario
+                    </Text>
+                  </View>
                 </TouchableOpacity>
               ) : (
-                <Text
-                  style={{ color: "#000000", fontSize: 14, marginLeft: 20 }}
+                <TouchableOpacity
+                  onPress={() => RootNavigation.navigate('CambiarNombreScreen')}
                 >
-                  {nombre}
-                </Text>
+                  <View style={{ flexDirection: 'row' }}>
+                    <View style={{ marginLeft: '5%' }}>
+                      <MaterialCommunityIcons
+                        name="pen"
+                        color={'#fd5d13'}
+                        size={20}
+                      />
+                    </View>
+                    <Text
+                      style={{
+                        color: '#000000',
+                        fontSize: 14,
+                        marginLeft: '2%',
+                      }}
+                    >
+                      {user.displayName}
+                    </Text>
+                  </View>
+                </TouchableOpacity>
               )}
-              <Text
-                style={{
-                  color: "#000000",
-                  fontSize: 14,
-                  marginLeft: 20,
-                  marginTop: 10,
-                }}
-              >
-                {user.email}
-              </Text>
+              <View style={{ flexDirection: 'row', marginTop: '2%' }}>
+                <View style={{ marginLeft: '5%' }}>
+                  <MaterialCommunityIcons
+                    name="email"
+                    color={'#000000'}
+                    size={20}
+                  />
+                </View>
+                <Text
+                  style={{
+                    ...Platform.select({
+                      android: {
+                        color: '#000000',
+                        fontSize: 14,
+                        marginLeft: '2%',
+                      },
+                      ios: {
+                        color: '#000000',
+                        fontSize: 14,
+                        marginLeft: '2%',
+                      },
+                    }),
+                  }}
+                >
+                  {user.email}
+                </Text>
+              </View>
             </View>
           </View>
           {anunciosCountResult >= 3 ? (
             <View
               style={{
-                position: "absolute",
-                alignItems: "center",
-                justifyContent: "center",
-                alignSelf: "center",
-                marginTop: "30%",
-              }}
-            >
-            <Button
-              title="Anunciarte"
-              disabled
-              onPress={() => navigation.navigate("AnunciatePage")}
-              buttonStyle={{
-                backgroundColor: "#fd5d13",
-                marginRight: 15,
-                borderRadius: 5,
-                height: 60,
-                width: 120,
-              }}
-            />
-              </View>
-          ) : (
-            <View
-              style={{
-                position: "absolute",
-                alignItems: "center",
-                justifyContent: "center",
-                alignSelf: "center",
-                marginTop: "30%",
+                position: 'absolute',
+                alignItems: 'center',
+                justifyContent: 'center',
+                alignSelf: 'center',
+                marginTop: '30%',
               }}
             >
               <Button
                 title="Anunciarte"
-                onPress={() => navigation.navigate("AnunciatePage")}
+                disabled
+                onPress={() => navigation.navigate('AnunciatePage')}
                 buttonStyle={{
-                  backgroundColor: "#fd5d13",
+                  backgroundColor: '#fd5d13',
+                  marginRight: 15,
+                  borderRadius: 5,
+                  height: 60,
+                  width: 120,
+                }}
+              />
+            </View>
+          ) : (
+            <View
+              style={{
+                position: 'absolute',
+                alignItems: 'center',
+                justifyContent: 'center',
+                alignSelf: 'center',
+                marginTop: '30%',
+              }}
+            >
+              <Button
+                title="Anunciarte"
+                onPress={() => navigation.navigate('AnunciatePage')}
+                buttonStyle={{
+                  backgroundColor: '#fd5d13',
                   borderRadius: 5,
                   height: 60,
                   width: 120,
@@ -300,86 +374,72 @@ const ProfilePage = ({ navigation }) => {
           <View
             style={{
               flex: 1,
-              flexDirection: "column",
-              justifyContent: "flex-start",
+              flexDirection: 'column',
+              justifyContent: 'flex-start',
               bottom: 30,
             }}
           >
-            <TouchableOpacity onPress={() => navigation.navigate("Anuncios")}>
-              <Text style={{ color: "#000000", fontSize: 20, margin: 15 }}>
+            <TouchableOpacity onPress={() => navigation.navigate('Anuncios')}>
+              <Text style={{ color: '#000000', fontSize: 20, margin: 15 }}>
                 <MaterialCommunityIcons
                   name="bullhorn"
-                  color={"#fd5d13"}
+                  color={'#fd5d13'}
                   size={20}
-                />{" "}
+                />{' '}
                 Mis Anuncios
               </Text>
             </TouchableOpacity>
             <TouchableOpacity
-              onPress={() => navigation.navigate("MessagesScreen")}
+              onPress={() => navigation.navigate('MessagesScreen')}
             >
-              <Text style={{ color: "#000000", fontSize: 20, margin: 15 }}>
+              <Text style={{ color: '#000000', fontSize: 20, margin: 15 }}>
                 <MaterialCommunityIcons
                   name="comment-text"
-                  color={"#fd5d13"}
+                  color={'#fd5d13'}
                   size={20}
-                />{" "}
+                />{' '}
                 Mensajes
               </Text>
             </TouchableOpacity>
             <TouchableOpacity
-              onPress={() => navigation.navigate("MisFavoritosScreen")}
+              onPress={() => navigation.navigate('MisFavoritosScreen')}
             >
-              <Text style={{ color: "#000000", fontSize: 20, margin: 15 }}>
+              <Text style={{ color: '#000000', fontSize: 20, margin: 15 }}>
                 <MaterialCommunityIcons
                   name="book-open"
-                  color={"#fd5d13"}
+                  color={'#fd5d13'}
                   size={20}
-                />{" "}
+                />{' '}
                 Favoritos
               </Text>
             </TouchableOpacity>
-            {/*
             <TouchableOpacity
-            onPress={() => navigation.navigate("MisComentariosPage")}
+              onPress={() => navigation.navigate('RecomendacionesRenderizadas')}
             >
-            <Text style={{ color: "#000000", fontSize: 20, margin: 15 }}>
-            <MaterialCommunityIcons
-            name="comment"
-            color={"#fd5d13"}
-            size={20}
-            />{" "}
-            Comentarios
-            </Text>
-            </TouchableOpacity>
-            */}
-            <TouchableOpacity
-              onPress={() => navigation.navigate("MisRecomendadosPage")}
-            >
-              <Text style={{ color: "#000000", fontSize: 20, margin: 15 }}>
+              <Text style={{ color: '#000000', fontSize: 20, margin: 15 }}>
                 <MaterialCommunityIcons
                   name="account-group"
-                  color={"#fd5d13"}
+                  color={'#fd5d13'}
                   size={20}
-                />{" "}
-                Recomendados
+                />{' '}
+                Consultas
               </Text>
             </TouchableOpacity>
           </View>
           <View
             style={{
               flex: 1,
-              alignItems: "center",
-              justifyContent: "center",
+              alignItems: 'center',
+              justifyContent: 'center',
             }}
           >
             <Button
               title="Cerrar Sesión"
               onPress={() => signUserOut()}
               buttonStyle={{
-                backgroundColor: "#fd5d13",
+                backgroundColor: '#fd5d13',
                 borderRadius: 12,
-                fontWeight: "bold",
+                fontWeight: 'bold',
                 padding: 10,
                 marginTop: 50,
               }}
@@ -391,16 +451,14 @@ const ProfilePage = ({ navigation }) => {
       )}
     </SafeAreaView>
   );
-};
+}
 
 const styles = StyleSheet.create({
   button: {
-    alignItems: "center",
-    backgroundColor: "#DDDDDD",
+    alignItems: 'center',
+    backgroundColor: '#DDDDDD',
     padding: 10,
     width: 300,
     marginTop: 16,
   },
 });
-
-export default ProfilePage;

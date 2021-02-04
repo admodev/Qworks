@@ -1,21 +1,21 @@
-import React, { useState, setState } from "react";
-import { Image, SafeAreaView, View } from "react-native";
-import { Button } from "react-native-elements";
-import CardsUsuarios from "./Cards";
-import * as RootNavigation from "../RootNavigation.js";
+import React, { useState, setState } from 'react';
+import { Image, SafeAreaView, View } from 'react-native';
+import { Button } from 'react-native-elements';
+import CardsUsuarios from './Cards';
+import * as RootNavigation from '../RootNavigation.js';
 
 class ControlPanel extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       isLoading: true,
-      pickerValueHolder: "",
+      pickerValueHolder: '',
       filter: [
         {
-          option: "profesion",
+          option: 'profesion',
         },
         {
-          option: "aeiou",
+          option: 'aeiou',
         },
       ],
       dataSource: [],
@@ -37,64 +37,54 @@ class ControlPanel extends React.Component {
   }
 
   render() {
+    const naranjaQueDeOficios = '#fd5d13';
+
     const closeControlPanel = () => {
       _drawer.close();
     };
     return (
       <SafeAreaView style={{ flex: 1 }}>
         <Image
-          source={require("../assets/gradients/20x20.png")}
+          source={require('../assets/gradients/20x20.png')}
           style={{
             flex: 1,
-            position: "absolute",
-            resizeMode: "cover",
-            width: "100%",
-            height: "3%",
+            position: 'absolute',
+            resizeMode: 'cover',
+            width: '100%',
+            height: '5%',
           }}
         />
         <Button
-          title=">"
+          title='>'
           buttonStyle={{
-            backgroundColor: "transparent",
-            justifyContent: "flex-end",
-            marginTop: 15,
-            marginRight: 35,
+            backgroundColor: 'transparent',
+            justifyContent: 'flex-end',
+            marginTop: '10%',
+            marginRight: '5%',
           }}
-          titleStyle={{ color: "#000000", fontSize: 28 }}
+          titleStyle={{ color: naranjaQueDeOficios, fontSize: 28 }}
           onPress={closeControlPanel}
         />
         <View
           style={{
-            maxWidth: "90%",
-            marginLeft: "auto",
-            marginRight: "auto",
-            marginTop: "auto",
-            marginBottom: "auto",
+            maxWidth: '90%',
+            marginLeft: 'auto',
+            marginRight: 'auto',
           }}
         >
           <Button
-            title="Filtrar por ubicación"
-            type="outline"
-            onPress={() => RootNavigation.navigate("UbicacionPage")}
-            buttonStyle={{ width: "100%", marginTop: 10 }}
+            title='Filtrar por ubicación'
+            type='outline'
+            onPress={() => RootNavigation.navigate('UbicacionPage')}
+            buttonStyle={{ width: '100%', marginTop: 10 }}
+            titleStyle={{ color: naranjaQueDeOficios }}
           />
           <Button
-            title="Filtrar por recomendaciones"
-            type="outline"
-            onPress={() => RootNavigation.navigate("FiltroRecomendados")}
-            buttonStyle={{ width: "100%", marginTop: 10 }}
-          />
-          <Button
-            title="Filtrar por comentarios"
-            type="outline"
-            onPress={() => RootNavigation.navigate("FiltroDeComentarios")}
-            buttonStyle={{ width: "100%", marginTop: 10 }}
-          />
-          <Button
-            title="Mis favoritos"
-            type="outline"
-            onPress={() => RootNavigation.navigate("FiltroDeFavoritos")}
-            buttonStyle={{ width: "100%", marginTop: 10 }}
+            title='Filtrar por recomendaciones'
+            type='outline'
+            onPress={() => RootNavigation.navigate('FiltroRecomendados')}
+            buttonStyle={{ width: '100%', marginTop: 10 }}
+            titleStyle={{ color: naranjaQueDeOficios }}
           />
         </View>
       </SafeAreaView>

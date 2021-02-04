@@ -1,762 +1,753 @@
-import React, { useState, useEffect, setState } from "react";
-import { Image, View, Platform, ScrollView, TextInput } from "react-native";
-import { Avatar, Button, CheckBox, Input, Text } from "react-native-elements";
+import React, { useState, setState, useEffect } from "react";
+import {
+    TouchableOpacity,
+    StyleSheet,
+    Image,
+    View,
+    ScrollView,
+    SafeAreaView,
+    Text,
+    Platform,
+    Share,
+} from "react-native";
+import {
+    Avatar,
+    Button,
+    Card,
+    Overlay,
+    Rating,
+    AirbnbRating,
+} from "react-native-elements";
 import * as firebase from "firebase";
-import "firebase/auth";
+import "firebase/firestore";
 import "firebase/database";
-import * as ImagePicker from "expo-image-picker";
-import * as Updates from "expo-updates";
+import "firebase/auth";
+import * as RootNavigation from "../RootNavigation.js";
+import { StackActions } from "@react-navigation/native";
+import CardsUsuarios from "./Cards";
+import { concat } from "react-native-reanimated";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import * as Updates from "expo-updates";
 
-const EditarAnuncioScreen = ({ navigation }) => {
-  let database = firebase.database();
-  let user = firebase.auth().currentUser;
-  let id = user.uid;
-  let storage = firebase.storage();
-  let storageRef = storage.ref();
-  var userDefaultImage = storageRef.child("userDefaultImage/icon.png");
-  const [location, setLocation] = useState(null);
-  const [errorMsg, setErrorMsg] = useState(null);
+let calificacion = "calificacion";
 
-  const [image, setImage] = useState(null);
-  const [nombre, setNombre] = useState("");
-  const [apellido, setApellido] = useState("");
-  const [emailPersonal, setEmailPersonal] = useState("");
-  const [domicilio, setDomicilio] = useState("");
-  const [pisoDptoCasa, setPisoDptoCasa] = useState("");
-  const [cuitCuil, setCuitCuil] = useState("");
-  const [actividad, setActividad] = useState("");
-  const [telefono, setTelefono] = useState("");
-  const [celular, setCelular] = useState("");
-  const [provincia, setProvincia] = useState("");
-  const [localidad, setLocalidad] = useState("");
-  const [local, setLocal] = useState("");
-  const [empresa, setEmpresa] = useState("");
-  const [factura, setFactura] = useState("");
-  const [direccionDelLocal, setDireccionDelLocal] = useState("");
-  const [nombreDeLaEmpresa, setNombreDeLaEmpresa] = useState("");
-  const [matricula, setMatricula] = useState("");
-  const [numeroDeMatricula, setNumeroDeMatricula] = useState("");
-  const [emailLaboral, setEmailLaboral] = useState("");
-  const [tengoWhatsapp, setTengoWhatsapp] = useState(false);
-  const [descripcionPersonal, setDescripcionPersonal] = useState("");
-  const [diasHorarios, setDiasHorarios] = useState([]);
-  const [desde, setDesde] = useState("");
-  const [hasta, setHasta] = useState("");
-  const [terminos, setTerminos] = useState(false);
-  // Pasar valores booleanos (por ejemplo: tengoWhatsapp de falso a verdadero y viceversa.
-  const toggleWhatsapp = React.useCallback(() =>
-    setTengoWhatsapp(!tengoWhatsapp)
-  );
-  const toggleTerminos = React.useCallback(() => setTerminos(!terminos));
-  const [lunesChecked, setLunesChecked] = useState(false);
-  const toggleLunesChecked = React.useCallback(() =>
-    setLunesChecked(!lunesChecked)
-  );
-  const [martesChecked, setMartesChecked] = useState(false);
-  const toggleMartesChecked = React.useCallback(() =>
-    setMartesChecked(!martesChecked)
-  );
-  const [miercolesChecked, setMiercolesChecked] = useState(false);
-  const toggleMiercolesChecked = React.useCallback(() =>
-    setMiercolesChecked(!miercolesChecked)
-  );
-  const [juevesChecked, setJuevesChecked] = useState(false);
-  const toggleJuevesChecked = React.useCallback(() =>
-    setJuevesChecked(!juevesChecked)
-  );
-  const [viernesChecked, setViernesChecked] = useState(false);
-  const toggleViernesChecked = React.useCallback(() =>
-    setViernesChecked(!viernesChecked)
-  );
-  const [sabadoChecked, setSabadoChecked] = useState(false);
-  const toggleSabadoChecked = React.useCallback(() =>
-    setSabadoChecked(!sabadoChecked)
-  );
-  const [domingoChecked, setDomingoChecked] = useState(false);
-  const toggleDomingoChecked = React.useCallback(() =>
-    setDomingoChecked(!domingoChecked)
-  );
-  const [desdeAmChecked, setDesdeAmChecked] = useState(false);
-  const toggleDesdeAmChecked = React.useCallback(() =>
-    setDesdeAmChecked(!desdeAmChecked)
-  );
-  const [desdePmChecked, setDesdePmChecked] = useState(false);
-  const toggleDesdePmChecked = React.useCallback(() =>
-    setDesdePmChecked(!desdePmChecked)
-  );
-  const [hastaAmChecked, setHastaAmChecked] = useState(false);
-  const toggleHastaAmChecked = React.useCallback(() =>
-    setHastaAmChecked(!hastaAmChecked)
-  );
-  const [hastaPmChecked, setHastaPmChecked] = useState(false);
-  const toggleHastaPmChecked = React.useCallback(() =>
-    setHastaPmChecked(!hastaPmChecked)
-  );
-  function concatLunes() {
-    setDiasHorarios(diasHorarios.concat("Lunes"));
-    toggleLunesChecked();
-  }
-  function concatMartes() {
-    setDiasHorarios(diasHorarios.concat("Martes"));
-    toggleMartesChecked();
-  }
-  function concatMiercoles() {
-    setDiasHorarios(diasHorarios.concat("Miercoles"));
-    toggleMiercolesChecked();
-  }
-  function concatJueves() {
-    setDiasHorarios(diasHorarios.concat("Jueves"));
-    toggleJuevesChecked();
-  }
-  function concatViernes() {
-    setDiasHorarios(diasHorarios.concat("Viernes"));
-    toggleViernesChecked();
-  }
-  function concatSabado() {
-    setDiasHorarios(diasHorarios.concat("Sabado"));
-    toggleSabadoChecked();
-  }
-  function concatDomingo() {
-    setDiasHorarios(diasHorarios.concat("Domingo"));
-    toggleDomingoChecked();
-  }
-  function writeUserData(
-    image,
-    nombre,
-    apellido,
-    emailPersonal,
-    domicilio,
-    pisoDptoCasa,
-    cuitCuil,
-    actividad,
-    telefono,
-    celular,
-    provincia,
-    localidad,
-    local,
-    empresa,
-    factura,
-    direccionDelLocal,
-    nombreDeLaEmpresa,
-    matricula,
-    numeroDeMatricula,
-    emailLaboral,
-    tengoWhatsapp,
-    descripcionPersonal,
-    diasHorarios,
-    desde,
-    hasta,
-    terminos
-  ) {
-    firebase
-      .database()
-      .ref("anuncios/")
-      .push({})
-      .set({
-        id: user.uid,
-        image,
-        nombre: nombre,
-        apellido: apellido,
-        emailPersonal: emailPersonal,
-        domicilio: domicilio,
-        pisoDptoCasa: pisoDptoCasa,
-        cuitCuil: cuitCuil,
-        actividad: actividad,
-        telefono: telefono,
-        celular: celular,
-        provincia: provincia,
-        localidad: localidad,
-        local: local,
-        empresa: empresa,
-        factura: factura,
-        direccionDelLocal: direccionDelLocal,
-        nombreDeLaEmpresa: nombreDeLaEmpresa,
-        matricula: matricula,
-        numeroDeMatricula: numeroDeMatricula,
-        emailLaboral: emailLaboral,
-        tengoWhatsapp: tengoWhatsapp,
-        descripcionPersonal: descripcionPersonal,
-        diasHorarios: diasHorarios,
-        desde: desde,
-        hasta: hasta,
-        terminos: terminos,
-      })
-      .then(function () {
-        if (error) {
-          console.log(error);
-        }
-      })
-      .finally(() => {
-        Updates.reloadAsync();
-      });
-  }
-  useEffect(() => {
-    (async () => {
-      if (Platform.OS !== "web") {
-        const {
-          status,
-        } = await ImagePicker.requestCameraRollPermissionsAsync();
-        if (status !== "granted") {
-          alert(
-            "Perdón, necesitamos tu permiso para que puedas subir una foto!"
-          );
-        }
-      }
-      let { status } = await Location.requestPermissionsAsync();
-      if (status !== "granted") {
-        setErrorMsg("Permission to access location was denied");
-      }
-
-      let location = await Location.getCurrentPositionAsync({});
-      setLocation(location);
-    })();
-  }, []);
-
-  let text = "Esperando ubicación..";
-  if (errorMsg) {
-    text = errorMsg;
-  } else if (location) {
-    text = JSON.stringify(location);
-  }
-
-  const pickImage = async () => {
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
-      allowsEditing: true,
-      aspect: [4, 3],
-      quality: 0.5,
+const AnuncioSeleccionado = ({ navigation }) => {
+    let id = firebase.auth().currentUser.uid;
+    let routeParamsToString = id.toString();
+    const naranjaQueDeOficios = "#fd5d13";
+    const favoritosBackground = "transparent";
+    const [favoritosTint, setFavoritosTint] = useState(false);
+    let image,
+        nombre,
+        apellido,
+        actividad,
+        emailPersonal,
+        celular,
+        descripcionPersonal,
+        desde,
+        diasHorarios,
+        direccionDelLocal,
+        emailLaboral,
+        empresa,
+        factura,
+        hasta,
+        local,
+        localidad,
+        matricula,
+        nombreDeLaEmpresa,
+        numeroDeMatricula,
+        pisoDptoCasa,
+        provincia,
+        telefono;
+    let dbRef = firebase
+        .database()
+        .ref("anuncios/")
+        .orderByChild("id")
+        .equalTo(id);
+    let dbResult = dbRef.on("value", (snap) => {
+        snap.forEach((child) => {
+            key = child.key; 
+            nombre = child.val().nombre;
+            image = child.val().image;
+            apellido = child.val().apellido;
+            actividad = child.val().actividad;
+            emailPersonal = child.val().emailPersonal;
+            id = child.val().id;
+            celular = child.val().celular;
+            descripcionPersonal = child.val().descripcionPersonal;
+            desde = child.val().desde;
+            diasHorarios = child.val().diasHorarios;
+            direccionDelLocal = child.val().direccionDelLocal;
+            emailLaboral = child.val().emailLaboral;
+            empresa = child.val().empresa;
+            factura = child.val().factura;
+            hasta = child.val().hasta;
+            local = child.val().local;
+            localidad = child.val().localidad;
+            provincia = child.val().provincia;
+            nombreDeLaEmpresa = child.val().nombreDeLaEmpresa;
+        });
     });
-    console.log(result);
-    if (!result.cancelled) {
-      setImage(result.uri);
-    }
-    if (result.uri) {
-      setImage(result.uri);
-    }
-  };
+    let key, userId, comentario;
+    var arr = [];
+    let comentariosRef = firebase
+        .database()
+        .ref("comentarios/")
+        .orderByKey()
+        .on("value", function snapshotToArray(snapshot) {
+            var returnArr = [];
+            snapshot.forEach(function (childSnapshot) {
+                let item = childSnapshot.val();
+                item.key = childSnapshot.key;
+                returnArr.push({
+                    key: item.key,
+                    id: item.id,
+                    comentadoPor: item.comentadoPor,
+                    comentario: item.comentario,
+                });
+                arr = returnArr;
+                console.log(arr);
+            });
+        });
 
-  location;
-  return (
-    <View style={{ flex: 1 }}>
-      <Image
+    let storage = firebase.storage();
+    let storageRef = storage.ref();
+    let defaultImageRef = storageRef
+        .child("defaultUserImage/icon.png")
+        .toString();
+    let userProfilePic = storageRef.child("userProfilePics/").child(id).child;
+    const [visible, setVisible] = useState(false);
+    const toggleOverlay = () => {
+        setVisible(!visible);
+    };
+
+    let user = firebase.auth().currentUser;
+
+    function agregarFavorito(id) {
+        firebase
+            .database()
+            .ref("favoritos/" + user.uid)
+            .set({
+                favoritos: id,
+            })
+            .then(function () {
+                Updates.reloadAsync();
+            });
+    }
+
+    let [rating, setRating] = useState(0);
+
+    function calificarUsuario(rating) {
+        let ratingString = parseInt(rating);
+        let ratingUserRef = firebase
+            .database()
+            .ref("anuncios/")
+            .orderByChild("id")
+            .equalTo(firebase.auth().currentUser.uid)
+            .once("value")
+            .then(function (snapshot) {
+                var nombre = snapshot.val().nombre;
+            });
+        firebase
+            .database()
+            .ref("calificaciones/")
+            .push()
+            .set({
+                calificacion: {
+                    ratingUserId: firebase.auth().currentUser.uid,
+                    ratingUserName: nombre,
+                    ratedUser: id,
+                    rating: ratingString,
+                },
+            })
+            .then(function () {
+                Updates.reloadAsync();
+            });
+    }
+
+    function shareContent() {
+        Share.share(
+            {
+                message: `Dale un vistazo al perfil de ${nombre} en QuedeOficios!`,
+                url: "http://dominioquedeoficios.com",
+                title: "QuedeOficios!",
+            },
+            {
+                // Android only:
+                dialogTitle: `Mira el perfil de ${nombre}`,
+            }
+        );
+    }
+
+    function favoritosColor() {
+        setFavoritosTint(!favoritosTint);
+    }
+
+    return (
+        <SafeAreaView
+        style={{
+            flex: 1,
+        }}
+        >
+        <Image
         source={require("../assets/gradients/20x20.png")}
         style={{
-          flex: 1,
-          position: "absolute",
-          resizeMode: "cover",
-          width: "100%",
-          height: "100%",
+            flex: 1,
+                position: "absolute",
+                resizeMode: "cover",
+                width: "105%",
+                height: "105%",
+                opacity: 0.9,
         }}
-      />
-      <ScrollView>
+        />
         <View
-          style={{
-            flex: 1,
-            alignItems: "center",
-            justifyContent: "center",
-            marginTop: 25,
-          }}
+        style={{
+            ...Platform.select({
+                android: {
+                    width: 30,
+                    height: 30,
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                    flexDirection: "row",
+                    marginTop: "10%",
+                    marginLeft: "10%",
+                },
+                ios: {
+                    width: 30,
+                    height: 30,
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                    flexDirection: "row",
+                    marginTop: "10%",
+                    marginLeft: 15,
+                    backgroundColor: "transparent",
+                },
+            }),
+        }}
         >
-          <Text h3 style={{ color: "#fff", marginTop: 30, marginBottom: 25 }}>
-            Foto de Perfil
-          </Text>
-          {image ? (
-            <Avatar rounded source={{ uri: image }} size="xlarge" />
-          ) : (
-            <Button
-              buttonStyle={{ marginTop: 10, backgroundColor: "#F4743B" }}
-              title="Subir foto"
-              onPress={pickImage}
-            />
-          )}
+        <TouchableOpacity
+        onPress={() => navigation.goBack()}
+        style={{
+            ...Platform.select({
+                android: {
+                    backgroundColor: "transparent",
+                },
+                ios: {
+                    backgroundColor: "transparent",
+                    left: 25,
+                },
+            }),
+        }}
+        >
+        <MaterialCommunityIcons
+        name="arrow-left"
+        color={naranjaQueDeOficios}
+        size={32}
+        style={{ backgroundColor: "transparent" }}
+        />
+        </TouchableOpacity>
         </View>
-        <View
-          style={{
-            flex: 1,
-            alignItems: "center",
-            justifyContent: "center",
-            marginTop: 25,
-            width: "90%",
-            marginLeft: "auto",
-            marginRight: "auto",
-          }}
+        <ScrollView showsHorizontalScrollIndicator={false}>
+        {/* Card principal */}
+        <Card
+        style={styles.card}
+        containerStyle={{
+            ...Platform.select({
+                android: {
+                    padding: 0,
+                    borderRadius: 15,
+                    backgroundColor: "transparent",
+                    borderWidth: 0,
+                    marginTop: "2%",
+                },
+                ios: {
+                    padding: 0,
+                    borderRadius: 15,
+                    backgroundColor: "transparent",
+                    borderWidth: 0,
+                    marginTop: "2%",
+                },
+            }),
+        }}
         >
-          <Text h3 style={{ color: "#fff", marginTop: 10, marginBottom: 25 }}>
-            Información Personal
-          </Text>
-          <Input
-            placeholder="Nombre"
-            style={{ color: "#ffffff", fontSize: 16 }}
-            onChangeText={(nombre) => setNombre(nombre)}
-            value={nombre}
-          />
-          <Input
-            placeholder="Apellido"
-            style={{ color: "#ffffff", fontSize: 16 }}
-            onChangeText={(apellido) => setApellido(apellido)}
-            value={apellido}
-          />
-          <Input
-            placeholder="Email Personal"
-            style={{ color: "#ffffff", fontSize: 16 }}
-            keyboardType="email-address"
-            autoCapitalize="none"
-            onChangeText={(emailPersonal) => setEmailPersonal(emailPersonal)}
-            value={emailPersonal}
-          />
-          <Input
-            placeholder="Domicilio"
-            style={{ color: "#ffffff", fontSize: 16 }}
-            onChangeText={(domicilio) => setDomicilio(domicilio)}
-            value={domicilio}
-          />
-          <Input
-            placeholder="Piso / Dpto / Casa"
-            style={{ color: "#ffffff", fontSize: 16 }}
-            onChangeText={(pisoDptoCasa) => setPisoDptoCasa(pisoDptoCasa)}
-            value={pisoDptoCasa}
-          />
-          <Input
-            placeholder="CUIL / CUIT"
-            style={{ color: "#ffffff", fontSize: 16 }}
-            keyboardType="numeric"
-            onChangeText={(cuitCuil) => setCuitCuil(cuitCuil)}
-            value={cuitCuil}
-          />
-        </View>
-        <View
-          style={{
-            flex: 1,
-            alignItems: "center",
-            justifyContent: "center",
-            marginTop: 25,
-            width: "90%",
-            marginLeft: "auto",
-            marginRight: "auto",
-          }}
+        <TouchableOpacity
+        style={{
+            marginTop: "10%",
+        }}
+        onPress={toggleOverlay}
         >
-          <Text h3 style={{ color: "#fff", marginTop: 10, marginBottom: 25 }}>
-            Información Laboral
-          </Text>
-          <Input
-            placeholder="Actividad"
-            style={{ color: "#ffffff", fontSize: 16 }}
-            onChangeText={(actividad) => setActividad(actividad)}
-            value={actividad}
-          />
-          <Input
-            placeholder="Teléfono"
-            style={{ color: "#ffffff", fontSize: 16 }}
-            keyboardType="phone-pad"
-            onChangeText={(telefono) => setTelefono(telefono)}
-            value={telefono}
-          />
-          <Input
-            placeholder="Celular"
-            style={{ color: "#ffffff", fontSize: 16 }}
-            keyboardType="phone-pad"
-            onChangeText={(celular) => setCelular(celular)}
-            value={celular}
-          />
-          <Input
-            placeholder="Provincia"
-            style={{ color: "#ffffff", fontSize: 16 }}
-            onChangeText={(provincia) => setProvincia(provincia)}
-            value={provincia}
-          />
-          <Input
-            placeholder="Localidad"
-            style={{ color: "#ffffff", fontSize: 16 }}
-            onChangeText={(localidad) => setLocalidad(localidad)}
-            value={localidad}
-          />
-          <Input
-            placeholder="Local"
-            style={{ color: "#ffffff", fontSize: 16 }}
-            onChangeText={(local) => setLocal(local)}
-            value={local}
-          />
-          <Input
-            placeholder="Empresa"
-            style={{ color: "#ffffff", fontSize: 16 }}
-            onChangeText={(empresa) => setEmpresa(empresa)}
-            value={empresa}
-          />
-          <Input
-            placeholder="Factura"
-            style={{ color: "#ffffff", fontSize: 16 }}
-            onChangeText={(factura) => setFactura(factura)}
-            value={factura}
-          />
-          <Input
-            placeholder="Dirección del local"
-            style={{ color: "#ffffff", fontSize: 16 }}
-            onChangeText={(direccionDelLocal) =>
-              setDireccionDelLocal(direccionDelLocal)
-            }
-            value={direccionDelLocal}
-          />
-          <Input
-            placeholder="Nombre de la empresa"
-            style={{ color: "#ffffff", fontSize: 16 }}
-            onChangeText={(nombreDeLaEmpresa) =>
-              setNombreDeLaEmpresa(nombreDeLaEmpresa)
-            }
-            value={nombreDeLaEmpresa}
-          />
-          <Input
-            placeholder="Matrícula"
-            style={{ color: "#ffffff", fontSize: 16 }}
-            onChangeText={(matricula) => setMatricula(matricula)}
-            value={matricula}
-          />
-          <Input
-            placeholder="Número de matrícula"
-            style={{ color: "#ffffff", fontSize: 16 }}
-            keyboardType="numeric"
-            onChangeText={(numeroDeMatricula) =>
-              setNumeroDeMatricula(numeroDeMatricula)
-            }
-            value={numeroDeMatricula}
-          />
-          <Input
-            placeholder="Email laboral"
-            style={{ color: "#ffffff", fontSize: 16 }}
-            keyboardType="email-address"
-            autoCapitalize="none"
-            onChangeText={(emailLaboral) => setEmailLaboral(emailLaboral)}
-            value={emailLaboral}
-          />
-          <CheckBox
-            title="Tengo WhatsApp"
-            containerStyle={{
-              backgroundColor: "transparent",
-              borderColor: "transparent",
-              borderWidth: 0,
-              marginLeft: "auto",
-              marginRight: "auto",
-            }}
-            textStyle={{ color: "#ffffff" }}
-            checkedColor={"white"}
-            onPress={toggleWhatsapp}
-            checked={tengoWhatsapp}
-          />
-        </View>
-        <View
-          style={{
-            flex: 1,
-            alignItems: "center",
-            justifyContent: "center",
-            marginTop: 25,
-          }}
-        >
-          <Text h3 style={{ color: "#fff", marginTop: 10, marginBottom: 25 }}>
-            Descripcion / Resumen Personal
-          </Text>
-          <TextInput
-            placeholder="Ingrese una descripción personal..."
-            placeholderTextColor={"white"}
+        {image == null ? (
+            <View style={{ alignItems: "center", justifyContent: "center" }}>
+            <Card.Image
+            source={require("../assets/icon.png")}
             style={{
-              height: 200,
-              width: "80%",
-              borderColor: "#ffffff",
-              borderWidth: 1,
-              borderRadius: 15,
-              color: "#ffffff",
-              margin: 10,
-              textAlignVertical: "top",
+                ...Platform.select({
+                    android: {
+                        borderRadius: 25,
+                        marginTop: "8%",
+                        marginBottom: "10%",
+                        width: 140,
+                        height: 120,
+                    },
+                    ios: {
+                        borderRadius: 25,
+                        marginTop: "8%",
+                        marginBottom: "10%",
+                        width: 120,
+                        height: 90,
+                    },
+                }),
             }}
-            multiline={true}
-            onChangeText={(descripcionPersonal) =>
-              setDescripcionPersonal(descripcionPersonal)
-            }
-            value={descripcionPersonal}
-          />
+            />
+            </View>
+        ) : (
+            <View style={{ alignItems: "center", justifyContent: "center" }}>
+            <Card.Image
+            source={{ uri: image }}
+            style={{
+                ...Platform.select({
+                    android: {
+                        borderRadius: 25,
+                        marginTop: "8%",
+                        marginBottom: "10%",
+                        width: 140,
+                        height: 120,
+                    },
+                    ios: {
+                        borderRadius: 25,
+                        marginTop: "8%",
+                        marginBottom: "10%",
+                        width: 120,
+                        height: 90,
+                    },
+                }),
+            }}
+            />
+            </View>
+        )}
+        </TouchableOpacity>
+        <Overlay
+        isVisible={visible}
+        onBackdropPress={toggleOverlay}
+        overlayStyle={{ width: "85%", height: "85%", borderRadius: 10 }}
+        >
+        {image == null ? (
+            <Card.Image
+            source={require("../assets/icon.png")}
+            style={{
+                borderRadius: 100,
+                    marginTop: "auto",
+                    marginBottom: "auto",
+                    marginLeft: "auto",
+                    marginRight: "auto",
+                    width: "100%",
+                    height: "100%",
+            }}
+            />
+        ) : (
+            <Card.Image
+            source={{ uri: image }}
+            style={{
+                borderRadius: 100,
+                    marginTop: "auto",
+                    marginBottom: "auto",
+                    marginLeft: "auto",
+                    marginRight: "auto",
+                    width: "100%",
+                    height: "100%",
+            }}
+            />
+        )}
+        </Overlay>
+        <Rating
+        size={28}
+        showRating={true}
+        type="custom"
+        ratingColor={naranjaQueDeOficios}
+        ratingBackgroundColor="#c8c7c8"
+        fractions={1}
+        reviews={[""]}
+        onFinishRating={(rating) => setRating(rating)}
+        style={{
+            margin: 10,
+        }}
+        />
+        <View style={{ margin: "3%" }}>
+        <View style={{ flexDirection: 'row' }}>
+        <View style={{ marginLeft: '5%' }}>
+                      <MaterialCommunityIcons
+                        name='pen'
+                        color={'#fd5d13'}
+                        size={20}
+                      />
+                    </View>
+        <Text
+        style={{
+            color: "#ffffff",
+                textAlign: "center",
+                fontSize: 30,
+                fontWeight: "bold",
+        }}
+        >
+        {nombre} {apellido}
+        </Text>
+        </View>
         </View>
         <View
-          style={{
-            flex: 1,
-            alignItems: "center",
-            justifyContent: "center",
-            marginTop: 25,
-            width: "95%",
-            marginLeft: "auto",
-            marginRight: "auto",
-          }}
+        style={{
+            marginTop: "-2%",
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "center",
+        }}
         >
-          <Text h3 style={{ color: "#fff", marginTop: 10, marginBottom: 25 }}>
-            Dias y horarios de atención
-          </Text>
-          <View style={{ flex: 1, flexDirection: "row" }}>
-            <CheckBox
-              title="Lunes"
-              onPress={() => concatLunes()}
-              checked={lunesChecked}
-              containerStyle={{
-                backgroundColor: "transparent",
-                borderColor: "transparent",
-                borderWidth: 0,
-                marginTop: 15,
-                marginLeft: "auto",
-                marginRight: "auto",
-              }}
-              textStyle={{ color: "#ffffff" }}
-              checkedColor={"white"}
-            />
-            <CheckBox
-              title="Martes"
-              onPress={() => concatMartes()}
-              checked={martesChecked}
-              containerStyle={{
-                backgroundColor: "transparent",
-                borderColor: "transparent",
-                borderWidth: 0,
-                marginTop: 15,
-                marginLeft: "auto",
-                marginRight: "auto",
-              }}
-              textStyle={{ color: "#ffffff" }}
-              checkedColor={"white"}
-            />
-            <CheckBox
-              title="Miercoles"
-              onPress={() => concatMiercoles()}
-              checked={miercolesChecked}
-              containerStyle={{
-                backgroundColor: "transparent",
-                borderColor: "transparent",
-                borderWidth: 0,
-                marginTop: 15,
-                marginLeft: "auto",
-                marginRight: "auto",
-              }}
-              textStyle={{ color: "#ffffff" }}
-              checkedColor={"white"}
-            />
-          </View>
-          <View style={{ flex: 1, flexDirection: "row" }}>
-            <CheckBox
-              title="Jueves"
-              onPress={() => concatJueves()}
-              checked={juevesChecked}
-              containerStyle={{
-                backgroundColor: "transparent",
-                borderColor: "transparent",
-                borderWidth: 0,
-                marginTop: 15,
-                marginLeft: "auto",
-                marginRight: "auto",
-              }}
-              textStyle={{ color: "#ffffff" }}
-              checkedColor={"white"}
-            />
-            <CheckBox
-              title="Viernes"
-              onPress={() => concatViernes()}
-              checked={viernesChecked}
-              containerStyle={{
-                backgroundColor: "transparent",
-                borderColor: "transparent",
-                borderWidth: 0,
-                marginTop: 15,
-                marginLeft: "auto",
-                marginRight: "auto",
-              }}
-              textStyle={{ color: "#ffffff" }}
-              checkedColor={"white"}
-            />
-            <CheckBox
-              title="Sábado"
-              onPress={() => concatSabado()}
-              checked={sabadoChecked}
-              containerStyle={{
-                backgroundColor: "transparent",
-                borderColor: "transparent",
-                borderWidth: 0,
-                marginTop: 15,
-                marginLeft: "auto",
-                marginRight: "auto",
-              }}
-              textStyle={{ color: "#ffffff" }}
-              checkedColor={"white"}
-            />
-          </View>
-          <CheckBox
-            title="Domingo"
-            onPress={() => concatDomingo()}
-            checked={domingoChecked}
-            containerStyle={{
-              backgroundColor: "transparent",
-              borderColor: "transparent",
-              borderWidth: 0,
-              marginTop: 15,
-              marginLeft: "auto",
-              marginRight: "auto",
-            }}
-            textStyle={{ color: "#ffffff" }}
-            checkedColor={"white"}
-          />
-          <View style={{ width: "80%" }}>
-            <Input
-              placeholder="Desde ... hs"
-              style={{ color: "#ffffff", fontSize: 16 }}
-              containerStyle={{
-                backgroundColor: "transparent",
-                borderColor: "transparent",
-                borderWidth: 0,
-                marginTop: 15,
-                marginLeft: "auto",
-                marginRight: "auto",
-              }}
-              textStyle={{ color: "#ffffff" }}
-              keyboardType="numeric"
-            />
-            <Input
-              placeholder="Hasta ... hs"
-              style={{ color: "#ffffff", fontSize: 16 }}
-              containerStyle={{
-                backgroundColor: "transparent",
-                borderColor: "transparent",
-                borderWidth: 0,
-                marginTop: 15,
-                marginLeft: "auto",
-                marginRight: "auto",
-              }}
-              textStyle={{ color: "#ffffff" }}
-              keyboardType="numeric"
-            />
-          </View>
+        <Text
+        style={{ color: "#ffffff", textAlign: "center", fontSize: 24 }}
+        >
+        {actividad} -
+        </Text>
+        <MaterialCommunityIcons
+        name="account-group"
+        color={naranjaQueDeOficios}
+        size={22}
+        style={{ marginLeft: "3%" }}
+        />
+        <Text
+        style={{
+            color: "#8DB600",
+                textAlign: "center",
+                fontSize: 14,
+                marginLeft: "2%",
+        }}
+        >
+        100
+        </Text>
         </View>
-        <Text h3 style={{ color: "#fff", textAlign: "center" }}>
-          Medios De Pago
+        <Text
+        style={{
+            color: "#ffffff",
+                textAlign: "center",
+                fontSize: 16,
+                marginTop: "5%",
+        }}
+        >
+        {localidad}, {provincia}
+        </Text>
+        <Text
+        style={{
+            marginLeft: "auto",
+                marginRight: "auto",
+                marginTop: 10,
+                textAlign: "center",
+                fontSize: 20,
+                color: "#fff",
+        }}
+        >
+        {emailPersonal}
         </Text>
         <View
-          style={{
-            flex: 1,
-            flexDirection: "row",
+        style={{
+            ...Platform.select({
+                android: {
+                    flex: 1,
+                },
+                ios: {
+                    flex: 1,
+                },
+            }),
+        }}
+        ></View>
+        </Card>
+        {/* Card detalles */}
+        <Text
+        style={{
+            marginLeft: "auto",
+                marginRight: "auto",
+                textAlign: "center",
+                fontSize: 24,
+                marginTop: "5%",
+                color: "#fff",
+                fontWeight: "bold",
+                textTransform: "uppercase",
+        }}
+        >
+        Información Laboral
+        </Text>
+        <Card
+        style={styles.card}
+        containerStyle={{
+            ...Platform.select({
+                android: {
+                    padding: 0,
+                    borderRadius: 15,
+                    backgroundColor: "transparent",
+                    borderWidth: 0,
+                    maxWidth: "150%",
+                    marginTop: "3%",
+                },
+                ios: {
+                    padding: 0,
+                    borderRadius: 15,
+                    backgroundColor: "transparent",
+                    borderWidth: 0,
+                    maxWidth: "200%",
+                    marginTop: "3%",
+                },
+            }),
+        }}
+        >
+        <Text
+        style={{
+            color: "#fff",
+                marginTop: 10,
+                marginBottom: 10,
+                fontSize: 20,
+        }}
+        >
+        - Email laboral:
+        </Text>
+        <Text
+        style={{
+            color: "#fff",
+                marginLeft: "auto",
+                marginRight: "auto",
+                marginTop: 10,
+                marginBottom: 10,
+                fontSize: 20,
+        }}
+        >
+        {emailPersonal}
+        </Text>
+        <View style={{ flexDirection: "column" }}>
+        <Text
+        style={{
             marginTop: 10,
-            marginBottom: 10,
-            marginLeft: 5,
-            marginRight: 5,
-          }}
+                fontSize: 20,
+                color: "#fff",
+        }}
         >
-          <MaterialCommunityIcons
-            name="cash-usd"
-            color={"#fff"}
-            size={35}
-            style={{ marginTop: 20 }}
-          />
-          <CheckBox
-            title="Efectivo"
-            containerStyle={{
-              backgroundColor: "transparent",
-              borderColor: "transparent",
-              borderWidth: 0,
-              marginTop: 15,
-              marginLeft: "auto",
-              marginRight: "auto",
-            }}
-            textStyle={{ color: "#ffffff" }}
-            checkedColor={"white"}
-            checked={true}
-          />
-          <MaterialCommunityIcons
-            name="card-bulleted-outline"
-            color={"#fff"}
-            size={35}
-            style={{ marginTop: 20 }}
-          />
-          <CheckBox
-            title="Mercado Pago"
-            containerStyle={{
-              backgroundColor: "transparent",
-              borderColor: "transparent",
-              borderWidth: 0,
-              marginTop: 15,
-              marginLeft: "auto",
-              marginRight: "auto",
-            }}
-            textStyle={{ color: "#ffffff" }}
-            checkedColor={"white"}
-            checked={true}
-          />
-        </View>
-        <View
-          style={{
-            flex: 1,
-            alignItems: "center",
-            justifyContent: "center",
-            marginTop: 25,
-          }}
+        - Dias y horarios:
+        </Text>
+        <Text
+        style={{
+            marginLeft: "auto",
+                marginRight: "auto",
+                marginTop: 10,
+                textAlign: "center",
+                fontSize: 20,
+                color: "#fff",
+        }}
         >
-          <Text h3 style={{ color: "#fff" }}>
-            Términos y condiciones
-          </Text>
-          <CheckBox
-            title="Acepto los términos y condiciones y la política de privacidad"
-            containerStyle={{
-              backgroundColor: "transparent",
-              borderColor: "transparent",
-              borderWidth: 0,
-              marginTop: 15,
-              marginLeft: "auto",
-              marginRight: "auto",
-            }}
-            textStyle={{ color: "#ffffff" }}
-            checkedColor={"white"}
-            onPress={toggleTerminos}
-            checked={terminos}
-          />
+        {diasHorarios.join(", ")}
+        </Text>
         </View>
-        <View
-          style={{
-            flex: 1,
-            alignItems: "center",
-            justifyContent: "center",
-            marginTop: 25,
-            marginBottom: 30,
-          }}
+        {local && (
+            <View>
+            <Text
+            style={{
+                    marginTop: 10,
+                    fontSize: 20,
+                    color: "#fff",
+            }}
+            >
+            - Local:
+            </Text>
+            <Text
+            style={{
+                color: "#fff",
+                    marginLeft: "auto",
+                    marginRight: "auto",
+                    marginTop: 10,
+                    marginBottom: 10,
+                    fontSize: 20,
+            }}
+            >
+            {direccionDelLocal}
+            </Text>
+            </View>
+        )}
+        <Text
+        style={{
+            fontSize: 20,
+                marginTop: 10,
+                color: "#fff",
+        }}
         >
-          <Button
-            onPress={() =>
-              writeUserData(
-                image,
-                nombre,
-                apellido,
-                emailPersonal,
-                domicilio,
-                pisoDptoCasa,
-                cuitCuil,
-                actividad,
-                telefono,
-                celular,
-                provincia,
-                localidad,
-                local,
-                empresa,
-                factura,
-                direccionDelLocal,
-                nombreDeLaEmpresa,
-                matricula,
-                numeroDeMatricula,
-                emailLaboral,
-                tengoWhatsapp,
-                descripcionPersonal,
-                diasHorarios,
-                desde,
-                hasta,
-                terminos
-              )
-            }
-            title="Editar"
-            buttonStyle={{
-              backgroundColor: "#F4743B",
+        - Celular:
+        </Text>
+        <Text
+        style={{
+            color: "#fff",
+                marginLeft: "auto",
+                marginRight: "auto",
+                marginTop: 10,
+                marginBottom: 10,
+                fontSize: 20,
+        }}
+        >
+        {celular}
+        </Text>
+        {empresa.toString().toLowerCase() == "si" && (
+            <View>
+            <Text
+            style={{
+                color: "#fff",
+                    marginTop: 10,
+                    marginBottom: 10,
+                    fontSize: 20,
             }}
-          />
-        </View>
-      </ScrollView>
-    </View>
-  );
+            >
+            Nombre de la empresa:
+            </Text>
+            <Text
+            style={{
+                color: "#fff",
+                    marginLeft: "auto",
+                    marginRight: "auto",
+                    marginTop: 10,
+                    marginBottom: 10,
+                    fontSize: 20,
+            }}
+            >
+            {nombreDeLaEmpresa}
+            </Text>
+            </View>
+        )}
+        <Text
+        style={{
+            color: "#fff",
+                marginTop: 10,
+                marginBottom: 10,
+                fontSize: 20,
+        }}
+        >
+        - Factura:
+        </Text>
+        <Text
+            style={{
+            color: "#fff",
+                marginLeft: "auto",
+                marginRight: "auto",
+                marginTop: 10,
+                marginBottom: 10,
+                fontSize: 20,
+        }}
+        >
+        {factura}
+        </Text>
+        </Card>
+        {/* Card resumen personal */}
+        <Text
+        style={{
+            marginLeft: "auto",
+                marginRight: "auto",
+                textAlign: "center",
+                fontSize: 28,
+                marginTop: 10,
+                color: "#fff",
+                fontWeight: "bold",
+        }}
+        >
+        Resumen Personal
+        </Text>
+        <Card
+        style={styles.card}
+        containerStyle={{
+            ...Platform.select({
+                android: {
+                    padding: 0,
+                    borderRadius: 15,
+                    backgroundColor: "transparent",
+                    borderWidth: 0,
+                    maxWidth: "150%",
+                    marginTop: "3%",
+                },
+                ios: {
+                    padding: 0,
+                    borderRadius: 15,
+                    backgroundColor: "transparent",
+                    borderWidth: 0,
+                    maxWidth: "100%",
+                    marginTop: "3%",
+                },
+            }),
+        }}
+        >
+        <Text
+        style={{
+            marginLeft: "auto",
+                marginRight: "auto",
+                textAlign: "center",
+                fontSize: 20,
+                marginTop: 10,
+                color: "#fff",
+        }}
+        ></Text>
+        <Text
+        style={{
+            marginLeft: "auto",
+                marginRight: "auto",
+                textAlign: "center",
+                fontSize: 20,
+                marginRight: 25,
+                marginLeft: 25,
+                marginBottom: 20,
+                color: "#fff",
+        }}
+        >
+        "{descripcionPersonal}"
+        </Text>
+        </Card>
+        </ScrollView>
+        </SafeAreaView>
+    );
 };
-export default EditarAnuncioScreen;
+
+const styles = StyleSheet.create({
+    button: {
+        alignItems: "center",
+        backgroundColor: "#DDDDDD",
+        padding: 10,
+        width: 300,
+        marginTop: 16,
+    },
+    card: {
+        ...Platform.select({
+            ios: {
+                marginTop: 50,
+                backgroundColor: "#483D8B",
+                shadowColor: "#000",
+                borderRadius: 15,
+                paddingTop: -5,
+                paddingBottom: 2,
+                marginBottom: 100,
+                shadowOpacity: 0.25,
+                shadowRadius: 3.84,
+                elevation: 5,
+                shadowOffset: {
+                    width: 0,
+                    height: 2,
+                },
+            },
+            android: {
+                marginTop: 50,
+                backgroundColor: "#483D8B",
+                shadowColor: "#000",
+                borderRadius: 15,
+                paddingTop: -5,
+                paddingBottom: 2,
+                marginBottom: 100,
+                shadowOpacity: 0.25,
+                shadowRadius: 3.84,
+                elevation: 5,
+                borderWidth: 0,
+                shadowOffset: {
+                    width: 0,
+                    height: 2,
+                },
+            },
+        }),
+    },
+});
+
+export default AnuncioSeleccionado;

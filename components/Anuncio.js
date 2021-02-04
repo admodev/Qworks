@@ -1,4 +1,4 @@
-import React, { useState, setState, useEffect } from "react";
+import React, { useState, setState, useEffect } from 'react';
 import {
   TouchableOpacity,
   StyleSheet,
@@ -9,7 +9,7 @@ import {
   Text,
   Platform,
   Share,
-} from "react-native";
+} from 'react-native';
 import {
   Avatar,
   Button,
@@ -17,30 +17,36 @@ import {
   Overlay,
   Rating,
   AirbnbRating,
-} from "react-native-elements";
-import * as firebase from "firebase";
-import "firebase/firestore";
-import "firebase/database";
-import "firebase/auth";
-import * as RootNavigation from "../RootNavigation.js";
-import { StackActions } from "@react-navigation/native";
-import CardsUsuarios from "./Cards";
-import { concat } from "react-native-reanimated";
-import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-import * as Updates from "expo-updates";
+} from 'react-native-elements';
+import * as firebase from 'firebase';
+import 'firebase/firestore';
+import 'firebase/database';
+import 'firebase/auth';
+import 'firebase/storage';
+import * as RootNavigation from '../RootNavigation.js';
+import { StackActions } from '@react-navigation/native';
+import CardsUsuarios from './Cards';
+import { concat } from 'react-native-reanimated';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import * as Updates from 'expo-updates';
 
-let calificacion = "calificacion";
+let calificacion = 'calificacion';
+let favs;
 
-const AnuncioSeleccionado = ({ route, navigation }) => {
+export default function AnuncioSeleccionado({ route, navigation }) {
   let id = route.params.id;
   let routeParamsToString = id.toString();
-  const naranjaQueDeOficios = "#fd5d13";
-  const favoritosBackground = "transparent";
+  let [fotoDePerfil, setFotoDePerfil] = useState('');
+  const [isFavorite, setFavorites] = useState([]);
+  const naranjaQueDeOficios = '#fd5d13';
+  const favoritosBackground = 'transparent';
   const [favoritosTint, setFavoritosTint] = useState(false);
+  const [prevCount, setCount] = useState(recomendacionesTotales);
   let image,
     nombre,
     apellido,
     actividad,
+    contadorAnuncio,
     emailPersonal,
     celular,
     descripcionPersonal,
@@ -58,20 +64,23 @@ const AnuncioSeleccionado = ({ route, navigation }) => {
     numeroDeMatricula,
     pisoDptoCasa,
     provincia,
-    telefono;
+    telefono,
+    recomendacionesTotales;
   let dbRef = firebase
     .database()
-    .ref("anuncios/")
-    .orderByChild("id")
+    .ref('anuncios/')
+    .orderByChild('id')
     .equalTo(id);
-  let dbResult = dbRef.on("value", (snap) => {
+  let dbResult = dbRef.on('value', (snap) => {
     snap.forEach((child) => {
-      key: child.key, (nombre = child.val().nombre);
+      key = child.key;
+      nombre = child.val().nombre;
       image = child.val().image;
       apellido = child.val().apellido;
       actividad = child.val().actividad;
       emailPersonal = child.val().emailPersonal;
       id = child.val().id;
+      contadorAnuncio = child.val().anuncioId;
       celular = child.val().celular;
       descripcionPersonal = child.val().descripcionPersonal;
       desde = child.val().desde;
@@ -85,15 +94,19 @@ const AnuncioSeleccionado = ({ route, navigation }) => {
       localidad = child.val().localidad;
       provincia = child.val().provincia;
       nombreDeLaEmpresa = child.val().nombreDeLaEmpresa;
+      recomendacionesTotales = child.val().recomendacionesTotales;
     });
   });
+  if (!recomendacionesTotales) {
+    recomendacionesTotales = 0;
+  }
   let key, userId, comentario;
   var arr = [];
   let comentariosRef = firebase
     .database()
-    .ref("comentarios/")
+    .ref('comentarios/')
     .orderByKey()
-    .on("value", function snapshotToArray(snapshot) {
+    .on('value', function snapshotToArray(snapshot) {
       var returnArr = [];
       snapshot.forEach(function (childSnapshot) {
         let item = childSnapshot.val();
@@ -112,9 +125,9 @@ const AnuncioSeleccionado = ({ route, navigation }) => {
   let storage = firebase.storage();
   let storageRef = storage.ref();
   let defaultImageRef = storageRef
-    .child("defaultUserImage/icon.png")
+    .child('defaultUserImage/icon.png')
     .toString();
-  let userProfilePic = storageRef.child("userProfilePics/").child(id).child;
+  let userProfilePic = storageRef.child('userProfilePics/').child(id).child;
   const [visible, setVisible] = useState(false);
   const toggleOverlay = () => {
     setVisible(!visible);
@@ -122,16 +135,58 @@ const AnuncioSeleccionado = ({ route, navigation }) => {
 
   let user = firebase.auth().currentUser;
 
-  function agregarFavorito(id) {
+  useEffect(() => {
     firebase
       .database()
-      .ref("favoritos/" + user.uid)
+      .ref('favoritos/')
+      .orderByChild('favs')
+      .equalTo(id)
+      .on('value', (snap) => {
+        let isFavorite = [];
+        snap.forEach((child) => {
+          isFavorite.push(child.val().favs);
+        });
+        setFavorites(isFavorite);
+      });
+  }, []);
+
+  console.log(isFavorite);
+
+  const agregarFavorito = (id) => {
+    firebase
+      .database()
+      .ref('favoritos/')
+      .push()
       .set({
-        favoritos: id,
+        user: firebase.auth().currentUser.uid,
+        favs: id,
       })
-      .then(function () {
+      .then(() => {
         Updates.reloadAsync();
       });
+  };
+
+  function quitarFavorito(id) {
+    try {
+      firebase
+        .database()
+        .ref('favoritos/')
+        .orderByChild('favs')
+        .equalTo(id)
+        .once('value')
+        .then(function (snapshot) {
+          var promises = [];
+          snapshot.forEach(function (child) {
+            promises.push(child.ref.remove());
+          });
+          Promise.all(promises).then(function () {
+            console.log('All removed!');
+          });
+          Updates.reloadAsync();
+        });
+    } catch (error) {
+      console.log(error.message);
+    }
   }
 
   let [rating, setRating] = useState(0);
@@ -140,16 +195,16 @@ const AnuncioSeleccionado = ({ route, navigation }) => {
     let ratingString = parseInt(rating);
     let ratingUserRef = firebase
       .database()
-      .ref("anuncios/")
-      .orderByChild("id")
+      .ref('anuncios/')
+      .orderByChild('id')
       .equalTo(firebase.auth().currentUser.uid)
-      .once("value")
+      .once('value')
       .then(function (snapshot) {
         var nombre = snapshot.val().nombre;
       });
     firebase
       .database()
-      .ref("calificaciones/")
+      .ref('calificaciones/')
       .push()
       .set({
         calificacion: {
@@ -168,8 +223,8 @@ const AnuncioSeleccionado = ({ route, navigation }) => {
     Share.share(
       {
         message: `Dale un vistazo al perfil de ${nombre} en QuedeOficios!`,
-        url: "http://dominioquedeoficios.com",
-        title: "QuedeOficios!",
+        url: 'http://dominioquedeoficios.com',
+        title: 'QuedeOficios!',
       },
       {
         // Android only:
@@ -178,8 +233,41 @@ const AnuncioSeleccionado = ({ route, navigation }) => {
     );
   }
 
-  function favoritosColor() {
-    setFavoritosTint(!favoritosTint);
+  function handleRecommend(recomendacionesTotales) {
+    setCount((prevCount) => prevCount + 1);
+    firebase
+      .database()
+      .ref('anuncios/')
+      .orderByChild('id')
+      .equalTo(id)
+      .on('value', (snapshot) => {
+        const data = snapshot.val();
+        recomendacionesTotales = prevCount;
+      });
+  }
+
+  var photoRef = firebase
+    .storage()
+    .ref('profilePictures/' + id + '-' + contadorAnuncio);
+  photoRef
+    .getDownloadURL()
+    .then((url) => {
+      var xhr = new XMLHttpRequest();
+      xhr.responseType = 'blob';
+      xhr.onload = function (event) {
+        var blob = xhr.response;
+      };
+      xhr.open('GET', url);
+      xhr.send();
+
+      setFotoDePerfil(url);
+    })
+    .catch((error) => {
+      console.log(error.message);
+    });
+
+  function onlyUnique(value, index, self) {
+    return self.indexOf(value) === index;
   }
 
   return (
@@ -189,13 +277,10 @@ const AnuncioSeleccionado = ({ route, navigation }) => {
       }}
     >
       <Image
-        source={require("../assets/gradients/20x20.png")}
+        source={require('../assets/gradients/20x20.png')}
         style={{
           flex: 1,
-          position: "absolute",
-          resizeMode: "cover",
-          width: "105%",
-          height: "105%",
+          position: 'absolute',
           opacity: 0.9,
         }}
       />
@@ -205,21 +290,21 @@ const AnuncioSeleccionado = ({ route, navigation }) => {
             android: {
               width: 30,
               height: 30,
-              alignItems: "center",
-              justifyContent: "space-between",
-              flexDirection: "row",
-              marginTop: "10%",
-              marginLeft: "10%",
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              flexDirection: 'row',
+              marginTop: '10%',
+              marginLeft: '10%',
             },
             ios: {
               width: 30,
               height: 30,
-              alignItems: "center",
-              justifyContent: "space-between",
-              flexDirection: "row",
-              marginTop: "10%",
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              flexDirection: 'row',
+              marginTop: '10%',
               marginLeft: 15,
-              backgroundColor: "transparent",
+              backgroundColor: 'transparent',
             },
           }),
         }}
@@ -229,10 +314,10 @@ const AnuncioSeleccionado = ({ route, navigation }) => {
           style={{
             ...Platform.select({
               android: {
-                backgroundColor: "transparent",
+                backgroundColor: 'transparent',
               },
               ios: {
-                backgroundColor: "transparent",
+                backgroundColor: 'transparent',
                 left: 25,
               },
             }),
@@ -242,40 +327,57 @@ const AnuncioSeleccionado = ({ route, navigation }) => {
             name="arrow-left"
             color={naranjaQueDeOficios}
             size={32}
-            style={{ backgroundColor: "transparent" }}
+            style={{ backgroundColor: 'transparent' }}
           />
         </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => favoritosColor()}
-          style={{
-            ...Platform.select({
-              android: {
-                backgroundColor: "transparent",
-                right: -240,
-              },
-              ios: {
-                backgroundColor: "transparent",
-                right: -250,
-              },
-            }),
-          }}
-        >
-          {favoritosTint === false ? (
+        {isFavorite.length == 0 && (
+          <TouchableOpacity
+            onPress={() => agregarFavorito(id)}
+            style={{
+              ...Platform.select({
+                android: {
+                  backgroundColor: 'transparent',
+                  right: -240,
+                },
+                ios: {
+                  backgroundColor: 'transparent',
+                  right: -250,
+                },
+              }),
+            }}
+          >
+            <MaterialCommunityIcons
+              name="account-star-outline"
+              color={naranjaQueDeOficios}
+              size={32}
+              style={{ backgroundColor: 'transparent' }}
+            />
+          </TouchableOpacity>
+        )}
+        {isFavorite.includes(id) && (
+          <TouchableOpacity
+            onPress={() => quitarFavorito(id)}
+            style={{
+              ...Platform.select({
+                android: {
+                  backgroundColor: 'transparent',
+                  right: -240,
+                },
+                ios: {
+                  backgroundColor: 'transparent',
+                  right: -250,
+                },
+              }),
+            }}
+          >
             <MaterialCommunityIcons
               name="account-star"
               color={naranjaQueDeOficios}
               size={32}
-              style={{ backgroundColor: "transparent" }}
+              style={{ backgroundColor: 'transparent' }}
             />
-          ) : (
-            <MaterialCommunityIcons
-              name="account-star-outline"
-              color={"white"}
-              size={32}
-              style={{ backgroundColor: "transparent" }}
-            />
-          )}
-        </TouchableOpacity>
+          </TouchableOpacity>
+        )}
       </View>
       <ScrollView showsHorizontalScrollIndicator={false}>
         {/* Card principal */}
@@ -286,43 +388,43 @@ const AnuncioSeleccionado = ({ route, navigation }) => {
               android: {
                 padding: 0,
                 borderRadius: 15,
-                backgroundColor: "transparent",
+                backgroundColor: 'transparent',
                 borderWidth: 0,
-                marginTop: "2%",
+                marginTop: '2%',
               },
               ios: {
                 padding: 0,
                 borderRadius: 15,
-                backgroundColor: "transparent",
+                backgroundColor: 'transparent',
                 borderWidth: 0,
-                marginTop: "2%",
+                marginTop: '2%',
               },
             }),
           }}
         >
           <TouchableOpacity
             style={{
-              marginTop: "10%",
+              marginTop: '10%',
             }}
             onPress={toggleOverlay}
           >
-            {image == null ? (
-              <View style={{ alignItems: "center", justifyContent: "center" }}>
+            {!fotoDePerfil ? (
+              <View style={{ alignItems: 'center', justifyContent: 'center' }}>
                 <Card.Image
-                  source={require("../assets/icon.png")}
+                  source={require('../assets/icon.png')}
                   style={{
                     ...Platform.select({
                       android: {
                         borderRadius: 25,
-                        marginTop: "8%",
-                        marginBottom: "10%",
+                        marginTop: '8%',
+                        marginBottom: '10%',
                         width: 140,
                         height: 120,
                       },
                       ios: {
                         borderRadius: 25,
-                        marginTop: "8%",
-                        marginBottom: "10%",
+                        marginTop: '8%',
+                        marginBottom: '10%',
                         width: 120,
                         height: 90,
                       },
@@ -331,22 +433,22 @@ const AnuncioSeleccionado = ({ route, navigation }) => {
                 />
               </View>
             ) : (
-              <View style={{ alignItems: "center", justifyContent: "center" }}>
+              <View style={{ alignItems: 'center', justifyContent: 'center' }}>
                 <Card.Image
-                  source={{ uri: image }}
+                  source={{ uri: fotoDePerfil }}
                   style={{
                     ...Platform.select({
                       android: {
                         borderRadius: 25,
-                        marginTop: "8%",
-                        marginBottom: "10%",
+                        marginTop: '8%',
+                        marginBottom: '10%',
                         width: 140,
                         height: 120,
                       },
                       ios: {
                         borderRadius: 25,
-                        marginTop: "8%",
-                        marginBottom: "10%",
+                        marginTop: '8%',
+                        marginBottom: '10%',
                         width: 120,
                         height: 90,
                       },
@@ -359,32 +461,32 @@ const AnuncioSeleccionado = ({ route, navigation }) => {
           <Overlay
             isVisible={visible}
             onBackdropPress={toggleOverlay}
-            overlayStyle={{ width: "85%", height: "85%", borderRadius: 10 }}
+            overlayStyle={{ width: '85%', height: '85%', borderRadius: 10 }}
           >
-            {image == null ? (
+            {!fotoDePerfil ? (
               <Card.Image
-                source={require("../assets/icon.png")}
+                source={require('../assets/icon.png')}
                 style={{
                   borderRadius: 100,
-                  marginTop: "auto",
-                  marginBottom: "auto",
-                  marginLeft: "auto",
-                  marginRight: "auto",
-                  width: "100%",
-                  height: "100%",
+                  marginTop: 'auto',
+                  marginBottom: 'auto',
+                  marginLeft: 'auto',
+                  marginRight: 'auto',
+                  width: '100%',
+                  height: '100%',
                 }}
               />
             ) : (
               <Card.Image
-                source={{ uri: image }}
+                source={{ uri: fotoDePerfil }}
                 style={{
                   borderRadius: 100,
-                  marginTop: "auto",
-                  marginBottom: "auto",
-                  marginLeft: "auto",
-                  marginRight: "auto",
-                  width: "100%",
-                  height: "100%",
+                  marginTop: 'auto',
+                  marginBottom: 'auto',
+                  marginLeft: 'auto',
+                  marginRight: 'auto',
+                  width: '100%',
+                  height: '100%',
                 }}
               />
             )}
@@ -396,19 +498,19 @@ const AnuncioSeleccionado = ({ route, navigation }) => {
             ratingColor={naranjaQueDeOficios}
             ratingBackgroundColor="#c8c7c8"
             fractions={1}
-            reviews={[""]}
+            reviews={['']}
             onFinishRating={(rating) => setRating(rating)}
             style={{
               margin: 10,
             }}
           />
-          <View style={{ margin: "3%" }}>
+          <View style={{ margin: '3%' }}>
             <Text
               style={{
-                color: "#ffffff",
-                textAlign: "center",
+                color: '#ffffff',
+                textAlign: 'center',
                 fontSize: 30,
-                fontWeight: "bold",
+                fontWeight: 'bold',
               }}
             >
               {nombre} {apellido}
@@ -416,14 +518,14 @@ const AnuncioSeleccionado = ({ route, navigation }) => {
           </View>
           <View
             style={{
-              marginTop: "-2%",
-              flexDirection: "row",
-              alignItems: "center",
-              justifyContent: "center",
+              marginTop: '-2%',
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: 'center',
             }}
           >
             <Text
-              style={{ color: "#ffffff", textAlign: "center", fontSize: 24 }}
+              style={{ color: '#ffffff', textAlign: 'center', fontSize: 24 }}
             >
               {actividad} -
             </Text>
@@ -431,64 +533,70 @@ const AnuncioSeleccionado = ({ route, navigation }) => {
               name="account-group"
               color={naranjaQueDeOficios}
               size={22}
-              style={{ marginLeft: "3%" }}
+              style={{ marginLeft: '3%' }}
             />
-            <Text
-              style={{
-                color: "#8DB600",
-                textAlign: "center",
-                fontSize: 14,
-                marginLeft: "2%",
-              }}
+            <TouchableOpacity
+              onPress={() =>
+                RootNavigation.navigate('RecomendacionesRenderizadas')
+              }
             >
-              100
-            </Text>
+              <Text
+                style={{
+                  color: '#8DB600',
+                  textAlign: 'center',
+                  fontSize: 14,
+                  marginLeft: '2%',
+                }}
+              >
+                {recomendacionesTotales}
+              </Text>
+            </TouchableOpacity>
           </View>
           <Text
             style={{
-              color: "#ffffff",
-              textAlign: "center",
+              color: '#ffffff',
+              textAlign: 'center',
               fontSize: 16,
-              marginTop: "5%",
+              marginTop: '5%',
             }}
           >
             {localidad}, {provincia}
           </Text>
           <Text
             style={{
-              marginLeft: "auto",
-              marginRight: "auto",
+              marginLeft: 'auto',
+              marginRight: 'auto',
               marginTop: 10,
-              textAlign: "center",
+              textAlign: 'center',
               fontSize: 20,
-              color: "#fff",
+              color: '#fff',
             }}
           >
             {emailPersonal}
           </Text>
           <View
             style={{
-              flexDirection: "row",
-              alignItems: "center",
-              justifyContent: "center",
-              marginTop: "3%",
-              marginBottom: "3%",
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: 'center',
+              marginTop: '3%',
+              marginBottom: '3%',
             }}
           >
-            <TouchableOpacity onPress={() => alert("Proximamente...")}>
+            <TouchableOpacity onPress={() => alert('Proximamente...')}>
               <Text
                 style={{
                   ...Platform.select({
                     android: {
-                      color: "#fff",
-                      marginLeft: "auto",
-                      marginRight: "auto",
+                      color: '#fff',
+                      marginLeft: 'auto',
+                      marginRight: 'auto',
                       marginTop: 10,
                       marginBottom: 10,
                       fontSize: 20,
                     },
                     ios: {
-                      color: "#fff",
+                      color: '#fff',
                       marginTop: 15,
                       marginRight: 10,
                       fontSize: 20,
@@ -500,7 +608,7 @@ const AnuncioSeleccionado = ({ route, navigation }) => {
                   name="map"
                   color={naranjaQueDeOficios}
                   size={24}
-                />{" "}
+                />{' '}
                 Mapa
               </Text>
             </TouchableOpacity>
@@ -509,14 +617,14 @@ const AnuncioSeleccionado = ({ route, navigation }) => {
                 style={{
                   ...Platform.select({
                     android: {
-                      color: "#fff",
-                      marginLeft: "auto",
-                      marginRight: "auto",
+                      color: '#fff',
+                      marginLeft: 'auto',
+                      marginRight: 'auto',
                       marginTop: 10,
                       fontSize: 20,
                     },
                     ios: {
-                      color: "#fff",
+                      color: '#fff',
                       marginTop: 15,
                       marginLeft: 10,
                       fontSize: 20,
@@ -528,7 +636,7 @@ const AnuncioSeleccionado = ({ route, navigation }) => {
                   name="share-variant"
                   color={naranjaQueDeOficios}
                   size={24}
-                />{" "}
+                />{' '}
                 Compartir
               </Text>
             </TouchableOpacity>
@@ -549,14 +657,14 @@ const AnuncioSeleccionado = ({ route, navigation }) => {
         {/* Card detalles */}
         <Text
           style={{
-            marginLeft: "auto",
-            marginRight: "auto",
-            textAlign: "center",
+            marginLeft: 'auto',
+            marginRight: 'auto',
+            textAlign: 'center',
             fontSize: 24,
-            marginTop: "5%",
-            color: "#fff",
-            fontWeight: "bold",
-            textTransform: "uppercase",
+            marginTop: '5%',
+            color: '#fff',
+            fontWeight: 'bold',
+            textTransform: 'uppercase',
           }}
         >
           Información Laboral
@@ -568,123 +676,172 @@ const AnuncioSeleccionado = ({ route, navigation }) => {
               android: {
                 padding: 0,
                 borderRadius: 15,
-                backgroundColor: "transparent",
+                backgroundColor: 'transparent',
                 borderWidth: 0,
-                maxWidth: "150%",
-                marginTop: "3%",
+                maxWidth: '150%',
+                marginTop: '3%',
               },
               ios: {
                 padding: 0,
                 borderRadius: 15,
-                backgroundColor: "transparent",
+                backgroundColor: 'transparent',
                 borderWidth: 0,
-                maxWidth: "200%",
-                marginTop: "3%",
+                maxWidth: '200%',
+                marginTop: '3%',
               },
             }),
           }}
         >
           <Text
             style={{
-              color: "#fff",
-              marginLeft: "auto",
-              marginRight: "auto",
+              color: '#fff',
               marginTop: 10,
               marginBottom: 10,
               fontSize: 20,
             }}
           >
-            Email laboral: {emailLaboral}
+            - Email laboral:
           </Text>
-          <View style={{ flexDirection: "column" }}>
+          <Text
+            style={{
+              color: '#fff',
+              marginLeft: 'auto',
+              marginRight: 'auto',
+              marginTop: 10,
+              marginBottom: 10,
+              fontSize: 20,
+            }}
+          >
+            {emailPersonal}
+          </Text>
+          <View style={{ flexDirection: 'column' }}>
             <Text
               style={{
-                marginLeft: "auto",
-                marginRight: "auto",
                 marginTop: 10,
-                textAlign: "center",
                 fontSize: 20,
-                color: "#fff",
+                color: '#fff',
               }}
             >
-              Dias y horarios:
+              - Dias y horarios:
             </Text>
             <Text
               style={{
-                marginLeft: "auto",
-                marginRight: "auto",
+                marginLeft: 'auto',
+                marginRight: 'auto',
                 marginTop: 10,
-                textAlign: "center",
+                textAlign: 'center',
                 fontSize: 20,
-                color: "#fff",
+                color: '#fff',
               }}
             >
-              {diasHorarios.join(", ")}
+              {diasHorarios.filter(onlyUnique).join(', ')}
             </Text>
           </View>
           {local && (
-            <Text
-              style={{
-                marginLeft: "auto",
-                marginRight: "auto",
-                marginTop: 10,
-                textAlign: "center",
-                fontSize: 20,
-                color: "#fff",
-              }}
-            >
-              Local: {direccionDelLocal}
-            </Text>
+            <View>
+              <Text
+                style={{
+                  marginTop: 10,
+                  fontSize: 20,
+                  color: '#fff',
+                }}
+              >
+                - Local:
+              </Text>
+              <Text
+                style={{
+                  color: '#fff',
+                  marginLeft: 'auto',
+                  marginRight: 'auto',
+                  marginTop: 10,
+                  marginBottom: 10,
+                  fontSize: 20,
+                }}
+              >
+                {direccionDelLocal}
+              </Text>
+            </View>
           )}
           <Text
             style={{
-              marginLeft: "auto",
-              marginRight: "auto",
-              textAlign: "center",
               fontSize: 20,
               marginTop: 10,
-              color: "#fff",
+              color: '#fff',
             }}
           >
-            Celular: {celular}
+            - Celular:
           </Text>
-          {empresa.toString().toLowerCase() == "si" && (
-            <Text
-              style={{
-                color: "#fff",
-                marginLeft: "auto",
-                marginRight: "auto",
-                marginTop: 10,
-                marginBottom: 10,
-                fontSize: 20,
-              }}
-            >
-              Nombre de la empresa: {nombreDeLaEmpresa}
-            </Text>
-          )}
           <Text
             style={{
-              color: "#fff",
-              marginLeft: "auto",
-              marginRight: "auto",
+              color: '#fff',
+              marginLeft: 'auto',
+              marginRight: 'auto',
               marginTop: 10,
               marginBottom: 10,
               fontSize: 20,
             }}
           >
-            Factura: {factura}
+            {celular}
+          </Text>
+          {empresa.toString().toLowerCase() == 'si' && (
+            <View>
+              <Text
+                style={{
+                  color: '#fff',
+                  marginTop: 10,
+                  marginBottom: 10,
+                  fontSize: 20,
+                }}
+              >
+                Nombre de la empresa:
+              </Text>
+              <Text
+                style={{
+                  color: '#fff',
+                  marginLeft: 'auto',
+                  marginRight: 'auto',
+                  marginTop: 10,
+                  marginBottom: 10,
+                  fontSize: 20,
+                }}
+              >
+                {nombreDeLaEmpresa}
+              </Text>
+            </View>
+          )}
+          <Text
+            style={{
+              color: '#fff',
+              marginTop: 10,
+              marginBottom: 10,
+              fontSize: 20,
+            }}
+          >
+            - Factura:
+          </Text>
+          <Text
+            style={{
+              color: '#fff',
+              marginLeft: 'auto',
+              marginRight: 'auto',
+              marginTop: 10,
+              marginBottom: 10,
+              fontSize: 20,
+            }}
+          >
+            {factura}
           </Text>
         </Card>
         {/* Card resumen personal */}
         <Text
           style={{
-            marginLeft: "auto",
-            marginRight: "auto",
-            textAlign: "center",
+            marginLeft: 'auto',
+            marginRight: 'auto',
+            textAlign: 'center',
             fontSize: 28,
             marginTop: 10,
-            color: "#fff",
-            fontWeight: "bold",
+            color: '#fff',
+            fontWeight: 'bold',
           }}
         >
           Resumen Personal
@@ -696,42 +853,42 @@ const AnuncioSeleccionado = ({ route, navigation }) => {
               android: {
                 padding: 0,
                 borderRadius: 15,
-                backgroundColor: "transparent",
+                backgroundColor: 'transparent',
                 borderWidth: 0,
-                maxWidth: "150%",
-                marginTop: "3%",
+                maxWidth: '150%',
+                marginTop: '3%',
               },
               ios: {
                 padding: 0,
                 borderRadius: 15,
-                backgroundColor: "transparent",
+                backgroundColor: 'transparent',
                 borderWidth: 0,
-                maxWidth: "100%",
-                marginTop: "3%",
+                maxWidth: '100%',
+                marginTop: '3%',
               },
             }),
           }}
         >
           <Text
             style={{
-              marginLeft: "auto",
-              marginRight: "auto",
-              textAlign: "center",
+              marginLeft: 'auto',
+              marginRight: 'auto',
+              textAlign: 'center',
               fontSize: 20,
               marginTop: 10,
-              color: "#fff",
+              color: '#fff',
             }}
           ></Text>
           <Text
             style={{
-              marginLeft: "auto",
-              marginRight: "auto",
-              textAlign: "center",
+              marginLeft: 'auto',
+              marginRight: 'auto',
+              textAlign: 'center',
               fontSize: 20,
               marginRight: 25,
               marginLeft: 25,
               marginBottom: 20,
-              color: "#fff",
+              color: '#fff',
             }}
           >
             "{descripcionPersonal}"
@@ -740,13 +897,13 @@ const AnuncioSeleccionado = ({ route, navigation }) => {
         {/* Card comentarios */}
         <Text
           style={{
-            marginLeft: "auto",
-            marginRight: "auto",
-            textAlign: "center",
+            marginLeft: 'auto',
+            marginRight: 'auto',
+            textAlign: 'center',
             fontSize: 28,
             marginTop: 10,
-            color: "#fff",
-            fontWeight: "bold",
+            color: '#fff',
+            fontWeight: 'bold',
           }}
         >
           Opiniones sobre {nombre}
@@ -758,20 +915,20 @@ const AnuncioSeleccionado = ({ route, navigation }) => {
               android: {
                 padding: 0,
                 borderRadius: 15,
-                backgroundColor: "transparent",
+                backgroundColor: 'transparent',
                 borderWidth: 0,
-                maxWidth: "150%",
-                marginTop: "3%",
-                marginBottom: "35%",
+                maxWidth: '150%',
+                marginTop: '3%',
+                marginBottom: '35%',
               },
               ios: {
                 padding: 0,
                 borderRadius: 15,
-                backgroundColor: "transparent",
+                backgroundColor: 'transparent',
                 borderWidth: 0,
-                maxWidth: "200%",
-                marginTop: "3%",
-                marginBottom: "35%",
+                maxWidth: '200%',
+                marginTop: '3%',
+                marginBottom: '35%',
               },
             }),
           }}
@@ -781,12 +938,12 @@ const AnuncioSeleccionado = ({ route, navigation }) => {
               <View key={i}>
                 <Text
                   style={{
-                    textAlign: "left",
+                    textAlign: 'left',
                     marginLeft: 10,
                     fontSize: 20,
                     marginTop: 10,
                     marginBottom: 10,
-                    color: "#fff",
+                    color: '#fff',
                   }}
                 >
                   - {JSON.stringify(u.comentario)}
@@ -810,30 +967,30 @@ const AnuncioSeleccionado = ({ route, navigation }) => {
           ...Platform.select({
             android: {
               flex: 1,
-              justifyContent: "space-around",
-              flexDirection: "row",
-              position: "absolute",
+              justifyContent: 'space-around',
+              flexDirection: 'row',
+              position: 'absolute',
               bottom: 0,
-              marginBottom: "-2%",
+              marginBottom: '-2%',
             },
             ios: {
               flex: 1,
-              justifyContent: "space-around",
-              flexDirection: "row",
-              position: "absolute",
+              justifyContent: 'space-around',
+              flexDirection: 'row',
+              position: 'absolute',
               bottom: 0,
-              marginBottom: "-2%",
+              marginBottom: '-2%',
             },
           }),
         }}
       >
         <Image
-          source={require("../assets/gradients/20x20.png")}
+          source={require('../assets/gradients/20x20.png')}
           style={{
             flex: 1,
-            position: "absolute",
-            resizeMode: "cover",
-            width: "115%",
+            position: 'absolute',
+            resizeMode: 'cover',
+            width: '115%',
             height: 55,
             margin: 10,
           }}
@@ -843,51 +1000,51 @@ const AnuncioSeleccionado = ({ route, navigation }) => {
             <Button
               title="Recomendar"
               onPress={() =>
-                alert("Debes ingresar para recomendar a un usuario!")
+                alert('Debes ingresar para recomendar a un usuario!')
               }
               titleStyle={{ fontSize: 12, marginBottom: -20 }}
               buttonStyle={{
                 width: 120,
                 height: 50,
-                backgroundColor: "transparent",
+                backgroundColor: 'transparent',
               }}
             />
           ) : (
             <Button
               title="Recomendar"
-              onPress={() => calificarUsuario(rating)}
+              onPress={() => handleRecommend(recomendacionesTotales)}
               titleStyle={{ fontSize: 12, marginBottom: -20 }}
               buttonStyle={{
                 width: 120,
                 height: 50,
-                backgroundColor: "transparent",
+                backgroundColor: 'transparent',
               }}
             />
           )}
           <MaterialCommunityIcons
             name="account-group"
-            color={"white"}
+            color={'white'}
             size={22}
-            style={{ position: "absolute", marginLeft: 45, marginTop: 5 }}
+            style={{ position: 'absolute', marginLeft: 45, marginTop: 5 }}
           />
         </View>
         <View style={{ margin: 10 }}>
           {user == null ? (
             <Button
               title="Enviar Mensaje"
-              onPress={() => alert("Debes ingresar para iniciar un chat!")}
+              onPress={() => alert('Debes ingresar para iniciar un chat!')}
               titleStyle={{ fontSize: 12, marginTop: 18 }}
               buttonStyle={{
                 width: 120,
                 height: 50,
-                backgroundColor: "transparent",
+                backgroundColor: 'transparent',
               }}
             />
           ) : (
             <Button
               title="Enviar Mensaje"
               onPress={() =>
-                RootNavigation.navigate("ChatComponent", {
+                RootNavigation.navigate('ChatComponent', {
                   userOne: firebase.auth().currentUser.uid,
                   userTwo: id,
                 })
@@ -896,59 +1053,59 @@ const AnuncioSeleccionado = ({ route, navigation }) => {
               buttonStyle={{
                 width: 120,
                 height: 50,
-                backgroundColor: "transparent",
+                backgroundColor: 'transparent',
               }}
             />
           )}
           <MaterialCommunityIcons
             name="message-plus"
-            color={"white"}
+            color={'white'}
             size={24}
-            style={{ position: "absolute", marginLeft: 45, marginTop: 5 }}
+            style={{ position: 'absolute', marginLeft: 45, marginTop: 5 }}
           />
         </View>
         <View style={{ margin: 10 }}>
           {user == null ? (
             <Button
               title="Comentar"
-              onPress={() => alert("Debes ingresar para comentar!")}
+              onPress={() => alert('Debes ingresar para comentar!')}
               titleStyle={{ fontSize: 12, marginTop: 18 }}
               buttonStyle={{
                 width: 120,
                 height: 50,
-                backgroundColor: "transparent",
+                backgroundColor: 'transparent',
               }}
             />
           ) : (
             <Button
               title="Comentar"
               onPress={() =>
-                RootNavigation.navigate("ComentarScreen", { id: id })
+                RootNavigation.navigate('ComentarScreen', { id: id })
               }
               titleStyle={{ fontSize: 12, marginTop: 18 }}
               buttonStyle={{
                 width: 120,
                 height: 50,
-                backgroundColor: "transparent",
+                backgroundColor: 'transparent',
               }}
             />
           )}
           <MaterialCommunityIcons
             name="bullhorn"
-            color={"white"}
+            color={'white'}
             size={20}
-            style={{ position: "absolute", marginLeft: 50, marginTop: 7 }}
+            style={{ position: 'absolute', marginLeft: 50, marginTop: 7 }}
           />
         </View>
       </View>
     </SafeAreaView>
   );
-};
+}
 
 const styles = StyleSheet.create({
   button: {
-    alignItems: "center",
-    backgroundColor: "#DDDDDD",
+    alignItems: 'center',
+    backgroundColor: '#DDDDDD',
     padding: 10,
     width: 300,
     marginTop: 16,
@@ -957,8 +1114,8 @@ const styles = StyleSheet.create({
     ...Platform.select({
       ios: {
         marginTop: 50,
-        backgroundColor: "#483D8B",
-        shadowColor: "#000",
+        backgroundColor: '#483D8B',
+        shadowColor: '#000',
         borderRadius: 15,
         paddingTop: -5,
         paddingBottom: 2,
@@ -973,8 +1130,8 @@ const styles = StyleSheet.create({
       },
       android: {
         marginTop: 50,
-        backgroundColor: "#483D8B",
-        shadowColor: "#000",
+        backgroundColor: '#483D8B',
+        shadowColor: '#000',
         borderRadius: 15,
         paddingTop: -5,
         paddingBottom: 2,
@@ -991,5 +1148,3 @@ const styles = StyleSheet.create({
     }),
   },
 });
-
-export default AnuncioSeleccionado;

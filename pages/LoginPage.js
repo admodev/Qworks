@@ -94,10 +94,11 @@ const signInWithFacebook = () => {
 };
 
 export default function LoginPage({ navigation }) {
-  let [error, setError] = useState(false);
-  let [email, setUserEmail] = useState('');
-  let [password, setUserPassword] = useState('');
-  var [isChecked, setChecked] = useState(false);
+  const [error, setError] = useState(false);
+  const [email, setUserEmail] = useState('');
+  const [password, setUserPassword] = useState('');
+  const [isChecked, setChecked] = useState(false);
+  const [isLogged, setIsLogged] = useState(false);
   const toggle = React.useCallback(() => setChecked(!isChecked));
   const [showPassword, setShowPassword] = useState(false);
   const togglePassword = React.useCallback(() =>
@@ -139,36 +140,34 @@ export default function LoginPage({ navigation }) {
     } catch (error) {
       if (error) {
         error.message =
-          'Hubo un error en su inicio de sesión, por favor compruebe sus datos e intentelo de nuevo.';
-
+          'Hubo un error en su inicio de sesión, por favor verifique sus datos e intentelo de nuevo.';
         alert(error.message);
       }
     } finally {
       if (error) {
         alert(
-          'Hubo un error al ingresar, por favor compruebe sus datos e intentelo de nuevo.'
+          'Hubo un error al ingresar, por favor verifique sus datos e intentelo de nuevo.'
         );
       } else {
-        alert('Está siendo logueado, por favor espere...');
-        setTimeout(() => {
-          Updates.reloadAsync();
-        }, 3000);
+        setIsLogged(true);
       }
     }
   }
 
   firebase.auth().onAuthStateChanged(function (user) {
     if (user) {
+      setIsLogged(true);
       var email = user.email;
       var uid = user.uid;
       var providerData = user.providerData;
     } else {
-      user == null;
+      setIsLogged(false);
     }
   });
+
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-      <SafeAreaView style={{ flex: 1 }} keyboardShouldPersistTaps='handled'>
+      <SafeAreaView style={{ flex: 1 }} keyboardShouldPersistTaps="handled">
         <Image
           source={require('../assets/gradients/20x20.png')}
           style={{
@@ -198,26 +197,26 @@ export default function LoginPage({ navigation }) {
           />
           <View
             style={{ width: '80%', marginTop: 70, bottom: 0 }}
-            keyboardShouldPersistTaps='handled'
+            keyboardShouldPersistTaps="handled"
           >
             <KeyboardAvoidingView
               behavior={Platform.OS == 'ios' ? 'padding' : 'height'}
             >
               <Input
-                placeholder='Correo Electrónico'
-                keyboardType='email-address'
-                autoCapitalize='none'
+                placeholder="Correo Electrónico"
+                keyboardType="email-address"
+                autoCapitalize="none"
                 inputContainerStyle={{
                   marginTop: dimensions.screen.height * 0.12,
                 }}
                 style={{ color: '#ffffff', fontSize: 16 }}
-                leftIcon={<Icon name='envelope-o' size={18} color='white' />}
+                leftIcon={<Icon name="envelope-o" size={18} color="white" />}
                 onChangeText={(email) => setUserEmail(email)}
                 value={email}
               />
               <Input
-                placeholder='Contraseña'
-                leftIcon={<Icon name='lock' size={20} color='white' />}
+                placeholder="Contraseña"
+                leftIcon={<Icon name="lock" size={20} color="white" />}
                 style={{ color: '#ffffff', fontSize: 16 }}
                 secureTextEntry={!showPassword}
                 onChangeText={(password) => setUserPassword(password)}
@@ -226,7 +225,7 @@ export default function LoginPage({ navigation }) {
                 onSubmitEditing={() => loguearUsuarios(email, password)}
               />
               <CheckBox
-                title='Mostrar Contraseña'
+                title="Mostrar Contraseña"
                 containerStyle={{
                   backgroundColor: 'transparent',
                   borderColor: 'transparent',
@@ -240,7 +239,7 @@ export default function LoginPage({ navigation }) {
                 checked={showPassword}
               />
               <CheckBox
-                title='No cerrar sesión'
+                title="No cerrar sesión"
                 containerStyle={{
                   backgroundColor: 'transparent',
                   borderColor: 'transparent',
@@ -254,7 +253,7 @@ export default function LoginPage({ navigation }) {
                 checked={isChecked}
               />
               <Button
-                title='¿Olvidaste tu contraseña?'
+                title="¿Olvidaste tu contraseña?"
                 onPress={() =>
                   RootNavigation.navigate('RecuperarPasswordScreen')
                 }
@@ -297,7 +296,7 @@ export default function LoginPage({ navigation }) {
             <View>
               <SocialIcon
                 button
-                type='google'
+                type="google"
                 style={{ padding: 25 }}
                 onPress={() => signInWithGoogle()}
               />
@@ -308,7 +307,7 @@ export default function LoginPage({ navigation }) {
             <View>
               <SocialIcon
                 button
-                type='facebook'
+                type="facebook"
                 style={{ padding: 30 }}
                 onPress={() => signInWithFacebook()}
               />
