@@ -133,6 +133,7 @@ const AnunciosPage = ({ route, navigation }) => {
           });
           Promise.all(promises).then(function () {
             console.log('All removed!');
+            setVisible(false);
           });
         });
       // Updates.reloadAsync();

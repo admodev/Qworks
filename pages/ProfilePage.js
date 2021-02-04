@@ -29,8 +29,9 @@ import * as LoginPageData from './LoginPage';
 import LoginPage from './LoginPage';
 import * as Updates from 'expo-updates';
 
-const ProfilePage = ({ navigation }) => {
-  let user = firebase.auth().currentUser;
+export default function ProfilePage({ navigation }) {
+  const [isLogged, setIsLogged] = useState(false);
+  const user = firebase.auth().currentUser;
   const signUserOut = () => {
     firebase
       .auth()
@@ -39,9 +40,9 @@ const ProfilePage = ({ navigation }) => {
         alert(error);
       })
       .then(function () {
-        navigation.replace('LoginPage');
+        setIsLogged(false);
+        //navigation.replace('LoginPage');
       });
-    Updates.reloadAsync();
   };
 
   let dbRef = firebase.database().ref('anuncios/');
@@ -450,7 +451,7 @@ const ProfilePage = ({ navigation }) => {
       )}
     </SafeAreaView>
   );
-};
+}
 
 const styles = StyleSheet.create({
   button: {
@@ -461,5 +462,3 @@ const styles = StyleSheet.create({
     marginTop: 16,
   },
 });
-
-export default ProfilePage;

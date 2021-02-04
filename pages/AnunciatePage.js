@@ -303,11 +303,11 @@ const AnunciatePage = ({ navigation }) => {
   async function uploadImage(result) {
     const response = await fetch(result);
     const blob = await response.blob();
-    //var photoRef = firebase
-    //.storage()
-    //.ref()
-    //.child('profilePictures/' + user.uid + '-' + ++anunciosCountResult);
-    //return photoRef.put(blob);
+    var photoRef = firebase
+      .storage()
+      .ref()
+      .child('profilePictures/' + user.uid + '-' + ++anunciosCountResult);
+    return photoRef.put(blob);
   }
 
   let idAnuncio;
@@ -409,10 +409,12 @@ const AnunciatePage = ({ navigation }) => {
           photoJSONValue: photoJSONValue,
         })
         .then(function () {
-          user.displayName = nombre;
-        })
-        .finally(() => {
           Updates.reloadAsync();
+        })
+        .catch(function (error) {
+          alert(
+            'Hubo un error al subir su anuncio, por favor compruebe sus datos e intentelo nuevamente.'
+          );
         });
     }
   }
