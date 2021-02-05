@@ -22,6 +22,8 @@ import 'firebase/storage';
 import * as ImagePicker from 'expo-image-picker';
 import * as Updates from 'expo-updates';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import { LinearGradient } from 'expo-linear-gradient';
+import { Animated } from 'react-native';
 
 const AnunciatePage = ({ navigation }) => {
   let database = firebase.database();
@@ -419,16 +421,38 @@ const AnunciatePage = ({ navigation }) => {
     }
   }
 
+  const AnimatedLinearGradient = Animated.createAnimatedComponent(
+    LinearGradient
+  );
+
   return (
-    <View style={{ flex: 1 }}>
-      <Image
-        source={require('../assets/gradients/20x20.png')}
+    <View style={{ flex: 1, backgroundColor: '#FFF6E6' }}>
+      <AnimatedLinearGradient
+        colors={[
+          '135deg',
+          'rgb(33, 137, 163) 0%',
+          'rgb(51, 88, 143) 42%',
+          'rgb(72, 29, 118) 82%',
+          'rgb(72, 28, 118) 99%',
+          'rgb(72, 28, 118) 100%',
+        ]}
         style={{
-          flex: 1,
-          position: 'absolute',
-          resizeMode: 'cover',
-          width: '100%',
-          height: '100%',
+          ...Platform.select({
+            android: {
+              flex: 1,
+              position: 'absolute',
+              resizeMode: 'cover',
+              width: '100%',
+              height: '5%',
+            },
+            ios: {
+              flex: 1,
+              position: 'absolute',
+              resizeMode: 'cover',
+              width: '100%',
+              height: '3%',
+            },
+          }),
         }}
       />
       <TouchableOpacity
@@ -464,7 +488,10 @@ const AnunciatePage = ({ navigation }) => {
             marginTop: 25,
           }}
         >
-          <Text h3 style={{ color: '#fff', marginTop: 30, marginBottom: 25 }}>
+          <Text
+            h3
+            style={{ color: '#000000', marginTop: 30, marginBottom: 25 }}
+          >
             Foto de Perfil
           </Text>
           {image ? (
@@ -492,33 +519,36 @@ const AnunciatePage = ({ navigation }) => {
             marginRight: 'auto',
           }}
         >
-          <Text h3 style={{ color: '#fff', marginTop: 10, marginBottom: 25 }}>
+          <Text
+            h3
+            style={{ color: '#000000', marginTop: 10, marginBottom: 25 }}
+          >
             Información Personal
           </Text>
           <Input
             placeholder="Nombre *"
-            inputStyle={{ color: '#ffffff' }}
-            style={{ color: '#ffffff', fontSize: 16, textAlign: 'center' }}
-            inputContainerStyle={{ borderBottomColor: '#ffffff' }}
-            placeholderTextColor="white"
+            inputStyle={{ color: '#000000' }}
+            style={{ color: '#000000', fontSize: 16, textAlign: 'center' }}
+            inputContainerStyle={{ borderBottomColor: '#000000' }}
+            placeholderTextColor="black"
             onChangeText={(nombre) => setNombre(nombre)}
             value={nombre}
           />
           <Input
             placeholder="Apellido *"
-            inputStyle={{ color: '#ffffff' }}
-            style={{ color: '#ffffff', fontSize: 16, textAlign: 'center' }}
-            inputContainerStyle={{ borderBottomColor: '#ffffff' }}
-            placeholderTextColor="white"
+            inputStyle={{ color: '#000000' }}
+            style={{ color: '#000000', fontSize: 16, textAlign: 'center' }}
+            inputContainerStyle={{ borderBottomColor: '#000000' }}
+            placeholderTextColor="black"
             onChangeText={(apellido) => setApellido(apellido)}
             value={apellido}
           />
           <Input
             placeholder="Email Personal"
-            inputStyle={{ color: '#ffffff' }}
-            style={{ color: '#ffffff', fontSize: 16, textAlign: 'center' }}
-            inputContainerStyle={{ borderBottomColor: '#ffffff' }}
-            placeholderTextColor="white"
+            inputStyle={{ color: '#000000' }}
+            style={{ color: '#000000', fontSize: 16, textAlign: 'center' }}
+            inputContainerStyle={{ borderBottomColor: '#000000' }}
+            placeholderTextColor="black"
             keyboardType="email-address"
             autoCapitalize="none"
             onChangeText={(emailPersonal) => setEmailPersonal(emailPersonal)}
@@ -526,38 +556,38 @@ const AnunciatePage = ({ navigation }) => {
           />
           <Input
             placeholder="Domicilio"
-            inputStyle={{ color: '#ffffff' }}
-            style={{ color: '#ffffff', fontSize: 16, textAlign: 'center' }}
-            inputContainerStyle={{ borderBottomColor: '#ffffff' }}
-            placeholderTextColor="white"
+            inputStyle={{ color: '#000000' }}
+            style={{ color: '#000000', fontSize: 16, textAlign: 'center' }}
+            inputContainerStyle={{ borderBottomColor: '#000000' }}
+            placeholderTextColor="black"
             onChangeText={(domicilio) => setDomicilio(domicilio)}
             value={domicilio}
           />
           <Input
             placeholder="Piso / Dpto / Casa"
-            inputStyle={{ color: '#ffffff' }}
-            style={{ color: '#ffffff', fontSize: 16, textAlign: 'center' }}
-            inputContainerStyle={{ borderBottomColor: '#ffffff' }}
-            placeholderTextColor="white"
+            inputStyle={{ color: '#000000' }}
+            style={{ color: '#000000', fontSize: 16, textAlign: 'center' }}
+            inputContainerStyle={{ borderBottomColor: '#000000' }}
+            placeholderTextColor="black"
             onChangeText={(pisoDptoCasa) => setPisoDptoCasa(pisoDptoCasa)}
             value={pisoDptoCasa}
           />
           <Input
             placeholder="DNI *"
-            inputStyle={{ color: '#ffffff' }}
-            style={{ color: '#ffffff', fontSize: 16, textAlign: 'center' }}
-            inputContainerStyle={{ borderBottomColor: '#ffffff' }}
-            placeholderTextColor="white"
+            inputStyle={{ color: '#000000' }}
+            style={{ color: '#000000', fontSize: 16, textAlign: 'center' }}
+            inputContainerStyle={{ borderBottomColor: '#000000' }}
+            placeholderTextColor="black"
             keyboardType="numeric"
             onChangeText={(dni) => setDni(dni)}
             value={dni}
           />
           <Input
             placeholder="CUIL / CUIT *"
-            inputStyle={{ color: '#ffffff' }}
-            style={{ color: '#ffffff', fontSize: 16, textAlign: 'center' }}
-            inputContainerStyle={{ borderBottomColor: '#ffffff' }}
-            placeholderTextColor="white"
+            inputStyle={{ color: '#000000' }}
+            style={{ color: '#000000', fontSize: 16, textAlign: 'center' }}
+            inputContainerStyle={{ borderBottomColor: '#000000' }}
+            placeholderTextColor="black"
             keyboardType="numeric"
             onChangeText={(cuitCuil) => setCuitCuil(cuitCuil)}
             value={cuitCuil}
@@ -574,16 +604,19 @@ const AnunciatePage = ({ navigation }) => {
             marginRight: 'auto',
           }}
         >
-          <Text h3 style={{ color: '#fff', marginTop: 10, marginBottom: 25 }}>
+          <Text
+            h3
+            style={{ color: '#000000', marginTop: 10, marginBottom: 25 }}
+          >
             Información Laboral
           </Text>
           {Platform.os === 'ios' ? (
             <Input
               placeholder="Actividad *"
-              inputStyle={{ color: '#ffffff' }}
-              style={{ color: '#ffffff', fontSize: 16, textAlign: 'center' }}
-              inputContainerStyle={{ borderBottomColor: '#ffffff' }}
-              placeholderTextColor="white"
+              inputStyle={{ color: '#000000' }}
+              style={{ color: '#000000', fontSize: 16, textAlign: 'center' }}
+              inputContainerStyle={{ borderBottomColor: '#000000' }}
+              placeholderTextColor="black"
               onChangeText={(actividad) => setActividad(actividad)}
               value={actividad}
               maxLength="15"

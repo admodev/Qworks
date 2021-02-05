@@ -60,7 +60,7 @@ export function MainTabNavigator({ navigation }) {
       }}
     >
       <Tab.Screen
-        name="OnboardingPage"
+        name="OnboardingPageTab"
         component={OnboardingPage}
         options={{
           tabBarLabel: 'Inicio',

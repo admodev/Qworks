@@ -41,7 +41,6 @@ export default function ProfilePage({ navigation }) {
       })
       .then(function () {
         setIsLogged(false);
-        //navigation.replace('LoginPage');
       });
   };
 
