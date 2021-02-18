@@ -1,4 +1,4 @@
-import React, { useState, setState } from 'react';
+import React, { Component, useState, setState } from 'react';
 import {
   TouchableOpacity,
   StyleSheet,
@@ -31,14 +31,16 @@ const defaultPhoto = '../assets/icon.png';
 var itm = [];
 var foto = [];
 
-class CardsUsuarios extends React.Component {
+class CardsUsuarios extends Component {
   constructor(props) {
     super(props);
     this.state = {
       items: [],
       search: '',
       fotoDePerfil: [],
+      userProfilePicture: null,
     };
+    this.setState.bind(this);
   }
 
   componentDidMount() {
@@ -50,6 +52,7 @@ class CardsUsuarios extends React.Component {
         let items = [];
         snap.forEach((child) => {
           items.push({
+            anuncioId: child.val().anuncioId,
             nombre: child.val().nombre,
             apellido: child.val().apellido,
             actividad: child.val().actividad,
@@ -63,7 +66,6 @@ class CardsUsuarios extends React.Component {
             palabraClaveTres: child.val().palabraClaveTres,
             descripcionPersonal: child.val().descripcionPersonal,
             recomendacionesTotales: child.val().recomendacionesTotales,
-            photoJSONValue: child.val().photoJSONValue,
           });
         });
         itm = items;
@@ -230,6 +232,33 @@ class CardsUsuarios extends React.Component {
             }}
           >
             {this.state.items.map((u, i) => {
+              firebase
+                .storage()
+                .ref('profilePictures/')
+                .child(u.idAnuncio + u.anuncioId)
+                .getDownloadURL()
+                .then(function (url) {
+                  var xhr = new XMLHttpRequest();
+                  xhr.responseType = 'blob';
+                  xhr.onload = function (event) {
+                    var blob = xhr.response;
+                  };
+                  xhr.open('GET', url);
+                  xhr.send();
+
+                  console.log(url);
+
+                  this.setState({ userProfilePicture: url });
+
+                  console.log('EL ESTADO' + this.state.userProfilePicture);
+                })
+                .catch(function (error) {
+                  console.log(
+                    'Hubo un error al cargar las fotos!',
+                    error.message
+                  );
+                });
+
               return (
                 <View
                   key={i}
@@ -270,7 +299,7 @@ class CardsUsuarios extends React.Component {
                       borderRadius: 10,
                     }}
                   />
-                  {!u.photoJSONValue ? (
+                  {!this.state.userProfilePicture ? (
                     <View
                       style={{ alignItems: 'center', justifyContent: 'center' }}
                     >
@@ -298,7 +327,7 @@ class CardsUsuarios extends React.Component {
                     </View>
                   ) : (
                     <Card.Image
-                      source={{ uri: u.photoJSONValue.uri }}
+                      source={{ uri: this.state.userProfilePicture }}
                       style={{
                         ...Platform.select({
                           android: {

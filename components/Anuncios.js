@@ -187,7 +187,7 @@ const AnunciosPage = ({ route, navigation }) => {
         }}
       >
         <TouchableOpacity
-          onPress={() => navigation.goBack()}
+          onPress={() => navigation.navigate('ProfilePage')}
           style={{
             ...Platform.select({
               android: {

@@ -208,11 +208,6 @@ function MainStackNavigator({ navigation }) {
           options={{ title: 'QuedeOficios!', headerShown: false }}
         />
         <Stack.Screen
-          name="ProfilePage"
-          component={ProfilePage}
-          options={{ title: 'QuedeOficios!', headerShown: false }}
-        />
-        <Stack.Screen
           name="AnunciatePage"
           component={AnunciatePage}
           options={{ title: 'QuedeOficios!', headerShown: false }}

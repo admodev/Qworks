@@ -273,7 +273,11 @@ const AnunciatePage = ({ navigation }) => {
       setTransferred(0);
       const task = firebase
         .storage()
-        .ref('profilePictures/' + filename)
+        .ref(
+          'profilePictures/' +
+            firebase.auth().currentUser.uid +
+            anunciosCountResult
+        )
         .put(blob);
       // set progress state
       task.on('state_changed', (snapshot) => {
@@ -370,6 +374,7 @@ const AnunciatePage = ({ navigation }) => {
         .set({
           anuncioId: anunciosCountResult,
           id: user.uid,
+          imagen: image,
           nombre: nombre,
           apellido: apellido,
           emailPersonal: emailPersonal,
@@ -403,7 +408,7 @@ const AnunciatePage = ({ navigation }) => {
           photoJSONValue: photoJSONValue,
         })
         .then(function () {
-          navigation.navigate('OnboardingPage');
+          navigation.navigate('Anuncios');
         })
         .catch(function (error) {
           alert(
@@ -625,10 +630,10 @@ const AnunciatePage = ({ navigation }) => {
           ) : (
             <Input
               placeholder="Actividad *"
-              inputStyle={{ color: '#ffffff' }}
-              style={{ color: '#ffffff', fontSize: 16, textAlign: 'center' }}
-              inputContainerStyle={{ borderBottomColor: '#ffffff' }}
-              placeholderTextColor="white"
+              inputStyle={{ color: '#000000' }}
+              style={{ color: '#000000', fontSize: 16, textAlign: 'center' }}
+              inputContainerStyle={{ borderBottomColor: '#000000' }}
+              placeholderTextColor="black"
               onChangeText={(actividad) => setActividad(actividad)}
               value={actividad}
               maxLength={15}
@@ -636,75 +641,103 @@ const AnunciatePage = ({ navigation }) => {
           )}
           <Input
             placeholder="Teléfono"
-            inputStyle={{ color: '#ffffff' }}
-            style={{ color: '#ffffff', fontSize: 16, textAlign: 'center' }}
-            inputContainerStyle={{ borderBottomColor: '#ffffff' }}
-            placeholderTextColor="white"
+            inputStyle={{ color: '#000000' }}
+            style={{ color: '#000000', fontSize: 16, textAlign: 'center' }}
+            inputContainerStyle={{ borderBottomColor: '#000000' }}
+            placeholderTextColor="black"
             keyboardType="phone-pad"
             onChangeText={(telefono) => setTelefono(telefono)}
             value={telefono}
           />
           <Input
             placeholder="Celular"
-            inputStyle={{ color: '#ffffff' }}
-            style={{ color: '#ffffff', fontSize: 16, textAlign: 'center' }}
-            inputContainerStyle={{ borderBottomColor: '#ffffff' }}
-            placeholderTextColor="white"
+            inputStyle={{ color: '#000000' }}
+            style={{ color: '#000000', fontSize: 16, textAlign: 'center' }}
+            inputContainerStyle={{ borderBottomColor: '#000000' }}
+            placeholderTextColor="black"
             keyboardType="phone-pad"
             onChangeText={(celular) => setCelular(celular)}
             value={celular}
           />
           <Input
             placeholder="Provincia"
-            inputStyle={{ color: '#ffffff' }}
-            style={{ color: '#ffffff', fontSize: 16, textAlign: 'center' }}
-            inputContainerStyle={{ borderBottomColor: '#ffffff' }}
-            placeholderTextColor="white"
+            inputStyle={{ color: '#000000' }}
+            style={{ color: '#000000', fontSize: 16, textAlign: 'center' }}
+            inputContainerStyle={{ borderBottomColor: '#000000' }}
+            placeholderTextColor="black"
             onChangeText={(provincia) => setProvincia(provincia)}
             value={provincia}
           />
           <Input
             placeholder="Localidad"
-            inputStyle={{ color: '#ffffff' }}
-            style={{ color: '#ffffff', fontSize: 16, textAlign: 'center' }}
-            inputContainerStyle={{ borderBottomColor: '#ffffff' }}
-            placeholderTextColor="white"
+            inputStyle={{ color: '#000000' }}
+            style={{ color: '#000000', fontSize: 16, textAlign: 'center' }}
+            inputContainerStyle={{ borderBottomColor: '#000000' }}
+            placeholderTextColor="black"
             onChangeText={(localidad) => setLocalidad(localidad)}
             value={localidad}
           />
+          {Platform.os === 'ios' ? (
+            <Input
+              placeholder="Local (Si / No)"
+              inputStyle={{ color: '#000000' }}
+              style={{ color: '#000000', fontSize: 16, textAlign: 'center' }}
+              inputContainerStyle={{ borderBottomColor: '#000000' }}
+              placeholderTextColor="black"
+              onChangeText={(local) => setLocal(local)}
+              value={local}
+              maxLength="2"
+            />
+          ) : (
+            <Input
+              placeholder="Local (Si / No)"
+              inputStyle={{ color: '#000000' }}
+              style={{ color: '#000000', fontSize: 16, textAlign: 'center' }}
+              inputContainerStyle={{ borderBottomColor: '#000000' }}
+              placeholderTextColor="black"
+              onChangeText={(local) => setLocal(local)}
+              value={local}
+              maxLength={2}
+            />
+          )}
+          {Platform.os === 'ios' ? (
+            <Input
+              placeholder="Empresa (Si / No)"
+              inputStyle={{ color: '#000000' }}
+              style={{ color: '#000000', fontSize: 16, textAlign: 'center' }}
+              inputContainerStyle={{ borderBottomColor: '#000000' }}
+              placeholderTextColor="black"
+              onChangeText={(empresa) => setEmpresa(empresa)}
+              value={empresa}
+              maxLength="2"
+            />
+          ) : (
+            <Input
+              placeholder="Empresa (Si / No)"
+              inputStyle={{ color: '#000000' }}
+              style={{ color: '#000000', fontSize: 16, textAlign: 'center' }}
+              inputContainerStyle={{ borderBottomColor: '#000000' }}
+              placeholderTextColor="black"
+              onChangeText={(empresa) => setEmpresa(empresa)}
+              value={empresa}
+              maxLength={2}
+            />
+          )}
           <Input
-            placeholder="Local"
-            inputStyle={{ color: '#ffffff' }}
-            style={{ color: '#ffffff', fontSize: 16, textAlign: 'center' }}
-            inputContainerStyle={{ borderBottomColor: '#ffffff' }}
-            placeholderTextColor="white"
-            onChangeText={(local) => setLocal(local)}
-            value={local}
-          />
-          <Input
-            placeholder="Empresa"
-            inputStyle={{ color: '#ffffff' }}
-            style={{ color: '#ffffff', fontSize: 16, textAlign: 'center' }}
-            inputContainerStyle={{ borderBottomColor: '#ffffff' }}
-            placeholderTextColor="white"
-            onChangeText={(empresa) => setEmpresa(empresa)}
-            value={empresa}
-          />
-          <Input
-            placeholder="Factura"
-            inputStyle={{ color: '#ffffff' }}
-            style={{ color: '#ffffff', fontSize: 16, textAlign: 'center' }}
-            inputContainerStyle={{ borderBottomColor: '#ffffff' }}
-            placeholderTextColor="white"
+            placeholder="Factura (Tipo)"
+            inputStyle={{ color: '#000000' }}
+            style={{ color: '#000000', fontSize: 16, textAlign: 'center' }}
+            inputContainerStyle={{ borderBottomColor: '#000000' }}
+            placeholderTextColor="black"
             onChangeText={(factura) => setFactura(factura)}
             value={factura}
           />
           <Input
             placeholder="Dirección del local"
-            inputStyle={{ color: '#ffffff' }}
-            style={{ color: '#ffffff', fontSize: 16, textAlign: 'center' }}
-            inputContainerStyle={{ borderBottomColor: '#ffffff' }}
-            placeholderTextColor="white"
+            inputStyle={{ color: '#000000' }}
+            style={{ color: '#000000', fontSize: 16, textAlign: 'center' }}
+            inputContainerStyle={{ borderBottomColor: '#000000' }}
+            placeholderTextColor="black"
             onChangeText={(direccionDelLocal) =>
               setDireccionDelLocal(direccionDelLocal)
             }
@@ -712,30 +745,44 @@ const AnunciatePage = ({ navigation }) => {
           />
           <Input
             placeholder="Nombre de la empresa"
-            inputStyle={{ color: '#ffffff' }}
-            style={{ color: '#ffffff', fontSize: 16, textAlign: 'center' }}
-            inputContainerStyle={{ borderBottomColor: '#ffffff' }}
-            placeholderTextColor="white"
+            inputStyle={{ color: '#000000' }}
+            style={{ color: '#000000', fontSize: 16, textAlign: 'center' }}
+            inputContainerStyle={{ borderBottomColor: '#000000' }}
+            placeholderTextColor="black"
             onChangeText={(nombreDeLaEmpresa) =>
               setNombreDeLaEmpresa(nombreDeLaEmpresa)
             }
             value={nombreDeLaEmpresa}
           />
-          <Input
-            placeholder="Matrícula"
-            inputStyle={{ color: '#ffffff' }}
-            style={{ color: '#ffffff', fontSize: 16, textAlign: 'center' }}
-            inputContainerStyle={{ borderBottomColor: '#ffffff' }}
-            placeholderTextColor="white"
-            onChangeText={(matricula) => setMatricula(matricula)}
-            value={matricula}
-          />
+          {Platform.os === 'ios' ? (
+            <Input
+              placeholder="Matrícula (Si / No)"
+              inputStyle={{ color: '#000000' }}
+              style={{ color: '#000000', fontSize: 16, textAlign: 'center' }}
+              inputContainerStyle={{ borderBottomColor: '#000000' }}
+              placeholderTextColor="black"
+              onChangeText={(matricula) => setMatricula(matricula)}
+              value={matricula}
+              maxLength="2"
+            />
+          ) : (
+            <Input
+              placeholder="Matrícula (Si / No)"
+              inputStyle={{ color: '#000000' }}
+              style={{ color: '#000000', fontSize: 16, textAlign: 'center' }}
+              inputContainerStyle={{ borderBottomColor: '#000000' }}
+              placeholderTextColor="black"
+              onChangeText={(matricula) => setMatricula(matricula)}
+              value={matricula}
+              maxLength={2}
+            />
+          )}
           <Input
             placeholder="Número de matrícula"
-            inputStyle={{ color: '#ffffff' }}
-            style={{ color: '#ffffff', fontSize: 16, textAlign: 'center' }}
-            inputContainerStyle={{ borderBottomColor: '#ffffff' }}
-            placeholderTextColor="white"
+            inputStyle={{ color: '#000000' }}
+            style={{ color: '#000000', fontSize: 16, textAlign: 'center' }}
+            inputContainerStyle={{ borderBottomColor: '#000000' }}
+            placeholderTextColor="black"
             keyboardType="numeric"
             onChangeText={(numeroDeMatricula) =>
               setNumeroDeMatricula(numeroDeMatricula)
@@ -744,10 +791,10 @@ const AnunciatePage = ({ navigation }) => {
           />
           <Input
             placeholder="Email laboral"
-            inputStyle={{ color: '#ffffff' }}
-            style={{ color: '#ffffff', fontSize: 16, textAlign: 'center' }}
-            inputContainerStyle={{ borderBottomColor: '#ffffff' }}
-            placeholderTextColor="white"
+            inputStyle={{ color: '#000000' }}
+            style={{ color: '#000000', fontSize: 16, textAlign: 'center' }}
+            inputContainerStyle={{ borderBottomColor: '#000000' }}
+            placeholderTextColor="black"
             keyboardType="email-address"
             autoCapitalize="none"
             onChangeText={(emailLaboral) => setEmailLaboral(emailLaboral)}
@@ -762,26 +809,26 @@ const AnunciatePage = ({ navigation }) => {
             marginTop: 25,
           }}
         >
-          <Text h3 style={{ color: '#fff', marginTop: 10, marginBottom: 25 }}>
+          <Text h3 style={{ color: '#000', marginTop: 10, marginBottom: 25 }}>
             Resumen Personal
           </Text>
           <Input
             placeholder="Ingrese una descripción personal..."
-            placeholderTextColor={'white'}
+            placeholderTextColor={'black'}
             style={{
               height: 200,
               width: '80%',
-              borderColor: '#ffffff',
+              borderColor: '#000000',
               borderWidth: 1,
               borderRadius: 15,
-              color: '#ffffff',
+              color: '#000000',
               margin: 10,
               textAlignVertical: 'top',
               textAlign: 'center',
             }}
-            inputStyle={{ color: '#ffffff' }}
+            inputStyle={{ color: '#000000' }}
             inputContainerStyle={{ borderBottomWidth: 0, margin: '5%' }}
-            placeholderTextColor="white"
+            placeholderTextColor="black"
             multiline={true}
             onChangeText={(descripcionPersonal) =>
               setDescripcionPersonal(descripcionPersonal)
@@ -792,7 +839,7 @@ const AnunciatePage = ({ navigation }) => {
             maxLength={150}
             value={descripcionPersonal}
           />
-          <Text h4 style={{ color: '#ffffff' }}>
+          <Text h4 style={{ color: '#000000' }}>
             Palabras clave
           </Text>
           <View style={{ flexDirection: 'row', marginTop: '10%' }}>
@@ -807,8 +854,8 @@ const AnunciatePage = ({ navigation }) => {
               placeholderTextColor="#fd5d13"
               containerStyle={{ width: '35%' }}
               inputStyle={{
-                color: '#ffffff',
-                borderColor: '#ffffff',
+                color: '#000000',
+                borderColor: '#000000',
                 borderWidth: 1,
                 borderRadius: 25,
                 padding: 15,
@@ -831,8 +878,8 @@ const AnunciatePage = ({ navigation }) => {
               placeholderTextColor="#fd5d13"
               containerStyle={{ width: '35%' }}
               inputStyle={{
-                color: '#ffffff',
-                borderColor: '#ffffff',
+                color: '#000000',
+                borderColor: '#000000',
                 borderWidth: 1,
                 borderRadius: 25,
                 padding: 15,
@@ -855,8 +902,8 @@ const AnunciatePage = ({ navigation }) => {
               placeholderTextColor="#fd5d13"
               containerStyle={{ width: '35%' }}
               inputStyle={{
-                color: '#ffffff',
-                borderColor: '#ffffff',
+                color: '#000000',
+                borderColor: '#000000',
                 borderWidth: 1,
                 borderRadius: 25,
                 padding: 15,
@@ -881,7 +928,7 @@ const AnunciatePage = ({ navigation }) => {
             marginRight: 'auto',
           }}
         >
-          <Text h3 style={{ color: '#fff', marginTop: 10, marginBottom: 25 }}>
+          <Text h3 style={{ color: '#000', marginTop: 10, marginBottom: 25 }}>
             Dias y horarios
           </Text>
           <View style={{ flex: 1, flexDirection: 'row' }}>
@@ -897,7 +944,7 @@ const AnunciatePage = ({ navigation }) => {
                 marginLeft: 'auto',
                 marginRight: 'auto',
               }}
-              textStyle={{ color: '#ffffff' }}
+              textStyle={{ color: '#000000' }}
               checkedColor={'#fd5d13'}
             />
             <CheckBox
@@ -912,7 +959,7 @@ const AnunciatePage = ({ navigation }) => {
                 marginLeft: 'auto',
                 marginRight: 'auto',
               }}
-              textStyle={{ color: '#ffffff' }}
+              textStyle={{ color: '#000000' }}
               checkedColor={'#fd5d13'}
             />
             <CheckBox
@@ -927,7 +974,7 @@ const AnunciatePage = ({ navigation }) => {
                 marginLeft: 'auto',
                 marginRight: 'auto',
               }}
-              textStyle={{ color: '#ffffff' }}
+              textStyle={{ color: '#000000' }}
               checkedColor={'#fd5d13'}
             />
           </View>
@@ -944,7 +991,7 @@ const AnunciatePage = ({ navigation }) => {
                 marginLeft: 'auto',
                 marginRight: 'auto',
               }}
-              textStyle={{ color: '#ffffff' }}
+              textStyle={{ color: '#000000' }}
               checkedColor={'#fd5d13'}
             />
             <CheckBox
@@ -959,7 +1006,7 @@ const AnunciatePage = ({ navigation }) => {
                 marginLeft: 'auto',
                 marginRight: 'auto',
               }}
-              textStyle={{ color: '#ffffff' }}
+              textStyle={{ color: '#000000' }}
               checkedColor={'#fd5d13'}
             />
             <CheckBox
@@ -974,7 +1021,7 @@ const AnunciatePage = ({ navigation }) => {
                 marginLeft: 'auto',
                 marginRight: 'auto',
               }}
-              textStyle={{ color: '#ffffff' }}
+              textStyle={{ color: '#000000' }}
               checkedColor={'#fd5d13'}
             />
           </View>
@@ -991,7 +1038,7 @@ const AnunciatePage = ({ navigation }) => {
                 marginLeft: 'auto',
                 marginRight: 'auto',
               }}
-              textStyle={{ color: '#ffffff' }}
+              textStyle={{ color: '#000000' }}
               checkedColor={'#fd5d13'}
             />
             <CheckBox
@@ -1006,35 +1053,35 @@ const AnunciatePage = ({ navigation }) => {
                 marginLeft: 'auto',
                 marginRight: 'auto',
               }}
-              textStyle={{ color: '#ffffff' }}
+              textStyle={{ color: '#000000' }}
               checkedColor={'#fd5d13'}
             />
           </View>
           <View style={{ width: '80%' }}>
             <Input
               placeholder="Desde ... hs"
-              style={{ color: '#ffffff', fontSize: 16 }}
-              inputStyle={{ color: '#ffffff' }}
-              style={{ color: '#ffffff', fontSize: 16, textAlign: 'center' }}
+              style={{ color: '#000000', fontSize: 16 }}
+              inputStyle={{ color: '#000000' }}
+              style={{ color: '#000000', fontSize: 16, textAlign: 'center' }}
               inputContainerStyle={{
-                borderBottomColor: '#ffffff',
+                borderBottomColor: '#000000',
                 marginTop: 15,
               }}
-              placeholderTextColor="white"
+              placeholderTextColor="black"
               keyboardType="numeric"
               onChangeText={(desde) => setDesde(desde)}
               value={desde}
             />
             <Input
               placeholder="Hasta ... hs"
-              style={{ color: '#ffffff', fontSize: 16 }}
-              inputStyle={{ color: '#ffffff' }}
-              style={{ color: '#ffffff', fontSize: 16, textAlign: 'center' }}
+              style={{ color: '#000000', fontSize: 16 }}
+              inputStyle={{ color: '#000000' }}
+              style={{ color: '#000000', fontSize: 16, textAlign: 'center' }}
               inputContainerStyle={{
-                borderBottomColor: '#ffffff',
+                borderBottomColor: '#000000',
                 marginTop: 15,
               }}
-              placeholderTextColor="white"
+              placeholderTextColor="black"
               keyboardType="numeric"
               onChangeText={(hasta) => setHasta(hasta)}
               value={hasta}
@@ -1043,7 +1090,7 @@ const AnunciatePage = ({ navigation }) => {
         </View>
         <Text
           h3
-          style={{ color: '#fff', textAlign: 'center', marginTop: '5%' }}
+          style={{ color: '#000', textAlign: 'center', marginTop: '5%' }}
         >
           ¿Qué medios de pago aceptas?
         </Text>
@@ -1059,7 +1106,7 @@ const AnunciatePage = ({ navigation }) => {
         >
           <MaterialCommunityIcons
             name="cash-usd"
-            color={'#fff'}
+            color={'#000'}
             size={35}
             style={{ marginTop: 20 }}
           />
@@ -1073,14 +1120,14 @@ const AnunciatePage = ({ navigation }) => {
               marginLeft: 'auto',
               marginRight: 'auto',
             }}
-            textStyle={{ color: '#ffffff' }}
+            textStyle={{ color: '#000000' }}
             checkedColor={'#fd5d13'}
             onPress={toggleEfectivo}
             checked={efectivo}
           />
           <MaterialCommunityIcons
             name="card-bulleted-outline"
-            color={'#fff'}
+            color={'#000'}
             size={35}
             style={{ marginTop: 20 }}
           />
@@ -1094,7 +1141,7 @@ const AnunciatePage = ({ navigation }) => {
               marginLeft: 'auto',
               marginRight: 'auto',
             }}
-            textStyle={{ color: '#ffffff' }}
+            textStyle={{ color: '#000000' }}
             checkedColor={'#fd5d13'}
             onPress={togglePagosDigitales}
             checked={pagosDigitales}
@@ -1108,11 +1155,19 @@ const AnunciatePage = ({ navigation }) => {
             marginTop: 25,
           }}
         >
-          <Text h3 style={{ color: '#fff' }}>
-            Términos y condiciones
+          <Text h3 style={{ color: '#000', textAlign: 'center' }}>
+            Términos y Condiciones & Políticas de Privacidad
           </Text>
           <TouchableOpacity onPress={toggleOverlay}>
-            <Text style={{ color: '#ffffff', marginTop: '5%', fontSize: 24 }}>
+            <Text
+              style={{
+                color: '#000000',
+                marginTop: '5%',
+                fontSize: 24,
+                fontWeight: 'bold',
+                color: '#fd5d13',
+              }}
+            >
               Leer
             </Text>
           </TouchableOpacity>
@@ -1129,7 +1184,7 @@ const AnunciatePage = ({ navigation }) => {
               marginLeft: 'auto',
               marginRight: 'auto',
             }}
-            textStyle={{ color: '#ffffff' }}
+            textStyle={{ color: '#000000' }}
             checkedColor={'#fd5d13'}
             onPress={toggleTerminos}
             checked={terminos}
