@@ -23,8 +23,6 @@ import 'firebase/storage';
 import * as ImagePicker from 'expo-image-picker';
 import * as Updates from 'expo-updates';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import { LinearGradient } from 'expo-linear-gradient';
-import { Animated } from 'react-native';
 import * as Progress from 'react-native-progress';
 
 const AnunciatePage = ({ navigation }) => {
@@ -418,21 +416,10 @@ const AnunciatePage = ({ navigation }) => {
     }
   }
 
-  const AnimatedLinearGradient = Animated.createAnimatedComponent(
-    LinearGradient
-  );
-
   return (
     <View style={{ flex: 1, backgroundColor: '#FFF6E6' }}>
-      <AnimatedLinearGradient
-        colors={[
-          '135deg',
-          'rgb(33, 137, 163) 0%',
-          'rgb(51, 88, 143) 42%',
-          'rgb(72, 29, 118) 82%',
-          'rgb(72, 28, 118) 99%',
-          'rgb(72, 28, 118) 100%',
-        ]}
+      <Image
+        source={require('../assets/gradients/20x20.png')}
         style={{
           ...Platform.select({
             android: {

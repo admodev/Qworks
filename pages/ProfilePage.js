@@ -60,7 +60,6 @@ export default function ProfilePage({ navigation }) {
     .equalTo(id)
     .on('value', (snap) => {
       snap.forEach((child) => {
-        key = child.key;
         nombre = child.val().nombre;
         image = child.val().image;
         apellido = child.val().apellido;
