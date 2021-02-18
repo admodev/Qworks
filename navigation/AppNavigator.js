@@ -60,7 +60,7 @@ export function MainTabNavigator({ navigation }) {
       }}
     >
       <Tab.Screen
-        name="OnboardingPageTab"
+        name="OnboardingPage"
         component={OnboardingPage}
         options={{
           tabBarLabel: 'Inicio',
@@ -175,11 +175,6 @@ function MainStackNavigator({ navigation }) {
           name="Home"
           component={MainTabNavigator}
           options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="OnboardingPage"
-          component={OnboardingPage}
-          options={{ title: 'QueDeOficios!', headerShown: false }}
         />
         <Stack.Screen
           name="CardsUsuarios"

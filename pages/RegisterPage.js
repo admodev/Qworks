@@ -104,10 +104,17 @@ export default function RegisterPage({ navigation }) {
         firebase.auth().onAuthStateChanged(function (user) {
           if (user) {
             setIsLogged(true);
+            firebase
+              .database()
+              .ref('registeredEmails/' + user.uid)
+              .set({
+                user: user.uid,
+                email: user.email,
+              });
             var email = user.email;
             var uid = user.uid;
             var providerData = user.providerData;
-            navigation.navigate('OnboardingPageTab');
+            navigation.navigate('OnboardingPage');
           } else {
             setIsLogged(false);
           }

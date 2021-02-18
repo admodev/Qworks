@@ -4,6 +4,7 @@ import {
   View,
   Platform,
   ScrollView,
+  StyleSheet,
   TextInput,
   TouchableOpacity,
 } from 'react-native';
@@ -24,6 +25,7 @@ import * as Updates from 'expo-updates';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Animated } from 'react-native';
+import * as Progress from 'react-native-progress';
 
 const AnunciatePage = ({ navigation }) => {
   let database = firebase.database();
@@ -65,6 +67,9 @@ const AnunciatePage = ({ navigation }) => {
   const [desde, setDesde] = useState('');
   const [hasta, setHasta] = useState('');
   const [efectivo, setEfectivo] = useState(false);
+  const [uploadedImage, setUploadedImage] = useState(null);
+  const [uploading, setUploading] = useState(false);
+  const [transferred, setTransferred] = useState(0);
   const toggleEfectivo = React.useCallback(() => setEfectivo(!efectivo));
   const [pagosDigitales, setPagosDigitales] = useState(false);
   const togglePagosDigitales = React.useCallback(() =>
@@ -259,50 +264,37 @@ const AnunciatePage = ({ navigation }) => {
     console.log(result);
     if (!result.cancelled) {
       setImage(result.uri.toString());
-      const createFormData = (result, body) => {
-        const data = new FormData();
-
-        data.append('result', {
-          name: result.fileName,
-          type: result.type,
-          uri:
-            Platform.OS === 'android'
-              ? result.uri
-              : result.uri.replace('file://', ''),
-        });
-
-        Object.keys(body).forEach((key) => {
-          data.append(key, body[key]);
-        });
-
-        return data;
-      };
-      fetch('http://192.168.0.24:3300/api/upload', {
-        method: 'POST',
-        body: createFormData(result, { userId: '123' }),
-      })
-        .then((response) => response.json())
-        .then((response) => {
-          console.log('upload succes', response);
-          alert('Upload success!');
-        })
-        .catch((error) => {
-          console.log('upload error', error);
-          alert('Upload failed!');
-        });
-      setPhotoJSONValue({
-        cancelled: result.cancelled.toString(),
-        height: result.height.toString(),
-        type: result.type.toString(),
-        uri: result.uri.toString(),
-        width: result.width.toString(),
-        elBlob: photoToUri.toString(),
+      const response = await fetch(result.uri);
+      const blob = await response.blob();
+      const filename = result.uri.substring(result.uri.lastIndexOf('/') + 1);
+      const uploadUri =
+        Platform.OS === 'ios' ? result.uri.replace('file://', '') : result.uri;
+      setUploading(true);
+      setTransferred(0);
+      const task = firebase
+        .storage()
+        .ref('profilePictures/' + filename)
+        .put(blob);
+      // set progress state
+      task.on('state_changed', (snapshot) => {
+        setTransferred(
+          Math.round(snapshot.bytesTransferred / snapshot.totalBytes) * 10000
+        );
       });
-      console.log(photoJSONValue);
+      try {
+        await task;
+      } catch (e) {
+        console.error(e);
+      }
+      setUploading(false);
+      alert(
+        'Photo uploaded!',
+        'Your photo has been uploaded to Firebase Cloud Storage!'
+      );
     }
   };
 
-  async function uploadImage(result) {
+  /* async function uploadImage(result) {
     const response = await fetch(result);
     const blob = await response.blob();
     var photoRef = firebase
@@ -310,7 +302,7 @@ const AnunciatePage = ({ navigation }) => {
       .ref()
       .child('profilePictures/' + user.uid + '-' + ++anunciosCountResult);
     return photoRef.put(blob);
-  }
+  } */
 
   let idAnuncio;
 
@@ -411,7 +403,7 @@ const AnunciatePage = ({ navigation }) => {
           photoJSONValue: photoJSONValue,
         })
         .then(function () {
-          Updates.reloadAsync();
+          navigation.navigate('OnboardingPage');
         })
         .catch(function (error) {
           alert(
@@ -494,15 +486,24 @@ const AnunciatePage = ({ navigation }) => {
           >
             Foto de Perfil
           </Text>
-          {image ? (
+          {image && (
             <Avatar
               source={{ uri: image }}
               size="xlarge"
               avatarStyle={{ borderRadius: 25 }}
             />
+          )}
+          {uploading ? (
+            <View style={styles.progressBarContainer}>
+              <Progress.Bar progress={transferred} width={300} />
+            </View>
           ) : (
             <Button
-              buttonStyle={{ marginTop: 10, backgroundColor: '#F4743B' }}
+              buttonStyle={{
+                marginTop: 10,
+                marginLeft: '2%',
+                backgroundColor: '#F4743B',
+              }}
               title="Subir foto"
               onPress={pickImage}
             />
@@ -1189,4 +1190,11 @@ const AnunciatePage = ({ navigation }) => {
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  progressBarContainer: {
+    marginTop: 20,
+  },
+});
+
 export default AnunciatePage;
