@@ -231,7 +231,7 @@ class CardsUsuarios extends Component {
               }),
             }}
           >
-            {this.state.items.map((u, i) => {
+            {this.state.items.map((u, index) => {
               firebase
                 .storage()
                 .ref('profilePictures/')
@@ -261,7 +261,7 @@ class CardsUsuarios extends Component {
 
               return (
                 <View
-                  key={i}
+                  key={index}
                   style={{
                     ...Platform.select({
                       android: {

@@ -234,7 +234,7 @@ const AnunciosPage = ({ route, navigation }) => {
             }),
           }}
         >
-          {items.map((u, i) => {
+          {items.sort().map((u, index) => {
             let storage = firebase.storage();
             let storageRef = storage.ref();
             let defaultImageRef = storageRef
@@ -244,10 +244,9 @@ const AnunciosPage = ({ route, navigation }) => {
               .child('userProfilePics/')
               .child(u.idAnuncio).child;
             console.log(firebase.auth().currentUser.uid + '-' + u.anuncioId);
-            //console.log(i);
             return (
               <View
-                key={i}
+                key={index}
                 style={{
                   ...Platform.select({
                     android: {

@@ -11,12 +11,11 @@ import {
   Share,
 } from 'react-native';
 import {
+  AirbnbRating,
   Avatar,
   Button,
   Card,
   Overlay,
-  Rating,
-  AirbnbRating,
 } from 'react-native-elements';
 import * as firebase from 'firebase';
 import 'firebase/firestore';
@@ -114,8 +113,9 @@ export default function AnuncioSeleccionado({ route, navigation }) {
         returnArr.push({
           key: item.key,
           id: item.id,
-          comentadoPor: item.comentadoPor,
+          receptor: item.receptor,
           comentario: item.comentario,
+          emisorEmail: item.emisorEmail,
         });
         arr = returnArr;
         console.log(arr);
@@ -136,6 +136,8 @@ export default function AnuncioSeleccionado({ route, navigation }) {
   let user = firebase.auth().currentUser;
 
   useEffect(() => {
+    comentariosRef;
+
     firebase
       .database()
       .ref('favoritos/')
@@ -274,14 +276,28 @@ export default function AnuncioSeleccionado({ route, navigation }) {
     <SafeAreaView
       style={{
         flex: 1,
+        backgroundColor: '#FFFFFF',
       }}
     >
       <Image
         source={require('../assets/gradients/20x20.png')}
         style={{
-          flex: 1,
-          position: 'absolute',
-          opacity: 0.9,
+          ...Platform.select({
+            android: {
+              flex: 1,
+              position: 'absolute',
+              resizeMode: 'cover',
+              width: '100%',
+              height: '5%',
+            },
+            ios: {
+              flex: 1,
+              position: 'absolute',
+              resizeMode: 'cover',
+              width: '100%',
+              height: '3%',
+            },
+          }),
         }}
       />
       <View
@@ -293,8 +309,8 @@ export default function AnuncioSeleccionado({ route, navigation }) {
               alignItems: 'center',
               justifyContent: 'space-between',
               flexDirection: 'row',
-              marginTop: '10%',
-              marginLeft: '10%',
+              marginTop: '12%',
+              marginLeft: '3%',
             },
             ios: {
               width: 30,
@@ -302,8 +318,7 @@ export default function AnuncioSeleccionado({ route, navigation }) {
               alignItems: 'center',
               justifyContent: 'space-between',
               flexDirection: 'row',
-              marginTop: '10%',
-              marginLeft: 15,
+              marginTop: '3%',
               backgroundColor: 'transparent',
             },
           }),
@@ -318,7 +333,7 @@ export default function AnuncioSeleccionado({ route, navigation }) {
               },
               ios: {
                 backgroundColor: 'transparent',
-                left: 25,
+                left: 12,
               },
             }),
           }}
@@ -343,6 +358,7 @@ export default function AnuncioSeleccionado({ route, navigation }) {
                 backgroundColor: 'transparent',
                 borderWidth: 0,
                 marginTop: '2%',
+                elevation: 0,
               },
               ios: {
                 padding: 0,
@@ -368,17 +384,13 @@ export default function AnuncioSeleccionado({ route, navigation }) {
                     ...Platform.select({
                       android: {
                         borderRadius: 25,
-                        marginTop: '8%',
-                        marginBottom: '10%',
-                        width: 140,
-                        height: 120,
+                        width: 150,
+                        height: 150,
                       },
                       ios: {
                         borderRadius: 25,
-                        marginTop: '8%',
-                        marginBottom: '10%',
-                        width: 120,
-                        height: 90,
+                        width: 150,
+                        height: 150,
                       },
                     }),
                   }}
@@ -415,13 +427,7 @@ export default function AnuncioSeleccionado({ route, navigation }) {
               <Card.Image
                 source={require('../assets/icon.png')}
                 style={{
-                  borderRadius: 100,
-                  marginTop: 'auto',
-                  marginBottom: 'auto',
-                  marginLeft: 'auto',
-                  marginRight: 'auto',
-                  width: '100%',
-                  height: '100%',
+                  height: 300,
                 }}
               />
             ) : (
@@ -433,8 +439,8 @@ export default function AnuncioSeleccionado({ route, navigation }) {
               />
             )}
           </Overlay>
-          <Rating
-            size={28}
+          <AirbnbRating
+            size={24}
             showRating={true}
             type="custom"
             ratingColor={naranjaQueDeOficios}
@@ -443,13 +449,13 @@ export default function AnuncioSeleccionado({ route, navigation }) {
             reviews={['']}
             onFinishRating={(rating) => setRating(rating)}
             style={{
-              margin: 10,
+              borderWidth: 0,
             }}
           />
           <View style={{ margin: '3%' }}>
             <Text
               style={{
-                color: '#ffffff',
+                color: '#000000',
                 textAlign: 'center',
                 fontSize: 30,
                 fontWeight: 'bold',
@@ -467,7 +473,7 @@ export default function AnuncioSeleccionado({ route, navigation }) {
             }}
           >
             <Text
-              style={{ color: '#ffffff', textAlign: 'center', fontSize: 24 }}
+              style={{ color: '#000000', textAlign: 'center', fontSize: 24 }}
             >
               {actividad} -
             </Text>
@@ -496,7 +502,7 @@ export default function AnuncioSeleccionado({ route, navigation }) {
           </View>
           <Text
             style={{
-              color: '#ffffff',
+              color: '#000000',
               textAlign: 'center',
               fontSize: 16,
               marginTop: '5%',
@@ -511,7 +517,7 @@ export default function AnuncioSeleccionado({ route, navigation }) {
               marginTop: 10,
               textAlign: 'center',
               fontSize: 20,
-              color: '#fff',
+              color: '#000000',
             }}
           >
             {emailPersonal}
@@ -530,7 +536,7 @@ export default function AnuncioSeleccionado({ route, navigation }) {
                 style={{
                   ...Platform.select({
                     android: {
-                      color: '#fff',
+                      color: '#000000',
                       marginLeft: 'auto',
                       marginRight: 'auto',
                       marginTop: 10,
@@ -538,7 +544,7 @@ export default function AnuncioSeleccionado({ route, navigation }) {
                       fontSize: 20,
                     },
                     ios: {
-                      color: '#fff',
+                      color: '#000000',
                       marginTop: 15,
                       marginRight: 10,
                       fontSize: 20,
@@ -559,14 +565,14 @@ export default function AnuncioSeleccionado({ route, navigation }) {
                 style={{
                   ...Platform.select({
                     android: {
-                      color: '#fff',
+                      color: '#000000',
                       marginLeft: 'auto',
                       marginRight: 'auto',
                       marginTop: 10,
                       fontSize: 20,
                     },
                     ios: {
-                      color: '#fff',
+                      color: '#000000',
                       marginTop: 15,
                       marginLeft: 10,
                       fontSize: 20,
@@ -604,7 +610,7 @@ export default function AnuncioSeleccionado({ route, navigation }) {
             textAlign: 'center',
             fontSize: 24,
             marginTop: '5%',
-            color: '#fff',
+            color: '#000000',
             fontWeight: 'bold',
             textTransform: 'uppercase',
           }}
@@ -622,6 +628,7 @@ export default function AnuncioSeleccionado({ route, navigation }) {
                 borderWidth: 0,
                 maxWidth: '150%',
                 marginTop: '3%',
+                elevation: 0,
               },
               ios: {
                 padding: 0,
@@ -636,7 +643,7 @@ export default function AnuncioSeleccionado({ route, navigation }) {
         >
           <Text
             style={{
-              color: '#fff',
+              color: '#000000',
               marginTop: 10,
               marginBottom: 10,
               fontSize: 20,
@@ -646,7 +653,7 @@ export default function AnuncioSeleccionado({ route, navigation }) {
           </Text>
           <Text
             style={{
-              color: '#fff',
+              color: '#000000',
               marginLeft: 'auto',
               marginRight: 'auto',
               marginTop: 10,
@@ -661,7 +668,7 @@ export default function AnuncioSeleccionado({ route, navigation }) {
               style={{
                 marginTop: 10,
                 fontSize: 20,
-                color: '#fff',
+                color: '#000000',
               }}
             >
               - Dias y horarios:
@@ -673,7 +680,7 @@ export default function AnuncioSeleccionado({ route, navigation }) {
                 marginTop: 10,
                 textAlign: 'center',
                 fontSize: 20,
-                color: '#fff',
+                color: '#000000',
               }}
             >
               {diasHorarios.filter(onlyUnique).join(', ')}
@@ -685,14 +692,14 @@ export default function AnuncioSeleccionado({ route, navigation }) {
                 style={{
                   marginTop: 10,
                   fontSize: 20,
-                  color: '#fff',
+                  color: '#000000',
                 }}
               >
                 - Local:
               </Text>
               <Text
                 style={{
-                  color: '#fff',
+                  color: '#000000',
                   marginLeft: 'auto',
                   marginRight: 'auto',
                   marginTop: 10,
@@ -708,14 +715,14 @@ export default function AnuncioSeleccionado({ route, navigation }) {
             style={{
               fontSize: 20,
               marginTop: 10,
-              color: '#fff',
+              color: '#000000',
             }}
           >
             - Celular:
           </Text>
           <Text
             style={{
-              color: '#fff',
+              color: '#000000',
               marginLeft: 'auto',
               marginRight: 'auto',
               marginTop: 10,
@@ -729,7 +736,7 @@ export default function AnuncioSeleccionado({ route, navigation }) {
             <View>
               <Text
                 style={{
-                  color: '#fff',
+                  color: '#000000',
                   marginTop: 10,
                   marginBottom: 10,
                   fontSize: 20,
@@ -739,7 +746,7 @@ export default function AnuncioSeleccionado({ route, navigation }) {
               </Text>
               <Text
                 style={{
-                  color: '#fff',
+                  color: '#000000',
                   marginLeft: 'auto',
                   marginRight: 'auto',
                   marginTop: 10,
@@ -753,7 +760,7 @@ export default function AnuncioSeleccionado({ route, navigation }) {
           )}
           <Text
             style={{
-              color: '#fff',
+              color: '#000000',
               marginTop: 10,
               marginBottom: 10,
               fontSize: 20,
@@ -763,7 +770,7 @@ export default function AnuncioSeleccionado({ route, navigation }) {
           </Text>
           <Text
             style={{
-              color: '#fff',
+              color: '#000000',
               marginLeft: 'auto',
               marginRight: 'auto',
               marginTop: 10,
@@ -782,7 +789,7 @@ export default function AnuncioSeleccionado({ route, navigation }) {
             textAlign: 'center',
             fontSize: 28,
             marginTop: 10,
-            color: '#fff',
+            color: '#000000',
             fontWeight: 'bold',
           }}
         >
@@ -799,6 +806,7 @@ export default function AnuncioSeleccionado({ route, navigation }) {
                 borderWidth: 0,
                 maxWidth: '150%',
                 marginTop: '3%',
+                elevation: 0,
               },
               ios: {
                 padding: 0,
@@ -818,7 +826,7 @@ export default function AnuncioSeleccionado({ route, navigation }) {
               textAlign: 'center',
               fontSize: 20,
               marginTop: 10,
-              color: '#fff',
+              color: '#000000',
             }}
           ></Text>
           <Text
@@ -830,7 +838,7 @@ export default function AnuncioSeleccionado({ route, navigation }) {
               marginRight: 25,
               marginLeft: 25,
               marginBottom: 20,
-              color: '#fff',
+              color: '#000000',
             }}
           >
             "{descripcionPersonal}"
@@ -844,11 +852,11 @@ export default function AnuncioSeleccionado({ route, navigation }) {
             textAlign: 'center',
             fontSize: 28,
             marginTop: 10,
-            color: '#fff',
+            color: '#000000',
             fontWeight: 'bold',
           }}
         >
-          Opiniones sobre {nombre}
+          Comentarios sobre {nombre}
         </Text>
         <Card
           style={styles.card}
@@ -862,6 +870,7 @@ export default function AnuncioSeleccionado({ route, navigation }) {
                 maxWidth: '150%',
                 marginTop: '3%',
                 marginBottom: '35%',
+                elevation: 0,
               },
               ios: {
                 padding: 0,
@@ -875,30 +884,40 @@ export default function AnuncioSeleccionado({ route, navigation }) {
             }),
           }}
         >
-          {arr.map((u, i) => {
+          {arr.map((u, index) => {
             return (
-              <View key={i}>
-                <Text
-                  style={{
-                    textAlign: 'left',
-                    marginLeft: 10,
-                    fontSize: 20,
-                    marginTop: 10,
-                    marginBottom: 10,
-                    color: '#fff',
-                  }}
-                >
-                  - {JSON.stringify(u.comentario)}
-                </Text>
-                <Text
-                  style={{
-                    marginLeft: 10,
-                    fontSize: 14,
-                    color: naranjaQueDeOficios,
-                  }}
-                >
-                  De: emailaca@hotmail.com
-                </Text>
+              <View key={index}>
+                {u.receptor == id && (
+                  <View>
+                    <Text
+                      style={{
+                        textAlign: 'left',
+                        marginLeft: 10,
+                        fontSize: 20,
+                        marginTop: 10,
+                        marginBottom: 10,
+                        color: '#000000',
+                      }}
+                    >
+                      -{' '}
+                      {u.receptor == id
+                        ? JSON.stringify(u.comentario)
+                        : console.log('No comments')}
+                    </Text>
+                    <Text
+                      style={{
+                        marginLeft: 10,
+                        fontSize: 14,
+                        color: naranjaQueDeOficios,
+                      }}
+                    >
+                      De:{' '}
+                      {u.receptor == id
+                        ? JSON.stringify(u.emisorEmail)
+                        : console.log('No email')}
+                    </Text>
+                  </View>
+                )}
               </View>
             );
           })}

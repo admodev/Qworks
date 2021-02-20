@@ -289,10 +289,6 @@ const AnunciatePage = ({ navigation }) => {
         console.error(e);
       }
       setUploading(false);
-      alert(
-        'Photo uploaded!',
-        'Your photo has been uploaded to Firebase Cloud Storage!'
-      );
     }
   };
 
@@ -307,6 +303,8 @@ const AnunciatePage = ({ navigation }) => {
   } */
 
   let idAnuncio;
+
+  console.log('contador: ', anunciosCountResult);
 
   function writeUserData(
     nombre,
@@ -341,15 +339,15 @@ const AnunciatePage = ({ navigation }) => {
     longitud,
     photoJSONValue
   ) {
-    if (!anunciosCountResult) {
+    /* if (!anunciosCountResult) {
       anunciosCountResult = 0;
-    } else if (anunciosCountResult < 1) {
+    } else if (anunciosCountResult === 1) {
       anunciosCountResult = 1;
-    } else if (anunciosCountResult < 2) {
-      anunciosCountResult = 2;
-    } else if (anunciosCountResult < 3) {
+    } else if (anunciosCountResult === 2) {
+      anunciosCountResult === 2;
+    } else if (anunciosCountResult === 3) {
       anunciosCountResult = 3;
-    }
+    } */
 
     if (!cuitCuil.trim()) {
       alert('Por favor ingrese su cuit/cuil');
