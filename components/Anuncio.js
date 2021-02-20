@@ -246,12 +246,12 @@ export default function AnuncioSeleccionado({ route, navigation }) {
       });
   }
 
-  var photoRef = firebase
+  firebase
     .storage()
-    .ref('profilePictures/' + id + '-' + contadorAnuncio);
-  photoRef
+    .ref('profilePictures/')
+    .child(id + contadorAnuncio)
     .getDownloadURL()
-    .then((url) => {
+    .then(function (url) {
       var xhr = new XMLHttpRequest();
       xhr.responseType = 'blob';
       xhr.onload = function (event) {
@@ -262,8 +262,8 @@ export default function AnuncioSeleccionado({ route, navigation }) {
 
       setFotoDePerfil(url);
     })
-    .catch((error) => {
-      console.log(error.message);
+    .catch(function (error) {
+      console.log('Hubo un error al cargar las fotos!', error.message);
     });
 
   function onlyUnique(value, index, self) {
@@ -330,54 +330,6 @@ export default function AnuncioSeleccionado({ route, navigation }) {
             style={{ backgroundColor: 'transparent' }}
           />
         </TouchableOpacity>
-        {isFavorite.length == 0 && (
-          <TouchableOpacity
-            onPress={() => agregarFavorito(id)}
-            style={{
-              ...Platform.select({
-                android: {
-                  backgroundColor: 'transparent',
-                  right: -240,
-                },
-                ios: {
-                  backgroundColor: 'transparent',
-                  right: -250,
-                },
-              }),
-            }}
-          >
-            <MaterialCommunityIcons
-              name="account-star-outline"
-              color={naranjaQueDeOficios}
-              size={32}
-              style={{ backgroundColor: 'transparent' }}
-            />
-          </TouchableOpacity>
-        )}
-        {isFavorite.includes(id) && (
-          <TouchableOpacity
-            onPress={() => quitarFavorito(id)}
-            style={{
-              ...Platform.select({
-                android: {
-                  backgroundColor: 'transparent',
-                  right: -240,
-                },
-                ios: {
-                  backgroundColor: 'transparent',
-                  right: -250,
-                },
-              }),
-            }}
-          >
-            <MaterialCommunityIcons
-              name="account-star"
-              color={naranjaQueDeOficios}
-              size={32}
-              style={{ backgroundColor: 'transparent' }}
-            />
-          </TouchableOpacity>
-        )}
       </View>
       <ScrollView showsHorizontalScrollIndicator={false}>
         {/* Card principal */}
@@ -440,17 +392,13 @@ export default function AnuncioSeleccionado({ route, navigation }) {
                     ...Platform.select({
                       android: {
                         borderRadius: 25,
-                        marginTop: '8%',
-                        marginBottom: '10%',
-                        width: 140,
-                        height: 120,
+                        width: 200,
+                        height: 200,
                       },
                       ios: {
                         borderRadius: 25,
-                        marginTop: '8%',
-                        marginBottom: '10%',
-                        width: 120,
-                        height: 90,
+                        width: 200,
+                        height: 200,
                       },
                     }),
                   }}
@@ -461,7 +409,7 @@ export default function AnuncioSeleccionado({ route, navigation }) {
           <Overlay
             isVisible={visible}
             onBackdropPress={toggleOverlay}
-            overlayStyle={{ width: '85%', height: '85%', borderRadius: 10 }}
+            overlayStyle={{ width: '85%', height: 320, borderRadius: 10 }}
           >
             {!fotoDePerfil ? (
               <Card.Image
@@ -480,13 +428,7 @@ export default function AnuncioSeleccionado({ route, navigation }) {
               <Card.Image
                 source={{ uri: fotoDePerfil }}
                 style={{
-                  borderRadius: 100,
-                  marginTop: 'auto',
-                  marginBottom: 'auto',
-                  marginLeft: 'auto',
-                  marginRight: 'auto',
-                  width: '100%',
-                  height: '100%',
+                  height: 300,
                 }}
               />
             )}
