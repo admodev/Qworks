@@ -55,7 +55,7 @@ class ControlPanel extends React.Component {
           }}
         />
         <Button
-          title='>'
+          title=">"
           buttonStyle={{
             backgroundColor: 'transparent',
             justifyContent: 'flex-end',
@@ -73,16 +73,9 @@ class ControlPanel extends React.Component {
           }}
         >
           <Button
-            title='Filtrar por ubicación'
-            type='outline'
+            title="Filtrar por ubicación"
+            type="outline"
             onPress={() => RootNavigation.navigate('UbicacionPage')}
-            buttonStyle={{ width: '100%', marginTop: 10 }}
-            titleStyle={{ color: naranjaQueDeOficios }}
-          />
-          <Button
-            title='Filtrar por recomendaciones'
-            type='outline'
-            onPress={() => RootNavigation.navigate('FiltroRecomendados')}
             buttonStyle={{ width: '100%', marginTop: 10 }}
             titleStyle={{ color: naranjaQueDeOficios }}
           />

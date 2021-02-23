@@ -75,7 +75,7 @@ export default function ProfilePage({ navigation }) {
       if (Platform.OS !== 'web') {
         const {
           status,
-        } = await ImagePicker.requestCameraRollPermissionsAsync();
+        } = await ImagePicker.requestMediaLibraryPermissionsAsync();
         if (status !== 'granted') {
           alert(
             'Perdón, necesitamos tu permiso para que puedas subir una foto!'
@@ -84,51 +84,6 @@ export default function ProfilePage({ navigation }) {
       }
     })();
   }, []);
-
-  const pickImage = async () => {
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
-      allowsEditing: true,
-      aspect: [4, 3],
-      quality: 0.5,
-    });
-
-    if (!result.cancelled) {
-      user
-        .updateProfile({
-          photoURL: result.uri,
-        })
-        .then(
-          function () {
-            var photoURL = user.photoURL;
-            Updates.reloadAsync();
-          },
-          function (error) {
-            alert(
-              'Hubo un error al subir su foto, compruebe el formato de la misma y vuelva a intentarlo.'
-            );
-          }
-        );
-    }
-  };
-
-  function updateImage(newImage) {
-    let dbRef = firebase
-      .database()
-      .ref('anuncios/')
-      .orderByChild('id')
-      .equalTo(id);
-    dbRef
-      .set({
-        image: newImage,
-      })
-      .then(function () {
-        error == true ? console.log(error) : console.log('success!');
-      })
-      .finally(function () {
-        Updates.reloadAsync();
-      });
-  }
 
   const [visible, setVisible] = useState(false);
   const toggleOverlay = () => {
@@ -172,25 +127,26 @@ export default function ProfilePage({ navigation }) {
       <Image
         source={require('../assets/gradients/20x20.png')}
         style={{
-          flex: 1,
-          position: 'absolute',
-          resizeMode: 'cover',
-          width: '100%',
-          height: '5%',
-        }}
-      />
-      {firebase.auth().currentUser ? (
-        <SafeAreaView style={{ flex: 1 }}>
-          <Image
-            source={require('../assets/gradients/20x20.png')}
-            style={{
+          ...Platform.select({
+            android: {
+              flex: 1,
+              position: 'absolute',
+              resizeMode: 'cover',
+              width: '100%',
+              height: '5%',
+            },
+            ios: {
               flex: 1,
               position: 'absolute',
               resizeMode: 'cover',
               width: '100%',
               height: '3%',
-            }}
-          />
+            },
+          }),
+        }}
+      />
+      {firebase.auth().currentUser ? (
+        <SafeAreaView style={{ flex: 1 }}>
           <View
             style={{
               flex: 1,
@@ -226,7 +182,9 @@ export default function ProfilePage({ navigation }) {
               )}
             </Overlay>
             {user.photoURL ? (
-              <TouchableOpacity onPress={pickImage}>
+              <TouchableOpacity
+                onPress={() => navigation.navigate('CambiarFotoPerfil')}
+              >
                 <Image
                   source={{ uri: user.photoURL }}
                   style={{
@@ -237,7 +195,9 @@ export default function ProfilePage({ navigation }) {
                 />
               </TouchableOpacity>
             ) : (
-              <TouchableOpacity onPress={pickImage}>
+              <TouchableOpacity
+                onPress={() => navigation.navigate('CambiarFotoPerfil')}
+              >
                 <Image
                   source={require('../assets/icon.png')}
                   style={{
@@ -335,7 +295,7 @@ export default function ProfilePage({ navigation }) {
               }}
             >
               <Button
-                title="Anunciarte"
+                title="¡Anúnciate!"
                 disabled
                 onPress={() => navigation.navigate('AnunciatePage')}
                 buttonStyle={{
@@ -344,6 +304,9 @@ export default function ProfilePage({ navigation }) {
                   borderRadius: 5,
                   height: 60,
                   width: 120,
+                }}
+                titleStyle={{
+                  fontSize: 18,
                 }}
               />
             </View>
@@ -358,13 +321,16 @@ export default function ProfilePage({ navigation }) {
               }}
             >
               <Button
-                title="Anunciarte"
+                title="¡Anúnciate!"
                 onPress={() => navigation.navigate('AnunciatePage')}
                 buttonStyle={{
                   backgroundColor: '#fd5d13',
                   borderRadius: 5,
                   height: 60,
                   width: 120,
+                }}
+                titleStyle={{
+                  fontSize: 18,
                 }}
               />
             </View>
@@ -378,50 +344,120 @@ export default function ProfilePage({ navigation }) {
             }}
           >
             <TouchableOpacity onPress={() => navigation.navigate('Anuncios')}>
-              <Text style={{ color: '#000000', fontSize: 20, margin: 15 }}>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  marginTop: '7%',
+                }}
+              >
                 <MaterialCommunityIcons
                   name="bullhorn"
                   color={'#fd5d13'}
                   size={20}
-                />{' '}
-                Mis Anuncios
-              </Text>
+                  style={{
+                    marginTop: '3.5%',
+                    marginLeft: '4%',
+                  }}
+                />
+                <Text
+                  style={{
+                    color: '#000000',
+                    fontSize: 20,
+                    marginTop: '3%',
+                    marginLeft: '1%',
+                  }}
+                >
+                  Mis Anuncios
+                </Text>
+              </View>
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() => navigation.navigate('MessagesScreen')}
             >
-              <Text style={{ color: '#000000', fontSize: 20, margin: 15 }}>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  marginTop: '2%',
+                }}
+              >
                 <MaterialCommunityIcons
                   name="comment-text"
                   color={'#fd5d13'}
                   size={20}
-                />{' '}
-                Mensajes
-              </Text>
+                  style={{
+                    marginTop: '3.5%',
+                    marginLeft: '4%',
+                  }}
+                />
+                <Text
+                  style={{
+                    color: '#000000',
+                    fontSize: 20,
+                    marginTop: '3%',
+                    marginLeft: '1%',
+                  }}
+                >
+                  Mensajes
+                </Text>
+              </View>
             </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => navigation.navigate('MisFavoritosScreen')}
-            >
-              <Text style={{ color: '#000000', fontSize: 20, margin: 15 }}>
+            <TouchableOpacity onPress={() => navigation.navigate('ShopPage')}>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  marginTop: '2%',
+                }}
+              >
                 <MaterialCommunityIcons
-                  name="book-open"
+                  name="shopping"
                   color={'#fd5d13'}
                   size={20}
-                />{' '}
-                Favoritos
-              </Text>
+                  style={{
+                    marginTop: '3.5%',
+                    marginLeft: '4%',
+                  }}
+                />
+                <Text
+                  style={{
+                    color: '#000000',
+                    fontSize: 20,
+                    marginTop: '3%',
+                    marginLeft: '1%',
+                  }}
+                >
+                  Mis Compras
+                </Text>
+              </View>
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() => navigation.navigate('RecomendacionesRenderizadas')}
             >
-              <Text style={{ color: '#000000', fontSize: 20, margin: 15 }}>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  marginTop: '2%',
+                }}
+              >
                 <MaterialCommunityIcons
                   name="account-group"
                   color={'#fd5d13'}
                   size={20}
-                />{' '}
-                Consultas
-              </Text>
+                  style={{
+                    marginTop: '3.5%',
+                    marginLeft: '4%',
+                  }}
+                />
+                <Text
+                  style={{
+                    color: '#000000',
+                    fontSize: 20,
+                    marginTop: '3%',
+                    marginLeft: '1%',
+                  }}
+                >
+                  Consultas
+                </Text>
+              </View>
             </TouchableOpacity>
           </View>
           <View

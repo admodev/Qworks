@@ -18,17 +18,20 @@ export default function CambiarNombreScreen({ navigation }) {
       .updateProfile({
         displayName: newName,
       })
-      .then(
-        function () {
-          var displayName = user.displayName;
-          Updates.reloadAsync();
-        },
-        function (error) {
-          alert(
-            'Hubo un error al cambiar su nombre, por favor intentelo de nuevo...'
-          );
-        }
-      );
+      .then(function () {
+        var displayName = user.displayName;
+      })
+      .catch((error) => {
+        alert(
+          'Hubo un error al cambiar su nombre, por favor intentelo de nuevo...'
+        );
+      })
+      .finally(() => {
+        user.reload();
+        navigation.navigate('ProfilePage', function () {
+          user.reload();
+        });
+      });
   }
 
   return (
@@ -83,7 +86,7 @@ export default function CambiarNombreScreen({ navigation }) {
           }}
         >
           <MaterialCommunityIcons
-            name='arrow-left'
+            name="arrow-left"
             color={naranjaQueDeOficios}
             size={32}
             style={{ backgroundColor: 'transparent' }}
@@ -91,7 +94,7 @@ export default function CambiarNombreScreen({ navigation }) {
         </TouchableOpacity>
       </View>
       <Input
-        placeholder='Escribe tu nombre...'
+        placeholder="Escribe tu nombre..."
         onChangeText={(newName) => setNewName(newName)}
         value={newName}
         inputContainerStyle={{
@@ -102,7 +105,7 @@ export default function CambiarNombreScreen({ navigation }) {
         }}
       />
       <Button
-        title='Cambiar Nombre'
+        title="Cambiar Nombre"
         onPress={() => updateName(newName)}
         buttonStyle={{
           backgroundColor: naranjaQueDeOficios,
