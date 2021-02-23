@@ -40,6 +40,7 @@ export default function AnuncioSeleccionado({ route, navigation }) {
   const naranjaQueDeOficios = '#fd5d13';
   const favoritosBackground = 'transparent';
   const [favoritosTint, setFavoritosTint] = useState(false);
+  const [foundUser, setFoundUser] = useState('');
   const [prevCount, setCount] = useState(recomendacionesTotales);
   let image,
     nombre,
@@ -235,16 +236,18 @@ export default function AnuncioSeleccionado({ route, navigation }) {
     );
   }
 
-  function handleRecommend(recomendacionesTotales) {
-    setCount((prevCount) => prevCount + 1);
-    firebase
+  function handleRecommend() {
+    var newRecomendacionesTotales = setCount((prevCount) => prevCount + 1);
+    var userFoundReference = firebase
       .database()
       .ref('anuncios/')
       .orderByChild('id')
       .equalTo(id)
-      .on('value', (snapshot) => {
-        const data = snapshot.val();
-        recomendacionesTotales = prevCount;
+      .once('value')
+      .then(function (snapshot) {
+        snapshot.forEach((child) => {
+          alert(JSON.stringify(child.val().recomendacionesTotales));
+        });
       });
   }
 
@@ -483,22 +486,16 @@ export default function AnuncioSeleccionado({ route, navigation }) {
               size={22}
               style={{ marginLeft: '3%' }}
             />
-            <TouchableOpacity
-              onPress={() =>
-                RootNavigation.navigate('RecomendacionesRenderizadas')
-              }
+            <Text
+              style={{
+                color: '#8DB600',
+                textAlign: 'center',
+                fontSize: 14,
+                marginLeft: '2%',
+              }}
             >
-              <Text
-                style={{
-                  color: '#8DB600',
-                  textAlign: 'center',
-                  fontSize: 14,
-                  marginLeft: '2%',
-                }}
-              >
-                {recomendacionesTotales}
-              </Text>
-            </TouchableOpacity>
+              {recomendacionesTotales}
+            </Text>
           </View>
           <Text
             style={{
@@ -973,7 +970,7 @@ export default function AnuncioSeleccionado({ route, navigation }) {
           ) : (
             <Button
               title="Recomendar"
-              onPress={() => handleRecommend(recomendacionesTotales)}
+              onPress={() => handleRecommend()}
               titleStyle={{ fontSize: 12, marginBottom: -20 }}
               buttonStyle={{
                 width: 120,
