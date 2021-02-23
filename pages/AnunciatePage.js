@@ -179,8 +179,7 @@ const AnunciatePage = ({ navigation }) => {
   let anunciosIdsCount = [];
   let idRefAnuncios = firebase
     .database()
-    .ref('anuncios/')
-    .orderByKey()
+    .ref('usuarios/' + firebase.auth().currentUser.uid + '/anuncios/')
     .on('value', (snap) => {
       snap.forEach((child) => {
         anunciosIdsCount.push({
@@ -339,16 +338,6 @@ const AnunciatePage = ({ navigation }) => {
     longitud,
     photoJSONValue
   ) {
-    /* if (!anunciosCountResult) {
-      anunciosCountResult = 0;
-    } else if (anunciosCountResult === 1) {
-      anunciosCountResult = 1;
-    } else if (anunciosCountResult === 2) {
-      anunciosCountResult === 2;
-    } else if (anunciosCountResult === 3) {
-      anunciosCountResult = 3;
-    } */
-
     if (!cuitCuil.trim()) {
       alert('Por favor ingrese su cuit/cuil');
       return;
@@ -358,13 +347,22 @@ const AnunciatePage = ({ navigation }) => {
     } else if (terminos == false) {
       alert('Tiene que aceptar los terminos para continuar');
     } else {
+      if (!anunciosCountResult) {
+        anunciosCountResult = 0;
+      } else if (anunciosCountResult === 1) {
+        anunciosCountResult = 1;
+      } else if (anunciosCountResult === 2) {
+        anunciosCountResult === 2;
+      } else if (anunciosCountResult === 3) {
+        anunciosCountResult = 3;
+      }
       let userRef = user.uid;
       let anunciosRef = firebase
         .database()
         .ref(
-          'anuncios/' +
+          'usuarios/' +
             firebase.auth().currentUser.uid +
-            '-' +
+            '/anuncios/' +
             anunciosCountResult
         )
         .set({

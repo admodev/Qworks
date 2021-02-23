@@ -32,12 +32,16 @@ import * as Updates from 'expo-updates';
 import * as Notifications from 'expo-notifications';
 import Dialog from 'react-native-dialog';
 
-var itm = [];
+var anuncioUnoItm = [];
+var anuncioDosItm = [];
+var anuncioTresItm = [];
 
 const naranjaQueDeOficios = '#fd5d13';
 
 const AnunciosPage = ({ route, navigation }) => {
-  const [items, setItems] = useState([]);
+  const [anuncioUnoArr, setAnuncioUnoArr] = useState([]);
+  const [anuncioDosArr, setAnuncioDosArr] = useState([]);
+  const [anuncioTresArr, setAnuncioTresArr] = useState([]);
   const [visible, setVisible] = useState(false);
   let user = firebase.auth().currentUser;
   let id = user.uid;
@@ -57,15 +61,15 @@ const AnunciosPage = ({ route, navigation }) => {
   };
 
   useEffect(() => {
-    firebase
+    let anuncioUno = firebase
       .database()
-      .ref('anuncios/')
-      .orderByChild('id')
-      .equalTo(id)
+      .ref('usuarios/' + firebase.auth().currentUser.uid + '/anuncios/')
+      .orderByChild('anuncioId')
+      .equalTo(0)
       .on('value', (snap) => {
-        let items = [];
+        let anuncioUnoArr = [];
         snap.forEach((child) => {
-          items.push({
+          anuncioUnoArr.push({
             image: child.val().image,
             nombre: child.val().nombre,
             apellido: child.val().apellido,
@@ -77,9 +81,56 @@ const AnunciosPage = ({ route, navigation }) => {
             provincia: child.val().provincia,
           });
         });
-        itm = items;
-        setItems(items);
-        console.log(itm);
+        anuncioUnoItm = anuncioUnoArr;
+        setAnuncioUnoArr(anuncioUnoArr);
+      });
+
+    let anuncioDos = firebase
+      .database()
+      .ref('usuarios/' + firebase.auth().currentUser.uid + '/anuncios/')
+      .orderByChild('anuncioId')
+      .equalTo(1)
+      .on('value', (snap) => {
+        let anuncioDosArr = [];
+        snap.forEach((child) => {
+          anuncioDosArr.push({
+            image: child.val().image,
+            nombre: child.val().nombre,
+            apellido: child.val().apellido,
+            actividad: child.val().actividad,
+            emailPersonal: child.val().emailPersonal,
+            idAnuncio: child.val().id,
+            anuncioId: child.val().anuncioId,
+            localidad: child.val().localidad,
+            provincia: child.val().provincia,
+          });
+        });
+        anuncioDosItm = anuncioDosArr;
+        setAnuncioDosArr(anuncioDosArr);
+      });
+
+    let anuncioTres = firebase
+      .database()
+      .ref('usuarios/' + firebase.auth().currentUser.uid + '/anuncios/')
+      .orderByChild('anuncioId')
+      .equalTo(2)
+      .on('value', (snap) => {
+        let anuncioTresArr = [];
+        snap.forEach((child) => {
+          anuncioTresArr.push({
+            image: child.val().image,
+            nombre: child.val().nombre,
+            apellido: child.val().apellido,
+            actividad: child.val().actividad,
+            emailPersonal: child.val().emailPersonal,
+            idAnuncio: child.val().id,
+            anuncioId: child.val().anuncioId,
+            localidad: child.val().localidad,
+            provincia: child.val().provincia,
+          });
+        });
+        anuncioTresItm = anuncioTresArr;
+        setAnuncioTresArr(anuncioTresArr);
       });
   }, []);
 
@@ -122,9 +173,12 @@ const AnunciosPage = ({ route, navigation }) => {
     try {
       firebase
         .database()
-        .ref('anuncios/')
-        .orderByKey()
-        .equalTo(firebase.auth().currentUser.uid + '-' + anuncioId)
+        .ref(
+          'usuarios/' +
+            firebase.auth().currentUser.uid +
+            '/anuncios/' +
+            anuncioId
+        )
         .once('value')
         .then(function (snapshot) {
           var promises = [];
@@ -234,7 +288,15 @@ const AnunciosPage = ({ route, navigation }) => {
             }),
           }}
         >
-          {items.sort().map((u, index) => {
+          {anuncioUnoArr.map((u, index) => {
+            // solucion anunciosssss
+            /* console.log(
+              items.findIndex(function () {
+                if (u.anuncioId == 2) {
+                  return true;
+                }
+              })
+            ); */
             let storage = firebase.storage();
             let storageRef = storage.ref();
             let defaultImageRef = storageRef
@@ -527,89 +589,874 @@ const AnunciosPage = ({ route, navigation }) => {
                     </Text>
                   </TouchableOpacity>
                 </View>
+                <View>
+                  <Image
+                    source={require('../assets/gradients/20x20.png')}
+                    style={{
+                      flex: 1,
+                      position: 'absolute',
+                      resizeMode: 'cover',
+                      width: '100%',
+                      height: '90%',
+                    }}
+                  />
+                  <TouchableOpacity onPress={() => eliminarCuenta()}>
+                    <Text
+                      style={{
+                        ...Platform.select({
+                          android: {
+                            color: '#fff',
+                            marginLeft: 'auto',
+                            marginRight: 'auto',
+                            marginTop: 15,
+                            marginRight: 'auto',
+                            marginLeft: 'auto',
+                            marginBottom: 20,
+                            fontSize: 20,
+                          },
+                          ios: {
+                            color: '#fff',
+                            marginTop: 15,
+                            marginRight: 'auto',
+                            marginLeft: 'auto',
+                            marginBottom: 20,
+                            fontSize: 20,
+                          },
+                        }),
+                      }}
+                    >
+                      <MaterialCommunityIcons
+                        name="account-off"
+                        color={'#fd5d13'}
+                        size={24}
+                      />{' '}
+                      Eliminar Cuenta
+                    </Text>
+                  </TouchableOpacity>
+                  <Overlay
+                    isVisible={eliminarCuentaIsVisible}
+                    onBackdropPress={toggleEliminarCuenta}
+                  >
+                    <Text
+                      style={{
+                        fontSize: 14,
+                        marginTop: '5%',
+                        textAlign: 'center',
+                      }}
+                    >
+                      Todos tus datos se perderan ¿Deseas continuar?
+                    </Text>
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
+                    >
+                      <Button
+                        title="No"
+                        buttonStyle={{
+                          width: 80,
+                          height: 40,
+                          marginTop: '15%',
+                          marginRight: '5%',
+                        }}
+                      />
+                      <Button
+                        title="Si"
+                        buttonStyle={{
+                          width: 80,
+                          height: 40,
+                          marginTop: '15%',
+                          marginLeft: '5%',
+                        }}
+                      />
+                    </View>
+                  </Overlay>
+                </View>
+              </View>
+            );
+          })}
+          {anuncioDosArr.map((u, index) => {
+            // solucion anunciosssss
+            /* console.log(
+              items.findIndex(function () {
+                if (u.anuncioId == 2) {
+                  return true;
+                }
+              })
+            ); */
+            let storage = firebase.storage();
+            let storageRef = storage.ref();
+            let defaultImageRef = storageRef
+              .child('defaultUserImage/icon.png')
+              .toString();
+            let userProfilePic = storageRef
+              .child('userProfilePics/')
+              .child(u.idAnuncio).child;
+            console.log(firebase.auth().currentUser.uid + '-' + u.anuncioId);
+            return (
+              <View
+                key={index}
+                style={{
+                  ...Platform.select({
+                    android: {
+                      margin: 20,
+                      backgroundColor: 'transparent',
+                    },
+                    ios: {
+                      margin: 20,
+                      marginTop: '8%',
+                      backgroundColor: 'transparent',
+                    },
+                  }),
+                }}
+              >
+                <Image
+                  source={require('../assets/patron.jpg')}
+                  style={{
+                    flex: 1,
+                    position: 'absolute',
+                    resizeMode: 'cover',
+                    width: '100%',
+                    height: '100%',
+                    borderRadius: 10,
+                  }}
+                />
+                <Image
+                  source={require('../assets/gradients/20x20.png')}
+                  style={{
+                    flex: 1,
+                    position: 'absolute',
+                    resizeMode: 'cover',
+                    width: '100%',
+                    height: '100%',
+                    opacity: 0.9,
+                    borderRadius: 10,
+                  }}
+                />
+                {!image ? (
+                  <View
+                    style={{ alignItems: 'center', justifyContent: 'center' }}
+                  >
+                    <Card.Image
+                      source={require('../assets/icon.png')}
+                      style={{
+                        ...Platform.select({
+                          android: {
+                            borderRadius: 25,
+                            marginTop: '8%',
+                            marginBottom: '10%',
+                            width: 140,
+                            height: 120,
+                          },
+                          ios: {
+                            borderRadius: 25,
+                            marginTop: '8%',
+                            marginBottom: '10%',
+                            width: 120,
+                            height: 90,
+                          },
+                        }),
+                      }}
+                    />
+                  </View>
+                ) : (
+                  <Card.Image
+                    source={{ uri: image }}
+                    style={{
+                      ...Platform.select({
+                        android: {
+                          borderRadius: 100,
+                          marginTop: 10,
+                          marginBottom: 20,
+                          marginLeft: 60,
+                          marginRight: 60,
+                        },
+                        ios: {
+                          borderRadius: 100,
+                          marginTop: 10,
+                          marginBottom: 20,
+                          marginLeft: 60,
+                          marginRight: 60,
+                        },
+                      }),
+                    }}
+                  />
+                )}
+                <View style={{ margin: '3%' }}>
+                  <Text
+                    style={{
+                      color: '#ffffff',
+                      textAlign: 'center',
+                      fontSize: 30,
+                      fontWeight: 'bold',
+                    }}
+                  >
+                    {u.nombre}
+                  </Text>
+                </View>
+                <View
+                  style={{
+                    marginTop: '-2%',
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                >
+                  <Text
+                    style={{
+                      color: '#ffffff',
+                      textAlign: 'center',
+                      fontSize: 24,
+                    }}
+                  >
+                    {u.actividad} -
+                  </Text>
+                  <MaterialCommunityIcons
+                    name="account-group"
+                    color={naranjaQueDeOficios}
+                    size={22}
+                    style={{ marginLeft: '3%' }}
+                  />
+                  <Text
+                    style={{
+                      color: '#8DB600',
+                      textAlign: 'center',
+                      fontSize: 14,
+                      marginLeft: '2%',
+                    }}
+                  >
+                    100
+                  </Text>
+                </View>
+                <View style={{ marginTop: '5%' }}>
+                  <Text
+                    style={{
+                      color: '#ffffff',
+                      textAlign: 'center',
+                      fontSize: 16,
+                    }}
+                  >
+                    {u.localidad} - {u.provincia}
+                  </Text>
+                </View>
+                <View
+                  style={{
+                    flex: 1,
+                    alignItems: 'flex-start',
+                    justifyContent: 'flex-start',
+                    marginLeft: '10%',
+                  }}
+                >
+                  <TouchableOpacity onPress={() => shareContent()}>
+                    <Text
+                      style={{
+                        ...Platform.select({
+                          android: {
+                            color: '#fff',
+                            marginLeft: 'auto',
+                            marginRight: 'auto',
+                            marginTop: 15,
+                            marginRight: 'auto',
+                            marginLeft: 'auto',
+                            fontSize: 20,
+                          },
+                          ios: {
+                            color: '#fff',
+                            marginTop: 15,
+                            marginRight: 'auto',
+                            marginLeft: 'auto',
+                            fontSize: 20,
+                          },
+                        }),
+                      }}
+                    >
+                      <MaterialCommunityIcons
+                        name="share-variant"
+                        color={'#fd5d13'}
+                        size={24}
+                      />{' '}
+                      - Compartir
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+                <View
+                  style={{
+                    flex: 1,
+                    alignItems: 'flex-start',
+                    justifyContent: 'flex-start',
+                    marginLeft: '10%',
+                  }}
+                >
+                  <TouchableOpacity
+                    onPress={() =>
+                      RootNavigation.navigate('EditarAnuncioScreen')
+                    }
+                  >
+                    <Text
+                      style={{
+                        ...Platform.select({
+                          android: {
+                            color: '#fff',
+                            marginLeft: 'auto',
+                            marginRight: 'auto',
+                            marginTop: 15,
+                            marginRight: 'auto',
+                            marginLeft: 'auto',
+                            fontSize: 20,
+                          },
+                          ios: {
+                            color: '#fff',
+                            marginTop: 15,
+                            marginRight: 'auto',
+                            marginLeft: 'auto',
+                            fontSize: 20,
+                          },
+                        }),
+                      }}
+                    >
+                      <MaterialCommunityIcons
+                        name="lead-pencil"
+                        color={'#fd5d13'}
+                        size={24}
+                      />{' '}
+                      - Editar Anuncio
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+                <View
+                  style={{
+                    flex: 1,
+                    alignItems: 'flex-start',
+                    justifyContent: 'flex-start',
+                    marginLeft: '10%',
+                  }}
+                >
+                  <Dialog.Container visible={visible}>
+                    <Dialog.Title>Eliminar Anuncio</Dialog.Title>
+                    <Dialog.Description>
+                      Todos tus datos se perderán ¿Deseas continuar?
+                    </Dialog.Description>
+                    <Dialog.Button label="No" onPress={handleCancel} />
+                    <Dialog.Button
+                      label="Si"
+                      onPress={() => eliminarAnuncio(u.anuncioId)}
+                    />
+                  </Dialog.Container>
+                  <TouchableOpacity onPress={showDialog}>
+                    <Text
+                      style={{
+                        ...Platform.select({
+                          android: {
+                            color: '#fff',
+                            marginLeft: 'auto',
+                            marginRight: 'auto',
+                            marginTop: 15,
+                            marginRight: 'auto',
+                            marginLeft: 'auto',
+                            fontSize: 20,
+                            marginBottom: '5%',
+                          },
+                          ios: {
+                            color: '#fff',
+                            marginTop: 15,
+                            marginRight: 'auto',
+                            marginLeft: 'auto',
+                            fontSize: 20,
+                            marginBottom: '5%',
+                          },
+                        }),
+                      }}
+                    >
+                      <MaterialCommunityIcons
+                        name="eraser"
+                        color={'#fd5d13'}
+                        size={24}
+                      />{' '}
+                      - Eliminar Anuncio
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+                <View>
+                  <Image
+                    source={require('../assets/gradients/20x20.png')}
+                    style={{
+                      flex: 1,
+                      position: 'absolute',
+                      resizeMode: 'cover',
+                      width: '100%',
+                      height: '90%',
+                    }}
+                  />
+                  <TouchableOpacity onPress={() => eliminarCuenta()}>
+                    <Text
+                      style={{
+                        ...Platform.select({
+                          android: {
+                            color: '#fff',
+                            marginLeft: 'auto',
+                            marginRight: 'auto',
+                            marginTop: 15,
+                            marginRight: 'auto',
+                            marginLeft: 'auto',
+                            marginBottom: 20,
+                            fontSize: 20,
+                          },
+                          ios: {
+                            color: '#fff',
+                            marginTop: 15,
+                            marginRight: 'auto',
+                            marginLeft: 'auto',
+                            marginBottom: 20,
+                            fontSize: 20,
+                          },
+                        }),
+                      }}
+                    >
+                      <MaterialCommunityIcons
+                        name="account-off"
+                        color={'#fd5d13'}
+                        size={24}
+                      />{' '}
+                      Eliminar Cuenta
+                    </Text>
+                  </TouchableOpacity>
+                  <Overlay
+                    isVisible={eliminarCuentaIsVisible}
+                    onBackdropPress={toggleEliminarCuenta}
+                  >
+                    <Text
+                      style={{
+                        fontSize: 14,
+                        marginTop: '5%',
+                        textAlign: 'center',
+                      }}
+                    >
+                      Todos tus datos se perderan ¿Deseas continuar?
+                    </Text>
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
+                    >
+                      <Button
+                        title="No"
+                        buttonStyle={{
+                          width: 80,
+                          height: 40,
+                          marginTop: '15%',
+                          marginRight: '5%',
+                        }}
+                      />
+                      <Button
+                        title="Si"
+                        buttonStyle={{
+                          width: 80,
+                          height: 40,
+                          marginTop: '15%',
+                          marginLeft: '5%',
+                        }}
+                      />
+                    </View>
+                  </Overlay>
+                </View>
+              </View>
+            );
+          })}
+          {anuncioTresArr.map((u, index) => {
+            // solucion anunciosssss
+            /* console.log(
+              items.findIndex(function () {
+                if (u.anuncioId == 2) {
+                  return true;
+                }
+              })
+            ); */
+            let storage = firebase.storage();
+            let storageRef = storage.ref();
+            let defaultImageRef = storageRef
+              .child('defaultUserImage/icon.png')
+              .toString();
+            let userProfilePic = storageRef
+              .child('userProfilePics/')
+              .child(u.idAnuncio).child;
+            console.log(firebase.auth().currentUser.uid + '-' + u.anuncioId);
+            return (
+              <View
+                key={index}
+                style={{
+                  ...Platform.select({
+                    android: {
+                      margin: 20,
+                      backgroundColor: 'transparent',
+                    },
+                    ios: {
+                      margin: 20,
+                      marginTop: '8%',
+                      backgroundColor: 'transparent',
+                    },
+                  }),
+                }}
+              >
+                <Image
+                  source={require('../assets/patron.jpg')}
+                  style={{
+                    flex: 1,
+                    position: 'absolute',
+                    resizeMode: 'cover',
+                    width: '100%',
+                    height: '100%',
+                    borderRadius: 10,
+                  }}
+                />
+                <Image
+                  source={require('../assets/gradients/20x20.png')}
+                  style={{
+                    flex: 1,
+                    position: 'absolute',
+                    resizeMode: 'cover',
+                    width: '100%',
+                    height: '100%',
+                    opacity: 0.9,
+                    borderRadius: 10,
+                  }}
+                />
+                {!image ? (
+                  <View
+                    style={{ alignItems: 'center', justifyContent: 'center' }}
+                  >
+                    <Card.Image
+                      source={require('../assets/icon.png')}
+                      style={{
+                        ...Platform.select({
+                          android: {
+                            borderRadius: 25,
+                            marginTop: '8%',
+                            marginBottom: '10%',
+                            width: 140,
+                            height: 120,
+                          },
+                          ios: {
+                            borderRadius: 25,
+                            marginTop: '8%',
+                            marginBottom: '10%',
+                            width: 120,
+                            height: 90,
+                          },
+                        }),
+                      }}
+                    />
+                  </View>
+                ) : (
+                  <Card.Image
+                    source={{ uri: image }}
+                    style={{
+                      ...Platform.select({
+                        android: {
+                          borderRadius: 100,
+                          marginTop: 10,
+                          marginBottom: 20,
+                          marginLeft: 60,
+                          marginRight: 60,
+                        },
+                        ios: {
+                          borderRadius: 100,
+                          marginTop: 10,
+                          marginBottom: 20,
+                          marginLeft: 60,
+                          marginRight: 60,
+                        },
+                      }),
+                    }}
+                  />
+                )}
+                <View style={{ margin: '3%' }}>
+                  <Text
+                    style={{
+                      color: '#ffffff',
+                      textAlign: 'center',
+                      fontSize: 30,
+                      fontWeight: 'bold',
+                    }}
+                  >
+                    {u.nombre}
+                  </Text>
+                </View>
+                <View
+                  style={{
+                    marginTop: '-2%',
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                >
+                  <Text
+                    style={{
+                      color: '#ffffff',
+                      textAlign: 'center',
+                      fontSize: 24,
+                    }}
+                  >
+                    {u.actividad} -
+                  </Text>
+                  <MaterialCommunityIcons
+                    name="account-group"
+                    color={naranjaQueDeOficios}
+                    size={22}
+                    style={{ marginLeft: '3%' }}
+                  />
+                  <Text
+                    style={{
+                      color: '#8DB600',
+                      textAlign: 'center',
+                      fontSize: 14,
+                      marginLeft: '2%',
+                    }}
+                  >
+                    100
+                  </Text>
+                </View>
+                <View style={{ marginTop: '5%' }}>
+                  <Text
+                    style={{
+                      color: '#ffffff',
+                      textAlign: 'center',
+                      fontSize: 16,
+                    }}
+                  >
+                    {u.localidad} - {u.provincia}
+                  </Text>
+                </View>
+                <View
+                  style={{
+                    flex: 1,
+                    alignItems: 'flex-start',
+                    justifyContent: 'flex-start',
+                    marginLeft: '10%',
+                  }}
+                >
+                  <TouchableOpacity onPress={() => shareContent()}>
+                    <Text
+                      style={{
+                        ...Platform.select({
+                          android: {
+                            color: '#fff',
+                            marginLeft: 'auto',
+                            marginRight: 'auto',
+                            marginTop: 15,
+                            marginRight: 'auto',
+                            marginLeft: 'auto',
+                            fontSize: 20,
+                          },
+                          ios: {
+                            color: '#fff',
+                            marginTop: 15,
+                            marginRight: 'auto',
+                            marginLeft: 'auto',
+                            fontSize: 20,
+                          },
+                        }),
+                      }}
+                    >
+                      <MaterialCommunityIcons
+                        name="share-variant"
+                        color={'#fd5d13'}
+                        size={24}
+                      />{' '}
+                      - Compartir
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+                <View
+                  style={{
+                    flex: 1,
+                    alignItems: 'flex-start',
+                    justifyContent: 'flex-start',
+                    marginLeft: '10%',
+                  }}
+                >
+                  <TouchableOpacity
+                    onPress={() =>
+                      RootNavigation.navigate('EditarAnuncioScreen')
+                    }
+                  >
+                    <Text
+                      style={{
+                        ...Platform.select({
+                          android: {
+                            color: '#fff',
+                            marginLeft: 'auto',
+                            marginRight: 'auto',
+                            marginTop: 15,
+                            marginRight: 'auto',
+                            marginLeft: 'auto',
+                            fontSize: 20,
+                          },
+                          ios: {
+                            color: '#fff',
+                            marginTop: 15,
+                            marginRight: 'auto',
+                            marginLeft: 'auto',
+                            fontSize: 20,
+                          },
+                        }),
+                      }}
+                    >
+                      <MaterialCommunityIcons
+                        name="lead-pencil"
+                        color={'#fd5d13'}
+                        size={24}
+                      />{' '}
+                      - Editar Anuncio
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+                <View
+                  style={{
+                    flex: 1,
+                    alignItems: 'flex-start',
+                    justifyContent: 'flex-start',
+                    marginLeft: '10%',
+                  }}
+                >
+                  <Dialog.Container visible={visible}>
+                    <Dialog.Title>Eliminar Anuncio</Dialog.Title>
+                    <Dialog.Description>
+                      Todos tus datos se perderán ¿Deseas continuar?
+                    </Dialog.Description>
+                    <Dialog.Button label="No" onPress={handleCancel} />
+                    <Dialog.Button
+                      label="Si"
+                      onPress={() => eliminarAnuncio(u.anuncioId)}
+                    />
+                  </Dialog.Container>
+                  <TouchableOpacity onPress={showDialog}>
+                    <Text
+                      style={{
+                        ...Platform.select({
+                          android: {
+                            color: '#fff',
+                            marginLeft: 'auto',
+                            marginRight: 'auto',
+                            marginTop: 15,
+                            marginRight: 'auto',
+                            marginLeft: 'auto',
+                            fontSize: 20,
+                            marginBottom: '5%',
+                          },
+                          ios: {
+                            color: '#fff',
+                            marginTop: 15,
+                            marginRight: 'auto',
+                            marginLeft: 'auto',
+                            fontSize: 20,
+                            marginBottom: '5%',
+                          },
+                        }),
+                      }}
+                    >
+                      <MaterialCommunityIcons
+                        name="eraser"
+                        color={'#fd5d13'}
+                        size={24}
+                      />{' '}
+                      - Eliminar Anuncio
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+                <View>
+                  <Image
+                    source={require('../assets/gradients/20x20.png')}
+                    style={{
+                      flex: 1,
+                      position: 'absolute',
+                      resizeMode: 'cover',
+                      width: '100%',
+                      height: '90%',
+                    }}
+                  />
+                  <TouchableOpacity onPress={() => eliminarCuenta()}>
+                    <Text
+                      style={{
+                        ...Platform.select({
+                          android: {
+                            color: '#fff',
+                            marginLeft: 'auto',
+                            marginRight: 'auto',
+                            marginTop: 15,
+                            marginRight: 'auto',
+                            marginLeft: 'auto',
+                            marginBottom: 20,
+                            fontSize: 20,
+                          },
+                          ios: {
+                            color: '#fff',
+                            marginTop: 15,
+                            marginRight: 'auto',
+                            marginLeft: 'auto',
+                            marginBottom: 20,
+                            fontSize: 20,
+                          },
+                        }),
+                      }}
+                    >
+                      <MaterialCommunityIcons
+                        name="account-off"
+                        color={'#fd5d13'}
+                        size={24}
+                      />{' '}
+                      Eliminar Cuenta
+                    </Text>
+                  </TouchableOpacity>
+                  <Overlay
+                    isVisible={eliminarCuentaIsVisible}
+                    onBackdropPress={toggleEliminarCuenta}
+                  >
+                    <Text
+                      style={{
+                        fontSize: 14,
+                        marginTop: '5%',
+                        textAlign: 'center',
+                      }}
+                    >
+                      Todos tus datos se perderan ¿Deseas continuar?
+                    </Text>
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
+                    >
+                      <Button
+                        title="No"
+                        buttonStyle={{
+                          width: 80,
+                          height: 40,
+                          marginTop: '15%',
+                          marginRight: '5%',
+                        }}
+                      />
+                      <Button
+                        title="Si"
+                        buttonStyle={{
+                          width: 80,
+                          height: 40,
+                          marginTop: '15%',
+                          marginLeft: '5%',
+                        }}
+                      />
+                    </View>
+                  </Overlay>
+                </View>
               </View>
             );
           })}
         </Card>
       </ScrollView>
-      <View>
-        <Image
-          source={require('../assets/gradients/20x20.png')}
-          style={{
-            flex: 1,
-            position: 'absolute',
-            resizeMode: 'cover',
-            width: '100%',
-          }}
-        />
-        <TouchableOpacity onPress={() => eliminarCuenta()}>
-          <Text
-            style={{
-              ...Platform.select({
-                android: {
-                  color: '#fff',
-                  marginLeft: 'auto',
-                  marginRight: 'auto',
-                  marginTop: 15,
-                  marginRight: 'auto',
-                  marginLeft: 'auto',
-                  marginBottom: 20,
-                  fontSize: 20,
-                },
-                ios: {
-                  color: '#fff',
-                  marginTop: 15,
-                  marginRight: 'auto',
-                  marginLeft: 'auto',
-                  marginBottom: 20,
-                  fontSize: 20,
-                },
-              }),
-            }}
-          >
-            <MaterialCommunityIcons
-              name="account-off"
-              color={'#fd5d13'}
-              size={24}
-            />{' '}
-            Eliminar Cuenta
-          </Text>
-        </TouchableOpacity>
-        <Overlay
-          isVisible={eliminarCuentaIsVisible}
-          onBackdropPress={toggleEliminarCuenta}
-        >
-          <Text style={{ fontSize: 14, marginTop: '5%', textAlign: 'center' }}>
-            Todos tus datos se perderan ¿Deseas continuar?
-          </Text>
-          <View
-            style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}
-          >
-            <Button
-              title="No"
-              buttonStyle={{
-                width: 80,
-                height: 40,
-                marginTop: '15%',
-                marginRight: '5%',
-              }}
-            />
-            <Button
-              title="Si"
-              buttonStyle={{
-                width: 80,
-                height: 40,
-                marginTop: '15%',
-                marginLeft: '5%',
-              }}
-            />
-          </View>
-        </Overlay>
-      </View>
     </SafeAreaView>
   );
 };

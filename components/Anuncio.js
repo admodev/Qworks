@@ -246,7 +246,7 @@ export default function AnuncioSeleccionado({ route, navigation }) {
       .once('value')
       .then(function (snapshot) {
         snapshot.forEach((child) => {
-          alert(JSON.stringify(child.val().recomendacionesTotales));
+          child.val().recomendacionesTotales++;
         });
       });
   }
