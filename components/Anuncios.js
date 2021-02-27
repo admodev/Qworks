@@ -22,6 +22,7 @@ import * as firebase from 'firebase';
 import 'firebase/firestore';
 import 'firebase/database';
 import 'firebase/auth';
+import 'firebase/storage';
 import * as RootNavigation from '../RootNavigation.js';
 import { StackActions } from '@react-navigation/native';
 import CardsUsuarios from './Cards';
@@ -40,6 +41,7 @@ const naranjaQueDeOficios = '#fd5d13';
 const AnunciosPage = ({ route, navigation }) => {
   const [anuncioArr, setAnuncioArr] = useState([]);
   const [visible, setVisible] = useState(false);
+  const [foto, setFoto] = useState(null);
   let user = firebase.auth().currentUser;
   let id = user.uid;
   let idAnuncio, anuncioId, image, nombre, apellido, actividad, emailPersonal;
@@ -56,6 +58,28 @@ const AnunciosPage = ({ route, navigation }) => {
   const toggleEliminarCuenta = () => {
     setEliminarCuentaIsVisible(!eliminarCuentaIsVisible);
   };
+
+  const fotoDePerfil = firebase
+    .storage()
+    .ref('profilePictures/')
+    .child(firebase.auth().currentUser.uid + 0);
+
+  fotoDePerfil
+    .getDownloadURL()
+    .then(function (url) {
+      var xhr = new XMLHttpRequest();
+      xhr.responseType = 'blob';
+      xhr.onload = function (event) {
+        var blob = xhr.response;
+      };
+      xhr.open('GET', url);
+      xhr.send();
+
+      setFoto(url);
+    })
+    .catch(function (error) {
+      console.log('FATAL ERROR', error.message);
+    });
 
   useEffect(() => {
     firebase
@@ -214,7 +238,7 @@ const AnunciosPage = ({ route, navigation }) => {
           return (
             <View key={index}>
               <RenderMisAnuncios
-                image={'https://picsum.photos/200/300'}
+                image={foto}
                 name={element.nombre}
                 actividad={element.actividad}
                 localidad={element.localidad}
