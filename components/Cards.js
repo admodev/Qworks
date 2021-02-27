@@ -47,50 +47,36 @@ class CardsUsuarios extends Component {
   componentDidMount() {
     firebase
       .database()
-      .ref()
-      .once('value', (snapshot) => {
-        let anunciosFound = [];
-        snapshot.forEach((childSnapshot) => {
-          anunciosFound.push(childSnapshot.key);
+      .ref('anuncios/')
+      .orderByKey()
+      .on('value', (snap) => {
+        let items = [];
+        snap.forEach((child) => {
+          items.push({
+            anuncioId: child.val().anuncioId,
+            nombre: child.val().nombre,
+            apellido: child.val().apellido,
+            actividad: child.val().actividad,
+            emailPersonal: child.val().emailPersonal,
+            idAnuncio: child.val().id,
+            contadorAnuncio: child.val().anuncioId,
+            localidad: child.val().localidad,
+            provincia: child.val().provincia,
+            palabraClaveUno: child.val().palabraClaveUno,
+            palabraClaveDos: child.val().palabraClaveDos,
+            palabraClaveTres: child.val().palabraClaveTres,
+            descripcionPersonal: child.val().descripcionPersonal,
+            recomendacionesTotales: child.val().recomendacionesTotales,
+          });
         });
-        this.setState({ anunciosFound: anunciosFound });
-        console.log('Y AHORA? Y AHORAAA????', this.state.anunciosFound);
+        itm = items;
+        this.setState({ items: items });
+        console.log(itm);
+        console.log('itemstate ' + this.state.items);
+        itm.forEach((itms) => {
+          console.log('title*' + itms.title);
+        });
       });
-
-    this.state.anunciosFound.map((j, k) => {
-      firebase
-        .database()
-        .ref(j.id)
-        .orderByKey()
-        .on('value', (snap) => {
-          let items = [];
-          snap.forEach((child) => {
-            items.push({
-              anuncioId: child.val().anuncioId,
-              nombre: child.val().nombre,
-              apellido: child.val().apellido,
-              actividad: child.val().actividad,
-              emailPersonal: child.val().emailPersonal,
-              idAnuncio: child.val().id,
-              contadorAnuncio: child.val().anuncioId,
-              localidad: child.val().localidad,
-              provincia: child.val().provincia,
-              palabraClaveUno: child.val().palabraClaveUno,
-              palabraClaveDos: child.val().palabraClaveDos,
-              palabraClaveTres: child.val().palabraClaveTres,
-              descripcionPersonal: child.val().descripcionPersonal,
-              recomendacionesTotales: child.val().recomendacionesTotales,
-            });
-          });
-          itm = items;
-          this.setState({ items: items });
-          console.log(itm);
-          console.log('itemstate ' + this.state.items);
-          itm.forEach((itms) => {
-            console.log('title*' + itms.title);
-          });
-        });
-    });
 
     firebase.auth().onAuthStateChanged(function (user) {
       if (user) {

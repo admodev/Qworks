@@ -179,7 +179,7 @@ const AnunciatePage = ({ navigation }) => {
   let anunciosIdsCount = [];
   let idRefAnuncios = firebase
     .database()
-    .ref(firebase.auth().currentUser.uid + '/')
+    .ref('anuncios/')
     .on('value', (snap) => {
       snap.forEach((child) => {
         anunciosIdsCount.push({
@@ -303,8 +303,6 @@ const AnunciatePage = ({ navigation }) => {
 
   let idAnuncio;
 
-  console.log('contador: ', anunciosCountResult);
-
   function writeUserData(
     nombre,
     apellido,
@@ -360,7 +358,9 @@ const AnunciatePage = ({ navigation }) => {
 
       let anunciosRef = firebase
         .database()
-        .ref(firebase.auth().currentUser.uid + '/' + anunciosCountResult)
+        .ref(
+          'anuncios/' + firebase.auth().currentUser.uid + anunciosCountResult
+        )
         .set({
           anuncioId: anunciosCountResult,
           id: user.uid,
