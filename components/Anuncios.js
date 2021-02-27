@@ -70,6 +70,8 @@ const AnunciosPage = ({ route, navigation }) => {
             nombre: childSnapshot.val().nombre,
             apellido: childSnapshot.val().apellido,
             actividad: childSnapshot.val().actividad,
+            localidad: childSnapshot.val().localidad,
+            provincia: childSnapshot.val().provincia,
             emailPersonal: childSnapshot.val().emailPersonal,
             idAnuncio: childSnapshot.val().id,
             anuncioId: childSnapshot.val().anuncioId,
@@ -214,7 +216,9 @@ const AnunciosPage = ({ route, navigation }) => {
               <RenderMisAnuncios
                 image={'https://picsum.photos/200/300'}
                 name={element.nombre}
-                email={element.emailPersonal}
+                actividad={element.actividad}
+                localidad={element.localidad}
+                provincia={element.provincia}
                 idAnuncio={firebase.auth().currentUser.uid}
                 anuncioCount={element.anuncioId}
               />
