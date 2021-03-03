@@ -39,9 +39,6 @@ const AnunciatePage = ({ navigation }) => {
   const [image, setImage] = useState(null);
   const [nombre, setNombre] = useState('');
   const [apellido, setApellido] = useState('');
-  const [emailPersonal, setEmailPersonal] = useState('');
-  const [domicilio, setDomicilio] = useState('');
-  const [pisoDptoCasa, setPisoDptoCasa] = useState('');
   const [cuitCuil, setCuitCuil] = useState('');
   const [dni, setDni] = useState('');
   const [actividad, setActividad] = useState('');
@@ -138,14 +135,14 @@ const AnunciatePage = ({ navigation }) => {
   const [mode, setMode] = useState('date');
   const [show, setShow] = useState(false);
 
-  const onChangeHourDesde = (event, selectedDate) => {
-    const currentDate = selectedDate || date;
+  const onChangeHourDesde = (eventDesde, selectedDateDesde) => {
+    const currentDate = selectedDateDesde || date;
     setShow(Platform.OS === 'ios');
     setDateDesde(currentDate);
   };
 
-  const onChangeHourHasta = (event, selectedDate) => {
-    const currentDate = selectedDate || date;
+  const onChangeHourHasta = (eventHasta, selectedDateHasta) => {
+    const currentDate = selectedDateHasta || date;
     setShow(Platform.OS === 'ios');
     setDateHasta(currentDate);
   };
@@ -153,10 +150,6 @@ const AnunciatePage = ({ navigation }) => {
   const showMode = (currentMode) => {
     setShow(true);
     setMode(currentMode);
-  };
-
-  const showDatepicker = () => {
-    showMode('date');
   };
 
   const showTimepicker = () => {
@@ -346,9 +339,6 @@ const AnunciatePage = ({ navigation }) => {
   function writeUserData(
     nombre,
     apellido,
-    emailPersonal,
-    domicilio,
-    pisoDptoCasa,
     cuitCuil,
     dni,
     actividad,
@@ -404,12 +394,9 @@ const AnunciatePage = ({ navigation }) => {
         .set({
           anuncioId: anunciosCountResult,
           id: user.uid,
-          imagen: image,
           nombre: nombre,
           apellido: apellido,
-          emailPersonal: emailPersonal,
-          domicilio: domicilio,
-          pisoDptoCasa: pisoDptoCasa,
+          emailPersonal: firebase.auth().currentUser.email,
           cuitCuil: cuitCuil,
           dni: dni,
           actividad: actividad,
@@ -576,26 +563,8 @@ const AnunciatePage = ({ navigation }) => {
             placeholderTextColor="black"
             keyboardType="email-address"
             autoCapitalize="none"
-            onChangeText={(emailPersonal) => setEmailPersonal(emailPersonal)}
-            value={emailPersonal}
-          />
-          <Input
-            placeholder="Domicilio"
-            inputStyle={{ color: '#000000' }}
-            style={{ color: '#000000', fontSize: 16, textAlign: 'center' }}
-            inputContainerStyle={{ borderBottomColor: '#000000' }}
-            placeholderTextColor="black"
-            onChangeText={(domicilio) => setDomicilio(domicilio)}
-            value={domicilio}
-          />
-          <Input
-            placeholder="Piso / Dpto / Casa"
-            inputStyle={{ color: '#000000' }}
-            style={{ color: '#000000', fontSize: 16, textAlign: 'center' }}
-            inputContainerStyle={{ borderBottomColor: '#000000' }}
-            placeholderTextColor="black"
-            onChangeText={(pisoDptoCasa) => setPisoDptoCasa(pisoDptoCasa)}
-            value={pisoDptoCasa}
+            disabled
+            value={firebase.auth().currentUser.email}
           />
           <Input
             placeholder="DNI *"
@@ -690,15 +659,6 @@ const AnunciatePage = ({ navigation }) => {
             value={emailLaboral}
           />
           <Input
-            placeholder="Provincia"
-            inputStyle={{ color: '#000000' }}
-            style={{ color: '#000000', fontSize: 16, textAlign: 'center' }}
-            inputContainerStyle={{ borderBottomColor: '#000000' }}
-            placeholderTextColor="black"
-            onChangeText={(provincia) => setProvincia(provincia)}
-            value={provincia}
-          />
-          <Input
             placeholder="Localidad"
             inputStyle={{ color: '#000000' }}
             style={{ color: '#000000', fontSize: 16, textAlign: 'center' }}
@@ -706,6 +666,15 @@ const AnunciatePage = ({ navigation }) => {
             placeholderTextColor="black"
             onChangeText={(localidad) => setLocalidad(localidad)}
             value={localidad}
+          />
+          <Input
+            placeholder="Provincia"
+            inputStyle={{ color: '#000000' }}
+            style={{ color: '#000000', fontSize: 16, textAlign: 'center' }}
+            inputContainerStyle={{ borderBottomColor: '#000000' }}
+            placeholderTextColor="black"
+            onChangeText={(provincia) => setProvincia(provincia)}
+            value={provincia}
           />
           {Platform.os === 'ios' ? (
             <Input
@@ -1092,7 +1061,7 @@ const AnunciatePage = ({ navigation }) => {
               </View>
               {show && (
                 <DateTimePicker
-                  testID="dateTimePicker"
+                  testID="dateTimePickerDesde"
                   value={dateDesde}
                   mode={mode}
                   is24Hour={true}
@@ -1111,17 +1080,28 @@ const AnunciatePage = ({ navigation }) => {
                 marginBottom: '5%',
               }}
             >
-              <Text
-                style={{
-                  textAlign: 'center',
-                  color: '#ffffff',
-                }}
-              >
-                {dateDesde.toLocaleTimeString([], {
-                  hour: '2-digit',
-                  minute: '2-digit',
-                })}
-              </Text>
+              {Platform.OS == 'android' ? (
+                <Text
+                  style={{
+                    textAlign: 'center',
+                    color: '#ffffff',
+                  }}
+                >
+                  {dateDesde.toLocaleTimeString().slice(1, -3)}
+                </Text>
+              ) : (
+                <Text
+                  style={{
+                    textAlign: 'center',
+                    color: '#ffffff',
+                  }}
+                >
+                  {dateDesde.toLocaleTimeString([], {
+                    hour: '2-digit',
+                    minute: '2-digit',
+                  })}
+                </Text>
+              )}
             </View>
             <View>
               <View>
@@ -1138,7 +1118,7 @@ const AnunciatePage = ({ navigation }) => {
               </View>
               {show && (
                 <DateTimePicker
-                  testID="dateTimePicker"
+                  testID="dateTimePickerHasta"
                   value={dateHasta}
                   mode={mode}
                   is24Hour={true}
@@ -1157,17 +1137,28 @@ const AnunciatePage = ({ navigation }) => {
                 marginBottom: '5%',
               }}
             >
-              <Text
-                style={{
-                  textAlign: 'center',
-                  color: '#ffffff',
-                }}
-              >
-                {dateHasta.toLocaleTimeString([], {
-                  hour: '2-digit',
-                  minute: '2-digit',
-                })}
-              </Text>
+              {Platform.OS == 'android' ? (
+                <Text
+                  style={{
+                    textAlign: 'center',
+                    color: '#ffffff',
+                  }}
+                >
+                  {dateHasta.toLocaleTimeString().slice(1, -3)}
+                </Text>
+              ) : (
+                <Text
+                  style={{
+                    textAlign: 'center',
+                    color: '#ffffff',
+                  }}
+                >
+                  {dateHasta.toLocaleTimeString([], {
+                    hour: '2-digit',
+                    minute: '2-digit',
+                  })}
+                </Text>
+              )}
             </View>
           </View>
         </View>
@@ -1287,9 +1278,6 @@ const AnunciatePage = ({ navigation }) => {
               writeUserData(
                 nombre,
                 apellido,
-                emailPersonal,
-                domicilio,
-                pisoDptoCasa,
                 cuitCuil,
                 dni,
                 actividad,

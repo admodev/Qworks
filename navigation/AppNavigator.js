@@ -33,6 +33,9 @@ import RecuperarPasswordScreen from '../components/RecuperarPassword';
 import UserMessagesList from '../pages/MessagesList';
 import RecomendacionesRenderizadas from '../pages/RecomendacionesPage';
 import CambiarFotoPerfil from '../pages/CambiarFotoPerfil';
+import EditarInformacionPersonalScreen from '../components/editarAnuncio/InformacionPersonal';
+import EditarInformacionLaboralScreen from '../components/editarAnuncio/InformacionLaboral';
+import EditarResumenPersonalScreen from '../components/editarAnuncio/ResumenPersonal';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -281,6 +284,21 @@ function MainStackNavigator({ navigation }) {
           name="CambiarFotoPerfil"
           component={CambiarFotoPerfil}
           options={{ title: 'QuedeOficios!', headerShown: false }}
+        />
+        <Stack.Screen
+          name="EditarInformacionPersonalScreen"
+          component={EditarInformacionPersonalScreen}
+          options={{ title: 'Quedeoficios!', headerShown: false }}
+        />
+        <Stack.Screen
+          name="EditarInformacionLaboralScreen"
+          component={EditarInformacionLaboralScreen}
+          options={{ title: 'Quedeoficios!', headerShown: false }}
+        />
+        <Stack.Screen
+          name="EditarResumenPersonalScreen"
+          component={EditarResumenPersonalScreen}
+          options={{ title: 'Quedeoficios!', headerShown: false }}
         />
       </Stack.Navigator>
     </NavigationContainer>

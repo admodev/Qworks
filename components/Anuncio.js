@@ -497,28 +497,54 @@ export default function AnuncioSeleccionado({ route, navigation }) {
               {recomendacionesTotales}
             </Text>
           </View>
-          <Text
+          <View
             style={{
-              color: '#000000',
-              textAlign: 'center',
-              fontSize: 16,
-              marginTop: '5%',
+              flex: 1,
+              flexDirection: 'row',
             }}
           >
-            {localidad}, {provincia}
-          </Text>
-          <Text
+            <MaterialCommunityIcons
+              name="map-marker"
+              color={naranjaQueDeOficios}
+              size={24}
+            />
+            <Text
+              style={{
+                color: '#000000',
+                marginLeft: 'auto',
+                marginRight: 'auto',
+                marginTop: 10,
+                marginBottom: 10,
+                fontSize: 20,
+              }}
+            >
+              {localidad}, {provincia}
+            </Text>
+          </View>
+          <View
             style={{
-              marginLeft: 'auto',
-              marginRight: 'auto',
-              marginTop: 10,
-              textAlign: 'center',
-              fontSize: 20,
-              color: '#000000',
+              flex: 1,
+              flexDirection: 'row',
             }}
           >
-            {emailPersonal}
-          </Text>
+            <MaterialCommunityIcons
+              name="email"
+              color={naranjaQueDeOficios}
+              size={24}
+            />
+            <Text
+              style={{
+                color: '#000000',
+                marginLeft: 'auto',
+                marginRight: 'auto',
+                marginTop: 10,
+                marginBottom: 10,
+                fontSize: 20,
+              }}
+            >
+              {emailLaboral}
+            </Text>
+          </View>
           <View
             style={{
               flexDirection: 'row',
@@ -638,30 +664,6 @@ export default function AnuncioSeleccionado({ route, navigation }) {
             }),
           }}
         >
-          <View
-            style={{
-              flex: 1,
-              flexDirection: 'row',
-            }}
-          >
-            <MaterialCommunityIcons
-              name="email"
-              color={naranjaQueDeOficios}
-              size={24}
-            />
-            <Text
-              style={{
-                color: '#000000',
-                marginLeft: 'auto',
-                marginRight: 'auto',
-                marginTop: 10,
-                marginBottom: 10,
-                fontSize: 20,
-              }}
-            >
-              {emailPersonal}
-            </Text>
-          </View>
           <View style={{ flexDirection: 'column' }}>
             <View
               style={{
