@@ -24,6 +24,7 @@ import * as ImagePicker from 'expo-image-picker';
 import * as Updates from 'expo-updates';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import * as Progress from 'react-native-progress';
+import DateTimePicker from '@react-native-community/datetimepicker';
 
 const AnunciatePage = ({ navigation }) => {
   let database = firebase.database();
@@ -131,6 +132,35 @@ const AnunciatePage = ({ navigation }) => {
   const [visible, setVisible] = useState(false);
   const toggleOverlay = () => {
     setVisible(!visible);
+  };
+  const [dateDesde, setDateDesde] = useState(new Date(1598051730000));
+  const [dateHasta, setDateHasta] = useState(new Date(1598051730000));
+  const [mode, setMode] = useState('date');
+  const [show, setShow] = useState(false);
+
+  const onChangeHourDesde = (event, selectedDate) => {
+    const currentDate = selectedDate || date;
+    setShow(Platform.OS === 'ios');
+    setDateDesde(currentDate);
+  };
+
+  const onChangeHourHasta = (event, selectedDate) => {
+    const currentDate = selectedDate || date;
+    setShow(Platform.OS === 'ios');
+    setDateHasta(currentDate);
+  };
+
+  const showMode = (currentMode) => {
+    setShow(true);
+    setMode(currentMode);
+  };
+
+  const showDatepicker = () => {
+    showMode('date');
+  };
+
+  const showTimepicker = () => {
+    showMode('time');
   };
 
   useEffect(() => {
@@ -301,6 +331,16 @@ const AnunciatePage = ({ navigation }) => {
     return photoRef.put(blob);
   } */
 
+  let dateDesdeParsed = dateDesde.toLocaleTimeString([], {
+    hour: '2-digit',
+    minute: '2-digit',
+  });
+
+  let dateHastaParsed = dateHasta.toLocaleTimeString([], {
+    hour: '2-digit',
+    minute: '2-digit',
+  });
+
   let idAnuncio;
 
   function writeUserData(
@@ -329,8 +369,8 @@ const AnunciatePage = ({ navigation }) => {
     palabraClaveDos,
     palabraClaveTres,
     diasHorarios,
-    desde,
-    hasta,
+    dateDesdeParsed,
+    dateHastaParsed,
     terminos,
     latitud,
     longitud,
@@ -390,8 +430,8 @@ const AnunciatePage = ({ navigation }) => {
           palabraClaveDos,
           palabraClaveTres,
           diasHorarios: diasHorarios,
-          desde: desde,
-          hasta: hasta,
+          desde: dateDesdeParsed,
+          hasta: dateHastaParsed,
           terminos: terminos,
           latitud: latitud,
           longitud: longitud,
@@ -639,6 +679,17 @@ const AnunciatePage = ({ navigation }) => {
             value={celular}
           />
           <Input
+            placeholder="Email laboral"
+            inputStyle={{ color: '#000000' }}
+            style={{ color: '#000000', fontSize: 16, textAlign: 'center' }}
+            inputContainerStyle={{ borderBottomColor: '#000000' }}
+            placeholderTextColor="black"
+            keyboardType="email-address"
+            autoCapitalize="none"
+            onChangeText={(emailLaboral) => setEmailLaboral(emailLaboral)}
+            value={emailLaboral}
+          />
+          <Input
             placeholder="Provincia"
             inputStyle={{ color: '#000000' }}
             style={{ color: '#000000', fontSize: 16, textAlign: 'center' }}
@@ -679,6 +730,17 @@ const AnunciatePage = ({ navigation }) => {
               maxLength={2}
             />
           )}
+          <Input
+            placeholder="Dirección del local"
+            inputStyle={{ color: '#000000' }}
+            style={{ color: '#000000', fontSize: 16, textAlign: 'center' }}
+            inputContainerStyle={{ borderBottomColor: '#000000' }}
+            placeholderTextColor="black"
+            onChangeText={(direccionDelLocal) =>
+              setDireccionDelLocal(direccionDelLocal)
+            }
+            value={direccionDelLocal}
+          />
           {Platform.os === 'ios' ? (
             <Input
               placeholder="Empresa (Si / No)"
@@ -703,26 +765,6 @@ const AnunciatePage = ({ navigation }) => {
             />
           )}
           <Input
-            placeholder="Factura (Tipo)"
-            inputStyle={{ color: '#000000' }}
-            style={{ color: '#000000', fontSize: 16, textAlign: 'center' }}
-            inputContainerStyle={{ borderBottomColor: '#000000' }}
-            placeholderTextColor="black"
-            onChangeText={(factura) => setFactura(factura)}
-            value={factura}
-          />
-          <Input
-            placeholder="Dirección del local"
-            inputStyle={{ color: '#000000' }}
-            style={{ color: '#000000', fontSize: 16, textAlign: 'center' }}
-            inputContainerStyle={{ borderBottomColor: '#000000' }}
-            placeholderTextColor="black"
-            onChangeText={(direccionDelLocal) =>
-              setDireccionDelLocal(direccionDelLocal)
-            }
-            value={direccionDelLocal}
-          />
-          <Input
             placeholder="Nombre de la empresa"
             inputStyle={{ color: '#000000' }}
             style={{ color: '#000000', fontSize: 16, textAlign: 'center' }}
@@ -732,6 +774,15 @@ const AnunciatePage = ({ navigation }) => {
               setNombreDeLaEmpresa(nombreDeLaEmpresa)
             }
             value={nombreDeLaEmpresa}
+          />
+          <Input
+            placeholder="Factura (Tipo)"
+            inputStyle={{ color: '#000000' }}
+            style={{ color: '#000000', fontSize: 16, textAlign: 'center' }}
+            inputContainerStyle={{ borderBottomColor: '#000000' }}
+            placeholderTextColor="black"
+            onChangeText={(factura) => setFactura(factura)}
+            value={factura}
           />
           {Platform.os === 'ios' ? (
             <Input
@@ -767,17 +818,6 @@ const AnunciatePage = ({ navigation }) => {
               setNumeroDeMatricula(numeroDeMatricula)
             }
             value={numeroDeMatricula}
-          />
-          <Input
-            placeholder="Email laboral"
-            inputStyle={{ color: '#000000' }}
-            style={{ color: '#000000', fontSize: 16, textAlign: 'center' }}
-            inputContainerStyle={{ borderBottomColor: '#000000' }}
-            placeholderTextColor="black"
-            keyboardType="email-address"
-            autoCapitalize="none"
-            onChangeText={(emailLaboral) => setEmailLaboral(emailLaboral)}
-            value={emailLaboral}
           />
         </View>
         <View
@@ -1037,34 +1077,98 @@ const AnunciatePage = ({ navigation }) => {
             />
           </View>
           <View style={{ width: '80%' }}>
-            <Input
-              placeholder="Desde ... hs"
-              style={{ color: '#000000', fontSize: 16 }}
-              inputStyle={{ color: '#000000' }}
-              style={{ color: '#000000', fontSize: 16, textAlign: 'center' }}
-              inputContainerStyle={{
-                borderBottomColor: '#000000',
-                marginTop: 15,
+            <View>
+              <View>
+                <Button
+                  onPress={showTimepicker}
+                  title="Desde"
+                  buttonStyle={{
+                    backgroundColor: '#F4743B',
+                    borderRadius: 25,
+                    marginTop: '10%',
+                    marginBottom: '10%',
+                  }}
+                />
+              </View>
+              {show && (
+                <DateTimePicker
+                  testID="dateTimePicker"
+                  value={dateDesde}
+                  mode={mode}
+                  is24Hour={true}
+                  display="spinner"
+                  onChange={onChangeHourDesde}
+                />
+              )}
+            </View>
+            <View
+              style={{
+                backgroundColor: '#F4743B',
+                borderRadius: 25,
+                width: '20%',
+                alignSelf: 'center',
+                margintop: '5%',
+                marginBottom: '5%',
               }}
-              placeholderTextColor="black"
-              keyboardType="numeric"
-              onChangeText={(desde) => setDesde(desde)}
-              value={desde}
-            />
-            <Input
-              placeholder="Hasta ... hs"
-              style={{ color: '#000000', fontSize: 16 }}
-              inputStyle={{ color: '#000000' }}
-              style={{ color: '#000000', fontSize: 16, textAlign: 'center' }}
-              inputContainerStyle={{
-                borderBottomColor: '#000000',
-                marginTop: 15,
+            >
+              <Text
+                style={{
+                  textAlign: 'center',
+                  color: '#ffffff',
+                }}
+              >
+                {dateDesde.toLocaleTimeString([], {
+                  hour: '2-digit',
+                  minute: '2-digit',
+                })}
+              </Text>
+            </View>
+            <View>
+              <View>
+                <Button
+                  onPress={showTimepicker}
+                  title="Hasta"
+                  buttonStyle={{
+                    backgroundColor: '#F4743B',
+                    borderRadius: 25,
+                    marginTop: '10%',
+                    marginBottom: '10%',
+                  }}
+                />
+              </View>
+              {show && (
+                <DateTimePicker
+                  testID="dateTimePicker"
+                  value={dateHasta}
+                  mode={mode}
+                  is24Hour={true}
+                  display="spinner"
+                  onChange={onChangeHourHasta}
+                />
+              )}
+            </View>
+            <View
+              style={{
+                backgroundColor: '#F4743B',
+                borderRadius: 25,
+                width: '20%',
+                alignSelf: 'center',
+                margintop: '5%',
+                marginBottom: '5%',
               }}
-              placeholderTextColor="black"
-              keyboardType="numeric"
-              onChangeText={(hasta) => setHasta(hasta)}
-              value={hasta}
-            />
+            >
+              <Text
+                style={{
+                  textAlign: 'center',
+                  color: '#ffffff',
+                }}
+              >
+                {dateHasta.toLocaleTimeString([], {
+                  hour: '2-digit',
+                  minute: '2-digit',
+                })}
+              </Text>
+            </View>
           </View>
         </View>
         <Text
@@ -1206,8 +1310,8 @@ const AnunciatePage = ({ navigation }) => {
                 palabraClaveDos,
                 palabraClaveTres,
                 diasHorarios,
-                desde,
-                hasta,
+                dateDesdeParsed,
+                dateHastaParsed,
                 terminos,
                 latitud,
                 longitud,

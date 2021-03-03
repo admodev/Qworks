@@ -638,62 +638,68 @@ export default function AnuncioSeleccionado({ route, navigation }) {
             }),
           }}
         >
-          <Text
+          <View
             style={{
-              color: '#000000',
-              marginTop: 10,
-              marginBottom: 10,
-              fontSize: 20,
+              flex: 1,
+              flexDirection: 'row',
             }}
           >
-            - Email laboral:
-          </Text>
-          <Text
-            style={{
-              color: '#000000',
-              marginLeft: 'auto',
-              marginRight: 'auto',
-              marginTop: 10,
-              marginBottom: 10,
-              fontSize: 20,
-            }}
-          >
-            {emailPersonal}
-          </Text>
-          <View style={{ flexDirection: 'column' }}>
+            <MaterialCommunityIcons
+              name="email"
+              color={naranjaQueDeOficios}
+              size={24}
+            />
             <Text
               style={{
-                marginTop: 10,
-                fontSize: 20,
                 color: '#000000',
-              }}
-            >
-              - Dias y horarios:
-            </Text>
-            <Text
-              style={{
                 marginLeft: 'auto',
                 marginRight: 'auto',
                 marginTop: 10,
-                textAlign: 'center',
+                marginBottom: 10,
                 fontSize: 20,
-                color: '#000000',
               }}
             >
-              {diasHorarios.filter(onlyUnique).join(', ')}
+              {emailPersonal}
             </Text>
           </View>
-          {local && (
-            <View>
+          <View style={{ flexDirection: 'column' }}>
+            <View
+              style={{
+                flex: 1,
+                flexDirection: 'row',
+              }}
+            >
+              <MaterialCommunityIcons
+                name="calendar-clock"
+                color={naranjaQueDeOficios}
+                size={24}
+              />
               <Text
                 style={{
+                  marginLeft: 'auto',
+                  marginRight: 'auto',
                   marginTop: 10,
+                  textAlign: 'center',
                   fontSize: 20,
                   color: '#000000',
                 }}
               >
-                - Local:
+                {diasHorarios.filter(onlyUnique).join(', ')}
               </Text>
+            </View>
+          </View>
+          {local && (
+            <View
+              style={{
+                flex: 1,
+                flexDirection: 'row',
+              }}
+            >
+              <MaterialCommunityIcons
+                name="storefront"
+                color={naranjaQueDeOficios}
+                size={24}
+              />
               <Text
                 style={{
                   color: '#000000',

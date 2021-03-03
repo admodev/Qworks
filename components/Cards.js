@@ -30,6 +30,7 @@ import CardSearchRender from './SearchRender';
 const defaultPhoto = '../assets/icon.png';
 var itm = [];
 var foto = [];
+var fotosDePerfil = [];
 
 class CardsUsuarios extends Component {
   constructor(props) {
@@ -40,6 +41,7 @@ class CardsUsuarios extends Component {
       fotoDePerfil: [],
       userProfilePicture: null,
       anunciosFound: [],
+      fotoDelAnuncio: [],
     };
     this.setState.bind(this);
   }
@@ -233,32 +235,59 @@ class CardsUsuarios extends Component {
             }}
           >
             {this.state.items.map((u, index) => {
-              firebase
+              /* var fetchedPhotos = firebase
                 .storage()
                 .ref('profilePictures/')
-                .child(u.idAnuncio + u.anuncioId)
-                .getDownloadURL()
-                .then(function (url) {
-                  var xhr = new XMLHttpRequest();
-                  xhr.responseType = 'blob';
-                  xhr.onload = function (event) {
-                    var blob = xhr.response;
-                  };
-                  xhr.open('GET', url);
-                  xhr.send();
+                .child(u.idAnuncio + u.contadorAnuncio).fullPath;
 
-                  console.log(url);
+              fotosDePerfil.push({
+                foto: fetchedPhotos,
+              }); */
 
-                  this.setState({ userProfilePicture: url });
+              //! arreglar esto de inmediato!!!!!
 
-                  console.log('EL ESTADO' + this.state.userProfilePicture);
+              /*  var storageRef = firebase.storage().ref('profilePictures/');
+
+              // Now we get the references of these images
+              storageRef
+                .listAll()
+                .then(function (result) {
+                  result.items.forEach(function (imageRef) {
+                    // And finally display them
+                    console.log(imageRef);
+                  });
                 })
                 .catch(function (error) {
-                  console.log(
-                    'Hubo un error al cargar las fotos!',
-                    error.message
-                  );
-                });
+                  console.log('ooooh nooooooo', error.message);
+                }); */
+
+              /* function displayImage(imageRef) {
+                imageRef
+                  .getDownloadURL()
+                  .then(function (url) {
+                    // TODO: Display the image on the UI
+                  })
+                  .catch(function (error) {
+                    console.log('OOOH NOO X2', error.message);
+                  });
+              } */
+
+              /* fotosDePerfil.forEach((value, index) => {
+                firebase
+                  .storage()
+                  .ref('profilePictures/' + value)
+                  .getDownloadURL()
+                  .then(function (url) {
+                    var xhr = new XMLHttpRequest();
+                    xhr.responseType = 'blob';
+                    xhr.onload = function (event) {
+                      var photoBlob = xhr.response;
+                      this.setState({ fotoDelAnuncio: photoBlob });
+                    };
+                    xhr.open('GET', url);
+                    xhr.send();
+                  });
+              }); */
 
               return (
                 <View
@@ -300,7 +329,7 @@ class CardsUsuarios extends Component {
                       borderRadius: 10,
                     }}
                   />
-                  {!this.state.userProfilePicture ? (
+                  {!this.state.fotoDelAnuncio ? (
                     <View
                       style={{ alignItems: 'center', justifyContent: 'center' }}
                     >
@@ -327,27 +356,9 @@ class CardsUsuarios extends Component {
                       />
                     </View>
                   ) : (
-                    <Card.Image
-                      source={{ uri: this.state.userProfilePicture }}
-                      style={{
-                        ...Platform.select({
-                          android: {
-                            borderRadius: 25,
-                            marginTop: 10,
-                            marginBottom: 20,
-                            marginLeft: 60,
-                            marginRight: 60,
-                          },
-                          ios: {
-                            borderRadius: 25,
-                            marginTop: 10,
-                            marginBottom: 20,
-                            marginLeft: 60,
-                            marginRight: 60,
-                          },
-                        }),
-                      }}
-                    />
+                    this.state.fotoDelAnuncio.forEach((element) => {
+                      console.log('EL ELEMENTO', element);
+                    })
                   )}
                   <View style={{ marginTop: '-8%' }}>
                     <AirbnbRating
