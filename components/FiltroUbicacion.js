@@ -28,6 +28,8 @@ const ASPECT_RATIO = width / height;
 const LATITUDE_DELTA = 0.0922;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 
+var itm = [];
+
 class UbicacionPage extends Component {
   constructor(props) {
     super(props);
@@ -43,6 +45,39 @@ class UbicacionPage extends Component {
   }
 
   componentDidMount() {
+    firebase
+      .database()
+      .ref('anuncios/')
+      .orderByKey()
+      .on('value', (snap) => {
+        let items = [];
+        snap.forEach((child) => {
+          items.push({
+            anuncioId: child.val().anuncioId,
+            nombre: child.val().nombre,
+            apellido: child.val().apellido,
+            actividad: child.val().actividad,
+            emailPersonal: child.val().emailPersonal,
+            idAnuncio: child.val().id,
+            contadorAnuncio: child.val().anuncioId,
+            localidad: child.val().localidad,
+            provincia: child.val().provincia,
+            palabraClaveUno: child.val().palabraClaveUno,
+            palabraClaveDos: child.val().palabraClaveDos,
+            palabraClaveTres: child.val().palabraClaveTres,
+            descripcionPersonal: child.val().descripcionPersonal,
+            recomendacionesTotales: child.val().recomendacionesTotales,
+          });
+        });
+        itm = items;
+        this.setState({ items: items });
+        console.log(itm);
+        console.log('itemstate ' + this.state.items);
+        itm.forEach((itms) => {
+          console.log('title*' + itms.title);
+        });
+      });
+
     this.setState({ ready: false, error: null });
 
     let geoOptions = {
@@ -70,6 +105,21 @@ class UbicacionPage extends Component {
   filterList(items) {
     return items.filter(
       (itm) =>
+        itm.nombre.toLowerCase().includes(this.state.search.toLowerCase()) ||
+        itm.apellido.toLowerCase().includes(this.state.search.toLowerCase()) ||
+        itm.actividad.toLowerCase().includes(this.state.search.toLowerCase()) ||
+        itm.palabraClaveUno
+          .toLowerCase()
+          .includes(this.state.search.toLowerCase()) ||
+        itm.palabraClaveDos
+          .toLowerCase()
+          .includes(this.state.search.toLowerCase()) ||
+        itm.palabraClaveTres
+          .toLowerCase()
+          .includes(this.state.search.toLowerCase()) ||
+        itm.descripcionPersonal
+          .toLowerCase()
+          .includes(this.state.search.toLowerCase()) ||
         itm.localidad.toLowerCase().includes(this.state.search.toLowerCase()) ||
         itm.provincia.toLowerCase().includes(this.state.search.toLowerCase())
     );
@@ -88,74 +138,253 @@ class UbicacionPage extends Component {
 
     return (
       <SafeAreaView style={{ flex: 1 }}>
-        <View style={styles.container}>
-          <ScrollView
-            style={StyleSheet.absoluteFill}
-            contentContainerStyle={styles.scrollview}
+        <Image
+          source={require('../assets/gradients/20x20.png')}
+          style={{
+            ...Platform.select({
+              android: {
+                flex: 1,
+                position: 'absolute',
+                resizeMode: 'cover',
+                width: '100%',
+                height: '5%',
+              },
+              ios: {
+                flex: 1,
+                position: 'absolute',
+                resizeMode: 'cover',
+                width: '100%',
+                height: '3%',
+              },
+            }),
+          }}
+        />
+        <View
+          style={{
+            ...Platform.select({
+              android: {
+                width: 30,
+                height: 30,
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                flexDirection: 'row',
+                marginTop: '12%',
+                marginLeft: '3%',
+              },
+              ios: {
+                width: 30,
+                height: 30,
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                flexDirection: 'row',
+                marginTop: '3%',
+                backgroundColor: 'transparent',
+              },
+            }),
+          }}
+        >
+          <TouchableOpacity
+            onPress={() => navigation.goBack()}
+            style={{
+              ...Platform.select({
+                android: {
+                  backgroundColor: 'transparent',
+                },
+                ios: {
+                  backgroundColor: 'transparent',
+                  left: 12,
+                },
+              }),
+            }}
           >
-            {!this.state.ready && (
-              <View
+            <MaterialCommunityIcons
+              name="arrow-left"
+              color={'#fd5d13'}
+              size={32}
+              style={{ backgroundColor: 'transparent' }}
+            />
+          </TouchableOpacity>
+        </View>
+        <Input
+          placeholder="Buscar en  ¡QuedeOficios!"
+          inputStyle={{
+            justifyContent: 'center',
+            marginLeft: 25,
+            marginTop: -10,
+          }}
+          containerStyle={{ marginLeft: 10, marginTop: -10 }}
+          placeholderTextColor="#000000"
+          onChangeText={(search) => this.setState({ search })}
+        />
+        <View style={styles.container}>
+          {!this.state.ready && (
+            <View
+              style={{
+                ...Platform.select({
+                  android: {
+                    padding: 10,
+                    marginTop: '10%',
+                    ...StyleSheet.absoluteFillObject,
+                    justifyContent: 'flex-end',
+                    alignItems: 'center',
+                  },
+                  ios: {
+                    padding: 10,
+                    marginTop: '20%',
+                    ...StyleSheet.absoluteFillObject,
+                    justifyContent: 'flex-end',
+                    alignItems: 'center',
+                  },
+                }),
+              }}
+            >
+              <Text
+                style={{ fontSize: 18, fontWeight: 'bold', marginBottom: 15 }}
+              >
+                Cargando...
+              </Text>
+              <ActivityIndicator
+                size="large"
+                color="orange"
                 style={{
                   ...Platform.select({
                     android: {
-                      padding: 10,
-                      marginTop: '10%',
-                    },
-                    ios: {
-                      padding: 10,
-                      marginTop: '20%',
+                      marginBottom: '50%',
                     },
                   }),
                 }}
-              >
-                <Text
-                  style={{ fontSize: 18, fontWeight: 'bold', marginBottom: 15 }}
-                >
-                  Cargando...
-                </Text>
-                <ActivityIndicator
-                  size="large"
-                  color="orange"
+              />
+            </View>
+          )}
+          {this.state.error && <Text>{this.state.error}</Text>}
+          {this.state.ready && (
+            <MapView
+              provider={this.props.provider}
+              style={styles.map}
+              scrollEnabled={true}
+              zoomEnabled={true}
+              pitchEnabled={true}
+              rotateEnabled={true}
+              initialRegion={region}
+              onUserLocationChange={(event) => console.log(event.nativeEvent)}
+              showsUserLocation={this.state.showsUserLocation}
+              followsUserLocation={this.state.followsUserLocation}
+            >
+              {this.state.search ? (
+                this.filterList(this.state.items).map((itm, index) => (
+                  <Card
+                    style={{
+                      backgroundColor: '#483D8B',
+                      shadowColor: '#000',
+                      borderRadius: 15,
+                      paddingTop: -5,
+                      paddingBottom: 2,
+                      shadowOpacity: 0.25,
+                      shadowRadius: 3.84,
+                      elevation: 5,
+                      shadowOffset: {
+                        width: 0,
+                        height: 2,
+                      },
+                      position: 'absolute',
+                      bottom: 109,
+                    }}
+                    containerStyle={{
+                      ...Platform.select({
+                        android: {
+                          padding: 0,
+                          borderRadius: 15,
+                          backgroundColor: 'white',
+                          borderWidth: 0,
+                          elevation: 0,
+                          position: 'absolute',
+                          bottom: 109,
+                        },
+                        ios: {
+                          padding: 0,
+                          backgroundColor: 'white',
+                          borderWidth: 0,
+                          elevation: 0,
+                          width: '100%',
+                          height: 150,
+                          alignSelf: 'center',
+                          position: 'absolute',
+                          bottom: 109,
+                        },
+                      }),
+                    }}
+                  >
+                    <Text
+                      style={{
+                        fontSize: 20,
+                        color: 'red',
+                      }}
+                    >
+                      {itm.nombre}
+                    </Text>
+                  </Card>
+                ))
+              ) : (
+                <Card
                   style={{
+                    backgroundColor: '#483D8B',
+                    shadowColor: '#000',
+                    borderRadius: 15,
+                    paddingTop: -5,
+                    paddingBottom: 2,
+                    shadowOpacity: 0.25,
+                    shadowRadius: 3.84,
+                    elevation: 5,
+                    shadowOffset: {
+                      width: 0,
+                      height: 2,
+                    },
+                    position: 'absolute',
+                    bottom: 109,
+                  }}
+                  containerStyle={{
                     ...Platform.select({
                       android: {
-                        marginBottom: '50%',
+                        padding: 0,
+                        borderRadius: 15,
+                        backgroundColor: 'white',
+                        borderWidth: 0,
+                        elevation: 0,
+                        position: 'absolute',
+                        bottom: 109,
+                      },
+                      ios: {
+                        padding: 0,
+                        backgroundColor: 'white',
+                        borderWidth: 0,
+                        elevation: 0,
+                        width: '100%',
+                        height: 150,
+                        alignSelf: 'center',
+                        position: 'absolute',
+                        bottom: 109,
                       },
                     }),
                   }}
-                />
-              </View>
-            )}
-            {this.state.error && <Text>{this.state.error}</Text>}
-            {this.state.ready && (
-              <MapView
-                provider={this.props.provider}
-                style={styles.map}
-                scrollEnabled={true}
-                zoomEnabled={true}
-                pitchEnabled={true}
-                rotateEnabled={true}
-                initialRegion={region}
-                onUserLocationChange={(event) => console.log(event.nativeEvent)}
-                showsUserLocation={this.state.showsUserLocation}
-                followsUserLocation={this.state.followsUserLocation}
-              >
-                {
-                  //<MapView.Marker
-                  //title={firebase.auth().currentUser.displayName}
-                  //description="A tu alrededor encontrarás profesionales cercanos."
-                  //coordinate={region}
-                  //>
-                  //<MaterialCommunityIcons
-                  //name="account"
-                  //color={'#fd5d13'}
-                  //size={32}
-                  ///>
-                  //</MapView.Marker>
-                }
-              </MapView>
-            )}
-          </ScrollView>
+                >
+                  {this.state.items.map((u, index) => {
+                    return (
+                      <View key={index}>
+                        <Text
+                          style={{
+                            fontSize: 20,
+                            color: 'red',
+                          }}
+                        >
+                          {u.nombre}
+                        </Text>
+                      </View>
+                    );
+                  })}
+                </Card>
+              )}
+            </MapView>
+          )}
         </View>
       </SafeAreaView>
     );
@@ -163,18 +392,21 @@ class UbicacionPage extends Component {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    ...StyleSheet.absoluteFillObject,
-    justifyContent: 'flex-end',
-    alignItems: 'center',
-  },
+  container: {},
   scrollview: {
     alignItems: 'center',
   },
   map: {
     width: SCREEN_WIDTH,
-    height: 500,
-    marginTop: '5%',
+    height: '100%',
+    ...Platform.select({
+      android: {
+        marginTop: '7%',
+      },
+      ios: {
+        marginTop: '3%',
+      },
+    }),
   },
 });
 
