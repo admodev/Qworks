@@ -22,8 +22,6 @@ import { StackActions } from '@react-navigation/native';
 import SearchedCardResult from './searchedCard';
 import MapView from 'react-native-maps';
 import Carousel from 'react-native-snap-carousel';
-import MapComponent from './MapComponent';
-import LocationComponent from './LocationCards';
 
 const { width, height } = Dimensions.get('window');
 const SCREEN_WIDTH = width;
@@ -34,7 +32,7 @@ const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 
 var itm = [];
 
-class UbicacionPage extends Component {
+class MapComponent extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -140,28 +138,144 @@ class UbicacionPage extends Component {
       longitudeDelta: LONGITUDE_DELTA,
     };
 
-    function renderCards() {
-      return <LocationComponent />;
-    }
-
     return (
-      <SafeAreaView
-        style={{
-          flex: 1,
-        }}
-      >
-        <MapComponent />
-        <Carousel
-          ref={(c) => {
-            this._carousel = c;
+      <SafeAreaView style={{ flex: 1 }}>
+        <Image
+          source={require('../assets/gradients/20x20.png')}
+          style={{
+            ...Platform.select({
+              android: {
+                flex: 1,
+                position: 'absolute',
+                resizeMode: 'cover',
+                width: '100%',
+                height: '5%',
+              },
+              ios: {
+                flex: 1,
+                position: 'absolute',
+                resizeMode: 'cover',
+                width: '100%',
+                height: '3%',
+              },
+            }),
           }}
-          data={this.state.items}
-          renderItem={() => renderCards()}
-          sliderWidth={300}
-          itemWidth={300}
-          layout={'stack'}
-          layoutCardOffset={`18`}
         />
+        <View
+          style={{
+            ...Platform.select({
+              android: {
+                width: 30,
+                height: 30,
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                flexDirection: 'row',
+                marginTop: '12%',
+                marginLeft: '3%',
+              },
+              ios: {
+                width: 30,
+                height: 30,
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                flexDirection: 'row',
+                marginTop: '3%',
+                backgroundColor: 'transparent',
+              },
+            }),
+          }}
+        >
+          <TouchableOpacity
+            onPress={() => navigation.goBack()}
+            style={{
+              ...Platform.select({
+                android: {
+                  backgroundColor: 'transparent',
+                },
+                ios: {
+                  backgroundColor: 'transparent',
+                  left: 12,
+                },
+              }),
+            }}
+          >
+            <MaterialCommunityIcons
+              name="arrow-left"
+              color={'#fd5d13'}
+              size={32}
+              style={{ backgroundColor: 'transparent' }}
+            />
+          </TouchableOpacity>
+          <Input
+            placeholder="Buscar en  ¡QuedeOficios!"
+            inputStyle={{
+              textAlign: 'center',
+            }}
+            containerStyle={{
+              width: 280,
+              marginTop: '50%',
+              marginLeft: '85%',
+            }}
+            placeholderTextColor="#000000"
+            onChangeText={(search) => this.setState({ search })}
+          />
+        </View>
+        <View style={styles.container}>
+          {!this.state.ready && (
+            <View
+              style={{
+                ...Platform.select({
+                  android: {
+                    padding: 10,
+                    marginTop: '10%',
+                    ...StyleSheet.absoluteFillObject,
+                    justifyContent: 'flex-end',
+                    alignItems: 'center',
+                  },
+                  ios: {
+                    padding: 10,
+                    marginTop: '20%',
+                    ...StyleSheet.absoluteFillObject,
+                    justifyContent: 'flex-end',
+                    alignItems: 'center',
+                  },
+                }),
+              }}
+            >
+              <Text
+                style={{ fontSize: 18, fontWeight: 'bold', marginBottom: 15 }}
+              >
+                Cargando...
+              </Text>
+              <ActivityIndicator
+                size="large"
+                color="orange"
+                style={{
+                  ...Platform.select({
+                    android: {
+                      marginBottom: '50%',
+                    },
+                  }),
+                }}
+              />
+            </View>
+          )}
+          {this.state.error && <Text>{this.state.error}</Text>}
+          {this.state.ready && (
+            <MapView
+              provider={this.props.provider}
+              style={styles.map}
+              scrollEnabled={true}
+              zoomEnabled={true}
+              pitchEnabled={true}
+              rotateEnabled={true}
+              initialRegion={region}
+              onUserLocationChange={(event) => console.log(event.nativeEvent)}
+              showsUserLocation={this.state.showsUserLocation}
+              followsUserLocation={this.state.followsUserLocation}
+            ></MapView>
+          )}
+        </View>
       </SafeAreaView>
     );
   }
@@ -186,4 +300,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default UbicacionPage;
+export default MapComponent;
