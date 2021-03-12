@@ -24,6 +24,7 @@ import MapView from 'react-native-maps';
 
 const { width, height } = Dimensions.get('window');
 const SCREEN_WIDTH = width;
+const SCREEN_HEIGHT = height;
 const ASPECT_RATIO = width / height;
 const LATITUDE_DELTA = 0.0922;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
@@ -204,18 +205,20 @@ class UbicacionPage extends Component {
               style={{ backgroundColor: 'transparent' }}
             />
           </TouchableOpacity>
+          <Input
+            placeholder="Buscar en  ¡QuedeOficios!"
+            inputStyle={{
+              textAlign: 'center',
+            }}
+            containerStyle={{
+              width: 280,
+              marginTop: '50%',
+              marginLeft: '85%',
+            }}
+            placeholderTextColor="#000000"
+            onChangeText={(search) => this.setState({ search })}
+          />
         </View>
-        <Input
-          placeholder="Buscar en  ¡QuedeOficios!"
-          inputStyle={{
-            justifyContent: 'center',
-            marginLeft: 25,
-            marginTop: -10,
-          }}
-          containerStyle={{ marginLeft: 10, marginTop: -10 }}
-          placeholderTextColor="#000000"
-          onChangeText={(search) => this.setState({ search })}
-        />
         <View style={styles.container}>
           {!this.state.ready && (
             <View
@@ -270,119 +273,104 @@ class UbicacionPage extends Component {
               showsUserLocation={this.state.showsUserLocation}
               followsUserLocation={this.state.followsUserLocation}
             >
-              {this.state.search ? (
-                this.filterList(this.state.items).map((itm, index) => (
-                  <Card
-                    style={{
-                      backgroundColor: '#483D8B',
-                      shadowColor: '#000',
-                      borderRadius: 15,
-                      paddingTop: -5,
-                      paddingBottom: 2,
-                      shadowOpacity: 0.25,
-                      shadowRadius: 3.84,
-                      elevation: 5,
-                      shadowOffset: {
-                        width: 0,
-                        height: 2,
-                      },
-                      position: 'absolute',
-                      bottom: 109,
-                    }}
-                    containerStyle={{
-                      ...Platform.select({
-                        android: {
-                          padding: 0,
-                          borderRadius: 15,
-                          backgroundColor: 'white',
-                          borderWidth: 0,
-                          elevation: 0,
-                          position: 'absolute',
-                          bottom: 109,
-                        },
-                        ios: {
-                          padding: 0,
-                          backgroundColor: 'white',
-                          borderWidth: 0,
-                          elevation: 0,
-                          width: '100%',
-                          height: 150,
-                          alignSelf: 'center',
-                          position: 'absolute',
-                          bottom: 109,
-                        },
-                      }),
-                    }}
-                  >
-                    <Text
+              {this.state.search
+                ? this.filterList(this.state.items).map((itm, index) => (
+                    <Card
                       style={{
-                        fontSize: 20,
-                        color: 'red',
+                        backgroundColor: '#483D8B',
+                        shadowColor: '#000',
+                        borderRadius: 15,
+                        paddingTop: -5,
+                        paddingBottom: 2,
+                        shadowOpacity: 0.25,
+                        shadowRadius: 3.84,
+                        elevation: 5,
+                        shadowOffset: {
+                          width: 0,
+                          height: 2,
+                        },
+                      }}
+                      containerStyle={{
+                        ...Platform.select({
+                          android: {
+                            padding: 0,
+                            borderRadius: 15,
+                            backgroundColor: 'white',
+                            borderWidth: 0,
+                            elevation: 0,
+                          },
+                          ios: {
+                            padding: 0,
+                            backgroundColor: 'white',
+                            borderWidth: 0,
+                            elevation: 0,
+                            width: '100%',
+                            height: 150,
+                            alignSelf: 'center',
+                          },
+                        }),
                       }}
                     >
-                      {itm.nombre}
-                    </Text>
-                  </Card>
-                ))
-              ) : (
-                <Card
-                  style={{
-                    backgroundColor: '#483D8B',
-                    shadowColor: '#000',
-                    borderRadius: 15,
-                    paddingTop: -5,
-                    paddingBottom: 2,
-                    shadowOpacity: 0.25,
-                    shadowRadius: 3.84,
-                    elevation: 5,
-                    shadowOffset: {
-                      width: 0,
-                      height: 2,
-                    },
-                    position: 'absolute',
-                    bottom: 109,
-                  }}
-                  containerStyle={{
-                    ...Platform.select({
-                      android: {
-                        padding: 0,
-                        borderRadius: 15,
-                        backgroundColor: 'white',
-                        borderWidth: 0,
-                        elevation: 0,
-                        position: 'absolute',
-                        bottom: 109,
-                      },
-                      ios: {
-                        padding: 0,
-                        backgroundColor: 'white',
-                        borderWidth: 0,
-                        elevation: 0,
-                        width: '100%',
-                        height: 150,
-                        alignSelf: 'center',
-                        position: 'absolute',
-                        bottom: 109,
-                      },
-                    }),
-                  }}
-                >
-                  {this.state.items.map((u, index) => {
+                      <Text
+                        style={{
+                          fontSize: 20,
+                          color: 'red',
+                        }}
+                      >
+                        {itm.nombre}
+                      </Text>
+                    </Card>
+                  ))
+                : this.state.items.map((element) => {
                     return (
-                      <View key={index}>
+                      <Card
+                        key={element.idAnuncio}
+                        style={{
+                          backgroundColor: '#483D8B',
+                          shadowColor: '#000',
+                          borderRadius: 15,
+                          paddingTop: -5,
+                          paddingBottom: 2,
+                          shadowOpacity: 0.25,
+                          shadowRadius: 3.84,
+                          elevation: 5,
+                          shadowOffset: {
+                            width: 0,
+                            height: 2,
+                          },
+                        }}
+                        containerStyle={{
+                          ...Platform.select({
+                            android: {
+                              padding: 0,
+                              borderRadius: 15,
+                              backgroundColor: 'white',
+                              borderWidth: 0,
+                              elevation: 0,
+                            },
+                            ios: {
+                              padding: 0,
+                              backgroundColor: 'white',
+                              borderWidth: 0,
+                              elevation: 0,
+                              width: '90%',
+                              height: 150,
+                              alignSelf: 'center',
+                            },
+                          }),
+                        }}
+                      >
                         <Text
                           style={{
                             fontSize: 20,
                             color: 'red',
                           }}
                         >
-                          {u.nombre}
+                          {element.nombre}
                         </Text>
-                      </View>
+                      </Card>
                     );
                   })}
-                </Card>
-              )}
             </MapView>
           )}
         </View>
