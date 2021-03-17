@@ -24,7 +24,6 @@ import Chat from '../components/ChatComponent';
 import AnuncioSeleccionado from '../components/Anuncio';
 import MisComentariosPage from '../components/MisComentarios';
 import CambiarNombreScreen from '../components/CambiarNombreComponent';
-import UbicacionPage from '../components/FiltroUbicacion';
 import FiltroDeComentarios from '../components/FiltroComentarios';
 import RecomendarUsuario from '../components/RecomendarScreen';
 import ComentarScreen from '../components/Comentar';
@@ -243,11 +242,6 @@ function MainStackNavigator({ navigation }) {
         <Stack.Screen
           name="CambiarNombreScreen"
           component={CambiarNombreScreen}
-          options={{ title: 'QuedeOficios!', headerShown: false }}
-        />
-        <Stack.Screen
-          name="UbicacionPage"
-          component={UbicacionPage}
           options={{ title: 'QuedeOficios!', headerShown: false }}
         />
         <Stack.Screen

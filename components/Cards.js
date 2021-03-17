@@ -137,8 +137,8 @@ class CardsUsuarios extends Component {
                 alignContent: 'center',
                 justifyContent: 'center',
                 marginTop: 20,
-                marginLeft: 25,
                 width: '80%',
+                alignSelf: 'center'
               }}
             >
               <Image

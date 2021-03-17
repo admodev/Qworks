@@ -138,88 +138,12 @@ class MapComponent extends Component {
       longitudeDelta: LONGITUDE_DELTA,
     };
 
+    const closeControlPanel = () => {
+      _drawer.close();
+    };
+
     return (
       <SafeAreaView style={{ flex: 1 }}>
-        <Image
-          source={require('../assets/gradients/20x20.png')}
-          style={{
-            ...Platform.select({
-              android: {
-                flex: 1,
-                position: 'absolute',
-                resizeMode: 'cover',
-                width: '100%',
-                height: '5%',
-              },
-              ios: {
-                flex: 1,
-                position: 'absolute',
-                resizeMode: 'cover',
-                width: '100%',
-                height: '3%',
-              },
-            }),
-          }}
-        />
-        <View
-          style={{
-            ...Platform.select({
-              android: {
-                width: 30,
-                height: 30,
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                flexDirection: 'row',
-                marginTop: '12%',
-                marginLeft: '3%',
-              },
-              ios: {
-                width: 30,
-                height: 30,
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                flexDirection: 'row',
-                marginTop: '3%',
-                backgroundColor: 'transparent',
-              },
-            }),
-          }}
-        >
-          <TouchableOpacity
-            onPress={() => navigation.goBack()}
-            style={{
-              ...Platform.select({
-                android: {
-                  backgroundColor: 'transparent',
-                },
-                ios: {
-                  backgroundColor: 'transparent',
-                  left: 12,
-                },
-              }),
-            }}
-          >
-            <MaterialCommunityIcons
-              name="arrow-left"
-              color={'#fd5d13'}
-              size={32}
-              style={{ backgroundColor: 'transparent' }}
-            />
-          </TouchableOpacity>
-          <Input
-            placeholder="Buscar en  ¡QuedeOficios!"
-            inputStyle={{
-              textAlign: 'center',
-            }}
-            containerStyle={{
-              width: 280,
-              marginTop: '50%',
-              marginLeft: '85%',
-            }}
-            placeholderTextColor="#000000"
-            onChangeText={(search) => this.setState({ search })}
-          />
-        </View>
         <View style={styles.container}>
           {!this.state.ready && (
             <View

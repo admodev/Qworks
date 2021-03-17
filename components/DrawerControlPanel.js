@@ -1,39 +1,133 @@
-import React, { useState, setState } from 'react';
-import { Image, SafeAreaView, View } from 'react-native';
-import { Button } from 'react-native-elements';
-import CardsUsuarios from './Cards';
+import React, { Component } from 'react';
+import {
+  ActivityIndicator,
+  Dimensions,
+  TouchableOpacity,
+  StyleSheet,
+  Image,
+  View,
+  ScrollView,
+  SafeAreaView,
+  Text,
+  Platform,
+} from 'react-native';
+import { Avatar, Button, Card, Icon, Input } from 'react-native-elements';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import * as firebase from 'firebase';
+import 'firebase/firestore';
+import 'firebase/database';
+import 'firebase/auth';
 import * as RootNavigation from '../RootNavigation.js';
+import { StackActions } from '@react-navigation/native';
+import SearchedCardResult from './searchedCard';
+import MapView from 'react-native-maps';
+import Carousel from 'react-native-snap-carousel';
+import MapComponent from './MapComponent';
+import LocationComponent from './LocationCards';
+import LocationSearch from './LocationSearchBar';
+
+const { width, height } = Dimensions.get('window');
+const SCREEN_WIDTH = width;
+const SCREEN_HEIGHT = height;
+const ASPECT_RATIO = width / height;
+const LATITUDE_DELTA = 0.0922;
+const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
+
+var itm = [];
 
 class ControlPanel extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      isLoading: true,
-      pickerValueHolder: '',
-      filter: [
-        {
-          option: 'profesion',
-        },
-        {
-          option: 'aeiou',
-        },
-      ],
-      dataSource: [],
+      items: [],
+      search: '',
+      ready: false,
+      where: { lat: null, lng: null },
+      error: null,
+      showsUserLocation: true,
+      followsUserLocation: true,
     };
   }
 
   componentDidMount() {
-    return fetch(CardsUsuarios)
-      .then((response) => response.json())
-      .then((responseJson) => {
-        this.setState({
-          isLoading: false,
-          dataSource: responseJson,
+    firebase
+      .database()
+      .ref('anuncios/')
+      .orderByKey()
+      .on('value', (snap) => {
+        let items = [];
+        snap.forEach((child) => {
+          items.push({
+            anuncioId: child.val().anuncioId,
+            nombre: child.val().nombre,
+            apellido: child.val().apellido,
+            actividad: child.val().actividad,
+            emailPersonal: child.val().emailPersonal,
+            idAnuncio: child.val().id,
+            contadorAnuncio: child.val().anuncioId,
+            localidad: child.val().localidad,
+            provincia: child.val().provincia,
+            palabraClaveUno: child.val().palabraClaveUno,
+            palabraClaveDos: child.val().palabraClaveDos,
+            palabraClaveTres: child.val().palabraClaveTres,
+            descripcionPersonal: child.val().descripcionPersonal,
+            recomendacionesTotales: child.val().recomendacionesTotales,
+          });
         });
-      })
-      .catch((error) => {
-        console.error(error);
+        itm = items;
+        this.setState({ items: items });
+        console.log(itm);
+        console.log('itemstate ' + this.state.items);
+        itm.forEach((itms) => {
+          console.log('title*' + itms.title);
+        });
       });
+
+    this.setState({ ready: false, error: null });
+
+    let geoOptions = {
+      enableHighAccuracy: true,
+      timeout: 20000,
+      maximumAge: 60 * 60 * 24,
+    };
+    navigator.geolocation.getCurrentPosition(
+      this.geoSuccess,
+      this.geoFailure,
+      geoOptions
+    );
+  }
+  geoSuccess = (position) => {
+    console.log(position);
+    this.setState({
+      ready: true,
+      where: { lat: position.coords.latitude, lng: position.coords.longitude },
+    });
+  };
+  geoFailure = (error) => {
+    this.setState({ error: err.message });
+  };
+
+  filterList(items) {
+    return items.filter(
+      (itm) =>
+        itm.nombre.toLowerCase().includes(this.state.search.toLowerCase()) ||
+        itm.apellido.toLowerCase().includes(this.state.search.toLowerCase()) ||
+        itm.actividad.toLowerCase().includes(this.state.search.toLowerCase()) ||
+        itm.palabraClaveUno
+          .toLowerCase()
+          .includes(this.state.search.toLowerCase()) ||
+        itm.palabraClaveDos
+          .toLowerCase()
+          .includes(this.state.search.toLowerCase()) ||
+        itm.palabraClaveTres
+          .toLowerCase()
+          .includes(this.state.search.toLowerCase()) ||
+        itm.descripcionPersonal
+          .toLowerCase()
+          .includes(this.state.search.toLowerCase()) ||
+        itm.localidad.toLowerCase().includes(this.state.search.toLowerCase()) ||
+        itm.provincia.toLowerCase().includes(this.state.search.toLowerCase())
+    );
   }
 
   render() {
@@ -42,6 +136,24 @@ class ControlPanel extends React.Component {
     const closeControlPanel = () => {
       _drawer.close();
     };
+    const openControlPanel = () => {
+      _drawer.open();
+    };
+
+    var latitud = parseFloat(this.state.where.lat);
+    var longitud = parseFloat(this.state.where.lng);
+
+    const region = {
+      latitude: latitud,
+      longitude: longitud,
+      latitudeDelta: LATITUDE_DELTA,
+      longitudeDelta: LONGITUDE_DELTA,
+    };
+
+    function renderCards() {
+      return <LocationComponent />;
+    }
+
     return (
       <SafeAreaView style={{ flex: 1 }}>
         <Image
@@ -54,32 +166,19 @@ class ControlPanel extends React.Component {
             height: '5%',
           }}
         />
-        <Button
-          title=">"
-          buttonStyle={{
-            backgroundColor: 'transparent',
-            justifyContent: 'flex-end',
-            marginTop: '10%',
-            marginRight: '5%',
+        <LocationSearch />
+        <MapComponent />
+        <Carousel
+          ref={(c) => {
+            this._carousel = c;
           }}
-          titleStyle={{ color: naranjaQueDeOficios, fontSize: 28 }}
-          onPress={closeControlPanel}
+          data={this.state.items}
+          renderItem={() => renderCards()}
+          sliderWidth={300}
+          itemWidth={300}
+          layout={'stack'}
+          layoutCardOffset={`18`}
         />
-        <View
-          style={{
-            maxWidth: '90%',
-            marginLeft: 'auto',
-            marginRight: 'auto',
-          }}
-        >
-          <Button
-            title="Filtrar por ubicación"
-            type="outline"
-            onPress={() => RootNavigation.navigate('UbicacionPage')}
-            buttonStyle={{ width: '100%', marginTop: 10 }}
-            titleStyle={{ color: naranjaQueDeOficios }}
-          />
-        </View>
       </SafeAreaView>
     );
   }
