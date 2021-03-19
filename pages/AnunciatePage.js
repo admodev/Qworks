@@ -25,6 +25,8 @@ import * as Updates from 'expo-updates';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import * as Progress from 'react-native-progress';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import 'react-native-get-random-values';
+import { v4 as uuidv4 } from 'uuid';
 
 const AnunciatePage = ({ navigation }) => {
   let database = firebase.database();
@@ -423,6 +425,7 @@ const AnunciatePage = ({ navigation }) => {
           latitud: latitud,
           longitud: longitud,
           photoJSONValue: photoJSONValue,
+          uuid: uuidv4(),
         })
         .then(function () {
           navigation.navigate('Anuncios');

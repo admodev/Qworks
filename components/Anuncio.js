@@ -34,6 +34,8 @@ let favs;
 
 export default function AnuncioSeleccionado({ route, navigation }) {
   let id = route.params.id;
+  let uuid = route.params.uuid;
+  let index = route.params.index;
   let routeParamsToString = id.toString();
   let [fotoDePerfil, setFotoDePerfil] = useState('');
   const [isFavorite, setFavorites] = useState([]);
@@ -69,8 +71,8 @@ export default function AnuncioSeleccionado({ route, navigation }) {
   let dbRef = firebase
     .database()
     .ref('anuncios/')
-    .orderByChild('id')
-    .equalTo(id);
+    .orderByChild('uuid')
+    .equalTo(uuid);
   let dbResult = dbRef.on('value', (snap) => {
     snap.forEach((child) => {
       key = child.key;

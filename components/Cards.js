@@ -69,6 +69,7 @@ class CardsUsuarios extends Component {
             palabraClaveTres: child.val().palabraClaveTres,
             descripcionPersonal: child.val().descripcionPersonal,
             recomendacionesTotales: child.val().recomendacionesTotales,
+            uuid: child.val().uuid,
           });
         });
         itm = items;
@@ -202,7 +203,7 @@ class CardsUsuarios extends Component {
         {this.state.search ? (
           this.filterList(this.state.items).map((itm, index) => (
             <CardSearchRender
-              key={index}
+              key={itm.uuid}
               name={itm.nombre}
               actividad={itm.actividad}
               idAnuncio={itm.idAnuncio}
@@ -289,9 +290,14 @@ class CardsUsuarios extends Component {
                   });
               }); */
 
+              console.log(
+                'FUNCIONA PORQUE LE DIGO A RUBEN QUE TE COJA',
+                u.uuid
+              );
+
               return (
                 <View
-                  key={index}
+                  key={u.uuid + index}
                   style={{
                     ...Platform.select({
                       android: {
@@ -438,6 +444,8 @@ class CardsUsuarios extends Component {
                     onPress={() => {
                       RootNavigation.navigate('AnuncioSeleccionado', {
                         id: u.idAnuncio,
+                        uuid: u.uuid,
+                        index: index,
                       });
                     }}
                     style={{
