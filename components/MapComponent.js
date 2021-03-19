@@ -206,19 +206,23 @@ class MapComponent extends Component {
 }
 
 const styles = StyleSheet.create({
-  container: {},
+  container: {
+    height: '100%',
+  },
   scrollview: {
     alignItems: 'center',
   },
   map: {
     width: SCREEN_WIDTH,
-    height: '100%',
+    height: SCREEN_HEIGHT,
     ...Platform.select({
       android: {
-        marginTop: '7%',
+        marginTop: '-35%',
+        height: SCREEN_HEIGHT,
       },
       ios: {
-        marginTop: '3%',
+        marginTop: '-35%',
+        height: SCREEN_HEIGHT,
       },
     }),
   },

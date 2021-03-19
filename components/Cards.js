@@ -126,7 +126,7 @@ class CardsUsuarios extends Component {
     const naranjaQueDeOficios = '#fd5d13';
 
     return (
-      <SafeAreaView style={{ flex: 1 }}>
+      <SafeAreaView style={{ flex: 1, backgroundColor: '#ffffff' }}>
         {Platform.OS === 'ios' ? (
           <TouchableOpacity onPress={openControlPanel}>
             <View
@@ -138,7 +138,7 @@ class CardsUsuarios extends Component {
                 justifyContent: 'center',
                 marginTop: 20,
                 width: '80%',
-                alignSelf: 'center'
+                alignSelf: 'center',
               }}
             >
               <Image
@@ -171,8 +171,8 @@ class CardsUsuarios extends Component {
                 flexDirection: 'row',
                 alignContent: 'center',
                 justifyContent: 'center',
-                marginTop: '10%',
-                marginLeft: '8%',
+                marginTop: '8%',
+                alignSelf: 'center',
                 width: '80%',
               }}
             >

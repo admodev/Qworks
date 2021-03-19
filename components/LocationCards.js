@@ -71,22 +71,29 @@ class LocationComponent extends Component {
 
   render() {
     return (
-      <SafeAreaView style={{ flex: 1 }}>
+      <View
+        style={{
+          position: 'absolute',
+          backgroundColor: '#ffffff',
+          width: '100%',
+          height: '90%',
+          alignSelf: 'center',
+          borderRadius: 10,
+        }}
+      >
         {this.state.items.map((element) => {
           return (
-            <View key={element.idAnuncio}>
-              <Text
-                style={{
-                  fontSize: 24,
-                  fontWeight: 'bold',
-                }}
-              >
-                {element.nombre}
-              </Text>
-            </View>
+            <Text
+              style={{
+                fontSize: 24,
+                fontWeight: 'bold',
+              }}
+            >
+              {element.nombre}
+            </Text>
           );
         })}
-      </SafeAreaView>
+      </View>
     );
   }
 }

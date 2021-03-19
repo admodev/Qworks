@@ -155,7 +155,7 @@ class ControlPanel extends React.Component {
     }
 
     return (
-      <SafeAreaView style={{ flex: 1 }}>
+      <SafeAreaView style={{ flex: 1, backgroundColor: '#ffffff' }}>
         <Image
           source={require('../assets/gradients/20x20.png')}
           style={{
@@ -174,10 +174,10 @@ class ControlPanel extends React.Component {
           }}
           data={this.state.items}
           renderItem={() => renderCards()}
-          sliderWidth={300}
-          itemWidth={300}
-          layout={'stack'}
-          layoutCardOffset={`18`}
+          sliderWidth={360}
+          itemWidth={270}
+          layout={'default'}
+          layoutCardOffset={`9`}
         />
       </SafeAreaView>
     );
