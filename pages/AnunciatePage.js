@@ -158,6 +158,8 @@ const AnunciatePage = ({ navigation }) => {
     showMode('time');
   };
 
+  const uuid = uuidv4();
+
   useEffect(() => {
     (async () => {
       if (Platform.OS !== 'web') {
@@ -297,7 +299,7 @@ const AnunciatePage = ({ navigation }) => {
         .storage()
         .ref(
           'profilePictures/' +
-            firebase.auth().currentUser.uid +
+            `${firebase.auth().currentUser.uid}/` +
             anunciosCountResult
         )
         .put(blob);
@@ -316,16 +318,6 @@ const AnunciatePage = ({ navigation }) => {
     }
   };
 
-  /* async function uploadImage(result) {
-    const response = await fetch(result);
-    const blob = await response.blob();
-    var photoRef = firebase
-      .storage()
-      .ref()
-      .child('profilePictures/' + user.uid + '-' + ++anunciosCountResult);
-    return photoRef.put(blob);
-  } */
-
   let dateDesdeParsed = dateDesde.toLocaleTimeString([], {
     hour: '2-digit',
     minute: '2-digit',
@@ -335,8 +327,6 @@ const AnunciatePage = ({ navigation }) => {
     hour: '2-digit',
     minute: '2-digit',
   });
-
-  let idAnuncio;
 
   function writeUserData(
     nombre,
@@ -425,7 +415,7 @@ const AnunciatePage = ({ navigation }) => {
           latitud: latitud,
           longitud: longitud,
           photoJSONValue: photoJSONValue,
-          uuid: uuidv4(),
+          uuid: uuid,
         })
         .then(function () {
           navigation.navigate('Anuncios');

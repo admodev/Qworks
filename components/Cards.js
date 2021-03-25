@@ -26,6 +26,7 @@ import 'firebase/auth';
 import * as RootNavigation from '../RootNavigation.js';
 import { StackActions } from '@react-navigation/native';
 import CardSearchRender from './SearchRender';
+import CardAnuncio from './CardAnuncio';
 
 const defaultPhoto = '../assets/icon.png';
 var itm = [];
@@ -201,301 +202,32 @@ class CardsUsuarios extends Component {
           </TouchableOpacity>
         )}
         {this.state.search ? (
-          this.filterList(this.state.items).map((itm, index) => (
+          this.filterList(this.state.items).map((itm, i) => (
             <CardSearchRender
-              key={itm.uuid}
+              key={itm.uuid + i}
               name={itm.nombre}
               actividad={itm.actividad}
               idAnuncio={itm.idAnuncio}
+              uuid={itm.uuid}
             />
           ))
-        ) : (
-          <Card
-            style={styles.card}
-            containerStyle={{
-              ...Platform.select({
-                android: {
-                  padding: 0,
-                  borderRadius: 15,
-                  backgroundColor: 'transparent',
-                  borderWidth: 0,
-                  marginTop: '2%',
-                  elevation: 0,
-                },
-                ios: {
-                  padding: 0,
-                  borderRadius: 15,
-                  backgroundColor: 'transparent',
-                  borderWidth: 0,
-                  marginTop: '10%',
-                  elevation: 0,
-                  width: '85%',
-                  alignSelf: 'center',
-                },
-              }),
-            }}
-          >
-            {this.state.items.map((u, index) => {
-              /* var fetchedPhotos = firebase
-                .storage()
-                .ref('profilePictures/')
-                .child(u.idAnuncio + u.contadorAnuncio).fullPath;
-
-              fotosDePerfil.push({
-                foto: fetchedPhotos,
-              }); */
-
-              //! arreglar esto de inmediato!!!!!
-
-              /*  var storageRef = firebase.storage().ref('profilePictures/');
-
-              // Now we get the references of these images
-              storageRef
-                .listAll()
-                .then(function (result) {
-                  result.items.forEach(function (imageRef) {
-                    // And finally display them
-                    console.log(imageRef);
-                  });
-                })
-                .catch(function (error) {
-                  console.log('ooooh nooooooo', error.message);
-                }); */
-
-              /* function displayImage(imageRef) {
-                imageRef
-                  .getDownloadURL()
-                  .then(function (url) {
-                    // TODO: Display the image on the UI
-                  })
-                  .catch(function (error) {
-                    console.log('OOOH NOO X2', error.message);
-                  });
-              } */
-
-              /* fotosDePerfil.forEach((value, index) => {
-                firebase
-                  .storage()
-                  .ref('profilePictures/' + value)
-                  .getDownloadURL()
-                  .then(function (url) {
-                    var xhr = new XMLHttpRequest();
-                    xhr.responseType = 'blob';
-                    xhr.onload = function (event) {
-                      var photoBlob = xhr.response;
-                      this.setState({ fotoDelAnuncio: photoBlob });
-                    };
-                    xhr.open('GET', url);
-                    xhr.send();
-                  });
-              }); */
-
-              console.log(
-                'FUNCIONA PORQUE LE DIGO A RUBEN QUE TE COJA',
-                u.uuid
-              );
-
-              return (
-                <View
-                  key={u.uuid + index}
-                  style={{
-                    ...Platform.select({
-                      android: {
-                        margin: 20,
-                        backgroundColor: 'transparent',
-                      },
-                      ios: {
-                        margin: 20,
-                        marginTop: '8%',
-                        backgroundColor: 'transparent',
-                      },
-                    }),
-                  }}
-                >
-                  <Image
-                    source={require('../assets/patron.jpg')}
-                    style={{
-                      flex: 1,
-                      position: 'absolute',
-                      resizeMode: 'cover',
-                      width: '100%',
-                      height: '100%',
-                      borderRadius: 10,
-                    }}
-                  />
-                  <Image
-                    source={require('../assets/gradients/20x20.png')}
-                    style={{
-                      flex: 1,
-                      position: 'absolute',
-                      resizeMode: 'cover',
-                      width: '100%',
-                      height: '100%',
-                      opacity: 0.9,
-                      borderRadius: 10,
-                    }}
-                  />
-                  {!this.state.fotoDelAnuncio ? (
-                    <View
-                      style={{ alignItems: 'center', justifyContent: 'center' }}
-                    >
-                      <Card.Image
-                        source={require('../assets/icon.png')}
-                        style={{
-                          ...Platform.select({
-                            android: {
-                              borderRadius: 25,
-                              marginTop: '8%',
-                              marginBottom: '10%',
-                              width: 140,
-                              height: 120,
-                            },
-                            ios: {
-                              borderRadius: 25,
-                              marginTop: '8%',
-                              marginBottom: '10%',
-                              width: 120,
-                              height: 90,
-                            },
-                          }),
-                        }}
-                      />
-                    </View>
-                  ) : (
-                    this.state.fotoDelAnuncio.forEach((element) => {
-                      console.log('EL ELEMENTO', element);
-                    })
-                  )}
-                  <View style={{ marginTop: '-8%' }}>
-                    <AirbnbRating
-                      size={18}
-                      showRating={true}
-                      reviews={['']}
-                      type="star"
-                      onFinishRating={(rating) => setRating(rating)}
-                    />
-                  </View>
-                  <View style={{ margin: '3%' }}>
-                    <Text
-                      style={{
-                        color: '#ffffff',
-                        textAlign: 'center',
-                        fontSize: 30,
-                        fontWeight: 'bold',
-                      }}
-                    >
-                      {u.nombre}
-                    </Text>
-                  </View>
-                  <View
-                    style={{
-                      marginTop: '-2%',
-                      flexDirection: 'row',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                    }}
-                  >
-                    <Text
-                      style={{
-                        color: '#ffffff',
-                        textAlign: 'center',
-                        fontSize: 24,
-                      }}
-                    >
-                      {u.actividad} -
-                    </Text>
-                    <MaterialCommunityIcons
-                      name="account-group"
-                      color={naranjaQueDeOficios}
-                      size={22}
-                      style={{ marginLeft: '3%' }}
-                    />
-                    <TouchableOpacity
-                      onPress={() =>
-                        RootNavigation.navigate('RecomendacionesRenderizadas')
-                      }
-                    >
-                      <Text
-                        style={{
-                          color: '#8DB600',
-                          textAlign: 'center',
-                          fontSize: 14,
-                          marginLeft: '2%',
-                        }}
-                      >
-                        {!u.recomendacionesTotales
-                          ? 0
-                          : u.recomendacionesTotales}
-                      </Text>
-                    </TouchableOpacity>
-                  </View>
-                  <View style={{ marginTop: '5%' }}>
-                    <Text
-                      style={{
-                        color: '#ffffff',
-                        textAlign: 'center',
-                        fontSize: 16,
-                      }}
-                    >
-                      {u.localidad} - {u.provincia}
-                    </Text>
-                  </View>
-                  <TouchableOpacity
-                    onPress={() => {
-                      RootNavigation.navigate('AnuncioSeleccionado', {
-                        id: u.idAnuncio,
-                        uuid: u.uuid,
-                        index: index,
-                      });
-                    }}
-                    style={{
-                      borderRadius: 25,
-                      marginLeft: 0,
-                      marginRight: 0,
-                      marginBottom: '5%',
-                      marginTop: '3%',
-                      backgroundColor: 'transparent',
-                      borderWidth: 2,
-                      borderColor: '#ffffff',
-                      width: 150,
-                      alignSelf: 'center',
-                    }}
-                  >
-                    <View
-                      style={{
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        flexDirection: 'row',
-                        marginTop: '5%',
-                      }}
-                    >
-                      <View style={{ marginLeft: '10%', marginBottom: '8%' }}>
-                        <MaterialCommunityIcons
-                          name="hand"
-                          color={naranjaQueDeOficios}
-                          size={20}
-                        />
-                      </View>
-                      <Text
-                        style={{
-                          color: naranjaQueDeOficios,
-                          marginLeft: 'auto',
-                          marginRight: 'auto',
-                          fontSize: 16,
-                          marginLeft: '3%',
-                          marginBottom: '8%',
-                          fontWeight: 'bold',
-                        }}
-                      >
-                        ¡Conóceme!
-                      </Text>
-                    </View>
-                  </TouchableOpacity>
-                </View>
-              );
-            })}
-          </Card>
-        )}
+        ) : 
+          this.state.items.map((element, index) => {
+            return(
+              <CardAnuncio
+          nombre={element.nombre}
+          actividad={element.actividad}
+          recomendacionesTotales={element.recomendacionesTotales}
+          localidad={element.localidad}
+          provincia={element.provincia}
+          idAnuncio={element.idAnuncio}
+          uuid={element.uuid}
+          key={element.uuid + index}
+          rating={element.rating}
+          />
+            )
+          })
+        }
       </SafeAreaView>
     );
   }

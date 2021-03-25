@@ -148,10 +148,12 @@ class CardSearchRender extends Component {
           </View>
           <TouchableOpacity
             onPress={() => {
-              RootNavigation.navigate('AnuncioSeleccionado', {
-                id: this.props.idAnuncio,
-              });
-            }}
+                      RootNavigation.navigate('AnuncioSeleccionado', {
+                        id: this.props.idAnuncio,
+                        uuid: this.props.uuid,
+                        index: this.props.key,
+                      });
+                    }}
             style={{
               borderRadius: 25,
               marginLeft: 0,
