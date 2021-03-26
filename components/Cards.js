@@ -91,6 +91,22 @@ class CardsUsuarios extends Component {
         user == null;
       }
     });
+
+    this.state.items.forEach((userAnounce) => {
+      var listRef = firebase.storage().ref('profilePictures/' + userAnounce.idAnuncio + userAnounce.contadorAnuncio)
+
+// Find all the prefixes and items.
+listRef.listAll().then(function(res) {
+  res.prefixes.forEach(function(folderRef) {
+    console.log('LA CARPETA', folderRef);
+  });
+  res.items.forEach(function(itemRef) {
+    console.log('LA FOTO', itemRef)
+  });
+}).catch(function(error) {
+  console.log('OCURRIO UN ERROR, LAS COMPUERTAS SE CERRARAN INMEDIATAMENTE', error.message);
+});
+    })
   }
 
   filterList(items) {
@@ -205,6 +221,7 @@ class CardsUsuarios extends Component {
           this.filterList(this.state.items).map((itm, i) => (
             <CardSearchRender
               key={itm.uuid + i}
+              image={require('../assets/icon.png')}
               name={itm.nombre}
               actividad={itm.actividad}
               idAnuncio={itm.idAnuncio}
@@ -215,6 +232,7 @@ class CardsUsuarios extends Component {
           this.state.items.map((element, index) => {
             return(
               <CardAnuncio
+              image={{ uri: 'https://picsum.photos/200/300' }}
           nombre={element.nombre}
           actividad={element.actividad}
           recomendacionesTotales={element.recomendacionesTotales}

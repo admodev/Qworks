@@ -177,7 +177,7 @@ class ControlPanel extends React.Component {
           sliderWidth={360}
           itemWidth={270}
           layout={'default'}
-          layoutCardOffset={`9`}
+          layoutCardOffset={9}
         />
       </SafeAreaView>
     );

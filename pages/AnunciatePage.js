@@ -27,6 +27,8 @@ import * as Progress from 'react-native-progress';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import 'react-native-get-random-values';
 import { v4 as uuidv4 } from 'uuid';
+import Cookies from 'js-cookie';
+import axios from 'axios';
 
 const AnunciatePage = ({ navigation }) => {
   let database = firebase.database();
@@ -123,6 +125,7 @@ const AnunciatePage = ({ navigation }) => {
   const toggleHastaPmChecked = React.useCallback(() =>
     setHastaPmChecked(!hastaPmChecked)
   );
+  const [imageUrlResponse, setImageUrlResponse] = useState('');
   const [ready, setReady] = useState(false);
   const [where, setWhere] = useState({ lat: null, lng: null });
   const [error, setError] = useState(null);
@@ -279,6 +282,8 @@ const AnunciatePage = ({ navigation }) => {
   }
 
   const pickImage = async () => {
+    var token = Cookies.get('csrftoken');
+
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
@@ -295,20 +300,32 @@ const AnunciatePage = ({ navigation }) => {
         Platform.OS === 'ios' ? result.uri.replace('file://', '') : result.uri;
       setUploading(true);
       setTransferred(0);
-      const task = firebase
+      /* const task = firebase
         .storage()
         .ref(
           'profilePictures/' +
             `${firebase.auth().currentUser.uid}/` +
             anunciosCountResult
         )
-        .put(blob);
+        .put(blob); */
+        const data = new FormData();
+    data.append('file', blob);
+    data.append('filename', filename);
+    
+    const task = fetch('http://192.168.0.24:5000/upload', {
+      method: 'POST',
+      body: data,
+    }).then((response) => {
+      response.json().then((body) => {
+        setImageUrlResponse(`http://192.168.0.24:5000/${body.file}`);
+      });
+    });
       // set progress state
-      task.on('state_changed', (snapshot) => {
+      /* task.on('state_changed', (snapshot) => {
         setTransferred(
           Math.round(snapshot.bytesTransferred / snapshot.totalBytes) * 10000
         );
-      });
+      }); */
       try {
         await task;
       } catch (e) {
@@ -530,6 +547,18 @@ const AnunciatePage = ({ navigation }) => {
           >
             Información Personal
           </Text>
+          {imageUrlResponse ? (
+            <Image
+          source={{uri: imageUrlResponse }}
+          style={{
+            position: 'absolute',
+            with: 300,
+            height: 300
+          }}
+          />
+          ) : (
+            <Text>No image!</Text>
+          )}
           <Input
             placeholder="Nombre *"
             inputStyle={{ color: '#000000' }}

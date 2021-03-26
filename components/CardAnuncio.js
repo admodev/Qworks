@@ -93,7 +93,7 @@ class CardAnuncio extends React.Component {
                       style={{ alignItems: 'center', justifyContent: 'center' }}
                     >
                       <Card.Image
-                        source={require('../assets/icon.png')}
+                        source={this.props.image}
                         style={{
                           ...Platform.select({
                             android: {
