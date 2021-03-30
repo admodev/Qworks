@@ -15,7 +15,7 @@ const OnboardingPage = ({ navigation }) => {
 
   return (
     <Drawer ref={(ref) => (_drawer = ref)} content={<ControlPanel />}>
-      <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }}>
+      <SafeAreaView style={{ flex: 1, backgroundColor: '#ffffff' }}>
         <Image
           source={require('../assets/gradients/20x20.png')}
           style={{

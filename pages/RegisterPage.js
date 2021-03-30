@@ -92,23 +92,42 @@ const signInWithFacebook = () => {
 };
 
 export default function RegisterPage({ navigation }) {
-  let [email, setUserEmail] = useState('');
-  let [password, setUserPassword] = useState('');
+  const [isLogged, setIsLogged] = useState(false);
+  const [email, setUserEmail] = useState('');
+  const [password, setUserPassword] = useState('');
 
   function registrarUsuarios(email, password) {
     firebase
       .auth()
       .createUserWithEmailAndPassword(email, password)
       .then(function () {
+        firebase.auth().onAuthStateChanged(function (user) {
+          if (user) {
+            setIsLogged(true);
+            firebase
+              .database()
+              .ref('registeredEmails/' + user.uid)
+              .set({
+                user: user.uid,
+                email: user.email,
+              });
+            var email = user.email;
+            var uid = user.uid;
+            var providerData = user.providerData;
+            navigation.navigate('OnboardingPage');
+          } else {
+            setIsLogged(false);
+          }
+        });
+
         Notifications.scheduleNotificationAsync({
           content: {
             title: '¡QuedeOficios! 📬',
-            body: '¡Bienvenido@!',
+            body: '¡Bienvenid@ a QuedeOficios!',
             data: { data: 'El equipo de ¡QuedeOficios!' },
           },
           trigger: { seconds: 3 },
         });
-        Updates.reloadAsync();
       });
   }
 

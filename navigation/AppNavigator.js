@@ -24,21 +24,17 @@ import Chat from '../components/ChatComponent';
 import AnuncioSeleccionado from '../components/Anuncio';
 import MisComentariosPage from '../components/MisComentarios';
 import CambiarNombreScreen from '../components/CambiarNombreComponent';
-import UbicacionPage from '../components/FiltroUbicacion';
-import FiltroRecomendados from '../components/FiltroRecomendaciones';
 import FiltroDeComentarios from '../components/FiltroComentarios';
-import FiltroDeFavoritos from '../components/FiltroFavoritos';
 import RecomendarUsuario from '../components/RecomendarScreen';
 import ComentarScreen from '../components/Comentar';
-import FiltroMenosTresEstrellasScreen from '../components/FiltroMenosTresEstrellas';
-import FiltroMasTresEstrellasScreen from '../components/FiltroMasTresEstrellas';
-import FiltroCincoEstrellasScreen from '../components/FiltroCincoEstrellas';
-import MisFavoritosScreen from '../components/MisFavoritos';
 import EditarAnuncioScreen from '../components/EditarAnuncio';
-import MisRecomendadosPage from '../components/MisRecomendados';
 import RecuperarPasswordScreen from '../components/RecuperarPassword';
 import UserMessagesList from '../pages/MessagesList';
 import RecomendacionesRenderizadas from '../pages/RecomendacionesPage';
+import CambiarFotoPerfil from '../pages/CambiarFotoPerfil';
+import EditarInformacionPersonalScreen from '../components/editarAnuncio/InformacionPersonal';
+import EditarInformacionLaboralScreen from '../components/editarAnuncio/InformacionLaboral';
+import EditarResumenPersonalScreen from '../components/editarAnuncio/ResumenPersonal';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -177,11 +173,6 @@ function MainStackNavigator({ navigation }) {
           options={{ headerShown: false }}
         />
         <Stack.Screen
-          name="OnboardingPage"
-          component={OnboardingPage}
-          options={{ title: 'QueDeOficios!', headerShown: false }}
-        />
-        <Stack.Screen
           name="CardsUsuarios"
           component={CardsUsuarios}
           options={{ title: 'QuedeOficios!', headerShown: false }}
@@ -210,11 +201,6 @@ function MainStackNavigator({ navigation }) {
         <Stack.Screen
           name="RegisterPage"
           component={RegisterPage}
-          options={{ title: 'QuedeOficios!', headerShown: false }}
-        />
-        <Stack.Screen
-          name="ProfilePage"
-          component={ProfilePage}
           options={{ title: 'QuedeOficios!', headerShown: false }}
         />
         <Stack.Screen
@@ -259,11 +245,6 @@ function MainStackNavigator({ navigation }) {
           options={{ title: 'QuedeOficios!', headerShown: false }}
         />
         <Stack.Screen
-          name="UbicacionPage"
-          component={UbicacionPage}
-          options={{ title: 'QuedeOficios!', headerShown: false }}
-        />
-        <Stack.Screen
           name="RecomendarUsuario"
           component={RecomendarUsuario}
           options={{ title: 'QuedeOficios!', headerShown: false }}
@@ -274,48 +255,13 @@ function MainStackNavigator({ navigation }) {
           options={{ title: 'QuedeOficios!', headerShown: false }}
         />
         <Stack.Screen
-          name="FiltroRecomendados"
-          component={FiltroRecomendados}
-          options={{ title: 'QuedeOficios!', headerShown: false }}
-        />
-        <Stack.Screen
           name="FiltroDeComentarios"
           component={FiltroDeComentarios}
           options={{ title: 'QuedeOficios!', headerShown: false }}
         />
         <Stack.Screen
-          name="FiltroDeFavoritos"
-          component={FiltroDeFavoritos}
-          options={{ title: 'QuedeOficios!', headerShown: false }}
-        />
-        <Stack.Screen
-          name="FiltroMenosTresEstrellasScreen"
-          component={FiltroMenosTresEstrellasScreen}
-          options={{ title: 'QuedeOficios!', headerShown: false }}
-        />
-        <Stack.Screen
-          name="FiltroMasTresEstrellasScreen"
-          component={FiltroMasTresEstrellasScreen}
-          options={{ title: 'QuedeOficios!', headerShown: false }}
-        />
-        <Stack.Screen
-          name="FiltroCincoEstrellasScreen"
-          component={FiltroCincoEstrellasScreen}
-          options={{ title: 'QuedeOficios!', headerShown: false }}
-        />
-        <Stack.Screen
-          name="MisFavoritosScreen"
-          component={MisFavoritosScreen}
-          options={{ title: 'QuedeOficios!', headerShown: false }}
-        />
-        <Stack.Screen
           name="EditarAnuncioScreen"
           component={EditarAnuncioScreen}
-          options={{ title: 'QuedeOficios!', headerShown: false }}
-        />
-        <Stack.Screen
-          name="MisRecomendadosPage"
-          component={MisRecomendadosPage}
           options={{ title: 'QuedeOficios!', headerShown: false }}
         />
         <Stack.Screen
@@ -327,6 +273,26 @@ function MainStackNavigator({ navigation }) {
           name="RecomendacionesRenderizadas"
           component={RecomendacionesRenderizadas}
           options={{ title: 'QuedeOficios!', headerShown: false }}
+        />
+        <Stack.Screen
+          name="CambiarFotoPerfil"
+          component={CambiarFotoPerfil}
+          options={{ title: 'QuedeOficios!', headerShown: false }}
+        />
+        <Stack.Screen
+          name="EditarInformacionPersonalScreen"
+          component={EditarInformacionPersonalScreen}
+          options={{ title: 'Quedeoficios!', headerShown: false }}
+        />
+        <Stack.Screen
+          name="EditarInformacionLaboralScreen"
+          component={EditarInformacionLaboralScreen}
+          options={{ title: 'Quedeoficios!', headerShown: false }}
+        />
+        <Stack.Screen
+          name="EditarResumenPersonalScreen"
+          component={EditarResumenPersonalScreen}
+          options={{ title: 'Quedeoficios!', headerShown: false }}
         />
       </Stack.Navigator>
     </NavigationContainer>

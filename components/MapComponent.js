@@ -22,9 +22,6 @@ import { StackActions } from '@react-navigation/native';
 import SearchedCardResult from './searchedCard';
 import MapView from 'react-native-maps';
 import Carousel from 'react-native-snap-carousel';
-import MapComponent from './MapComponent';
-import LocationComponent from './LocationCards';
-import LocationSearch from './LocationSearchBar';
 
 const { width, height } = Dimensions.get('window');
 const SCREEN_WIDTH = width;
@@ -34,9 +31,8 @@ const LATITUDE_DELTA = 0.0922;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 
 var itm = [];
-var funcItm = [];
 
-class ControlPanel extends React.Component {
+class MapComponent extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -51,8 +47,6 @@ class ControlPanel extends React.Component {
   }
 
   componentDidMount() {
-    functionalItems = [];
-
     firebase
       .database()
       .ref('anuncios/')
@@ -76,25 +70,8 @@ class ControlPanel extends React.Component {
             descripcionPersonal: child.val().descripcionPersonal,
             recomendacionesTotales: child.val().recomendacionesTotales,
           });
-          functionalItems.push({
-            anuncioId: child.val().anuncioId,
-            nombre: child.val().nombre,
-            apellido: child.val().apellido,
-            actividad: child.val().actividad,
-            emailPersonal: child.val().emailPersonal,
-            idAnuncio: child.val().id,
-            contadorAnuncio: child.val().anuncioId,
-            localidad: child.val().localidad,
-            provincia: child.val().provincia,
-            palabraClaveUno: child.val().palabraClaveUno,
-            palabraClaveDos: child.val().palabraClaveDos,
-            palabraClaveTres: child.val().palabraClaveTres,
-            descripcionPersonal: child.val().descripcionPersonal,
-            recomendacionesTotales: child.val().recomendacionesTotales,
-          });
         });
         itm = items;
-        funcItm = items;
         this.setState({ items: items });
         console.log(itm);
         console.log('itemstate ' + this.state.items);
@@ -151,15 +128,6 @@ class ControlPanel extends React.Component {
   }
 
   render() {
-    const naranjaQueDeOficios = '#fd5d13';
-
-    const closeControlPanel = () => {
-      _drawer.close();
-    };
-    const openControlPanel = () => {
-      _drawer.open();
-    };
-
     var latitud = parseFloat(this.state.where.lat);
     var longitud = parseFloat(this.state.where.lng);
 
@@ -170,38 +138,94 @@ class ControlPanel extends React.Component {
       longitudeDelta: LONGITUDE_DELTA,
     };
 
-    function renderCards() {
-      return <LocationComponent nombre={'miguel'} />;
-    }
+    const closeControlPanel = () => {
+      _drawer.close();
+    };
 
     return (
-      <SafeAreaView style={{ flex: 1, backgroundColor: '#ffffff' }}>
-        <Image
-          source={require('../assets/gradients/20x20.png')}
-          style={{
-            flex: 1,
-            position: 'absolute',
-            resizeMode: 'cover',
-            width: '100%',
-            height: '5%',
-          }}
-        />
-        <LocationSearch />
-        <MapComponent />
-        <Carousel
-          ref={(c) => {
-            this._carousel = c;
-          }}
-          data={this.state.items}
-          renderItem={() => renderCards()}
-          sliderWidth={360}
-          itemWidth={270}
-          layout={'default'}
-          layoutCardOffset={9}
-        />
+      <SafeAreaView style={{ flex: 1 }}>
+        <View style={styles.container}>
+          {!this.state.ready && (
+            <View
+              style={{
+                ...Platform.select({
+                  android: {
+                    padding: 10,
+                    marginTop: '10%',
+                    ...StyleSheet.absoluteFillObject,
+                    justifyContent: 'flex-end',
+                    alignItems: 'center',
+                  },
+                  ios: {
+                    padding: 10,
+                    marginTop: '20%',
+                    ...StyleSheet.absoluteFillObject,
+                    justifyContent: 'flex-end',
+                    alignItems: 'center',
+                  },
+                }),
+              }}
+            >
+              <Text
+                style={{ fontSize: 18, fontWeight: 'bold', marginBottom: 15 }}
+              >
+                Cargando...
+              </Text>
+              <ActivityIndicator
+                size="large"
+                color="orange"
+                style={{
+                  ...Platform.select({
+                    android: {
+                      marginBottom: '50%',
+                    },
+                  }),
+                }}
+              />
+            </View>
+          )}
+          {this.state.error && <Text>{this.state.error}</Text>}
+          {this.state.ready && (
+            <MapView
+              provider={this.props.provider}
+              style={styles.map}
+              scrollEnabled={true}
+              zoomEnabled={true}
+              pitchEnabled={true}
+              rotateEnabled={true}
+              initialRegion={region}
+              onUserLocationChange={(event) => console.log(event.nativeEvent)}
+              showsUserLocation={this.state.showsUserLocation}
+              followsUserLocation={this.state.followsUserLocation}
+            ></MapView>
+          )}
+        </View>
       </SafeAreaView>
     );
   }
 }
 
-export default ControlPanel;
+const styles = StyleSheet.create({
+  container: {
+    height: '100%',
+  },
+  scrollview: {
+    alignItems: 'center',
+  },
+  map: {
+    width: SCREEN_WIDTH,
+    height: SCREEN_HEIGHT,
+    ...Platform.select({
+      android: {
+        marginTop: '-35%',
+        height: SCREEN_HEIGHT,
+      },
+      ios: {
+        marginTop: '-35%',
+        height: SCREEN_HEIGHT,
+      },
+    }),
+  },
+});
+
+export default MapComponent;

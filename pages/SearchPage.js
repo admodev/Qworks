@@ -140,13 +140,13 @@ class SearchPage extends React.Component {
               <View
                 style={{
                   flex: 1,
-                  flexDirection: 'row',
-                  position: 'absolute',
-                  alignContent: 'center',
-                  justifyContent: 'center',
-                  marginTop: '4.7%',
-                  marginLeft: 25,
-                  width: '80%',
+                flexDirection: 'row',
+                position: 'absolute',
+                alignContent: 'center',
+                justifyContent: 'center',
+                marginTop: 20,
+                width: '80%',
+                alignSelf: 'center'
                 }}
               >
                 <Image

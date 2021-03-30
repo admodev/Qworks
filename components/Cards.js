@@ -1,4 +1,4 @@
-import React, { useState, setState } from 'react';
+import React, { Component, useState, setState } from 'react';
 import {
   TouchableOpacity,
   StyleSheet,
@@ -26,19 +26,25 @@ import 'firebase/auth';
 import * as RootNavigation from '../RootNavigation.js';
 import { StackActions } from '@react-navigation/native';
 import CardSearchRender from './SearchRender';
+import CardAnuncio from './CardAnuncio';
 
 const defaultPhoto = '../assets/icon.png';
 var itm = [];
 var foto = [];
+var fotosDePerfil = [];
 
-class CardsUsuarios extends React.Component {
+class CardsUsuarios extends Component {
   constructor(props) {
     super(props);
     this.state = {
       items: [],
       search: '',
       fotoDePerfil: [],
+      userProfilePicture: null,
+      anunciosFound: [],
+      fotoDelAnuncio: [],
     };
+    this.setState.bind(this);
   }
 
   componentDidMount() {
@@ -50,6 +56,7 @@ class CardsUsuarios extends React.Component {
         let items = [];
         snap.forEach((child) => {
           items.push({
+            anuncioId: child.val().anuncioId,
             nombre: child.val().nombre,
             apellido: child.val().apellido,
             actividad: child.val().actividad,
@@ -63,7 +70,7 @@ class CardsUsuarios extends React.Component {
             palabraClaveTres: child.val().palabraClaveTres,
             descripcionPersonal: child.val().descripcionPersonal,
             recomendacionesTotales: child.val().recomendacionesTotales,
-            photoJSONValue: child.val().photoJSONValue,
+            uuid: child.val().uuid,
           });
         });
         itm = items;
@@ -121,7 +128,7 @@ class CardsUsuarios extends React.Component {
     const naranjaQueDeOficios = '#fd5d13';
 
     return (
-      <SafeAreaView style={{ flex: 1 }}>
+      <SafeAreaView style={{ flex: 1, backgroundColor: '#ffffff' }}>
         {Platform.OS === 'ios' ? (
           <TouchableOpacity onPress={openControlPanel}>
             <View
@@ -132,8 +139,8 @@ class CardsUsuarios extends React.Component {
                 alignContent: 'center',
                 justifyContent: 'center',
                 marginTop: 20,
-                marginLeft: 25,
                 width: '80%',
+                alignSelf: 'center',
               }}
             >
               <Image
@@ -166,8 +173,8 @@ class CardsUsuarios extends React.Component {
                 flexDirection: 'row',
                 alignContent: 'center',
                 justifyContent: 'center',
-                marginTop: '10%',
-                marginLeft: '8%',
+                marginTop: '8%',
+                alignSelf: 'center',
                 width: '80%',
               }}
             >
@@ -194,259 +201,33 @@ class CardsUsuarios extends React.Component {
             </View>
           </TouchableOpacity>
         )}
-        {this.state.search ? (
-          this.filterList(this.state.items).map((itm, index) => (
-            <CardSearchRender
-              key={index}
-              name={itm.nombre}
-              actividad={itm.actividad}
-              idAnuncio={itm.idAnuncio}
-            />
-          ))
-        ) : (
-          <Card
-            style={styles.card}
-            containerStyle={{
-              ...Platform.select({
-                android: {
-                  padding: 0,
-                  borderRadius: 15,
-                  backgroundColor: 'transparent',
-                  borderWidth: 0,
-                  marginTop: '2%',
-                  elevation: 0,
-                },
-                ios: {
-                  padding: 0,
-                  borderRadius: 15,
-                  backgroundColor: 'transparent',
-                  borderWidth: 0,
-                  marginTop: '10%',
-                  elevation: 0,
-                  width: '85%',
-                  alignSelf: 'center',
-                },
-              }),
-            }}
-          >
-            {this.state.items.map((u, i) => {
+        {this.state.search
+          ? this.filterList(this.state.items).map((itm, i) => (
+              <CardSearchRender
+                key={itm.uuid + i}
+                image={require('../assets/icon.png')}
+                name={itm.nombre}
+                actividad={itm.actividad}
+                idAnuncio={itm.idAnuncio}
+                uuid={itm.uuid}
+              />
+            ))
+          : this.state.items.map((element, index) => {
               return (
-                <View
-                  key={i}
-                  style={{
-                    ...Platform.select({
-                      android: {
-                        margin: 20,
-                        backgroundColor: 'transparent',
-                      },
-                      ios: {
-                        margin: 20,
-                        marginTop: '8%',
-                        backgroundColor: 'transparent',
-                      },
-                    }),
-                  }}
-                >
-                  <Image
-                    source={require('../assets/patron.jpg')}
-                    style={{
-                      flex: 1,
-                      position: 'absolute',
-                      resizeMode: 'cover',
-                      width: '100%',
-                      height: '100%',
-                      borderRadius: 10,
-                    }}
-                  />
-                  <Image
-                    source={require('../assets/gradients/20x20.png')}
-                    style={{
-                      flex: 1,
-                      position: 'absolute',
-                      resizeMode: 'cover',
-                      width: '100%',
-                      height: '100%',
-                      opacity: 0.9,
-                      borderRadius: 10,
-                    }}
-                  />
-                  {!u.photoJSONValue ? (
-                    <View
-                      style={{ alignItems: 'center', justifyContent: 'center' }}
-                    >
-                      <Card.Image
-                        source={require('../assets/icon.png')}
-                        style={{
-                          ...Platform.select({
-                            android: {
-                              borderRadius: 25,
-                              marginTop: '8%',
-                              marginBottom: '10%',
-                              width: 140,
-                              height: 120,
-                            },
-                            ios: {
-                              borderRadius: 25,
-                              marginTop: '8%',
-                              marginBottom: '10%',
-                              width: 120,
-                              height: 90,
-                            },
-                          }),
-                        }}
-                      />
-                    </View>
-                  ) : (
-                    <Card.Image
-                      source={{ uri: u.photoJSONValue.uri }}
-                      style={{
-                        ...Platform.select({
-                          android: {
-                            borderRadius: 25,
-                            marginTop: 10,
-                            marginBottom: 20,
-                            marginLeft: 60,
-                            marginRight: 60,
-                          },
-                          ios: {
-                            borderRadius: 25,
-                            marginTop: 10,
-                            marginBottom: 20,
-                            marginLeft: 60,
-                            marginRight: 60,
-                          },
-                        }),
-                      }}
-                    />
-                  )}
-                  <View style={{ marginTop: '-8%' }}>
-                    <AirbnbRating
-                      size={18}
-                      showRating={true}
-                      reviews={['']}
-                      type="star"
-                      onFinishRating={(rating) => setRating(rating)}
-                    />
-                  </View>
-                  <View style={{ margin: '3%' }}>
-                    <Text
-                      style={{
-                        color: '#ffffff',
-                        textAlign: 'center',
-                        fontSize: 30,
-                        fontWeight: 'bold',
-                      }}
-                    >
-                      {u.nombre}
-                    </Text>
-                  </View>
-                  <View
-                    style={{
-                      marginTop: '-2%',
-                      flexDirection: 'row',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                    }}
-                  >
-                    <Text
-                      style={{
-                        color: '#ffffff',
-                        textAlign: 'center',
-                        fontSize: 24,
-                      }}
-                    >
-                      {u.actividad} -
-                    </Text>
-                    <MaterialCommunityIcons
-                      name="account-group"
-                      color={naranjaQueDeOficios}
-                      size={22}
-                      style={{ marginLeft: '3%' }}
-                    />
-                    <TouchableOpacity
-                      onPress={() =>
-                        RootNavigation.navigate('RecomendacionesRenderizadas')
-                      }
-                    >
-                      <Text
-                        style={{
-                          color: '#8DB600',
-                          textAlign: 'center',
-                          fontSize: 14,
-                          marginLeft: '2%',
-                        }}
-                      >
-                        {!u.recomendacionesTotales
-                          ? 0
-                          : u.recomendacionesTotales}
-                      </Text>
-                    </TouchableOpacity>
-                  </View>
-                  <View style={{ marginTop: '5%' }}>
-                    <Text
-                      style={{
-                        color: '#ffffff',
-                        textAlign: 'center',
-                        fontSize: 16,
-                      }}
-                    >
-                      {u.localidad} - {u.provincia}
-                    </Text>
-                  </View>
-                  <TouchableOpacity
-                    onPress={() => {
-                      RootNavigation.navigate('AnuncioSeleccionado', {
-                        id: u.idAnuncio,
-                      });
-                    }}
-                    style={{
-                      borderRadius: 25,
-                      marginLeft: 0,
-                      marginRight: 0,
-                      marginBottom: '5%',
-                      marginTop: '3%',
-                      backgroundColor: 'transparent',
-                      borderWidth: 2,
-                      borderColor: '#ffffff',
-                      width: 150,
-                      alignSelf: 'center',
-                    }}
-                  >
-                    <View
-                      style={{
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        flexDirection: 'row',
-                        marginTop: '5%',
-                      }}
-                    >
-                      <View style={{ marginLeft: '10%', marginBottom: '8%' }}>
-                        <MaterialCommunityIcons
-                          name="hand"
-                          color={naranjaQueDeOficios}
-                          size={20}
-                        />
-                      </View>
-                      <Text
-                        style={{
-                          color: naranjaQueDeOficios,
-                          marginLeft: 'auto',
-                          marginRight: 'auto',
-                          fontSize: 16,
-                          marginLeft: '3%',
-                          marginBottom: '8%',
-                          fontWeight: 'bold',
-                        }}
-                      >
-                        ¡Conóceme!
-                      </Text>
-                    </View>
-                  </TouchableOpacity>
-                </View>
+                <CardAnuncio
+                  image={{ uri: 'https://picsum.photos/200/300' }}
+                  nombre={element.nombre}
+                  actividad={element.actividad}
+                  recomendacionesTotales={element.recomendacionesTotales}
+                  localidad={element.localidad}
+                  provincia={element.provincia}
+                  idAnuncio={element.idAnuncio}
+                  uuid={element.uuid}
+                  key={element.uuid + index}
+                  rating={element.rating}
+                />
               );
             })}
-          </Card>
-        )}
       </SafeAreaView>
     );
   }

@@ -1,8 +1,17 @@
 // @refresh reset
 //
-import React, { useState, setState } from "react";
-import { SafeAreaView, StyleSheet, Button, Text, Image, TouchableOpacity, View } from "react-native";
-import { Input } from "react-native-elements";
+import React, { useState, setState } from 'react';
+import {
+  SafeAreaView,
+  StyleSheet,
+  Button,
+  KeyboardAvoidingView,
+  Text,
+  Image,
+  TouchableOpacity,
+  View,
+} from 'react-native';
+import { Input } from 'react-native-elements';
 import {
   FIREBASE_API_KEY,
   FIREBASE_AUTH_DOMAIN,
@@ -12,13 +21,15 @@ import {
   FIREBASE_MESSAGING_SENDER_ID,
   FIREBASE_APP_ID,
   FIREBASE_MEASUREMENT_ID,
-} from "@env";
-import * as firebase from "firebase";
-import "firebase/auth";
-import "firebase/firestore";
-import "firebase/database";
-import * as Updates from "expo-updates";
-import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+} from '@env';
+import * as firebase from 'firebase';
+import 'firebase/auth';
+import 'firebase/firestore';
+import 'firebase/database';
+import * as Updates from 'expo-updates';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import * as Notifications from 'expo-notifications';
+import { Platform } from 'react-native';
 
 if (firebase.apps.length === 0) {
   try {
@@ -34,7 +45,7 @@ if (firebase.apps.length === 0) {
     });
   } catch (err) {
     if (!/already exists/.test(err.message)) {
-      console.error("Firebase initialization error raised", err.stack);
+      console.error('Firebase initialization error raised', err.stack);
     }
   }
 }
@@ -42,69 +53,110 @@ if (firebase.apps.length === 0) {
 export default function ComentarScreen({ route, navigation }) {
   let id = route.params.id;
   let user = firebase.auth().currentUser.uid;
-  let [comentario, setComentario] = useState("");
+  let [comentario, setComentario] = useState('');
+  let nombreDeReceptor;
 
-  function comentarUsuario(comentario) {
-      let userCommentingRef = firebase.database().ref("anuncios/").orderByChild("id").equalTo(firebase.auth().currentUser.uid);
-      let userNameRef = userCommentingRef.once("value").then(function(snapshot) {
-    var nombre = snapshot.val().nombre;
-      });
-    firebase
-      .database()
-      .ref("comentarios/")
-      .push({})
-      .set({
-        id: user,
-        comentadoPor: nombre,
-        comentario: comentario,
-      })
-      .then(function () {
-        Updates.reloadAsync();
-      });
+  firebase
+    .database()
+    .ref('anuncios/')
+    .orderByChild('id')
+    .equalTo(id)
+    .once('value', function (snapshot) {
+      nombreDeReceptor = snapshot.val().nombre;
+    });
+
+  function comentarUsuario() {
+    var emisorID = firebase.auth().currentUser.uid;
+    var emisor = firebase.auth().currentUser.email;
+    var receptor = id;
+
+    if (!comentario) {
+      alert('Por favor, escribe un comentario...');
+    } else {
+      firebase
+        .database()
+        .ref('comentarios/')
+        .push()
+        .set({
+          emisorID: emisorID,
+          emisorEmail: emisor,
+          receptor: receptor,
+          comentario: comentario,
+        })
+        .then(() => {
+          Notifications.scheduleNotificationAsync({
+            content: {
+              title: '¡QuedeOficios! 📬',
+              body: 'Gracias por comentar 🙋‍♀️🙋‍♂️',
+              data: { data: 'El equipo de ¡QuedeOficios!' },
+            },
+            trigger: { seconds: 2 },
+          });
+          navigation.navigate('AnuncioSeleccionado', {
+            id: id,
+          });
+        });
+    }
   }
 
   return (
     <SafeAreaView
-      style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
+      style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}
     >
-    <Image
-        source={require("../assets/gradients/20x20.png")}
+      <Image
+        source={require('../assets/gradients/20x20.png')}
         style={{
           flex: 1,
-          position: "absolute",
-          resizeMode: "cover",
-          width: "100%",
-          height: "5%",
-          top: 0
+          position: 'absolute',
+          resizeMode: 'cover',
+          width: '100%',
+          height: '5%',
+          top: 0,
         }}
       />
       <View
         style={{
-            width: 30,
-                height: 30,
-                alignItems: "center",
-                top: 50,
-                left: 10,
-                position: "absolute"
+          width: 30,
+          height: 30,
+          alignItems: 'center',
+          top: 50,
+          left: 10,
+          position: 'absolute',
         }}
-        >
-        <TouchableOpacity
-        onPress={() => navigation.goBack()}
-        >
-        <MaterialCommunityIcons
-        name="arrow-left"
-        color={"#fd5d13"}
-        size={32}
-        style={{ marginTop: "auto", marginBottom: "auto" }}
-        />
+      >
+        <TouchableOpacity onPress={() => navigation.goBack()}>
+          <MaterialCommunityIcons
+            name="arrow-left"
+            color={'#fd5d13'}
+            size={32}
+            style={{ marginTop: 'auto', marginBottom: 'auto' }}
+          />
         </TouchableOpacity>
-        </View>
-      <Input
-        placeholder="Deja un comentario..."
-        onChangeText={(comentario) => setComentario(comentario)}
-        value={comentario}
-      />
-      <Button title="Comentar" onPress={() => alert("¡Enviado!")} />
+      </View>
+      <KeyboardAvoidingView
+        style={{
+          width: '100%',
+        }}
+      >
+        {Platform.os === 'ios' ? (
+          <Input
+            placeholder="Deja un comentario..."
+            onChangeText={(comentario) => setComentario(comentario)}
+            value={comentario}
+            maxLength="140"
+            multiline="true"
+          />
+        ) : (
+          <Input
+            placeholder="Deja un comentario..."
+            onChangeText={(comentario) => setComentario(comentario)}
+            value={comentario}
+            maxLength={140}
+            multiline={true}
+          />
+        )}
+        <Button title="Comentar" onPress={() => comentarUsuario()} />
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 }

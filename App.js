@@ -6,7 +6,7 @@ import * as React from 'react';
 import { Platform } from 'react-native';
 import MainStackNavigator from './navigation/AppNavigator.js';
 import { Asset } from 'expo-asset';
-import { AppLoading } from 'expo';
+import AppLoading from 'expo-app-loading';
 import * as Location from 'expo-location';
 import * as firebase from 'firebase';
 import 'firebase/auth';
@@ -102,12 +102,6 @@ export default function App() {
       Notifications.removeNotificationSubscription(responseListener);
     };
   }, []);
-
-  //  if (Chat.messages) {
-  //    async () => {
-  //      await schedulePushNotification();
-  //    };
-  //  }
 
   if (!isReady) {
     return (
