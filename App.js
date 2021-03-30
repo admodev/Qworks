@@ -103,12 +103,6 @@ export default function App() {
     };
   }, []);
 
-  //  if (Chat.messages) {
-  //    async () => {
-  //      await schedulePushNotification();
-  //    };
-  //  }
-
   if (!isReady) {
     return (
       <AppLoading

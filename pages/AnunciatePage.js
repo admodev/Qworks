@@ -294,38 +294,24 @@ const AnunciatePage = ({ navigation }) => {
     if (!result.cancelled) {
       setImage(result.uri.toString());
       const response = await fetch(result.uri);
-      const blob = await response.blob();
+      const blob = new Blob([response.blob()], { type: 'image/jpeg' });
       const filename = result.uri.substring(result.uri.lastIndexOf('/') + 1);
       const uploadUri =
         Platform.OS === 'ios' ? result.uri.replace('file://', '') : result.uri;
       setUploading(true);
       setTransferred(0);
-      /* const task = firebase
-        .storage()
-        .ref(
-          'profilePictures/' +
-            `${firebase.auth().currentUser.uid}/` +
-            anunciosCountResult
-        )
-        .put(blob); */
-        const data = new FormData();
-    data.append('file', blob);
-    data.append('filename', filename);
-    
-    const task = fetch('http://192.168.0.24:5000/upload', {
-      method: 'POST',
-      body: data,
-    }).then((response) => {
-      response.json().then((body) => {
-        setImageUrlResponse(`http://192.168.0.24:5000/${body.file}`);
+      const data = new FormData();
+      data.append('file', blob);
+      data.append('filename', filename);
+
+      const task = fetch('http://192.168.0.20:5000/upload', {
+        method: 'POST',
+        body: data,
+      }).then((response) => {
+        response.json().then((body) => {
+          setImageUrlResponse(`http://192.168.0.20:5000/${body.file}`);
+        });
       });
-    });
-      // set progress state
-      /* task.on('state_changed', (snapshot) => {
-        setTransferred(
-          Math.round(snapshot.bytesTransferred / snapshot.totalBytes) * 10000
-        );
-      }); */
       try {
         await task;
       } catch (e) {
@@ -547,15 +533,15 @@ const AnunciatePage = ({ navigation }) => {
           >
             Información Personal
           </Text>
-          {imageUrlResponse ? (
+          {image ? (
             <Image
-          source={{uri: imageUrlResponse }}
-          style={{
-            position: 'absolute',
-            with: 300,
-            height: 300
-          }}
-          />
+              source={{ uri: image }}
+              style={{
+                position: 'absolute',
+                with: 300,
+                height: 300,
+              }}
+            />
           ) : (
             <Text>No image!</Text>
           )}

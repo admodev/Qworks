@@ -34,41 +34,6 @@ class LocationComponent extends Component {
     };
   }
 
-  componentDidMount() {
-    firebase
-      .database()
-      .ref('anuncios/')
-      .orderByKey()
-      .on('value', (snap) => {
-        let items = [];
-        snap.forEach((child) => {
-          items.push({
-            anuncioId: child.val().anuncioId,
-            nombre: child.val().nombre,
-            apellido: child.val().apellido,
-            actividad: child.val().actividad,
-            emailPersonal: child.val().emailPersonal,
-            idAnuncio: child.val().id,
-            contadorAnuncio: child.val().anuncioId,
-            localidad: child.val().localidad,
-            provincia: child.val().provincia,
-            palabraClaveUno: child.val().palabraClaveUno,
-            palabraClaveDos: child.val().palabraClaveDos,
-            palabraClaveTres: child.val().palabraClaveTres,
-            descripcionPersonal: child.val().descripcionPersonal,
-            recomendacionesTotales: child.val().recomendacionesTotales,
-          });
-        });
-        itm = items;
-        this.setState({ items: items });
-        console.log(itm);
-        console.log('itemstate ' + this.state.items);
-        itm.forEach((itms) => {
-          console.log('title*' + itms.title);
-        });
-      });
-  }
-
   render() {
     return (
       <View
@@ -81,18 +46,14 @@ class LocationComponent extends Component {
           borderRadius: 10,
         }}
       >
-        {this.state.items.map((element) => {
-          return (
-            <Text
-              style={{
-                fontSize: 24,
-                fontWeight: 'bold',
-              }}
-            >
-              {element.nombre}
-            </Text>
-          );
-        })}
+        <Text
+          style={{
+            fontSize: 24,
+            fontWeight: 'bold',
+          }}
+        >
+          {this.props.nombre}
+        </Text>
       </View>
     );
   }

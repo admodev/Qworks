@@ -34,6 +34,7 @@ const LATITUDE_DELTA = 0.0922;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 
 var itm = [];
+var funcItm = [];
 
 class ControlPanel extends React.Component {
   constructor(props) {
@@ -50,6 +51,8 @@ class ControlPanel extends React.Component {
   }
 
   componentDidMount() {
+    functionalItems = [];
+
     firebase
       .database()
       .ref('anuncios/')
@@ -73,8 +76,25 @@ class ControlPanel extends React.Component {
             descripcionPersonal: child.val().descripcionPersonal,
             recomendacionesTotales: child.val().recomendacionesTotales,
           });
+          functionalItems.push({
+            anuncioId: child.val().anuncioId,
+            nombre: child.val().nombre,
+            apellido: child.val().apellido,
+            actividad: child.val().actividad,
+            emailPersonal: child.val().emailPersonal,
+            idAnuncio: child.val().id,
+            contadorAnuncio: child.val().anuncioId,
+            localidad: child.val().localidad,
+            provincia: child.val().provincia,
+            palabraClaveUno: child.val().palabraClaveUno,
+            palabraClaveDos: child.val().palabraClaveDos,
+            palabraClaveTres: child.val().palabraClaveTres,
+            descripcionPersonal: child.val().descripcionPersonal,
+            recomendacionesTotales: child.val().recomendacionesTotales,
+          });
         });
         itm = items;
+        funcItm = items;
         this.setState({ items: items });
         console.log(itm);
         console.log('itemstate ' + this.state.items);
@@ -151,7 +171,7 @@ class ControlPanel extends React.Component {
     };
 
     function renderCards() {
-      return <LocationComponent />;
+      return <LocationComponent nombre={'miguel'} />;
     }
 
     return (
