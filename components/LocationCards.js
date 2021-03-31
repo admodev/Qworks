@@ -21,19 +21,6 @@ import 'firebase/auth';
 var itm = [];
 
 class LocationComponent extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      items: [],
-      search: '',
-      ready: false,
-      where: { lat: null, lng: null },
-      error: null,
-      showsUserLocation: true,
-      followsUserLocation: true,
-    };
-  }
-
   render() {
     return (
       <View
@@ -53,6 +40,14 @@ class LocationComponent extends Component {
           }}
         >
           {this.props.nombre}
+        </Text>
+        <Text
+          style={{
+            fontSize: 24,
+            fontWeight: 'bold',
+          }}
+        >
+          {this.props.apellido}
         </Text>
       </View>
     );

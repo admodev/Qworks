@@ -170,10 +170,6 @@ class ControlPanel extends React.Component {
       longitudeDelta: LONGITUDE_DELTA,
     };
 
-    function renderCards() {
-      return <LocationComponent nombre={'miguel'} />;
-    }
-
     return (
       <SafeAreaView style={{ flex: 1, backgroundColor: '#ffffff' }}>
         <Image
@@ -193,7 +189,13 @@ class ControlPanel extends React.Component {
             this._carousel = c;
           }}
           data={this.state.items}
-          renderItem={() => renderCards()}
+          renderItem={({ item }) => (
+            <LocationComponent
+              key={item.uuid}
+              nombre={item.nombre}
+              apellido={item.apellido}
+            />
+          )}
           sliderWidth={360}
           itemWidth={270}
           layout={'default'}
