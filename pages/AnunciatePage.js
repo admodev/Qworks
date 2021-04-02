@@ -29,6 +29,7 @@ import 'react-native-get-random-values';
 import { v4 as uuidv4 } from 'uuid';
 import Cookies from 'js-cookie';
 import axios from 'axios';
+import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 
 const AnunciatePage = ({ navigation }) => {
   let database = firebase.database();
@@ -478,7 +479,7 @@ const AnunciatePage = ({ navigation }) => {
           style={{ backgroundColor: 'transparent' }}
         />
       </TouchableOpacity>
-      <ScrollView>
+      <ScrollView keyboardShouldPersistTaps="always">
         <View
           style={{
             flex: 1,
@@ -666,23 +667,41 @@ const AnunciatePage = ({ navigation }) => {
             onChangeText={(emailLaboral) => setEmailLaboral(emailLaboral)}
             value={emailLaboral}
           />
-          <Input
+          <GooglePlacesAutocomplete
             placeholder="Localidad"
-            inputStyle={{ color: '#000000' }}
-            style={{ color: '#000000', fontSize: 16, textAlign: 'center' }}
-            inputContainerStyle={{ borderBottomColor: '#000000' }}
-            placeholderTextColor="black"
-            onChangeText={(localidad) => setLocalidad(localidad)}
-            value={localidad}
-          />
-          <Input
-            placeholder="Provincia"
-            inputStyle={{ color: '#000000' }}
-            style={{ color: '#000000', fontSize: 16, textAlign: 'center' }}
-            inputContainerStyle={{ borderBottomColor: '#000000' }}
-            placeholderTextColor="black"
-            onChangeText={(provincia) => setProvincia(provincia)}
-            value={provincia}
+            minLength={2}
+            returnKeyType={'default'}
+            fetchDetails={true}
+            onPress={(data, details = true) => {
+              (localidad) => setLocalidad(data);
+              console.log(data, details);
+            }}
+            query={{
+              key: 'AIzaSyAQzBk0AjO0KZr9XPhPFNiFi-_RqR73mII',
+              language: 'es-419',
+            }}
+            textInputProps={{ placeholderTextColor: 'black' }}
+            styles={{
+              textInputContainer: {
+                width: '95%',
+                borderBottomWidth: 1,
+                borderBottomColor: '#000000',
+                marginTop: '-2%',
+                marginBottom: '5%',
+              },
+              textInput: {
+                height: 38,
+                color: '#5d5d5d',
+                fontSize: 16,
+                backgroundColor: 'transparent',
+                textAlign: 'center',
+              },
+              predefinedPlacesDescription: {
+                color: '#1faadb',
+              },
+            }}
+            listViewDisplayed={false}
+            onFail={(error) => console.error(error)}
           />
           {Platform.os === 'ios' ? (
             <Input
