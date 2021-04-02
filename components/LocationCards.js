@@ -33,22 +33,54 @@ class LocationComponent extends Component {
           borderRadius: 10,
         }}
       >
-        <Text
+        <View
           style={{
-            fontSize: 24,
-            fontWeight: 'bold',
+            flexDirection: 'row',
           }}
         >
-          {this.props.nombre}
-        </Text>
-        <Text
-          style={{
-            fontSize: 24,
-            fontWeight: 'bold',
-          }}
-        >
-          {this.props.apellido}
-        </Text>
+          <Image
+            source={require('../assets/icon.png')}
+            style={{
+              width: 85,
+              height: 85,
+              top: 20,
+              left: 20,
+              bottom: 20,
+              position: 'absolute',
+            }}
+          />
+          <View
+            style={{
+              marginTop: '7%',
+              marginLeft: '45%',
+            }}
+          >
+            <Text
+              style={{
+                fontSize: 24,
+                fontWeight: 'bold',
+              }}
+            >
+              {this.props.nombre.split(' ').shift()}
+            </Text>
+            <Text
+              style={{
+                fontSize: 24,
+                fontWeight: 'bold',
+              }}
+            >
+              {this.props.actividad.trim()}
+            </Text>
+            <Text
+              style={{
+                fontSize: 24,
+                fontWeight: 'bold',
+              }}
+            >
+              {this.props.local.trim()}
+            </Text>
+          </View>
+        </View>
       </View>
     );
   }

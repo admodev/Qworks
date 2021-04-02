@@ -20,14 +20,14 @@ import 'firebase/auth';
 import * as RootNavigation from '../RootNavigation.js';
 import { StackActions } from '@react-navigation/native';
 import SearchedCardResult from './searchedCard';
-import MapView from 'react-native-maps';
+import MapView, { Marker } from 'react-native-maps';
 import Carousel from 'react-native-snap-carousel';
 
 const { width, height } = Dimensions.get('window');
 const SCREEN_WIDTH = width;
 const SCREEN_HEIGHT = height;
 const ASPECT_RATIO = width / height;
-const LATITUDE_DELTA = 0.0922;
+const LATITUDE_DELTA = 1.0922;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 
 var itm = [];
@@ -196,8 +196,17 @@ class MapComponent extends Component {
               initialRegion={region}
               onUserLocationChange={(event) => console.log(event.nativeEvent)}
               showsUserLocation={this.state.showsUserLocation}
-              followsUserLocation={this.state.followsUserLocation}
-            ></MapView>
+            >
+              <Marker
+                coordinate={{
+                  latitude: '-34.579940',
+                  longitude: '-58.579860',
+                }}
+                pinColor={'purple'}
+                title={'Un anuncio'}
+                description={'De un anunciante'}
+              />
+            </MapView>
           )}
         </View>
       </SafeAreaView>

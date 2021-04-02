@@ -75,22 +75,7 @@ class ControlPanel extends React.Component {
             palabraClaveTres: child.val().palabraClaveTres,
             descripcionPersonal: child.val().descripcionPersonal,
             recomendacionesTotales: child.val().recomendacionesTotales,
-          });
-          functionalItems.push({
-            anuncioId: child.val().anuncioId,
-            nombre: child.val().nombre,
-            apellido: child.val().apellido,
-            actividad: child.val().actividad,
-            emailPersonal: child.val().emailPersonal,
-            idAnuncio: child.val().id,
-            contadorAnuncio: child.val().anuncioId,
-            localidad: child.val().localidad,
-            provincia: child.val().provincia,
-            palabraClaveUno: child.val().palabraClaveUno,
-            palabraClaveDos: child.val().palabraClaveDos,
-            palabraClaveTres: child.val().palabraClaveTres,
-            descripcionPersonal: child.val().descripcionPersonal,
-            recomendacionesTotales: child.val().recomendacionesTotales,
+            direccionDelLocal: child.val().direccionDelLocal,
           });
         });
         itm = items;
@@ -193,7 +178,8 @@ class ControlPanel extends React.Component {
             <LocationComponent
               key={item.uuid}
               nombre={item.nombre}
-              apellido={item.apellido}
+              actividad={item.actividad}
+              local={item.direccionDelLocal}
             />
           )}
           sliderWidth={360}
