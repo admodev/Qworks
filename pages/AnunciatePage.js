@@ -49,8 +49,12 @@ const AnunciatePage = ({ navigation }) => {
   const [actividad, setActividad] = useState('');
   const [telefono, setTelefono] = useState('');
   const [celular, setCelular] = useState('');
-  const [provincia, setProvincia] = useState('');
   const [localidad, setLocalidad] = useState('');
+  const [localidadLatitude, setLocalidadLatitude] = useState('');
+  const [localidadLongitude, setLocalidadLongitude] = useState('');
+  const [partido, setPartido] = useState('');
+  const [partidoLatitude, setPartidoLatitude] = useState('');
+  const [partidoLongitude, setPartidoLongitude] = useState('');
   const [local, setLocal] = useState('');
   const [empresa, setEmpresa] = useState('');
   const [factura, setFactura] = useState('');
@@ -332,6 +336,30 @@ const AnunciatePage = ({ navigation }) => {
     minute: '2-digit',
   });
 
+  function setLocationFunc(placesLocation) {
+    setLocalidad(placesLocation);
+  }
+
+  function setLocationLatitudeFunc(placesLocationLatitude) {
+    setLocalidadLatitude(placesLocationLatitude);
+  }
+
+  function setLocationLongitudeFunc(placesLocationLongitude) {
+    setLocalidadLongitude(placesLocationLongitude);
+  }
+
+  function setPartidoFunc(placesPartido) {
+    setPartido(placesPartido);
+  }
+
+  function setPartidoLatitudeFunc(placesPartidoLatitude) {
+    setPartidoLatitude(placesPartidoLatitude);
+  }
+
+  function setPartidoLongitudeFunc(placesPartidoLongitude) {
+    setPartidoLongitude(placesPartidoLongitude);
+  }
+
   function writeUserData(
     nombre,
     apellido,
@@ -340,8 +368,12 @@ const AnunciatePage = ({ navigation }) => {
     actividad,
     telefono,
     celular,
-    provincia,
     localidad,
+    localidadLatitude,
+    localidadLongitude,
+    partido,
+    partidoLatitude,
+    partidoLongitude,
     local,
     empresa,
     factura,
@@ -398,8 +430,12 @@ const AnunciatePage = ({ navigation }) => {
           actividad: actividad,
           telefono: telefono,
           celular: celular,
-          provincia: provincia,
           localidad: localidad,
+          localidadLatitude: localidadLatitude,
+          localidadLongitude: localidadLongitude,
+          partido: partido,
+          partidoLatitude: partidoLatitude,
+          partidoLongitude: partidoLongitude,
           local: local,
           empresa: empresa,
           factura: factura,
@@ -672,9 +708,53 @@ const AnunciatePage = ({ navigation }) => {
             minLength={2}
             returnKeyType={'default'}
             fetchDetails={true}
-            onPress={(data, details = true) => {
-              (localidad) => setLocalidad(data);
-              console.log(data, details);
+            onPress={(data, details) => {
+              var localidadPlaces = data.description;
+              var localidadLatitudePlaces = details.geometry.location.lat;
+              var localidadLongitudePlaces = details.geometry.location.lng;
+              setLocationFunc(localidadPlaces);
+              setLocationLatitudeFunc(localidadLatitudePlaces);
+              setLocationLongitudeFunc(localidadLongitudePlaces);
+            }}
+            query={{
+              key: 'AIzaSyAQzBk0AjO0KZr9XPhPFNiFi-_RqR73mII',
+              language: 'es-419',
+            }}
+            textInputProps={{ placeholderTextColor: 'black' }}
+            styles={{
+              textInputContainer: {
+                width: '95%',
+                borderBottomWidth: 1,
+                borderBottomColor: '#000000',
+                marginTop: '-2%',
+                marginBottom: '5%',
+              },
+              textInput: {
+                height: 38,
+                color: '#5d5d5d',
+                fontSize: 16,
+                backgroundColor: 'transparent',
+                textAlign: 'center',
+              },
+              predefinedPlacesDescription: {
+                color: '#1faadb',
+              },
+            }}
+            listViewDisplayed={false}
+            onFail={(error) => console.error(error)}
+          />
+          <GooglePlacesAutocomplete
+            placeholder="Partido"
+            minLength={2}
+            returnKeyType={'default'}
+            fetchDetails={true}
+            onPress={(data, details) => {
+              var partidoPlaces = data.description;
+              var partidoLatitudePlaces = details.geometry.location.lat;
+              var partidoLongitudePlaces = details.geometry.location.lng;
+              setPartidoFunc(partidoPlaces);
+              setPartidoLatitudeFunc(partidoLatitudePlaces);
+              setPartidoLongitudeFunc(partidoLongitudePlaces);
             }}
             query={{
               key: 'AIzaSyAQzBk0AjO0KZr9XPhPFNiFi-_RqR73mII',
@@ -1310,8 +1390,12 @@ const AnunciatePage = ({ navigation }) => {
                 actividad,
                 telefono,
                 celular,
-                provincia,
                 localidad,
+                localidadLatitude,
+                localidadLongitude,
+                partido,
+                partidoLatitude,
+                partidoLongitude,
                 local,
                 empresa,
                 factura,
