@@ -7,7 +7,6 @@ import {
   ActionsProps,
   Send,
 } from 'react-native-gifted-chat';
-import AsyncStorage from '@react-native-community/async-storage';
 import {
   ActivityIndicator,
   Image,

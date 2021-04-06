@@ -69,6 +69,8 @@ class MapComponent extends Component {
             palabraClaveTres: child.val().palabraClaveTres,
             descripcionPersonal: child.val().descripcionPersonal,
             recomendacionesTotales: child.val().recomendacionesTotales,
+            latitud: child.val().latitud,
+            longitud: child.val().longitud,
           });
         });
         itm = items;
@@ -187,6 +189,9 @@ class MapComponent extends Component {
           {this.state.error && <Text>{this.state.error}</Text>}
           {this.state.ready && (
             <MapView
+              ref={(ref) => {
+                this.mapRef = ref;
+              }}
               provider={this.props.provider}
               style={styles.map}
               scrollEnabled={true}
@@ -196,16 +201,31 @@ class MapComponent extends Component {
               initialRegion={region}
               onUserLocationChange={(event) => console.log(event.nativeEvent)}
               showsUserLocation={this.state.showsUserLocation}
+              fitToElements={true}
             >
-              <Marker
-                coordinate={{
-                  latitude: '-34.579940',
-                  longitude: '-58.579860',
-                }}
-                pinColor={'purple'}
-                title={'Un anuncio'}
-                description={'De un anunciante'}
-              />
+              {this.state.items.map((element, index) => {
+                return (
+                  <Marker
+                    coordinate={{
+                      latitude: element.latitud,
+                      longitude: element.longitud,
+                    }}
+                    pinColor={'purple'}
+                    title={element.nombre}
+                    description={element.actividad}
+                    key={element.uuid + index}
+                    focusable={true}
+                  >
+                    <Image
+                      source={require('../assets/icon.png')}
+                      style={{
+                        width: 30,
+                        height: 30,
+                      }}
+                    />
+                  </Marker>
+                );
+              })}
             </MapView>
           )}
         </View>
