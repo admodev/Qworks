@@ -29,6 +29,7 @@ import CardsUsuarios from './Cards';
 import { concat } from 'react-native-reanimated';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import * as Updates from 'expo-updates';
+import * as Font from 'expo-font';
 
 let calificacion = 'calificacion';
 let favs;
@@ -45,6 +46,25 @@ export default function AnuncioSeleccionado({ route, navigation }) {
   const [favoritosTint, setFavoritosTint] = useState(false);
   const [foundUser, setFoundUser] = useState('');
   const [prevCount, setCount] = useState(recomendacionesTotales);
+  const [fontsLoaded, setFontsLoaded] = useState(false);
+
+  async function loadFonts() {
+    await Font.loadAsync({
+      // Nombres, apellidos, títulos y subtítulos
+      dmSans: require('../assets/fonts/DM_Sans/DMSans-Regular.ttf'),
+      dmSansBold: require('../assets/fonts/DM_Sans/DMSans-Bold.ttf'),
+
+      // Comunicación interna y externa
+      quickSandLight: require('../assets/fonts/Quicksand/static/Quicksand-Light.ttf'),
+      quickSandRegular: require('../assets/fonts/Quicksand/static/Quicksand-Regular.ttf'),
+
+      // Para lo demás
+      comfortaaLight: require('../assets/fonts/Comfortaa/static/Comfortaa-Light.ttf'),
+      comfortaaRegular: require('../assets/fonts/Comfortaa/static/Comfortaa-Regular.ttf'),
+    });
+    setFontsLoaded(true);
+  }
+
   let image,
     nombre,
     apellido,
@@ -143,6 +163,8 @@ export default function AnuncioSeleccionado({ route, navigation }) {
   let user = firebase.auth().currentUser;
 
   useEffect(() => {
+    loadFonts();
+
     comentariosRef;
 
     firebase
@@ -464,10 +486,10 @@ export default function AnuncioSeleccionado({ route, navigation }) {
           <View style={{ margin: '3%' }}>
             <Text
               style={{
+                fontFamily: 'dmSans',
                 color: '#000000',
                 textAlign: 'center',
                 fontSize: 30,
-                fontWeight: 'bold',
               }}
             >
               {nombre} {apellido}

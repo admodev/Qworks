@@ -12,6 +12,14 @@ Puedes descargar la app desde la [AppStore](https://www.apple.com/ios/app-store/
 
 [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
 
+### Especificaciones Tipográficas
+
+DM_SANS = Nombres, apellidos, títulos, subtítulos.
+
+Quicksand = Comunicación interna y externa.
+
+Comfortaa = Todo lo que no comprenden DM_SANS y Quicksand.
+
 ### Contribuyendo 🖇️
 
 Por favor lee [CONTRIBUTING.md](https://gist.github.com/admodev/contributingtoquedeoficios) para detalles de nuestro código de conducta, y el proceso para enviarnos pull requests.
