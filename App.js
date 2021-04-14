@@ -25,6 +25,7 @@ import {
   FIREBASE_MESSAGING_SENDER_ID,
   FIREBASE_APP_ID,
   FIREBASE_MEASUREMENT_ID,
+  DOTLOCATION,
 } from '@env';
 import { StatusBar } from 'expo-status-bar';
 

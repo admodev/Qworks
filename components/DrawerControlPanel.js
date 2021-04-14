@@ -76,6 +76,7 @@ class ControlPanel extends React.Component {
             descripcionPersonal: child.val().descripcionPersonal,
             recomendacionesTotales: child.val().recomendacionesTotales,
             direccionDelLocal: child.val().direccionDelLocal,
+            uuid: child.val().uuid,
           });
         });
         itm = items;
@@ -174,9 +175,11 @@ class ControlPanel extends React.Component {
             this._carousel = c;
           }}
           data={this.state.items}
-          renderItem={({ item }) => (
+          renderItem={({ item, index }) => (
             <LocationComponent
-              key={item.uuid}
+              key={item.uuid + index}
+              idAnuncio={item.idAnuncio}
+              uuid={item.uuid}
               nombre={item.nombre}
               actividad={item.actividad}
               local={item.direccionDelLocal}
