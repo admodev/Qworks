@@ -17,6 +17,7 @@ import * as firebase from 'firebase';
 import 'firebase/firestore';
 import 'firebase/database';
 import 'firebase/auth';
+import * as Font from 'expo-font';
 
 var itm = [];
 
@@ -24,14 +25,30 @@ class LocationComponent extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      items: [],
-      search: '',
-      ready: false,
-      where: { lat: null, lng: null },
-      error: null,
-      showsUserLocation: true,
-      followsUserLocation: true,
+      fontsLoaded: false,
     };
+    this.setState.bind(this);
+  }
+
+  async loadFonts() {
+    await Font.loadAsync({
+      // Nombres, apellidos, títulos y subtítulos
+      dmSans: require('../assets/fonts/DM_Sans/DMSans-Regular.ttf'),
+      dmSansBold: require('../assets/fonts/DM_Sans/DMSans-Bold.ttf'),
+
+      // Comunicación interna y externa
+      quickSandLight: require('../assets/fonts/Quicksand/static/Quicksand-Light.ttf'),
+      quickSandRegular: require('../assets/fonts/Quicksand/static/Quicksand-Regular.ttf'),
+
+      // Para lo demás
+      comfortaaLight: require('../assets/fonts/Comfortaa/static/Comfortaa-Light.ttf'),
+      comfortaaRegular: require('../assets/fonts/Comfortaa/static/Comfortaa-Regular.ttf'),
+    });
+    this.setState({ fontsLoaded: true });
+  }
+
+  componentDidMount() {
+    this.loadFonts();
   }
 
   render() {
@@ -41,19 +58,64 @@ class LocationComponent extends Component {
           position: 'absolute',
           backgroundColor: '#ffffff',
           width: '100%',
-          height: '90%',
+          height: '85%',
           alignSelf: 'center',
           borderRadius: 10,
         }}
       >
-        <Text
+        <View
           style={{
-            fontSize: 24,
-            fontWeight: 'bold',
+            flexDirection: 'row',
+            height: '102%',
           }}
         >
-          {this.props.nombre}
-        </Text>
+          <Image
+            source={require('../assets/icon.png')}
+            style={{
+              width: 120,
+              height: '100%',
+              top: -2,
+              left: 0,
+              position: 'absolute',
+              borderTopLeftRadius: 10,
+              borderBottomLeftRadius: 10,
+            }}
+          />
+          <View
+            style={{
+              marginTop: '3%',
+              marginLeft: '50%',
+            }}
+          >
+            <Text
+              style={{
+                fontFamily: 'dmSans',
+                fontSize: 24,
+                fontWeight: 'bold',
+              }}
+            >
+              {this.props.nombre.split(' ').shift()}
+            </Text>
+            <Text
+              style={{
+                fontFamily: 'dmSans',
+                fontSize: 24,
+                fontWeight: 'bold',
+              }}
+            >
+              {this.props.actividad.trim()}
+            </Text>
+            <Text
+              style={{
+                fontFamily: 'comfortaaLight',
+                fontSize: 24,
+                fontWeight: 'bold',
+              }}
+            >
+              {this.props.local.trim()}
+            </Text>
+          </View>
+        </View>
       </View>
     );
   }

@@ -20,14 +20,14 @@ import 'firebase/auth';
 import * as RootNavigation from '../RootNavigation.js';
 import { StackActions } from '@react-navigation/native';
 import SearchedCardResult from './searchedCard';
-import MapView from 'react-native-maps';
+import MapView, { Marker } from 'react-native-maps';
 import Carousel from 'react-native-snap-carousel';
 
 const { width, height } = Dimensions.get('window');
 const SCREEN_WIDTH = width;
 const SCREEN_HEIGHT = height;
 const ASPECT_RATIO = width / height;
-const LATITUDE_DELTA = 0.0922;
+const LATITUDE_DELTA = 1.0922;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 
 var itm = [];
@@ -69,6 +69,8 @@ class MapComponent extends Component {
             palabraClaveTres: child.val().palabraClaveTres,
             descripcionPersonal: child.val().descripcionPersonal,
             recomendacionesTotales: child.val().recomendacionesTotales,
+            latitud: child.val().latitud,
+            longitud: child.val().longitud,
           });
         });
         itm = items;
@@ -187,6 +189,9 @@ class MapComponent extends Component {
           {this.state.error && <Text>{this.state.error}</Text>}
           {this.state.ready && (
             <MapView
+              ref={(ref) => {
+                this.mapRef = ref;
+              }}
               provider={this.props.provider}
               style={styles.map}
               scrollEnabled={true}
@@ -196,8 +201,32 @@ class MapComponent extends Component {
               initialRegion={region}
               onUserLocationChange={(event) => console.log(event.nativeEvent)}
               showsUserLocation={this.state.showsUserLocation}
-              followsUserLocation={this.state.followsUserLocation}
-            ></MapView>
+              fitToElements={true}
+            >
+              {this.state.items.map((element, index) => {
+                return (
+                  <Marker
+                    coordinate={{
+                      latitude: element.latitud,
+                      longitude: element.longitud,
+                    }}
+                    pinColor={'purple'}
+                    title={element.nombre}
+                    description={element.actividad}
+                    key={element.uuid + index}
+                    focusable={true}
+                  >
+                    <Image
+                      source={require('../assets/icon.png')}
+                      style={{
+                        width: 30,
+                        height: 30,
+                      }}
+                    />
+                  </Marker>
+                );
+              })}
+            </MapView>
           )}
         </View>
       </SafeAreaView>

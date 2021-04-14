@@ -16,6 +16,7 @@ import {
   Button,
   Card,
   Overlay,
+  SocialIcon,
 } from 'react-native-elements';
 import * as firebase from 'firebase';
 import 'firebase/firestore';
@@ -28,6 +29,7 @@ import CardsUsuarios from './Cards';
 import { concat } from 'react-native-reanimated';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import * as Updates from 'expo-updates';
+import * as Font from 'expo-font';
 
 let calificacion = 'calificacion';
 let favs;
@@ -44,6 +46,25 @@ export default function AnuncioSeleccionado({ route, navigation }) {
   const [favoritosTint, setFavoritosTint] = useState(false);
   const [foundUser, setFoundUser] = useState('');
   const [prevCount, setCount] = useState(recomendacionesTotales);
+  const [fontsLoaded, setFontsLoaded] = useState(false);
+
+  async function loadFonts() {
+    await Font.loadAsync({
+      // Nombres, apellidos, títulos y subtítulos
+      dmSans: require('../assets/fonts/DM_Sans/DMSans-Regular.ttf'),
+      dmSansBold: require('../assets/fonts/DM_Sans/DMSans-Bold.ttf'),
+
+      // Comunicación interna y externa
+      quickSandLight: require('../assets/fonts/Quicksand/static/Quicksand-Light.ttf'),
+      quickSandRegular: require('../assets/fonts/Quicksand/static/Quicksand-Regular.ttf'),
+
+      // Para lo demás
+      comfortaaLight: require('../assets/fonts/Comfortaa/static/Comfortaa-Light.ttf'),
+      comfortaaRegular: require('../assets/fonts/Comfortaa/static/Comfortaa-Regular.ttf'),
+    });
+    setFontsLoaded(true);
+  }
+
   let image,
     nombre,
     apellido,
@@ -97,6 +118,9 @@ export default function AnuncioSeleccionado({ route, navigation }) {
       provincia = child.val().provincia;
       nombreDeLaEmpresa = child.val().nombreDeLaEmpresa;
       recomendacionesTotales = child.val().recomendacionesTotales;
+      telefono = child.val().telefono;
+      matricula = child.val().matricula;
+      numeroDeMatricula = child.val().numeroDeMatricula;
     });
   });
   if (!recomendacionesTotales) {
@@ -139,6 +163,8 @@ export default function AnuncioSeleccionado({ route, navigation }) {
   let user = firebase.auth().currentUser;
 
   useEffect(() => {
+    loadFonts();
+
     comentariosRef;
 
     firebase
@@ -460,10 +486,10 @@ export default function AnuncioSeleccionado({ route, navigation }) {
           <View style={{ margin: '3%' }}>
             <Text
               style={{
+                fontFamily: 'dmSans',
                 color: '#000000',
                 textAlign: 'center',
                 fontSize: 30,
-                fontWeight: 'bold',
               }}
             >
               {nombre} {apellido}
@@ -501,6 +527,59 @@ export default function AnuncioSeleccionado({ route, navigation }) {
           </View>
           <View
             style={{
+              flexDirection: 'row',
+              marginTop: '2%',
+              marginBottom: '5%',
+            }}
+          >
+            <SocialIcon
+              button
+              type="facebook"
+              onPress={() => console.log('Agregar metodo')}
+              style={{
+                width: 50,
+                height: 50,
+              }}
+            />
+            <SocialIcon
+              button
+              type="instagram"
+              onPress={() => console.log('Agregar metodo')}
+              style={{
+                width: 50,
+                height: 50,
+              }}
+            />
+            <SocialIcon
+              button
+              type="linkedin"
+              onPress={() => console.log('Agregar metodo')}
+              style={{
+                width: 50,
+                height: 50,
+              }}
+            />
+            <SocialIcon
+              button
+              type="youtube"
+              onPress={() => console.log('Agregar metodo')}
+              style={{
+                width: 50,
+                height: 50,
+              }}
+            />
+            <SocialIcon
+              button
+              type="google"
+              onPress={() => console.log('Agregar metodo')}
+              style={{
+                width: 50,
+                height: 50,
+              }}
+            />
+          </View>
+          <View
+            style={{
               flex: 1,
               flexDirection: 'row',
             }}
@@ -520,7 +599,7 @@ export default function AnuncioSeleccionado({ route, navigation }) {
                 fontSize: 20,
               }}
             >
-              {localidad}, {provincia}
+              {localidad}
             </Text>
           </View>
           <View
@@ -556,35 +635,6 @@ export default function AnuncioSeleccionado({ route, navigation }) {
               marginBottom: '3%',
             }}
           >
-            <TouchableOpacity onPress={() => alert('Proximamente...')}>
-              <Text
-                style={{
-                  ...Platform.select({
-                    android: {
-                      color: '#000000',
-                      marginLeft: 'auto',
-                      marginRight: 'auto',
-                      marginTop: 10,
-                      marginBottom: 10,
-                      fontSize: 20,
-                    },
-                    ios: {
-                      color: '#000000',
-                      marginTop: 15,
-                      marginRight: 10,
-                      fontSize: 20,
-                    },
-                  }),
-                }}
-              >
-                <MaterialCommunityIcons
-                  name="map"
-                  color={naranjaQueDeOficios}
-                  size={24}
-                />{' '}
-                Mapa
-              </Text>
-            </TouchableOpacity>
             <TouchableOpacity onPress={() => shareContent()}>
               <Text
                 style={{
@@ -678,18 +728,59 @@ export default function AnuncioSeleccionado({ route, navigation }) {
                 color={naranjaQueDeOficios}
                 size={24}
               />
-              <Text
+              <View
                 style={{
-                  marginLeft: 'auto',
-                  marginRight: 'auto',
-                  marginTop: 10,
-                  textAlign: 'center',
-                  fontSize: 20,
-                  color: '#000000',
+                  flexDirection: 'column',
                 }}
               >
-                {diasHorarios.filter(onlyUnique).join(', ')}
-              </Text>
+                <Text
+                  style={{
+                    marginLeft: 'auto',
+                    marginRight: 'auto',
+                    marginTop: 10,
+                    textAlign: 'center',
+                    fontSize: 20,
+                    color: '#000000',
+                  }}
+                >
+                  {diasHorarios.filter(onlyUnique).join(', ')}
+                </Text>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                  }}
+                >
+                  <MaterialCommunityIcons
+                    name="clock-outline"
+                    color={naranjaQueDeOficios}
+                    size={24}
+                  />
+                  <Text
+                    style={{
+                      marginLeft: 'auto',
+                      marginRight: 'auto',
+                      marginTop: 10,
+                      textAlign: 'center',
+                      fontSize: 20,
+                      color: '#000000',
+                    }}
+                  >
+                    {desde}
+                  </Text>
+                  <Text
+                    style={{
+                      marginLeft: 'auto',
+                      marginRight: 'auto',
+                      marginTop: 10,
+                      textAlign: 'center',
+                      fontSize: 20,
+                      color: '#000000',
+                    }}
+                  >
+                    {hasta}
+                  </Text>
+                </View>
+              </View>
             </View>
           </View>
           {local && (
@@ -718,39 +809,63 @@ export default function AnuncioSeleccionado({ route, navigation }) {
               </Text>
             </View>
           )}
-          <Text
+          <View
             style={{
-              fontSize: 20,
-              marginTop: 10,
-              color: '#000000',
+              flexDirection: 'row',
             }}
           >
-            - Celular:
-          </Text>
-          <Text
+            <MaterialCommunityIcons
+              name="cellphone-basic"
+              color={naranjaQueDeOficios}
+              size={24}
+            />
+            <Text
+              style={{
+                color: '#000000',
+                marginLeft: 'auto',
+                marginRight: 'auto',
+                marginTop: 10,
+                marginBottom: 10,
+                fontSize: 20,
+              }}
+            >
+              {celular}
+            </Text>
+          </View>
+          <View
             style={{
-              color: '#000000',
-              marginLeft: 'auto',
-              marginRight: 'auto',
-              marginTop: 10,
-              marginBottom: 10,
-              fontSize: 20,
+              flexDirection: 'row',
             }}
           >
-            {celular}
-          </Text>
+            <MaterialCommunityIcons
+              name="phone-classic"
+              color={naranjaQueDeOficios}
+              size={24}
+            />
+            <Text
+              style={{
+                color: '#000000',
+                marginLeft: 'auto',
+                marginRight: 'auto',
+                marginTop: 10,
+                marginBottom: 10,
+                fontSize: 20,
+              }}
+            >
+              {telefono}
+            </Text>
+          </View>
           {empresa.toString().toLowerCase() == 'si' && (
-            <View>
-              <Text
-                style={{
-                  color: '#000000',
-                  marginTop: 10,
-                  marginBottom: 10,
-                  fontSize: 20,
-                }}
-              >
-                Nombre de la empresa:
-              </Text>
+            <View
+              style={{
+                flexDirection: 'row',
+              }}
+            >
+              <MaterialCommunityIcons
+                name="office-building"
+                color={naranjaQueDeOficios}
+                size={24}
+              />
               <Text
                 style={{
                   color: '#000000',
@@ -765,28 +880,54 @@ export default function AnuncioSeleccionado({ route, navigation }) {
               </Text>
             </View>
           )}
-          <Text
+          <View
             style={{
-              color: '#000000',
-              marginTop: 10,
-              marginBottom: 10,
-              fontSize: 20,
+              flexDirection: 'row',
             }}
           >
-            - Factura:
-          </Text>
-          <Text
-            style={{
-              color: '#000000',
-              marginLeft: 'auto',
-              marginRight: 'auto',
-              marginTop: 10,
-              marginBottom: 10,
-              fontSize: 20,
-            }}
-          >
-            {factura}
-          </Text>
+            <MaterialCommunityIcons
+              name="receipt"
+              color={naranjaQueDeOficios}
+              size={24}
+            />
+            <Text
+              style={{
+                color: '#000000',
+                marginLeft: 'auto',
+                marginRight: 'auto',
+                marginTop: 10,
+                marginBottom: 10,
+                fontSize: 20,
+              }}
+            >
+              {factura}
+            </Text>
+          </View>
+          {matricula.toString().toLowerCase() === 'si' && (
+            <View
+              style={{
+                flexDirection: 'row',
+              }}
+            >
+              <MaterialCommunityIcons
+                name="card-account-details-star-outline"
+                color={naranjaQueDeOficios}
+                size={24}
+              />
+              <Text
+                style={{
+                  color: '#000000',
+                  marginLeft: 'auto',
+                  marginRight: 'auto',
+                  marginTop: 10,
+                  marginBottom: 10,
+                  fontSize: 20,
+                }}
+              >
+                {numeroDeMatricula}
+              </Text>
+            </View>
+          )}
         </Card>
         {/* Card resumen personal */}
         <Text
@@ -826,30 +967,31 @@ export default function AnuncioSeleccionado({ route, navigation }) {
             }),
           }}
         >
-          <Text
+          <View
             style={{
-              marginLeft: 'auto',
-              marginRight: 'auto',
-              textAlign: 'center',
-              fontSize: 20,
-              marginTop: 10,
-              color: '#000000',
-            }}
-          ></Text>
-          <Text
-            style={{
-              marginLeft: 'auto',
-              marginRight: 'auto',
-              textAlign: 'center',
-              fontSize: 20,
-              marginRight: 25,
-              marginLeft: 25,
-              marginBottom: 20,
-              color: '#000000',
+              flexDirection: 'row',
             }}
           >
-            "{descripcionPersonal}"
-          </Text>
+            <MaterialCommunityIcons
+              name="notebook"
+              color={naranjaQueDeOficios}
+              size={24}
+            />
+            <Text
+              style={{
+                marginLeft: 'auto',
+                marginRight: 'auto',
+                textAlign: 'center',
+                fontSize: 20,
+                marginRight: 25,
+                marginLeft: 25,
+                marginBottom: 20,
+                color: '#000000',
+              }}
+            >
+              "{descripcionPersonal}"
+            </Text>
+          </View>
         </Card>
         {/* Card comentarios */}
         <Text
@@ -863,7 +1005,7 @@ export default function AnuncioSeleccionado({ route, navigation }) {
             fontWeight: 'bold',
           }}
         >
-          Comentarios sobre {nombre}
+          Comentarios
         </Text>
         <Card
           style={styles.card}

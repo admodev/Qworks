@@ -5,14 +5,6 @@ import Drawer from 'react-native-drawer';
 import ControlPanel from '../components/DrawerControlPanel';
 
 const OnboardingPage = ({ navigation }) => {
-  let state = {
-    shows: [],
-    isLoading: true,
-    search: false,
-    title: '',
-    data: [],
-  };
-
   return (
     <Drawer ref={(ref) => (_drawer = ref)} content={<ControlPanel />}>
       <SafeAreaView style={{ flex: 1, backgroundColor: '#ffffff' }}>
