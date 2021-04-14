@@ -61,15 +61,16 @@ class LocationComponent extends Component {
           position: 'absolute',
           backgroundColor: '#ffffff',
           width: '100%',
-          height: '85%',
+          height: '60%',
           alignSelf: 'center',
           borderRadius: 10,
+          bottom: 5,
         }}
       >
         <View
           style={{
             flexDirection: 'row',
-            height: '102%',
+            height: '101.5%',
           }}
         >
           <Image
@@ -132,8 +133,6 @@ class LocationComponent extends Component {
                 marginBottom: '5%',
                 marginTop: '3%',
                 backgroundColor: 'transparent',
-                borderWidth: 2,
-                borderColor: '#ffffff',
                 width: 150,
                 alignSelf: 'center',
               }}
@@ -143,10 +142,13 @@ class LocationComponent extends Component {
                   alignItems: 'center',
                   justifyContent: 'center',
                   flexDirection: 'row',
-                  marginTop: '5%',
                 }}
               >
-                <View style={{ marginLeft: '10%', marginBottom: '8%' }}>
+                <View
+                  style={{
+                    marginBottom: '5%',
+                  }}
+                >
                   <MaterialCommunityIcons
                     name="hand"
                     color={naranjaQueDeOficios}

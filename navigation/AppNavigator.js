@@ -69,13 +69,9 @@ export function MainTabNavigator({ navigation }) {
         name="SearchPage"
         component={SearchPage}
         options={{
-          tabBarLabel: 'Buscar',
+          tabBarLabel: 'Qdrives!',
           tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons
-              name="magnify"
-              color={'#fd5d13'}
-              size={size}
-            />
+            <MaterialCommunityIcons name="car" color={'#fd5d13'} size={size} />
           ),
         }}
       />
