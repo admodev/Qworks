@@ -183,7 +183,7 @@ class ControlPanel extends React.Component {
             />
           )}
           sliderWidth={360}
-          itemWidth={270}
+          itemWidth={300}
           layout={'default'}
           layoutCardOffset={9}
         />

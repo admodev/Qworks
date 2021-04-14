@@ -36,6 +36,7 @@ import { StackActions } from '@react-navigation/native';
 import * as Updates from 'expo-updates';
 import * as Notifications from 'expo-notifications';
 
+// Actualizar
 async function signInWithGoogleAsync() {
   try {
     const result = await Google.logInAsync({
@@ -53,10 +54,13 @@ async function signInWithGoogleAsync() {
     return { error: true };
   }
 }
+
+// Actualizar
 const signInWithGoogle = () => {
   signInWithGoogleAsync();
 };
 
+// Actualizar
 async function logInWithFacebook() {
   try {
     await Facebook.initializeAsync({
@@ -87,6 +91,7 @@ async function logInWithFacebook() {
   }
 }
 
+// Actualizar
 const signInWithFacebook = () => {
   logInWithFacebook();
 };
