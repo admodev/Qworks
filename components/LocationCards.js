@@ -18,6 +18,7 @@ import 'firebase/firestore';
 import 'firebase/database';
 import 'firebase/auth';
 import * as Font from 'expo-font';
+import * as RootNavigation from '../RootNavigation';
 
 var itm = [];
 
@@ -52,6 +53,8 @@ class LocationComponent extends Component {
   }
 
   render() {
+    const naranjaQueDeOficios = '#fd5d13';
+
     return (
       <View
         style={{
@@ -114,6 +117,57 @@ class LocationComponent extends Component {
             >
               {this.props.local.trim()}
             </Text>
+            <TouchableOpacity
+              onPress={() => {
+                RootNavigation.navigate('AnuncioSeleccionado', {
+                  id: this.props.idAnuncio,
+                  uuid: this.props.uuid,
+                  index: this.props.key,
+                });
+              }}
+              style={{
+                borderRadius: 25,
+                marginLeft: 0,
+                marginRight: 0,
+                marginBottom: '5%',
+                marginTop: '3%',
+                backgroundColor: 'transparent',
+                borderWidth: 2,
+                borderColor: '#ffffff',
+                width: 150,
+                alignSelf: 'center',
+              }}
+            >
+              <View
+                style={{
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  flexDirection: 'row',
+                  marginTop: '5%',
+                }}
+              >
+                <View style={{ marginLeft: '10%', marginBottom: '8%' }}>
+                  <MaterialCommunityIcons
+                    name="hand"
+                    color={naranjaQueDeOficios}
+                    size={20}
+                  />
+                </View>
+                <Text
+                  style={{
+                    color: naranjaQueDeOficios,
+                    marginLeft: 'auto',
+                    marginRight: 'auto',
+                    fontSize: 16,
+                    marginLeft: '3%',
+                    marginBottom: '8%',
+                    fontWeight: 'bold',
+                  }}
+                >
+                  ¡Conóceme!
+                </Text>
+              </View>
+            </TouchableOpacity>
           </View>
         </View>
       </View>
