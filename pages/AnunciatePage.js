@@ -30,6 +30,7 @@ import { v4 as uuidv4 } from 'uuid';
 import Cookies from 'js-cookie';
 import axios from 'axios';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
+import { DOTLOCATION } from '@env';
 
 const AnunciatePage = ({ navigation }) => {
   let database = firebase.database();
@@ -717,7 +718,7 @@ const AnunciatePage = ({ navigation }) => {
               setLocationLongitudeFunc(localidadLongitudePlaces);
             }}
             query={{
-              key: 'AIzaSyAQzBk0AjO0KZr9XPhPFNiFi-_RqR73mII',
+              key: DOTLOCATION,
               language: 'es-419',
             }}
             textInputProps={{ placeholderTextColor: 'black' }}
@@ -757,7 +758,7 @@ const AnunciatePage = ({ navigation }) => {
               setPartidoLongitudeFunc(partidoLongitudePlaces);
             }}
             query={{
-              key: 'AIzaSyAQzBk0AjO0KZr9XPhPFNiFi-_RqR73mII',
+              key: DOTLOCATION,
               language: 'es-419',
             }}
             textInputProps={{ placeholderTextColor: 'black' }}
