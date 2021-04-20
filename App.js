@@ -117,7 +117,7 @@ export default function App() {
   return (
     <>
       <MainStackNavigator />
-      <StatusBar style="light" />
+      <StatusBar style='light' />
     </>
   );
 }

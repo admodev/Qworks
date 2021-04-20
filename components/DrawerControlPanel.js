@@ -180,8 +180,10 @@ class ControlPanel extends React.Component {
               idAnuncio={item.idAnuncio}
               uuid={item.uuid}
               nombre={item.nombre}
+              apellido={item.apellido}
               actividad={item.actividad}
               local={item.direccionDelLocal}
+              recomendacionesTotales={'5.4k'}
             />
           )}
           sliderWidth={360}
