@@ -507,34 +507,31 @@ const AnunciatePage = ({ navigation }) => {
               marginLeft: '5%',
             },
           }),
-        }}
-      >
+        }}>
         <MaterialCommunityIcons
-          name="arrow-left"
+          name='arrow-left'
           color={'#fd5d13'}
           size={32}
           style={{ backgroundColor: 'transparent' }}
         />
       </TouchableOpacity>
-      <ScrollView keyboardShouldPersistTaps="always">
+      <ScrollView keyboardShouldPersistTaps='always'>
         <View
           style={{
             flex: 1,
             alignItems: 'center',
             justifyContent: 'center',
             marginTop: 25,
-          }}
-        >
+          }}>
           <Text
             h3
-            style={{ color: '#000000', marginTop: 30, marginBottom: 25 }}
-          >
+            style={{ color: '#000000', marginTop: 30, marginBottom: 25 }}>
             Foto de Perfil
           </Text>
           {image && (
             <Avatar
               source={{ uri: image }}
-              size="xlarge"
+              size='xlarge'
               avatarStyle={{ borderRadius: 25 }}
             />
           )}
@@ -549,7 +546,7 @@ const AnunciatePage = ({ navigation }) => {
                 marginLeft: '2%',
                 backgroundColor: '#F4743B',
               }}
-              title="Subir foto"
+              title='Subir foto'
               onPress={pickImage}
             />
           )}
@@ -563,12 +560,10 @@ const AnunciatePage = ({ navigation }) => {
             width: '90%',
             marginLeft: 'auto',
             marginRight: 'auto',
-          }}
-        >
+          }}>
           <Text
             h3
-            style={{ color: '#000000', marginTop: 10, marginBottom: 25 }}
-          >
+            style={{ color: '#000000', marginTop: 10, marginBottom: 25 }}>
             Información Personal
           </Text>
           {image ? (
@@ -584,51 +579,51 @@ const AnunciatePage = ({ navigation }) => {
             <Text>No image!</Text>
           )}
           <Input
-            placeholder="Nombre *"
+            placeholder='Nombre *'
             inputStyle={{ color: '#000000' }}
             style={{ color: '#000000', fontSize: 16, textAlign: 'center' }}
             inputContainerStyle={{ borderBottomColor: '#000000' }}
-            placeholderTextColor="black"
+            placeholderTextColor='black'
             onChangeText={(nombre) => setNombre(nombre)}
             value={nombre}
           />
           <Input
-            placeholder="Apellido *"
+            placeholder='Apellido *'
             inputStyle={{ color: '#000000' }}
             style={{ color: '#000000', fontSize: 16, textAlign: 'center' }}
             inputContainerStyle={{ borderBottomColor: '#000000' }}
-            placeholderTextColor="black"
+            placeholderTextColor='black'
             onChangeText={(apellido) => setApellido(apellido)}
             value={apellido}
           />
           <Input
-            placeholder="Email Personal"
+            placeholder='Email Personal'
             inputStyle={{ color: '#000000' }}
             style={{ color: '#000000', fontSize: 16, textAlign: 'center' }}
             inputContainerStyle={{ borderBottomColor: '#000000' }}
-            placeholderTextColor="black"
-            keyboardType="email-address"
-            autoCapitalize="none"
+            placeholderTextColor='black'
+            keyboardType='email-address'
+            autoCapitalize='none'
             disabled
             value={firebase.auth().currentUser.email}
           />
           <Input
-            placeholder="DNI *"
+            placeholder='DNI *'
             inputStyle={{ color: '#000000' }}
             style={{ color: '#000000', fontSize: 16, textAlign: 'center' }}
             inputContainerStyle={{ borderBottomColor: '#000000' }}
-            placeholderTextColor="black"
-            keyboardType="numeric"
+            placeholderTextColor='black'
+            keyboardType='numeric'
             onChangeText={(dni) => setDni(dni)}
             value={dni}
           />
           <Input
-            placeholder="CUIL / CUIT *"
+            placeholder='CUIL / CUIT *'
             inputStyle={{ color: '#000000' }}
             style={{ color: '#000000', fontSize: 16, textAlign: 'center' }}
             inputContainerStyle={{ borderBottomColor: '#000000' }}
-            placeholderTextColor="black"
-            keyboardType="numeric"
+            placeholderTextColor='black'
+            keyboardType='numeric'
             onChangeText={(cuitCuil) => setCuitCuil(cuitCuil)}
             value={cuitCuil}
           />
@@ -642,70 +637,68 @@ const AnunciatePage = ({ navigation }) => {
             width: '90%',
             marginLeft: 'auto',
             marginRight: 'auto',
-          }}
-        >
+          }}>
           <Text
             h3
-            style={{ color: '#000000', marginTop: 10, marginBottom: 25 }}
-          >
+            style={{ color: '#000000', marginTop: 10, marginBottom: 25 }}>
             Información Laboral
           </Text>
           {Platform.os === 'ios' ? (
             <Input
-              placeholder="Actividad *"
+              placeholder='Actividad *'
               inputStyle={{ color: '#000000' }}
               style={{ color: '#000000', fontSize: 16, textAlign: 'center' }}
               inputContainerStyle={{ borderBottomColor: '#000000' }}
-              placeholderTextColor="black"
+              placeholderTextColor='black'
               onChangeText={(actividad) => setActividad(actividad)}
               value={actividad}
-              maxLength="15"
+              maxLength='15'
             />
           ) : (
             <Input
-              placeholder="Actividad *"
+              placeholder='Actividad *'
               inputStyle={{ color: '#000000' }}
               style={{ color: '#000000', fontSize: 16, textAlign: 'center' }}
               inputContainerStyle={{ borderBottomColor: '#000000' }}
-              placeholderTextColor="black"
+              placeholderTextColor='black'
               onChangeText={(actividad) => setActividad(actividad)}
               value={actividad}
               maxLength={15}
             />
           )}
           <Input
-            placeholder="Teléfono"
+            placeholder='Teléfono'
             inputStyle={{ color: '#000000' }}
             style={{ color: '#000000', fontSize: 16, textAlign: 'center' }}
             inputContainerStyle={{ borderBottomColor: '#000000' }}
-            placeholderTextColor="black"
-            keyboardType="phone-pad"
+            placeholderTextColor='black'
+            keyboardType='phone-pad'
             onChangeText={(telefono) => setTelefono(telefono)}
             value={telefono}
           />
           <Input
-            placeholder="Celular"
+            placeholder='Celular'
             inputStyle={{ color: '#000000' }}
             style={{ color: '#000000', fontSize: 16, textAlign: 'center' }}
             inputContainerStyle={{ borderBottomColor: '#000000' }}
-            placeholderTextColor="black"
-            keyboardType="phone-pad"
+            placeholderTextColor='black'
+            keyboardType='phone-pad'
             onChangeText={(celular) => setCelular(celular)}
             value={celular}
           />
           <Input
-            placeholder="Email laboral"
+            placeholder='Email laboral'
             inputStyle={{ color: '#000000' }}
             style={{ color: '#000000', fontSize: 16, textAlign: 'center' }}
             inputContainerStyle={{ borderBottomColor: '#000000' }}
-            placeholderTextColor="black"
-            keyboardType="email-address"
-            autoCapitalize="none"
+            placeholderTextColor='black'
+            keyboardType='email-address'
+            autoCapitalize='none'
             onChangeText={(emailLaboral) => setEmailLaboral(emailLaboral)}
             value={emailLaboral}
           />
           <GooglePlacesAutocomplete
-            placeholder="Localidad"
+            placeholder='Localidad'
             minLength={2}
             returnKeyType={'default'}
             fetchDetails={true}
@@ -745,7 +738,7 @@ const AnunciatePage = ({ navigation }) => {
             onFail={(error) => console.error(error)}
           />
           <GooglePlacesAutocomplete
-            placeholder="Partido"
+            placeholder='Partido'
             minLength={2}
             returnKeyType={'default'}
             fetchDetails={true}
@@ -786,33 +779,33 @@ const AnunciatePage = ({ navigation }) => {
           />
           {Platform.os === 'ios' ? (
             <Input
-              placeholder="Local (Si / No)"
+              placeholder='Local (Si / No)'
               inputStyle={{ color: '#000000' }}
               style={{ color: '#000000', fontSize: 16, textAlign: 'center' }}
               inputContainerStyle={{ borderBottomColor: '#000000' }}
-              placeholderTextColor="black"
+              placeholderTextColor='black'
               onChangeText={(local) => setLocal(local)}
               value={local}
-              maxLength="2"
+              maxLength='2'
             />
           ) : (
             <Input
-              placeholder="Local (Si / No)"
+              placeholder='Local (Si / No)'
               inputStyle={{ color: '#000000' }}
               style={{ color: '#000000', fontSize: 16, textAlign: 'center' }}
               inputContainerStyle={{ borderBottomColor: '#000000' }}
-              placeholderTextColor="black"
+              placeholderTextColor='black'
               onChangeText={(local) => setLocal(local)}
               value={local}
               maxLength={2}
             />
           )}
           <Input
-            placeholder="Dirección del local"
+            placeholder='Dirección del local'
             inputStyle={{ color: '#000000' }}
             style={{ color: '#000000', fontSize: 16, textAlign: 'center' }}
             inputContainerStyle={{ borderBottomColor: '#000000' }}
-            placeholderTextColor="black"
+            placeholderTextColor='black'
             onChangeText={(direccionDelLocal) =>
               setDireccionDelLocal(direccionDelLocal)
             }
@@ -820,77 +813,77 @@ const AnunciatePage = ({ navigation }) => {
           />
           {Platform.os === 'ios' ? (
             <Input
-              placeholder="Empresa (Si / No)"
+              placeholder='Empresa (Si / No)'
               inputStyle={{ color: '#000000' }}
               style={{ color: '#000000', fontSize: 16, textAlign: 'center' }}
               inputContainerStyle={{ borderBottomColor: '#000000' }}
-              placeholderTextColor="black"
+              placeholderTextColor='black'
               onChangeText={(empresa) => setEmpresa(empresa)}
               value={empresa}
-              maxLength="2"
+              maxLength='2'
             />
           ) : (
             <Input
-              placeholder="Empresa (Si / No)"
+              placeholder='Empresa (Si / No)'
               inputStyle={{ color: '#000000' }}
               style={{ color: '#000000', fontSize: 16, textAlign: 'center' }}
               inputContainerStyle={{ borderBottomColor: '#000000' }}
-              placeholderTextColor="black"
+              placeholderTextColor='black'
               onChangeText={(empresa) => setEmpresa(empresa)}
               value={empresa}
               maxLength={2}
             />
           )}
           <Input
-            placeholder="Nombre de la empresa"
+            placeholder='Nombre de la empresa'
             inputStyle={{ color: '#000000' }}
             style={{ color: '#000000', fontSize: 16, textAlign: 'center' }}
             inputContainerStyle={{ borderBottomColor: '#000000' }}
-            placeholderTextColor="black"
+            placeholderTextColor='black'
             onChangeText={(nombreDeLaEmpresa) =>
               setNombreDeLaEmpresa(nombreDeLaEmpresa)
             }
             value={nombreDeLaEmpresa}
           />
           <Input
-            placeholder="Factura (Tipo)"
+            placeholder='Factura (Tipo)'
             inputStyle={{ color: '#000000' }}
             style={{ color: '#000000', fontSize: 16, textAlign: 'center' }}
             inputContainerStyle={{ borderBottomColor: '#000000' }}
-            placeholderTextColor="black"
+            placeholderTextColor='black'
             onChangeText={(factura) => setFactura(factura)}
             value={factura}
           />
           {Platform.os === 'ios' ? (
             <Input
-              placeholder="Matrícula (Si / No)"
+              placeholder='Matrícula (Si / No)'
               inputStyle={{ color: '#000000' }}
               style={{ color: '#000000', fontSize: 16, textAlign: 'center' }}
               inputContainerStyle={{ borderBottomColor: '#000000' }}
-              placeholderTextColor="black"
+              placeholderTextColor='black'
               onChangeText={(matricula) => setMatricula(matricula)}
               value={matricula}
-              maxLength="2"
+              maxLength='2'
             />
           ) : (
             <Input
-              placeholder="Matrícula (Si / No)"
+              placeholder='Matrícula (Si / No)'
               inputStyle={{ color: '#000000' }}
               style={{ color: '#000000', fontSize: 16, textAlign: 'center' }}
               inputContainerStyle={{ borderBottomColor: '#000000' }}
-              placeholderTextColor="black"
+              placeholderTextColor='black'
               onChangeText={(matricula) => setMatricula(matricula)}
               value={matricula}
               maxLength={2}
             />
           )}
           <Input
-            placeholder="Número de matrícula"
+            placeholder='Número de matrícula'
             inputStyle={{ color: '#000000' }}
             style={{ color: '#000000', fontSize: 16, textAlign: 'center' }}
             inputContainerStyle={{ borderBottomColor: '#000000' }}
-            placeholderTextColor="black"
-            keyboardType="numeric"
+            placeholderTextColor='black'
+            keyboardType='numeric'
             onChangeText={(numeroDeMatricula) =>
               setNumeroDeMatricula(numeroDeMatricula)
             }
@@ -903,13 +896,12 @@ const AnunciatePage = ({ navigation }) => {
             alignItems: 'center',
             justifyContent: 'center',
             marginTop: 25,
-          }}
-        >
+          }}>
           <Text h3 style={{ color: '#000', marginTop: 10, marginBottom: 25 }}>
             Resumen Personal
           </Text>
           <Input
-            placeholder="Ingrese una descripción personal..."
+            placeholder='Ingrese una descripción personal...'
             placeholderTextColor={'black'}
             style={{
               height: 200,
@@ -924,7 +916,7 @@ const AnunciatePage = ({ navigation }) => {
             }}
             inputStyle={{ color: '#000000' }}
             inputContainerStyle={{ borderBottomWidth: 0, margin: '5%' }}
-            placeholderTextColor="black"
+            placeholderTextColor='black'
             multiline={true}
             onChangeText={(descripcionPersonal) =>
               setDescripcionPersonal(descripcionPersonal)
@@ -940,14 +932,14 @@ const AnunciatePage = ({ navigation }) => {
           </Text>
           <View style={{ flexDirection: 'row', marginTop: '10%' }}>
             <Input
-              placeholder="#Uno"
+              placeholder='#Uno'
               onChangeText={(palabraClaveUno) =>
                 setPalabraClaveUno(palabraClaveUno)
               }
               value={palabraClaveUno}
               paddingLeft={10}
               paddingRight={10}
-              placeholderTextColor="#fd5d13"
+              placeholderTextColor='#fd5d13'
               containerStyle={{ width: '35%' }}
               inputStyle={{
                 color: '#000000',
@@ -964,14 +956,14 @@ const AnunciatePage = ({ navigation }) => {
               }}
             />
             <Input
-              placeholder="#Dos"
+              placeholder='#Dos'
               onChangeText={(palabraClaveDos) =>
                 setPalabraClaveDos(palabraClaveDos)
               }
               value={palabraClaveDos}
               paddingLeft={10}
               paddingRight={10}
-              placeholderTextColor="#fd5d13"
+              placeholderTextColor='#fd5d13'
               containerStyle={{ width: '35%' }}
               inputStyle={{
                 color: '#000000',
@@ -988,14 +980,14 @@ const AnunciatePage = ({ navigation }) => {
               }}
             />
             <Input
-              placeholder="#Tres"
+              placeholder='#Tres'
               onChangeText={(palabraClaveTres) =>
                 setPalabraClaveTres(palabraClaveTres)
               }
               value={palabraClaveTres}
               paddingLeft={10}
               paddingRight={10}
-              placeholderTextColor="#fd5d13"
+              placeholderTextColor='#fd5d13'
               containerStyle={{ width: '35%' }}
               inputStyle={{
                 color: '#000000',
@@ -1022,14 +1014,13 @@ const AnunciatePage = ({ navigation }) => {
             width: '95%',
             marginLeft: 'auto',
             marginRight: 'auto',
-          }}
-        >
+          }}>
           <Text h3 style={{ color: '#000', marginTop: 10, marginBottom: 25 }}>
             Dias y horarios
           </Text>
           <View style={{ flex: 1, flexDirection: 'row' }}>
             <CheckBox
-              title="Lunes"
+              title='Lunes'
               onPress={() => concatLunes()}
               checked={lunesChecked}
               containerStyle={{
@@ -1044,7 +1035,7 @@ const AnunciatePage = ({ navigation }) => {
               checkedColor={'#fd5d13'}
             />
             <CheckBox
-              title="Martes"
+              title='Martes'
               onPress={() => concatMartes()}
               checked={martesChecked}
               containerStyle={{
@@ -1059,7 +1050,7 @@ const AnunciatePage = ({ navigation }) => {
               checkedColor={'#fd5d13'}
             />
             <CheckBox
-              title="Miercoles"
+              title='Miercoles'
               onPress={() => concatMiercoles()}
               checked={miercolesChecked}
               containerStyle={{
@@ -1076,7 +1067,7 @@ const AnunciatePage = ({ navigation }) => {
           </View>
           <View style={{ flex: 1, flexDirection: 'row' }}>
             <CheckBox
-              title="Jueves"
+              title='Jueves'
               onPress={() => concatJueves()}
               checked={juevesChecked}
               containerStyle={{
@@ -1091,7 +1082,7 @@ const AnunciatePage = ({ navigation }) => {
               checkedColor={'#fd5d13'}
             />
             <CheckBox
-              title="Viernes"
+              title='Viernes'
               onPress={() => concatViernes()}
               checked={viernesChecked}
               containerStyle={{
@@ -1106,7 +1097,7 @@ const AnunciatePage = ({ navigation }) => {
               checkedColor={'#fd5d13'}
             />
             <CheckBox
-              title="Sábado"
+              title='Sábado'
               onPress={() => concatSabado()}
               checked={sabadoChecked}
               containerStyle={{
@@ -1123,7 +1114,7 @@ const AnunciatePage = ({ navigation }) => {
           </View>
           <View style={{ flexDirection: 'row' }}>
             <CheckBox
-              title="Domingo"
+              title='Domingo'
               onPress={() => concatDomingo()}
               checked={domingoChecked}
               containerStyle={{
@@ -1138,7 +1129,7 @@ const AnunciatePage = ({ navigation }) => {
               checkedColor={'#fd5d13'}
             />
             <CheckBox
-              title="Lunes a Viernes"
+              title='Lunes a Viernes'
               onPress={() => concatLunesViernes()}
               checked={lunesViernesChecked}
               containerStyle={{
@@ -1158,7 +1149,7 @@ const AnunciatePage = ({ navigation }) => {
               <View>
                 <Button
                   onPress={showTimepicker}
-                  title="Desde"
+                  title='Desde'
                   buttonStyle={{
                     backgroundColor: '#F4743B',
                     borderRadius: 25,
@@ -1169,11 +1160,11 @@ const AnunciatePage = ({ navigation }) => {
               </View>
               {show && (
                 <DateTimePicker
-                  testID="dateTimePickerDesde"
+                  testID='dateTimePickerDesde'
                   value={dateDesde}
                   mode={mode}
                   is24Hour={true}
-                  display="spinner"
+                  display='spinner'
                   onChange={onChangeHourDesde}
                 />
               )}
@@ -1186,15 +1177,13 @@ const AnunciatePage = ({ navigation }) => {
                 alignSelf: 'center',
                 margintop: '5%',
                 marginBottom: '5%',
-              }}
-            >
+              }}>
               {Platform.OS == 'android' ? (
                 <Text
                   style={{
                     textAlign: 'center',
                     color: '#ffffff',
-                  }}
-                >
+                  }}>
                   {dateDesde.toLocaleTimeString().slice(1, -3)}
                 </Text>
               ) : (
@@ -1202,8 +1191,7 @@ const AnunciatePage = ({ navigation }) => {
                   style={{
                     textAlign: 'center',
                     color: '#ffffff',
-                  }}
-                >
+                  }}>
                   {dateDesde.toLocaleTimeString([], {
                     hour: '2-digit',
                     minute: '2-digit',
@@ -1215,7 +1203,7 @@ const AnunciatePage = ({ navigation }) => {
               <View>
                 <Button
                   onPress={showTimepicker}
-                  title="Hasta"
+                  title='Hasta'
                   buttonStyle={{
                     backgroundColor: '#F4743B',
                     borderRadius: 25,
@@ -1226,11 +1214,11 @@ const AnunciatePage = ({ navigation }) => {
               </View>
               {show && (
                 <DateTimePicker
-                  testID="dateTimePickerHasta"
+                  testID='dateTimePickerHasta'
                   value={dateHasta}
                   mode={mode}
                   is24Hour={true}
-                  display="spinner"
+                  display='spinner'
                   onChange={onChangeHourHasta}
                 />
               )}
@@ -1243,15 +1231,13 @@ const AnunciatePage = ({ navigation }) => {
                 alignSelf: 'center',
                 margintop: '5%',
                 marginBottom: '5%',
-              }}
-            >
+              }}>
               {Platform.OS == 'android' ? (
                 <Text
                   style={{
                     textAlign: 'center',
                     color: '#ffffff',
-                  }}
-                >
+                  }}>
                   {dateHasta.toLocaleTimeString().slice(1, -3)}
                 </Text>
               ) : (
@@ -1259,8 +1245,7 @@ const AnunciatePage = ({ navigation }) => {
                   style={{
                     textAlign: 'center',
                     color: '#ffffff',
-                  }}
-                >
+                  }}>
                   {dateHasta.toLocaleTimeString([], {
                     hour: '2-digit',
                     minute: '2-digit',
@@ -1272,8 +1257,7 @@ const AnunciatePage = ({ navigation }) => {
         </View>
         <Text
           h3
-          style={{ color: '#000', textAlign: 'center', marginTop: '5%' }}
-        >
+          style={{ color: '#000', textAlign: 'center', marginTop: '5%' }}>
           ¿Qué medios de pago aceptas?
         </Text>
         <View
@@ -1284,16 +1268,15 @@ const AnunciatePage = ({ navigation }) => {
             marginBottom: 10,
             marginLeft: 5,
             marginRight: 5,
-          }}
-        >
+          }}>
           <MaterialCommunityIcons
-            name="cash-usd"
+            name='cash-usd'
             color={'#000'}
             size={35}
             style={{ marginTop: 20 }}
           />
           <CheckBox
-            title="Efectivo"
+            title='Efectivo'
             containerStyle={{
               backgroundColor: 'transparent',
               borderColor: 'transparent',
@@ -1308,13 +1291,13 @@ const AnunciatePage = ({ navigation }) => {
             checked={efectivo}
           />
           <MaterialCommunityIcons
-            name="card-bulleted-outline"
+            name='card-bulleted-outline'
             color={'#000'}
             size={35}
             style={{ marginTop: 20 }}
           />
           <CheckBox
-            title="Pagos Digitales"
+            title='Pagos Digitales'
             containerStyle={{
               backgroundColor: 'transparent',
               borderColor: 'transparent',
@@ -1335,8 +1318,7 @@ const AnunciatePage = ({ navigation }) => {
             alignItems: 'center',
             justifyContent: 'center',
             marginTop: 25,
-          }}
-        >
+          }}>
           <Text h3 style={{ color: '#000', textAlign: 'center' }}>
             Términos y Condiciones & Políticas de Privacidad
           </Text>
@@ -1348,8 +1330,7 @@ const AnunciatePage = ({ navigation }) => {
                 fontSize: 24,
                 fontWeight: 'bold',
                 color: '#fd5d13',
-              }}
-            >
+              }}>
               Leer
             </Text>
           </TouchableOpacity>
@@ -1357,7 +1338,7 @@ const AnunciatePage = ({ navigation }) => {
             <Text>Acá van los términos.</Text>
           </Overlay>
           <CheckBox
-            title="Acepto los términos y condiciones y la política de privacidad"
+            title='Acepto los términos y condiciones y la política de privacidad'
             containerStyle={{
               backgroundColor: 'transparent',
               borderColor: 'transparent',
@@ -1379,8 +1360,7 @@ const AnunciatePage = ({ navigation }) => {
             justifyContent: 'center',
             marginTop: 25,
             marginBottom: 30,
-          }}
-        >
+          }}>
           <Button
             onPress={() =>
               writeUserData(
@@ -1418,7 +1398,7 @@ const AnunciatePage = ({ navigation }) => {
                 photoJSONValue
               )
             }
-            title="Continuar"
+            title='Continuar'
             buttonStyle={{
               backgroundColor: '#F4743B',
             }}
