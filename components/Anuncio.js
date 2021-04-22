@@ -308,7 +308,8 @@ export default function AnuncioSeleccionado({ route, navigation }) {
       style={{
         flex: 1,
         backgroundColor: '#FFFFFF',
-      }}>
+      }}
+    >
       <Image
         source={require('../assets/gradients/20x20.png')}
         style={{
@@ -352,7 +353,8 @@ export default function AnuncioSeleccionado({ route, navigation }) {
               backgroundColor: 'transparent',
             },
           }),
-        }}>
+        }}
+      >
         <TouchableOpacity
           onPress={() => navigation.goBack()}
           style={{
@@ -365,9 +367,10 @@ export default function AnuncioSeleccionado({ route, navigation }) {
                 left: 12,
               },
             }),
-          }}>
+          }}
+        >
           <MaterialCommunityIcons
-            name='arrow-left'
+            name="arrow-left"
             color={naranjaQueDeOficios}
             size={32}
             style={{ backgroundColor: 'transparent' }}
@@ -396,12 +399,14 @@ export default function AnuncioSeleccionado({ route, navigation }) {
                 marginTop: '2%',
               },
             }),
-          }}>
+          }}
+        >
           <TouchableOpacity
             style={{
               marginTop: '10%',
             }}
-            onPress={toggleOverlay}>
+            onPress={toggleOverlay}
+          >
             {!fotoDePerfil ? (
               <View style={{ alignItems: 'center', justifyContent: 'center' }}>
                 <Card.Image
@@ -447,7 +452,8 @@ export default function AnuncioSeleccionado({ route, navigation }) {
           <Overlay
             isVisible={visible}
             onBackdropPress={toggleOverlay}
-            overlayStyle={{ width: '85%', height: 320, borderRadius: 10 }}>
+            overlayStyle={{ width: '85%', height: 320, borderRadius: 10 }}
+          >
             {!fotoDePerfil ? (
               <Card.Image
                 source={require('../assets/icon.png')}
@@ -467,9 +473,9 @@ export default function AnuncioSeleccionado({ route, navigation }) {
           <AirbnbRating
             size={24}
             showRating={true}
-            type='custom'
+            type="custom"
             ratingColor={naranjaQueDeOficios}
-            ratingBackgroundColor='#c8c7c8'
+            ratingBackgroundColor="#c8c7c8"
             fractions={1}
             reviews={['']}
             onFinishRating={(rating) => setRating(rating)}
@@ -484,7 +490,8 @@ export default function AnuncioSeleccionado({ route, navigation }) {
                 color: '#000000',
                 textAlign: 'center',
                 fontSize: 30,
-              }}>
+              }}
+            >
               {nombre} {apellido}
             </Text>
           </View>
@@ -494,13 +501,15 @@ export default function AnuncioSeleccionado({ route, navigation }) {
               flexDirection: 'row',
               alignItems: 'center',
               justifyContent: 'center',
-            }}>
+            }}
+          >
             <Text
-              style={{ color: '#000000', textAlign: 'center', fontSize: 24 }}>
+              style={{ color: '#000000', textAlign: 'center', fontSize: 24 }}
+            >
               {actividad} -
             </Text>
             <MaterialCommunityIcons
-              name='account-group'
+              name="account-group"
               color={naranjaQueDeOficios}
               size={22}
               style={{ marginLeft: '3%' }}
@@ -511,7 +520,8 @@ export default function AnuncioSeleccionado({ route, navigation }) {
                 textAlign: 'center',
                 fontSize: 14,
                 marginLeft: '2%',
-              }}>
+              }}
+            >
               {recomendacionesTotales}
             </Text>
           </View>
@@ -520,10 +530,11 @@ export default function AnuncioSeleccionado({ route, navigation }) {
               flexDirection: 'row',
               marginTop: '2%',
               marginBottom: '5%',
-            }}>
+            }}
+          >
             <SocialIcon
               button
-              type='facebook'
+              type="facebook"
               onPress={() => console.log('Agregar metodo')}
               style={{
                 width: 50,
@@ -532,7 +543,7 @@ export default function AnuncioSeleccionado({ route, navigation }) {
             />
             <SocialIcon
               button
-              type='instagram'
+              type="instagram"
               onPress={() => console.log('Agregar metodo')}
               style={{
                 width: 50,
@@ -541,7 +552,7 @@ export default function AnuncioSeleccionado({ route, navigation }) {
             />
             <SocialIcon
               button
-              type='linkedin'
+              type="linkedin"
               onPress={() => console.log('Agregar metodo')}
               style={{
                 width: 50,
@@ -550,7 +561,7 @@ export default function AnuncioSeleccionado({ route, navigation }) {
             />
             <SocialIcon
               button
-              type='youtube'
+              type="youtube"
               onPress={() => console.log('Agregar metodo')}
               style={{
                 width: 50,
@@ -559,7 +570,7 @@ export default function AnuncioSeleccionado({ route, navigation }) {
             />
             <SocialIcon
               button
-              type='google'
+              type="google"
               onPress={() => console.log('Agregar metodo')}
               style={{
                 width: 50,
@@ -571,9 +582,10 @@ export default function AnuncioSeleccionado({ route, navigation }) {
             style={{
               flex: 1,
               flexDirection: 'row',
-            }}>
+            }}
+          >
             <MaterialCommunityIcons
-              name='map-marker'
+              name="map-marker"
               color={naranjaQueDeOficios}
               size={24}
             />
@@ -585,7 +597,8 @@ export default function AnuncioSeleccionado({ route, navigation }) {
                 marginTop: 10,
                 marginBottom: 10,
                 fontSize: 20,
-              }}>
+              }}
+            >
               {localidad}
             </Text>
           </View>
@@ -593,9 +606,10 @@ export default function AnuncioSeleccionado({ route, navigation }) {
             style={{
               flex: 1,
               flexDirection: 'row',
-            }}>
+            }}
+          >
             <MaterialCommunityIcons
-              name='email'
+              name="email"
               color={naranjaQueDeOficios}
               size={24}
             />
@@ -607,7 +621,8 @@ export default function AnuncioSeleccionado({ route, navigation }) {
                 marginTop: 10,
                 marginBottom: 10,
                 fontSize: 20,
-              }}>
+              }}
+            >
               {emailLaboral}
             </Text>
           </View>
@@ -618,7 +633,8 @@ export default function AnuncioSeleccionado({ route, navigation }) {
               justifyContent: 'center',
               marginTop: '3%',
               marginBottom: '3%',
-            }}>
+            }}
+          >
             <TouchableOpacity onPress={() => shareContent()}>
               <Text
                 style={{
@@ -637,9 +653,10 @@ export default function AnuncioSeleccionado({ route, navigation }) {
                       fontSize: 20,
                     },
                   }),
-                }}>
+                }}
+              >
                 <MaterialCommunityIcons
-                  name='share-variant'
+                  name="share-variant"
                   color={naranjaQueDeOficios}
                   size={24}
                 />{' '}
@@ -657,7 +674,8 @@ export default function AnuncioSeleccionado({ route, navigation }) {
                   flex: 1,
                 },
               }),
-            }}></View>
+            }}
+          ></View>
         </Card>
         {/* Card detalles */}
         <Text
@@ -670,7 +688,8 @@ export default function AnuncioSeleccionado({ route, navigation }) {
             color: '#000000',
             fontWeight: 'bold',
             textTransform: 'uppercase',
-          }}>
+          }}
+        >
           Información Laboral
         </Text>
         <Card
@@ -695,22 +714,25 @@ export default function AnuncioSeleccionado({ route, navigation }) {
                 marginTop: '3%',
               },
             }),
-          }}>
+          }}
+        >
           <View style={{ flexDirection: 'column' }}>
             <View
               style={{
                 flex: 1,
                 flexDirection: 'row',
-              }}>
+              }}
+            >
               <MaterialCommunityIcons
-                name='calendar-clock'
+                name="calendar-clock"
                 color={naranjaQueDeOficios}
                 size={24}
               />
               <View
                 style={{
                   flexDirection: 'column',
-                }}>
+                }}
+              >
                 <Text
                   style={{
                     marginLeft: 'auto',
@@ -719,15 +741,17 @@ export default function AnuncioSeleccionado({ route, navigation }) {
                     textAlign: 'center',
                     fontSize: 20,
                     color: '#000000',
-                  }}>
+                  }}
+                >
                   {diasHorarios.filter(onlyUnique).join(', ')}
                 </Text>
                 <View
                   style={{
                     flexDirection: 'row',
-                  }}>
+                  }}
+                >
                   <MaterialCommunityIcons
-                    name='clock-outline'
+                    name="clock-outline"
                     color={naranjaQueDeOficios}
                     size={24}
                   />
@@ -739,7 +763,8 @@ export default function AnuncioSeleccionado({ route, navigation }) {
                       textAlign: 'center',
                       fontSize: 20,
                       color: '#000000',
-                    }}>
+                    }}
+                  >
                     {desde}
                   </Text>
                   <Text
@@ -750,7 +775,8 @@ export default function AnuncioSeleccionado({ route, navigation }) {
                       textAlign: 'center',
                       fontSize: 20,
                       color: '#000000',
-                    }}>
+                    }}
+                  >
                     {hasta}
                   </Text>
                 </View>
@@ -762,9 +788,10 @@ export default function AnuncioSeleccionado({ route, navigation }) {
               style={{
                 flex: 1,
                 flexDirection: 'row',
-              }}>
+              }}
+            >
               <MaterialCommunityIcons
-                name='storefront'
+                name="storefront"
                 color={naranjaQueDeOficios}
                 size={24}
               />
@@ -776,7 +803,8 @@ export default function AnuncioSeleccionado({ route, navigation }) {
                   marginTop: 10,
                   marginBottom: 10,
                   fontSize: 20,
-                }}>
+                }}
+              >
                 {direccionDelLocal}
               </Text>
             </View>
@@ -784,9 +812,10 @@ export default function AnuncioSeleccionado({ route, navigation }) {
           <View
             style={{
               flexDirection: 'row',
-            }}>
+            }}
+          >
             <MaterialCommunityIcons
-              name='cellphone-basic'
+              name="cellphone-basic"
               color={naranjaQueDeOficios}
               size={24}
             />
@@ -798,16 +827,18 @@ export default function AnuncioSeleccionado({ route, navigation }) {
                 marginTop: 10,
                 marginBottom: 10,
                 fontSize: 20,
-              }}>
+              }}
+            >
               {celular}
             </Text>
           </View>
           <View
             style={{
               flexDirection: 'row',
-            }}>
+            }}
+          >
             <MaterialCommunityIcons
-              name='phone-classic'
+              name="phone-classic"
               color={naranjaQueDeOficios}
               size={24}
             />
@@ -819,7 +850,8 @@ export default function AnuncioSeleccionado({ route, navigation }) {
                 marginTop: 10,
                 marginBottom: 10,
                 fontSize: 20,
-              }}>
+              }}
+            >
               {telefono}
             </Text>
           </View>
@@ -827,9 +859,10 @@ export default function AnuncioSeleccionado({ route, navigation }) {
             <View
               style={{
                 flexDirection: 'row',
-              }}>
+              }}
+            >
               <MaterialCommunityIcons
-                name='office-building'
+                name="office-building"
                 color={naranjaQueDeOficios}
                 size={24}
               />
@@ -841,7 +874,8 @@ export default function AnuncioSeleccionado({ route, navigation }) {
                   marginTop: 10,
                   marginBottom: 10,
                   fontSize: 20,
-                }}>
+                }}
+              >
                 {nombreDeLaEmpresa}
               </Text>
             </View>
@@ -849,9 +883,10 @@ export default function AnuncioSeleccionado({ route, navigation }) {
           <View
             style={{
               flexDirection: 'row',
-            }}>
+            }}
+          >
             <MaterialCommunityIcons
-              name='receipt'
+              name="receipt"
               color={naranjaQueDeOficios}
               size={24}
             />
@@ -863,7 +898,8 @@ export default function AnuncioSeleccionado({ route, navigation }) {
                 marginTop: 10,
                 marginBottom: 10,
                 fontSize: 20,
-              }}>
+              }}
+            >
               {factura}
             </Text>
           </View>
@@ -871,9 +907,10 @@ export default function AnuncioSeleccionado({ route, navigation }) {
             <View
               style={{
                 flexDirection: 'row',
-              }}>
+              }}
+            >
               <MaterialCommunityIcons
-                name='card-account-details-star-outline'
+                name="card-account-details-star-outline"
                 color={naranjaQueDeOficios}
                 size={24}
               />
@@ -885,7 +922,8 @@ export default function AnuncioSeleccionado({ route, navigation }) {
                   marginTop: 10,
                   marginBottom: 10,
                   fontSize: 20,
-                }}>
+                }}
+              >
                 {numeroDeMatricula}
               </Text>
             </View>
@@ -901,7 +939,8 @@ export default function AnuncioSeleccionado({ route, navigation }) {
             marginTop: 10,
             color: '#000000',
             fontWeight: 'bold',
-          }}>
+          }}
+        >
           Resumen Personal
         </Text>
         <Card
@@ -926,13 +965,15 @@ export default function AnuncioSeleccionado({ route, navigation }) {
                 marginTop: '3%',
               },
             }),
-          }}>
+          }}
+        >
           <View
             style={{
               flexDirection: 'row',
-            }}>
+            }}
+          >
             <MaterialCommunityIcons
-              name='notebook'
+              name="notebook"
               color={naranjaQueDeOficios}
               size={24}
             />
@@ -946,7 +987,8 @@ export default function AnuncioSeleccionado({ route, navigation }) {
                 marginLeft: 25,
                 marginBottom: 20,
                 color: '#000000',
-              }}>
+              }}
+            >
               "{descripcionPersonal}"
             </Text>
           </View>
@@ -961,7 +1003,8 @@ export default function AnuncioSeleccionado({ route, navigation }) {
             marginTop: 10,
             color: '#000000',
             fontWeight: 'bold',
-          }}>
+          }}
+        >
           Comentarios
         </Text>
         <Card
@@ -988,7 +1031,8 @@ export default function AnuncioSeleccionado({ route, navigation }) {
                 marginBottom: '35%',
               },
             }),
-          }}>
+          }}
+        >
           {arr.map((u, index) => {
             return (
               <View key={index}>
@@ -1002,7 +1046,8 @@ export default function AnuncioSeleccionado({ route, navigation }) {
                         marginTop: 10,
                         marginBottom: 10,
                         color: '#000000',
-                      }}>
+                      }}
+                    >
                       -{' '}
                       {u.receptor == id
                         ? JSON.stringify(u.comentario)
@@ -1013,7 +1058,8 @@ export default function AnuncioSeleccionado({ route, navigation }) {
                         marginLeft: 10,
                         fontSize: 14,
                         color: naranjaQueDeOficios,
-                      }}>
+                      }}
+                    >
                       De:{' '}
                       {u.receptor == id
                         ? JSON.stringify(u.emisorEmail)
@@ -1046,7 +1092,8 @@ export default function AnuncioSeleccionado({ route, navigation }) {
               marginBottom: '-2%',
             },
           }),
-        }}>
+        }}
+      >
         <Image
           source={require('../assets/gradients/20x20.png')}
           style={{
@@ -1061,7 +1108,7 @@ export default function AnuncioSeleccionado({ route, navigation }) {
         <View style={{ margin: 10, marginLeft: 15 }}>
           {!user ? (
             <Button
-              title='Recomendar'
+              title="Recomendar"
               onPress={() =>
                 alert('Debes ingresar para recomendar a un usuario!')
               }
@@ -1074,7 +1121,7 @@ export default function AnuncioSeleccionado({ route, navigation }) {
             />
           ) : (
             <Button
-              title='Recomendar'
+              title="Recomendar"
               onPress={() => handleRecommend()}
               titleStyle={{ fontSize: 12, marginBottom: -20 }}
               buttonStyle={{
@@ -1085,7 +1132,7 @@ export default function AnuncioSeleccionado({ route, navigation }) {
             />
           )}
           <MaterialCommunityIcons
-            name='account-group'
+            name="account-group"
             color={'white'}
             size={22}
             style={{ position: 'absolute', marginLeft: 45, marginTop: 5 }}
@@ -1094,7 +1141,7 @@ export default function AnuncioSeleccionado({ route, navigation }) {
         <View style={{ margin: 10 }}>
           {user == null ? (
             <Button
-              title='Enviar Mensaje'
+              title="Enviar Mensaje"
               onPress={() => alert('Debes ingresar para iniciar un chat!')}
               titleStyle={{ fontSize: 12, marginTop: 18 }}
               buttonStyle={{
@@ -1105,7 +1152,7 @@ export default function AnuncioSeleccionado({ route, navigation }) {
             />
           ) : (
             <Button
-              title='Enviar Mensaje'
+              title="Enviar Mensaje"
               onPress={() =>
                 RootNavigation.navigate('ChatComponent', {
                   userOne: firebase.auth().currentUser.uid,
@@ -1121,8 +1168,8 @@ export default function AnuncioSeleccionado({ route, navigation }) {
             />
           )}
           <MaterialCommunityIcons
-            name='comment-text'
-            color={naranjaQueDeOficios}
+            name="message-plus"
+            color={'white'}
             size={24}
             style={{ position: 'absolute', marginLeft: 45, marginTop: 5 }}
           />
@@ -1130,7 +1177,7 @@ export default function AnuncioSeleccionado({ route, navigation }) {
         <View style={{ margin: 10 }}>
           {user == null ? (
             <Button
-              title='Comentar'
+              title="Comentar"
               onPress={() => alert('Debes ingresar para comentar!')}
               titleStyle={{ fontSize: 12, marginTop: 18 }}
               buttonStyle={{
@@ -1141,7 +1188,7 @@ export default function AnuncioSeleccionado({ route, navigation }) {
             />
           ) : (
             <Button
-              title='Comentar'
+              title="Comentar"
               onPress={() =>
                 RootNavigation.navigate('ComentarScreen', { id: id })
               }
@@ -1154,7 +1201,7 @@ export default function AnuncioSeleccionado({ route, navigation }) {
             />
           )}
           <MaterialCommunityIcons
-            name='bullhorn'
+            name="bullhorn"
             color={'white'}
             size={20}
             style={{ position: 'absolute', marginLeft: 50, marginTop: 7 }}
