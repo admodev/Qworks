@@ -75,7 +75,7 @@ class ControlPanel extends React.Component {
             palabraClaveTres: child.val().palabraClaveTres,
             descripcionPersonal: child.val().descripcionPersonal,
             recomendacionesTotales: child.val().recomendacionesTotales,
-            direccionDelLocal: child.val().direccionDelLocal,
+            direccionLocal: child.val().direccionLocal,
             uuid: child.val().uuid,
           });
         });
@@ -182,7 +182,8 @@ class ControlPanel extends React.Component {
               nombre={item.nombre}
               apellido={item.apellido}
               actividad={item.actividad}
-              local={item.direccionDelLocal}
+              local={item.direccionLocal}
+              direccionLocal={item.direccionLocal}
               recomendacionesTotales={'5.4k'}
             />
           )}
