@@ -87,13 +87,22 @@ const LocationComponent = (props) => {
             top: 18,
             left: 90,
           }}>
-          <AirbnbRating
-            size={14}
-            showRating={true}
-            reviews={['']}
-            type='star'
-            // onFinishRating={this.setState({ rating: rating })}
-          />
+          <View
+            style={{
+              ...Platform.select({
+                android: {
+                  marginTop: '-15%',
+                },
+              }),
+            }}>
+            <AirbnbRating
+              size={14}
+              showRating={true}
+              reviews={['']}
+              type='star'
+              // onFinishRating={this.setState({ rating: rating })}
+            />
+          </View>
           <MaterialCommunityIcons
             name='account-group'
             color={naranjaQueDeOficios}
@@ -122,7 +131,6 @@ const LocationComponent = (props) => {
             style={{
               fontFamily: 'DmSans',
               fontSize: 20,
-              fontWeight: 'bold',
             }}>
             <MaterialCommunityIcons name='account' color={'gray'} size={16} />{' '}
             {props.nombre.split(' ').shift()} {props.apellido}
@@ -131,17 +139,24 @@ const LocationComponent = (props) => {
             style={{
               fontFamily: 'DmSans',
               fontSize: 20,
-              fontWeight: 'bold',
-              marginTop: '-2%',
+              marginTop: '-1%',
             }}>
             <MaterialCommunityIcons name='cog' color={'gray'} size={16} />{' '}
             {props.actividad.trim()}
           </Text>
           <Text
             style={{
-              fontFamily: 'ComfortaaLight',
-              fontSize: 18,
-              fontWeight: 'bold',
+              ...Platform.select({
+                android: {
+                  marginTop: -5,
+                  fontFamily: 'ComfortaaLight',
+                  fontSize: 18,
+                },
+                ios: {
+                  fontFamily: 'ComfortaaLight',
+                  fontSize: 18,
+                },
+              }),
             }}>
             <MaterialCommunityIcons
               name='storefront'
@@ -152,21 +167,25 @@ const LocationComponent = (props) => {
           </Text>
           <Text
             style={{
-              fontFamily: 'ComfortaaLight',
-              fontSize: 16,
-              fontWeight: 'bold',
-              marginTop: '2%',
+              ...Platform.select({
+                android: {
+                  fontFamily: 'ComfortaaLight',
+                  fontSize: 16,
+                  width: 350,
+                },
+                ios: {
+                  fontFamily: 'ComfortaaLight',
+                  fontSize: 16,
+                  width: 300,
+                },
+              }),
             }}>
             <MaterialCommunityIcons
               name='map-marker'
               color={'gray'}
               size={16}
             />{' '}
-<<<<<<< HEAD
             {props.direccionLocal.split(',', 2).join(',')}
-=======
-            Moŕon, Provincia de Buenos Aires
->>>>>>> parent of 6bb7c59 (minor changes LocationCard)
           </Text>
           <TouchableOpacity
             onPress={() => {
@@ -190,28 +209,28 @@ const LocationComponent = (props) => {
                 justifyContent: 'center',
                 flexDirection: 'row',
               }}>
-              <View
-                style={{
-                  marginBottom: '7%',
-                }}>
-                <MaterialCommunityIcons
-                  name='hand'
-                  color={naranjaQueDeOficios}
-                  size={20}
-                />
-              </View>
               <Text
                 style={{
                   color: naranjaQueDeOficios,
                   marginLeft: 'auto',
                   marginRight: 'auto',
+                  fontFamily: 'DmSansBold',
                   fontSize: 16,
-                  marginLeft: '3%',
                   marginBottom: '8%',
-                  fontWeight: 'bold',
                 }}>
-                ¡Conóceme!
+                ¡Comunícate!
               </Text>
+              <View
+                style={{
+                  marginBottom: '7%',
+                  marginRight: '15%',
+                }}>
+                <MaterialCommunityIcons
+                  name='comment-text'
+                  color={naranjaQueDeOficios}
+                  size={20}
+                />
+              </View>
             </View>
           </TouchableOpacity>
         </View>
