@@ -1,6 +1,5 @@
 import React, { useState, useEffect, setState } from 'react';
 import {
-  Alert,
   Image,
   View,
   Platform,
@@ -57,14 +56,10 @@ const AnunciatePage = ({ navigation }) => {
   const [partido, setPartido] = useState('');
   const [partidoLatitude, setPartidoLatitude] = useState('');
   const [partidoLongitude, setPartidoLongitude] = useState('');
-  const [direccionLocal, setDireccionLocalFunc] = useState('');
-  const [direccionLocalLatitude, setDireccionLocalLatitudeFunc] = useState('');
-  const [direccionLocalLongitude, setDireccionLocalLongitudeFunc] = useState(
-    ''
-  );
   const [local, setLocal] = useState('');
   const [empresa, setEmpresa] = useState('');
   const [factura, setFactura] = useState('');
+  const [direccionDelLocal, setDireccionDelLocal] = useState('');
   const [nombreDeLaEmpresa, setNombreDeLaEmpresa] = useState('');
   const [matricula, setMatricula] = useState('');
   const [numeroDeMatricula, setNumeroDeMatricula] = useState('');
@@ -181,8 +176,7 @@ const AnunciatePage = ({ navigation }) => {
           status,
         } = await ImagePicker.requestMediaLibraryPermissionsAsync();
         if (status !== 'granted') {
-          Alert.alert(
-            'Permiso',
+          alert(
             '¡Perdón, necesitamos acceder a la galería para que pueda subir una foto!'
           );
         }
@@ -401,11 +395,14 @@ const AnunciatePage = ({ navigation }) => {
     longitud,
     photoJSONValue
   ) {
-    if (!cuitCuil || !dni || terminos === false) {
-      Alert.alert(
-        '¡Atención!',
-        '¡Error al generar su anuncio! Por favor compruebe que haya rellenado todos los campos obligatorios. Así mismo, recuerde LEER y aceptar TÉRMINOS & CONDICIONES.'
-      );
+    if (!cuitCuil.trim()) {
+      alert('Por favor ingrese su cuit/cuil');
+      return;
+    } else if (!dni.trim()) {
+      alert('Por favor ingrese su DNI');
+      return;
+    } else if (terminos == false) {
+      alert('Tiene que aceptar los terminos para continuar');
     } else {
       if (!anunciosCountResult) {
         anunciosCountResult = 0;
@@ -441,11 +438,9 @@ const AnunciatePage = ({ navigation }) => {
           partidoLatitude: partidoLatitude,
           partidoLongitude: partidoLongitude,
           local: local,
-          direccionLocal: direccionLocal,
-          direccionLocalLatitude: direccionLocalLatitude,
-          direccionLocalLongitude: direccionLocalLongitude,
           empresa: empresa,
           factura: factura,
+          direccionDelLocal: direccionDelLocal,
           nombreDeLaEmpresa: nombreDeLaEmpresa,
           matricula: matricula,
           numeroDeMatricula: numeroDeMatricula,
@@ -458,8 +453,6 @@ const AnunciatePage = ({ navigation }) => {
           desde: dateDesdeParsed,
           hasta: dateHastaParsed,
           terminos: terminos,
-          aceptaEfectivo: efectivo,
-          aceptaMediosDigitales: pagosDigitales,
           latitud: latitud,
           longitud: longitud,
           photoJSONValue: photoJSONValue,
@@ -469,8 +462,7 @@ const AnunciatePage = ({ navigation }) => {
           navigation.navigate('Anuncios');
         })
         .catch(function (error) {
-          Alert.alert(
-            'Error',
+          alert(
             'Hubo un error al subir su anuncio, por favor compruebe sus datos e intentelo nuevamente.'
           );
         });
@@ -706,7 +698,7 @@ const AnunciatePage = ({ navigation }) => {
             value={emailLaboral}
           />
           <GooglePlacesAutocomplete
-            placeholder='Localidad *'
+            placeholder='Localidad'
             minLength={2}
             returnKeyType={'default'}
             fetchDetails={true}
@@ -746,7 +738,7 @@ const AnunciatePage = ({ navigation }) => {
             onFail={(error) => console.error(error)}
           />
           <GooglePlacesAutocomplete
-            placeholder='Partido *'
+            placeholder='Partido'
             minLength={2}
             returnKeyType={'default'}
             fetchDetails={true}
@@ -808,61 +800,17 @@ const AnunciatePage = ({ navigation }) => {
               maxLength={2}
             />
           )}
-          {local.toString().toLowerCase() === 'no' ||
-            (!local && (
-              <Input
-                disabled={true}
-                placeholder='Dirección del local'
-                inputStyle={{ color: '#000000' }}
-                style={{ color: '#000000', fontSize: 16, textAlign: 'center' }}
-                inputContainerStyle={{ borderBottomColor: '#000000' }}
-                placeholderTextColor='black'
-              />
-            ))}
-          {local.toString().toLowerCase() === 'si' && (
-            <GooglePlacesAutocomplete
-              placeholder='Dirección del local'
-              minLength={2}
-              returnKeyType={'default'}
-              fetchDetails={true}
-              onPress={(data, details) => {
-                var direccionLocalPlaces = data.description;
-                var direccionLocalLatitudePlaces =
-                  details.geometry.location.lat;
-                var direccionLocalLongitudePlaces =
-                  details.geometry.location.lng;
-                setDireccionLocalFunc(direccionLocalPlaces);
-                setDireccionLocalLatitudeFunc(direccionLocalLatitudePlaces);
-                setDireccionLocalLongitudeFunc(direccionLocalLongitudePlaces);
-              }}
-              query={{
-                key: DOTLOCATION,
-                language: 'es-419',
-              }}
-              textInputProps={{ placeholderTextColor: 'black' }}
-              styles={{
-                textInputContainer: {
-                  width: '95%',
-                  borderBottomWidth: 1,
-                  borderBottomColor: '#000000',
-                  marginTop: '-2%',
-                  marginBottom: '5%',
-                },
-                textInput: {
-                  height: 38,
-                  color: '#5d5d5d',
-                  fontSize: 16,
-                  backgroundColor: 'transparent',
-                  textAlign: 'center',
-                },
-                predefinedPlacesDescription: {
-                  color: '#1faadb',
-                },
-              }}
-              listViewDisplayed={false}
-              onFail={(error) => console.error(error)}
-            />
-          )}
+          <Input
+            placeholder='Dirección del local'
+            inputStyle={{ color: '#000000' }}
+            style={{ color: '#000000', fontSize: 16, textAlign: 'center' }}
+            inputContainerStyle={{ borderBottomColor: '#000000' }}
+            placeholderTextColor='black'
+            onChangeText={(direccionDelLocal) =>
+              setDireccionDelLocal(direccionDelLocal)
+            }
+            value={direccionDelLocal}
+          />
           {Platform.os === 'ios' ? (
             <Input
               placeholder='Empresa (Si / No)'
@@ -886,28 +834,17 @@ const AnunciatePage = ({ navigation }) => {
               maxLength={2}
             />
           )}
-          {!empresa || empresa.toString().toLowerCase() !== 'si' ? (
-            <Input
-              disabled
-              placeholder='Nombre de la empresa'
-              inputStyle={{ color: '#000000' }}
-              style={{ color: '#000000', fontSize: 16, textAlign: 'center' }}
-              inputContainerStyle={{ borderBottomColor: '#000000' }}
-              placeholderTextColor='black'
-            />
-          ) : (
-            <Input
-              placeholder='Nombre de la empresa'
-              inputStyle={{ color: '#000000' }}
-              style={{ color: '#000000', fontSize: 16, textAlign: 'center' }}
-              inputContainerStyle={{ borderBottomColor: '#000000' }}
-              placeholderTextColor='black'
-              onChangeText={(nombreDeLaEmpresa) =>
-                setNombreDeLaEmpresa(nombreDeLaEmpresa)
-              }
-              value={nombreDeLaEmpresa}
-            />
-          )}
+          <Input
+            placeholder='Nombre de la empresa'
+            inputStyle={{ color: '#000000' }}
+            style={{ color: '#000000', fontSize: 16, textAlign: 'center' }}
+            inputContainerStyle={{ borderBottomColor: '#000000' }}
+            placeholderTextColor='black'
+            onChangeText={(nombreDeLaEmpresa) =>
+              setNombreDeLaEmpresa(nombreDeLaEmpresa)
+            }
+            value={nombreDeLaEmpresa}
+          />
           <Input
             placeholder='Factura (Tipo)'
             inputStyle={{ color: '#000000' }}
@@ -1443,9 +1380,7 @@ const AnunciatePage = ({ navigation }) => {
                 local,
                 empresa,
                 factura,
-                direccionLocal,
-                direccionLocalLatitude,
-                direccionLocalLongitude,
+                direccionDelLocal,
                 nombreDeLaEmpresa,
                 matricula,
                 numeroDeMatricula,
@@ -1458,8 +1393,6 @@ const AnunciatePage = ({ navigation }) => {
                 dateDesdeParsed,
                 dateHastaParsed,
                 terminos,
-                efectivo,
-                pagosDigitales,
                 latitud,
                 longitud,
                 photoJSONValue

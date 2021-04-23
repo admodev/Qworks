@@ -185,7 +185,7 @@ const LocationComponent = (props) => {
               color={'gray'}
               size={16}
             />{' '}
-            {props.direccionLocal.split(',', 2).join(',')}
+            Morón, Provincia de Buenos Aires
           </Text>
           <TouchableOpacity
             onPress={() => {
