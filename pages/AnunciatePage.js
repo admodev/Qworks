@@ -110,84 +110,84 @@ const AnunciatePage = ({ navigation }) => {
   const toggleEfectivo = React.useCallback(() =>
     setFormValues({
       ...formValues,
-      efectivo: !efectivo,
+      efectivo: !formValues.efectivo,
     })
   );
 
   const togglePagosDigitales = React.useCallback(() =>
     setFormValues({
       ...formValues,
-      pagosDigitales: !pagosDigitales,
+      pagosDigitales: !formValues.pagosDigitales,
     })
   );
 
   const toggleTerminos = React.useCallback(() =>
     setFormValues({
       ...formValues,
-      terminos: !terminos,
+      terminos: !formValues.terminos,
     })
   );
 
   const toggleLunesChecked = React.useCallback(() =>
     setFormValues({
       ...formValues,
-      lunesChecked: !lunesChecked,
+      lunesChecked: !formValues.lunesChecked,
     })
   );
 
   const toggleMartesChecked = React.useCallback(() =>
     setFormValues({
       ...formValues,
-      martesChecked: !martesChecked,
+      martesChecked: !formValues.martesChecked,
     })
   );
 
   const toggleMiercolesChecked = React.useCallback(() =>
     setFormValues({
       ...formValues,
-      miercolesChecked: !miercolesChecked,
+      miercolesChecked: !formValues.miercolesChecked,
     })
   );
 
   const toggleJuevesChecked = React.useCallback(() =>
     setFormValues({
       ...formValues,
-      juevesChecked: !juevesChecked,
+      juevesChecked: !formValues.juevesChecked,
     })
   );
 
   const toggleViernesChecked = React.useCallback(() =>
     setFormValues({
       ...formValues,
-      viernesChecked: !viernesChecked,
+      viernesChecked: !formValues.viernesChecked,
     })
   );
 
   const toggleSabadoChecked = React.useCallback(() =>
     setFormValues({
       ...formValues,
-      sabadoChecked: !sabadoChecked,
+      sabadoChecked: !formValues.sabadoChecked,
     })
   );
 
   const toggleDomingoChecked = React.useCallback(() =>
     setFormValues({
       ...formValues,
-      domingoChecked: !domingoChecked,
+      domingoChecked: !formValues.domingoChecked,
     })
   );
 
   const toggleLunesViernesChecked = React.useCallback(() => {
     setFormValues({
       ...formValues,
-      lunesViernesChecked: !lunesViernesChecked,
+      lunesViernesChecked: !formValues.lunesViernesChecked,
     });
   });
 
   const toggleOverlay = () => {
     setFormValues({
       ...formValues,
-      visible: !visible,
+      visible: !formValues.visible,
     });
   };
 
