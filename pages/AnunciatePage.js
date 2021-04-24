@@ -8,11 +8,11 @@ import React, { useState, useEffect } from 'react';
 import {
   Alert,
   Image,
-  View,
   Platform,
   ScrollView,
   StyleSheet,
   TouchableOpacity,
+  View,
 } from 'react-native';
 import {
   Avatar,
@@ -29,7 +29,6 @@ import 'firebase/storage';
 import * as ImagePicker from 'expo-image-picker';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import * as Progress from 'react-native-progress';
-import DateTimePicker from '@react-native-community/datetimepicker';
 import 'react-native-get-random-values';
 import { v4 as uuidv4 } from 'uuid';
 import Cookies from 'js-cookie';
@@ -38,8 +37,8 @@ import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplet
 import { DOTLOCATION } from '@env';
 
 const AnunciatePage = ({ navigation }) => {
-  const user = firebase.auth().currentUser && firebase.auth().currentUser;
-  const id = firebase.auth().currentUser && user.uid;
+  const user = firebase.auth().currentUser;
+  const id = user.uid;
   const uuid = uuidv4();
   const [formValues, setFormValues] = useState({
     location: null,
@@ -47,6 +46,7 @@ const AnunciatePage = ({ navigation }) => {
     ready: false,
     error: null,
     image: null,
+    anunciosCountResult: anunciosCountResult,
     imageUrlResponse: '',
     nombre: '',
     apellido: '',
@@ -91,20 +91,12 @@ const AnunciatePage = ({ navigation }) => {
     sabadoChecked: false,
     domingoChecked: false,
     lunesViernesChecked: false,
-    dateDesde: new Date(1598051730000),
-    dateHasta: new Date(1598051730000),
-    mode: 'date',
-    show: false,
+    dateDesde: '',
+    dateHasta: '',
     where: {
       lat: null,
       lng: null,
     },
-  });
-
-  const [localidadPlacesData, setLocalidadPlacesData] = useState({
-    localidadPlaces: '',
-    localidadPlacesLatitude: 0,
-    localidadPlacesLongitude: 0,
   });
 
   const toggleEfectivo = React.useCallback(() =>
@@ -189,36 +181,6 @@ const AnunciatePage = ({ navigation }) => {
       ...formValues,
       visible: !formValues.visible,
     });
-  };
-
-  const onChangeHourDesde = (selectedDateDesde) => {
-    const currentDate = selectedDateDesde || date;
-    setFormValues({
-      ...formValues,
-      show: Platform.OS === 'ios',
-      dateDesde: currentDate,
-    });
-  };
-
-  const onChangeHourHasta = (selectedDateHasta) => {
-    const currentDate = selectedDateHasta || date;
-    setFormValues({
-      ...formValues,
-      show: Platform.OS === 'ios',
-      dateHasta: currentDate,
-    });
-  };
-
-  const showMode = (currentMode) => {
-    setFormValues({
-      ...formValues,
-      show: true,
-      mode: currentMode,
-    });
-  };
-
-  const showTimepicker = () => {
-    showMode('time');
   };
 
   useEffect(() => {
@@ -308,7 +270,7 @@ const AnunciatePage = ({ navigation }) => {
   const concatLunes = () => {
     setFormValues({
       ...formValues,
-      diasHorarios: diasHorarios.concat('Lunes'),
+      diasHorarios: formValues.diasHorarios.concat('Lunes'),
     });
     toggleLunesChecked();
   };
@@ -316,7 +278,7 @@ const AnunciatePage = ({ navigation }) => {
   const concatMartes = () => {
     setFormValues({
       ...formValues,
-      diasHorarios: diasHorarios.concat('Martes'),
+      diasHorarios: formValues.diasHorarios.concat('Martes'),
     });
     toggleMartesChecked();
   };
@@ -324,7 +286,7 @@ const AnunciatePage = ({ navigation }) => {
   const concatMiercoles = () => {
     setFormValues({
       ...formValues,
-      diasHorarios: diasHorarios.concat('Miercoles'),
+      diasHorarios: formValues.diasHorarios.concat('Miercoles'),
     });
     toggleMiercolesChecked();
   };
@@ -332,7 +294,7 @@ const AnunciatePage = ({ navigation }) => {
   function concatJueves() {
     setFormValues({
       ...formValues,
-      diasHorarios: diasHorarios.concat('Jueves'),
+      diasHorarios: formValues.diasHorarios.concat('Jueves'),
     });
     toggleJuevesChecked();
   }
@@ -340,7 +302,7 @@ const AnunciatePage = ({ navigation }) => {
   function concatViernes() {
     setFormValues({
       ...formValues,
-      diasHorarios: diasHorarios.concat('Viernes'),
+      diasHorarios: formValues.diasHorarios.concat('Viernes'),
     });
     toggleViernesChecked();
   }
@@ -348,7 +310,7 @@ const AnunciatePage = ({ navigation }) => {
   function concatSabado() {
     setFormValues({
       ...formValues,
-      diasHorarios: diasHorarios.concat('Sabado'),
+      diasHorarios: formValues.diasHorarios.concat('Sabado'),
     });
     toggleSabadoChecked();
   }
@@ -356,7 +318,7 @@ const AnunciatePage = ({ navigation }) => {
   function concatDomingo() {
     setFormValues({
       ...formValues,
-      diasHorarios: diasHorarios.concat('Domingo'),
+      diasHorarios: formValues.diasHorarios.concat('Domingo'),
     });
     toggleDomingoChecked();
   }
@@ -364,7 +326,7 @@ const AnunciatePage = ({ navigation }) => {
   function concatLunesViernes() {
     setFormValues({
       ...formValues,
-      diasHorarios: diasHorarios.concat('Lunes a Viernes'),
+      diasHorarios: formValues.diasHorarios.concat('Lunes a Viernes'),
     });
     toggleLunesViernesChecked();
   }
@@ -431,126 +393,76 @@ const AnunciatePage = ({ navigation }) => {
     }
   };
 
-  const dateDesdeParsed = formValues.dateDesde.toLocaleTimeString([], {
-    hour: '2-digit',
-    minute: '2-digit',
-  });
-
-  const dateHastaParsed = formValues.dateHasta.toLocaleTimeString([], {
-    hour: '2-digit',
-    minute: '2-digit',
-  });
-
-  function writeUserData(
-    nombre,
-    apellido,
-    cuitCuil,
-    dni,
-    actividad,
-    telefono,
-    celular,
-    localidad,
-    localidadLatitude,
-    localidadLongitude,
-    partido,
-    partidoLatitude,
-    partidoLongitude,
-    local,
-    empresa,
-    factura,
-    direccionDelLocal,
-    nombreDeLaEmpresa,
-    matricula,
-    numeroDeMatricula,
-    emailLaboral,
-    descripcionPersonal,
-    palabraClaveUno,
-    palabraClaveDos,
-    palabraClaveTres,
-    diasHorarios,
-    dateDesdeParsed,
-    dateHastaParsed,
-    terminos,
-    latitud,
-    longitud
-  ) {
-    if (!cuitCuil.trim()) {
+  function writeUserData() {
+    if (!formValues.cuitCuil.trim()) {
       Alert.alert('¡Atención!', 'Por favor ingrese su cuit/cuil');
       return;
-    } else if (!dni.trim()) {
+    } else if (!formValues.dni.trim()) {
       Alert.alert('¡Atención!', 'Por favor ingrese su DNI');
       return;
-    } else if (terminos == false) {
+    } else if (formValues.terminos == false) {
       Alert.alert(
         '¡Atención!',
         'Tiene que aceptar los terminos para continuar'
       );
+      return;
     } else {
-      // ! Refactor this.
-      if (!anunciosCountResult) {
-        anunciosCountResult = 0;
-      } else if (anunciosCountResult === 1) {
-        anunciosCountResult = 1;
-      } else if (anunciosCountResult === 2) {
-        anunciosCountResult = 2;
-      } else if (anunciosCountResult === 3) {
-        anunciosCountResult = 3;
-      }
+      setFormValues({
+        ...formValues,
+        anunciosCountResult: formValues.anunciosCountResult + 1,
+      });
 
-      const anunciosRef = () => {
-        return firebase
-          .database()
-          .ref(
-            'anuncios/' + firebase.auth().currentUser.uid + anunciosCountResult
-          )
-          .set({
-            anuncioId: anunciosCountResult,
-            id: user.uid,
-            nombre: formValues.nombre,
-            apellido: formValues.apellido,
-            emailPersonal:
-              firebase.auth().currentUser && firebase.auth().currentUser.email,
-            cuitCuil: formValues.cuitCuil,
-            dni: formValues.dni,
-            actividad: formValues.actividad,
-            telefono: formValues.telefono,
-            celular: formValues.celular,
-            localidad: formValues.localidad,
-            localidadLatitude: formValues.localidadLatitude,
-            localidadLongitude: formValues.localidadLongitude,
-            partido: formValues.partido,
-            partidoLatitude: formValues.partidoLatitude,
-            partidoLongitude: formValues.partidoLongitude,
-            local: formValues.local,
-            empresa: formValues.empresa,
-            factura: formValues.factura,
-            direccionDelLocal: formValues.direccionDelLocal,
-            nombreDeLaEmpresa: formValues.nombreDeLaEmpresa,
-            matricula: formValues.matricula,
-            numeroDeMatricula: formValues.numeroDeMatricula,
-            emailLaboral: formValues.emailLaboral,
-            descripcionPersonal: formValues.descripcionPersonal,
-            palabraClaveUno: formValues.palabraClaveUno,
-            palabraClaveDos: formValues.palabraClaveDos,
-            palabraClaveTres: formValues.palabraClaveTres,
-            diasHorarios: formValues.diasHorarios,
-            desde: formValues.dateDesdeParsed,
-            hasta: formValues.dateHastaParsed,
-            terminos: formValues.terminos,
-            latitud: formValues.where.lat,
-            longitud: formValues.where.lng,
-            uuid: uuid,
-          })
-          .then(function () {
-            navigation.navigate('Anuncios');
-          })
-          .catch(function (error) {
-            Alert.alert(
-              '¡Atención!',
-              'Hubo un error al subir su anuncio, por favor compruebe sus datos e intentelo nuevamente.'
-            );
-          });
-      };
+      firebase
+        .database()
+        .ref(
+          'anuncios/' + firebase.auth().currentUser.uid + anunciosCountResult
+        )
+        .set({
+          anuncioId: anunciosCountResult,
+          id: user.uid,
+          nombre: formValues.nombre,
+          apellido: formValues.apellido,
+          emailPersonal: firebase.auth().currentUser.email,
+          cuitCuil: formValues.cuitCuil,
+          dni: formValues.dni,
+          actividad: formValues.actividad,
+          telefono: formValues.telefono,
+          celular: formValues.celular,
+          localidad: formValues.localidad,
+          localidadLatitude: formValues.localidadLatitude,
+          localidadLongitude: formValues.localidadLongitude,
+          partido: formValues.partido,
+          partidoLatitude: formValues.partidoLatitude,
+          partidoLongitude: formValues.partidoLongitude,
+          local: formValues.local,
+          empresa: formValues.empresa,
+          factura: formValues.factura,
+          direccionDelLocal: formValues.direccionDelLocal,
+          nombreDeLaEmpresa: formValues.nombreDeLaEmpresa,
+          matricula: formValues.matricula,
+          numeroDeMatricula: formValues.numeroDeMatricula,
+          emailLaboral: formValues.emailLaboral,
+          descripcionPersonal: formValues.descripcionPersonal,
+          palabraClaveUno: formValues.palabraClaveUno,
+          palabraClaveDos: formValues.palabraClaveDos,
+          palabraClaveTres: formValues.palabraClaveTres,
+          diasHorarios: formValues.diasHorarios,
+          desde: formValues.dateDesde,
+          hasta: formValues.dateHasta,
+          terminos: formValues.terminos,
+          latitud: formValues.where.lat,
+          longitud: formValues.where.lng,
+          uuid: uuid,
+        })
+        .then(function () {
+          navigation.navigate('Anuncios');
+        })
+        .catch(function (error) {
+          Alert.alert(
+            '¡Atención!',
+            'Hubo un error al subir su anuncio, por favor compruebe sus datos e intentelo nuevamente.'
+          );
+        });
     }
   }
 
@@ -1306,114 +1218,34 @@ const AnunciatePage = ({ navigation }) => {
             />
           </View>
           <View style={{ width: '80%' }}>
-            <View>
-              <View>
-                <Button
-                  onPress={showTimepicker}
-                  title='Desde'
-                  buttonStyle={{
-                    backgroundColor: '#F4743B',
-                    borderRadius: 25,
-                    marginTop: '10%',
-                    marginBottom: '10%',
-                  }}
-                />
-              </View>
-              {formValues.show && (
-                <DateTimePicker
-                  testID='dateTimePickerDesde'
-                  value={formValues.dateDesde}
-                  mode={formValues.mode}
-                  is24Hour={true}
-                  display='spinner'
-                  onChange={onChangeHourDesde}
-                />
-              )}
-            </View>
-            <View
-              style={{
-                backgroundColor: '#F4743B',
-                borderRadius: 25,
-                width: '20%',
-                alignSelf: 'center',
-                margintop: '5%',
-                marginBottom: '5%',
-              }}>
-              {Platform.OS == 'android' ? (
-                <Text
-                  style={{
-                    textAlign: 'center',
-                    color: '#ffffff',
-                  }}>
-                  {formValues.dateDesde.toLocaleTimeString().slice(1, -3)}
-                </Text>
-              ) : (
-                <Text
-                  style={{
-                    textAlign: 'center',
-                    color: '#ffffff',
-                  }}>
-                  {formValues.dateDesde.toLocaleTimeString([], {
-                    hour: '2-digit',
-                    minute: '2-digit',
-                  })}
-                </Text>
-              )}
-            </View>
-            <View>
-              <View>
-                <Button
-                  onPress={showTimepicker}
-                  title='Hasta'
-                  buttonStyle={{
-                    backgroundColor: '#F4743B',
-                    borderRadius: 25,
-                    marginTop: '10%',
-                    marginBottom: '10%',
-                  }}
-                />
-              </View>
-              {formValues.show && (
-                <DateTimePicker
-                  testID='dateTimePickerHasta'
-                  value={formValues.dateHasta}
-                  mode={formValues.mode}
-                  is24Hour={true}
-                  display='spinner'
-                  onChange={onChangeHourHasta}
-                />
-              )}
-            </View>
-            <View
-              style={{
-                backgroundColor: '#F4743B',
-                borderRadius: 25,
-                width: '20%',
-                alignSelf: 'center',
-                margintop: '5%',
-                marginBottom: '5%',
-              }}>
-              {Platform.OS == 'android' ? (
-                <Text
-                  style={{
-                    textAlign: 'center',
-                    color: '#ffffff',
-                  }}>
-                  {formValues.dateHasta.toLocaleTimeString().slice(1, -3)}
-                </Text>
-              ) : (
-                <Text
-                  style={{
-                    textAlign: 'center',
-                    color: '#ffffff',
-                  }}>
-                  {formValues.dateHasta.toLocaleTimeString([], {
-                    hour: '2-digit',
-                    minute: '2-digit',
-                  })}
-                </Text>
-              )}
-            </View>
+            <Input
+              placeholder='Desde'
+              inputStyle={{ color: '#000000' }}
+              style={{ color: '#000000', fontSize: 16, textAlign: 'center' }}
+              inputContainerStyle={{ borderBottomColor: '#000000' }}
+              placeholderTextColor='black'
+              keyboardType='numeric'
+              onChangeText={(dateDesde) =>
+                setFormValues({
+                  ...formValues,
+                  dateDesde: dateDesde,
+                })
+              }
+            />
+            <Input
+              placeholder='Hasta'
+              inputStyle={{ color: '#000000' }}
+              style={{ color: '#000000', fontSize: 16, textAlign: 'center' }}
+              inputContainerStyle={{ borderBottomColor: '#000000' }}
+              placeholderTextColor='black'
+              keyboardType='numeric'
+              onChangeText={(dateHasta) =>
+                setFormValues({
+                  ...formValues,
+                  dateHasta: dateHasta,
+                })
+              }
+            />
           </View>
         </View>
         <Text
@@ -1525,41 +1357,7 @@ const AnunciatePage = ({ navigation }) => {
             marginBottom: 30,
           }}>
           <Button
-            onPress={() =>
-              writeUserData(
-                formValues.nombre,
-                formValues.apellido,
-                formValues.cuitCuil,
-                formValues.dni,
-                formValues.actividad,
-                formValues.telefono,
-                formValues.celular,
-                formValues.localidad,
-                formValues.localidadLatitude,
-                formValues.localidadLongitude,
-                formValues.partido,
-                formValues.partidoLatitude,
-                formValues.partidoLongitude,
-                formValues.local,
-                formValues.empresa,
-                formValues.factura,
-                formValues.direccionDelLocal,
-                formValues.nombreDeLaEmpresa,
-                formValues.matricula,
-                formValues.numeroDeMatricula,
-                formValues.emailLaboral,
-                formValues.descripcionPersonal,
-                formValues.palabraClaveUno,
-                formValues.palabraClaveDos,
-                formValues.palabraClaveTres,
-                formValues.diasHorarios,
-                dateDesdeParsed,
-                dateHastaParsed,
-                formValues.terminos,
-                formValues.where.lat,
-                formValues.where.lng
-              )
-            }
+            onPress={() => writeUserData()}
             title='Continuar'
             buttonStyle={{
               backgroundColor: '#F4743B',
