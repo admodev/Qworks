@@ -1,18 +1,12 @@
-/*
-
-Author: admodev (Adolfo Hector Moyano) from ExegesisBA.
-
-*/
-
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, setState } from 'react';
 import {
-  Alert,
   Image,
+  View,
   Platform,
   ScrollView,
   StyleSheet,
+  TextInput,
   TouchableOpacity,
-  View,
 } from 'react-native';
 import {
   Avatar,
@@ -27,8 +21,10 @@ import 'firebase/auth';
 import 'firebase/database';
 import 'firebase/storage';
 import * as ImagePicker from 'expo-image-picker';
+import * as Updates from 'expo-updates';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import * as Progress from 'react-native-progress';
+import DateTimePicker from '@react-native-community/datetimepicker';
 import 'react-native-get-random-values';
 import { v4 as uuidv4 } from 'uuid';
 import Cookies from 'js-cookie';
@@ -37,151 +33,141 @@ import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplet
 import { DOTLOCATION } from '@env';
 
 const AnunciatePage = ({ navigation }) => {
-  const user = firebase.auth().currentUser;
-  const id = user.uid;
-  const uuid = uuidv4();
-  const [formValues, setFormValues] = useState({
-    location: null,
-    errorMsg: null,
-    ready: false,
-    error: null,
-    image: null,
-    anunciosCountResult: anunciosCountResult,
-    imageUrlResponse: '',
-    nombre: '',
-    apellido: '',
-    cuitCuil: '',
-    dni: '',
-    actividad: '',
-    telefono: '',
-    celular: '',
-    localidad: '',
-    localidadLatitude: '',
-    localidadLongitude: '',
-    partido: '',
-    partidoLatitude: 0,
-    partidoLongitude: 0,
-    local: '',
-    empresa: '',
-    factura: '',
-    direccionDelLocal: '',
-    nombreDeLaEmpresa: '',
-    matricula: '',
-    numeroDeMatricula: '',
-    emailLaboral: '',
-    descripcionPersonal: ``,
-    palabraClaveUno: '',
-    palabraClaveDos: '',
-    palabraClaveTres: '',
-    diasHorarios: [],
-    desde: '',
-    hasta: '',
-    efectivo: false,
-    pagosDigitales: false,
-    uploadedImage: null,
-    uploading: false,
-    transferred: 0,
-    visible: false,
-    terminos: false,
-    lunesChecked: false,
-    martesChecked: false,
-    miercolesChecked: false,
-    juevesChecked: false,
-    viernesChecked: false,
-    sabadoChecked: false,
-    domingoChecked: false,
-    lunesViernesChecked: false,
-    dateDesde: '',
-    dateHasta: '',
-    where: {
-      lat: null,
-      lng: null,
-    },
-  });
-
-  const toggleEfectivo = React.useCallback(() =>
-    setFormValues({
-      ...formValues,
-      efectivo: !formValues.efectivo,
-    })
-  );
-
+  let database = firebase.database();
+  let user = firebase.auth().currentUser;
+  let id = user.uid;
+  let storage = firebase.storage();
+  let storageRef = storage.ref();
+  var userDefaultImage = storageRef.child('userDefaultImage/icon.png');
+  const [photoJSONValue, setPhotoJSONValue] = useState([]);
+  const [location, setLocation] = useState(null);
+  const [errorMsg, setErrorMsg] = useState(null);
+  const [image, setImage] = useState(null);
+  const [nombre, setNombre] = useState('');
+  const [apellido, setApellido] = useState('');
+  const [cuitCuil, setCuitCuil] = useState('');
+  const [dni, setDni] = useState('');
+  const [actividad, setActividad] = useState('');
+  const [telefono, setTelefono] = useState('');
+  const [celular, setCelular] = useState('');
+  const [localidad, setLocalidad] = useState('');
+  const [localidadLatitude, setLocalidadLatitude] = useState('');
+  const [localidadLongitude, setLocalidadLongitude] = useState('');
+  const [partido, setPartido] = useState('');
+  const [partidoLatitude, setPartidoLatitude] = useState('');
+  const [partidoLongitude, setPartidoLongitude] = useState('');
+  const [local, setLocal] = useState('');
+  const [empresa, setEmpresa] = useState('');
+  const [factura, setFactura] = useState('');
+  const [direccionDelLocal, setDireccionDelLocal] = useState('');
+  const [nombreDeLaEmpresa, setNombreDeLaEmpresa] = useState('');
+  const [matricula, setMatricula] = useState('');
+  const [numeroDeMatricula, setNumeroDeMatricula] = useState('');
+  const [emailLaboral, setEmailLaboral] = useState('');
+  const [descripcionPersonal, setDescripcionPersonal] = useState('');
+  const [palabraClaveUno, setPalabraClaveUno] = useState('');
+  const [palabraClaveDos, setPalabraClaveDos] = useState('');
+  const [palabraClaveTres, setPalabraClaveTres] = useState('');
+  const [palabrasClave, setPalabrasclave] = useState([]);
+  const [diasHorarios, setDiasHorarios] = useState([]);
+  const [desde, setDesde] = useState('');
+  const [hasta, setHasta] = useState('');
+  const [efectivo, setEfectivo] = useState(false);
+  const [uploadedImage, setUploadedImage] = useState(null);
+  const [uploading, setUploading] = useState(false);
+  const [transferred, setTransferred] = useState(0);
+  const toggleEfectivo = React.useCallback(() => setEfectivo(!efectivo));
+  const [pagosDigitales, setPagosDigitales] = useState(false);
   const togglePagosDigitales = React.useCallback(() =>
-    setFormValues({
-      ...formValues,
-      pagosDigitales: !formValues.pagosDigitales,
-    })
+    setPagosDigitales(!pagosDigitales)
   );
-
-  const toggleTerminos = React.useCallback(() =>
-    setFormValues({
-      ...formValues,
-      terminos: !formValues.terminos,
-    })
-  );
-
+  const [terminos, setTerminos] = useState(false);
+  const toggleTerminos = React.useCallback(() => setTerminos(!terminos));
+  const [lunesChecked, setLunesChecked] = useState(false);
   const toggleLunesChecked = React.useCallback(() =>
-    setFormValues({
-      ...formValues,
-      lunesChecked: !formValues.lunesChecked,
-    })
+    setLunesChecked(!lunesChecked)
   );
-
+  const [martesChecked, setMartesChecked] = useState(false);
   const toggleMartesChecked = React.useCallback(() =>
-    setFormValues({
-      ...formValues,
-      martesChecked: !formValues.martesChecked,
-    })
+    setMartesChecked(!martesChecked)
   );
-
+  const [miercolesChecked, setMiercolesChecked] = useState(false);
   const toggleMiercolesChecked = React.useCallback(() =>
-    setFormValues({
-      ...formValues,
-      miercolesChecked: !formValues.miercolesChecked,
-    })
+    setMiercolesChecked(!miercolesChecked)
   );
-
+  const [juevesChecked, setJuevesChecked] = useState(false);
   const toggleJuevesChecked = React.useCallback(() =>
-    setFormValues({
-      ...formValues,
-      juevesChecked: !formValues.juevesChecked,
-    })
+    setJuevesChecked(!juevesChecked)
   );
-
+  const [viernesChecked, setViernesChecked] = useState(false);
   const toggleViernesChecked = React.useCallback(() =>
-    setFormValues({
-      ...formValues,
-      viernesChecked: !formValues.viernesChecked,
-    })
+    setViernesChecked(!viernesChecked)
   );
-
+  const [sabadoChecked, setSabadoChecked] = useState(false);
   const toggleSabadoChecked = React.useCallback(() =>
-    setFormValues({
-      ...formValues,
-      sabadoChecked: !formValues.sabadoChecked,
-    })
+    setSabadoChecked(!sabadoChecked)
   );
-
+  const [domingoChecked, setDomingoChecked] = useState(false);
   const toggleDomingoChecked = React.useCallback(() =>
-    setFormValues({
-      ...formValues,
-      domingoChecked: !formValues.domingoChecked,
-    })
+    setDomingoChecked(!domingoChecked)
   );
-
+  const [lunesViernesChecked, setLunesViernesChecked] = useState(false);
   const toggleLunesViernesChecked = React.useCallback(() => {
-    setFormValues({
-      ...formValues,
-      lunesViernesChecked: !formValues.lunesViernesChecked,
-    });
+    setLunesViernesChecked(!lunesViernesChecked);
   });
-
+  const [desdeAmChecked, setDesdeAmChecked] = useState(false);
+  const toggleDesdeAmChecked = React.useCallback(() =>
+    setDesdeAmChecked(!desdeAmChecked)
+  );
+  const [desdePmChecked, setDesdePmChecked] = useState(false);
+  const toggleDesdePmChecked = React.useCallback(() =>
+    setDesdePmChecked(!desdePmChecked)
+  );
+  const [hastaAmChecked, setHastaAmChecked] = useState(false);
+  const toggleHastaAmChecked = React.useCallback(() =>
+    setHastaAmChecked(!hastaAmChecked)
+  );
+  const [hastaPmChecked, setHastaPmChecked] = useState(false);
+  const toggleHastaPmChecked = React.useCallback(() =>
+    setHastaPmChecked(!hastaPmChecked)
+  );
+  const [imageUrlResponse, setImageUrlResponse] = useState('');
+  const [ready, setReady] = useState(false);
+  const [where, setWhere] = useState({ lat: null, lng: null });
+  const [error, setError] = useState(null);
+  let latitud = where.lat;
+  let longitud = where.lng;
+  const [visible, setVisible] = useState(false);
   const toggleOverlay = () => {
-    setFormValues({
-      ...formValues,
-      visible: !formValues.visible,
-    });
+    setVisible(!visible);
   };
+  const [dateDesde, setDateDesde] = useState(new Date(1598051730000));
+  const [dateHasta, setDateHasta] = useState(new Date(1598051730000));
+  const [mode, setMode] = useState('date');
+  const [show, setShow] = useState(false);
+
+  const onChangeHourDesde = (eventDesde, selectedDateDesde) => {
+    const currentDate = selectedDateDesde || date;
+    setShow(Platform.OS === 'ios');
+    setDateDesde(currentDate);
+  };
+
+  const onChangeHourHasta = (eventHasta, selectedDateHasta) => {
+    const currentDate = selectedDateHasta || date;
+    setShow(Platform.OS === 'ios');
+    setDateHasta(currentDate);
+  };
+
+  const showMode = (currentMode) => {
+    setShow(true);
+    setMode(currentMode);
+  };
+
+  const showTimepicker = () => {
+    showMode('time');
+  };
+
+  const uuid = uuidv4();
 
   useEffect(() => {
     (async () => {
@@ -190,42 +176,33 @@ const AnunciatePage = ({ navigation }) => {
           status,
         } = await ImagePicker.requestMediaLibraryPermissionsAsync();
         if (status !== 'granted') {
-          Alert.alert(
-            'Permiso',
+          alert(
             '¡Perdón, necesitamos acceder a la galería para que pueda subir una foto!'
           );
         }
       }
     })();
 
-    setFormValues({
-      ...formValues,
-      ready: false,
-      error: null,
-    });
+    setReady(false);
+    setError(null);
 
-    const geoOptions = {
+    let geoOptions = {
       enableHighAccuracy: true,
       timeout: 20000,
       maximumAge: 60 * 60 * 24,
     };
 
     const geoSuccess = (position) => {
-      setFormValues({
-        ...formValues,
-        ready: true,
-        where: {
-          lat: position.coords.latitude,
-          lng: position.coords.longitude,
-        },
+      console.log(position);
+      setReady(true);
+      setWhere({
+        lat: position.coords.latitude,
+        lng: position.coords.longitude,
       });
     };
 
     const geoFailure = (error) => {
-      setFormValues({
-        ...formValues,
-        error: error.message,
-      });
+      setError(err.message);
     };
 
     navigator.geolocation.getCurrentPosition(
@@ -236,21 +213,18 @@ const AnunciatePage = ({ navigation }) => {
   }, []);
 
   let anunciosIdsCount = [];
-
-  const idRefAnuncios = () => {
-    return firebase
-      .database()
-      .ref('anuncios/')
-      .on('value', (snap) => {
-        snap.forEach((child) => {
-          anunciosIdsCount.push({
-            ids: child.val().id,
-          });
+  let idRefAnuncios = firebase
+    .database()
+    .ref('anuncios/')
+    .on('value', (snap) => {
+      snap.forEach((child) => {
+        anunciosIdsCount.push({
+          ids: child.val().id,
         });
       });
-  };
+    });
 
-  const anunciosCount = anunciosIdsCount.reduce(
+  let anunciosCount = anunciosIdsCount.reduce(
     (arr, elem) => arr.concat(elem.ids),
     []
   );
@@ -267,67 +241,49 @@ const AnunciatePage = ({ navigation }) => {
 
   let anunciosCountResult = countTrue(anunciosCount);
 
-  const concatLunes = () => {
-    setFormValues({
-      ...formValues,
-      diasHorarios: formValues.diasHorarios.concat('Lunes'),
-    });
+  function concatPalabraClaveUno() {
+    setPalabrasClave(palabrasClave.concat(palabraClaveUno));
+  }
+
+  function concatPalabraClaveDos() {
+    setPalabrasClave(palabrasClave.concat(palabraClaveDos));
+  }
+
+  function concatPalabraClaveTres() {
+    setPalabrasClave(palabrasClave.concat(palabraClaveTres));
+  }
+
+  function concatLunes() {
+    setDiasHorarios(diasHorarios.concat('Lunes'));
     toggleLunesChecked();
-  };
-
-  const concatMartes = () => {
-    setFormValues({
-      ...formValues,
-      diasHorarios: formValues.diasHorarios.concat('Martes'),
-    });
+  }
+  function concatMartes() {
+    setDiasHorarios(diasHorarios.concat('Martes'));
     toggleMartesChecked();
-  };
-
-  const concatMiercoles = () => {
-    setFormValues({
-      ...formValues,
-      diasHorarios: formValues.diasHorarios.concat('Miercoles'),
-    });
+  }
+  function concatMiercoles() {
+    setDiasHorarios(diasHorarios.concat('Miercoles'));
     toggleMiercolesChecked();
-  };
-
+  }
   function concatJueves() {
-    setFormValues({
-      ...formValues,
-      diasHorarios: formValues.diasHorarios.concat('Jueves'),
-    });
+    setDiasHorarios(diasHorarios.concat('Jueves'));
     toggleJuevesChecked();
   }
-
   function concatViernes() {
-    setFormValues({
-      ...formValues,
-      diasHorarios: formValues.diasHorarios.concat('Viernes'),
-    });
+    setDiasHorarios(diasHorarios.concat('Viernes'));
     toggleViernesChecked();
   }
-
   function concatSabado() {
-    setFormValues({
-      ...formValues,
-      diasHorarios: formValues.diasHorarios.concat('Sabado'),
-    });
+    setDiasHorarios(diasHorarios.concat('Sabado'));
     toggleSabadoChecked();
   }
-
   function concatDomingo() {
-    setFormValues({
-      ...formValues,
-      diasHorarios: formValues.diasHorarios.concat('Domingo'),
-    });
+    setDiasHorarios(diasHorarios.concat('Domingo'));
     toggleDomingoChecked();
   }
 
   function concatLunesViernes() {
-    setFormValues({
-      ...formValues,
-      diasHorarios: formValues.diasHorarios.concat('Lunes a Viernes'),
-    });
+    setDiasHorarios(diasHorarios.concat('Lunes a Viernes'));
     toggleLunesViernesChecked();
   }
 
@@ -340,32 +296,18 @@ const AnunciatePage = ({ navigation }) => {
       aspect: [4, 3],
       quality: 0.5,
     });
-
+    console.log(result);
     if (!result.cancelled) {
-      setFormValues({
-        ...formValues,
-        image: result.uri.toString(),
-      });
-
+      setImage(result.uri.toString());
       const response = await fetch(result.uri);
-
       const blob = new Blob([response.blob()], { type: 'image/jpeg' });
-
       const filename = result.uri.substring(result.uri.lastIndexOf('/') + 1);
-
       const uploadUri =
         Platform.OS === 'ios' ? result.uri.replace('file://', '') : result.uri;
-
-      setFormValues({
-        ...formValues,
-        uploading: true,
-        transferred: 0,
-      });
-
+      setUploading(true);
+      setTransferred(0);
       const data = new FormData();
-
       data.append('file', blob);
-
       data.append('filename', filename);
 
       const task = fetch('http://192.168.0.20:5000/upload', {
@@ -373,46 +315,107 @@ const AnunciatePage = ({ navigation }) => {
         body: data,
       }).then((response) => {
         response.json().then((body) => {
-          setFormValues({
-            ...formValues,
-            imageUrlResponse: `http://192.168.0.20:5000/${body.file}`,
-          });
+          setImageUrlResponse(`http://192.168.0.20:5000/${body.file}`);
         });
       });
-
       try {
         await task;
       } catch (e) {
         console.error(e);
       }
-
-      setFormValues({
-        ...formValues,
-        uploading: false,
-      });
+      setUploading(false);
     }
   };
 
-  function writeUserData() {
-    if (!formValues.cuitCuil.trim()) {
-      Alert.alert('¡Atención!', 'Por favor ingrese su cuit/cuil');
-      return;
-    } else if (!formValues.dni.trim()) {
-      Alert.alert('¡Atención!', 'Por favor ingrese su DNI');
-      return;
-    } else if (formValues.terminos == false) {
-      Alert.alert(
-        '¡Atención!',
-        'Tiene que aceptar los terminos para continuar'
-      );
-      return;
-    } else {
-      setFormValues({
-        ...formValues,
-        anunciosCountResult: formValues.anunciosCountResult + 1,
-      });
+  let dateDesdeParsed = dateDesde.toLocaleTimeString([], {
+    hour: '2-digit',
+    minute: '2-digit',
+  });
 
-      firebase
+  let dateHastaParsed = dateHasta.toLocaleTimeString([], {
+    hour: '2-digit',
+    minute: '2-digit',
+  });
+
+  function setLocationFunc(placesLocation) {
+    setLocalidad(placesLocation);
+  }
+
+  function setLocationLatitudeFunc(placesLocationLatitude) {
+    setLocalidadLatitude(placesLocationLatitude);
+  }
+
+  function setLocationLongitudeFunc(placesLocationLongitude) {
+    setLocalidadLongitude(placesLocationLongitude);
+  }
+
+  function setPartidoFunc(placesPartido) {
+    setPartido(placesPartido);
+  }
+
+  function setPartidoLatitudeFunc(placesPartidoLatitude) {
+    setPartidoLatitude(placesPartidoLatitude);
+  }
+
+  function setPartidoLongitudeFunc(placesPartidoLongitude) {
+    setPartidoLongitude(placesPartidoLongitude);
+  }
+
+  function writeUserData(
+    nombre,
+    apellido,
+    cuitCuil,
+    dni,
+    actividad,
+    telefono,
+    celular,
+    localidad,
+    localidadLatitude,
+    localidadLongitude,
+    partido,
+    partidoLatitude,
+    partidoLongitude,
+    local,
+    empresa,
+    factura,
+    direccionDelLocal,
+    nombreDeLaEmpresa,
+    matricula,
+    numeroDeMatricula,
+    emailLaboral,
+    descripcionPersonal,
+    palabraClaveUno,
+    palabraClaveDos,
+    palabraClaveTres,
+    diasHorarios,
+    dateDesdeParsed,
+    dateHastaParsed,
+    terminos,
+    latitud,
+    longitud,
+    photoJSONValue
+  ) {
+    if (!cuitCuil.trim()) {
+      alert('Por favor ingrese su cuit/cuil');
+      return;
+    } else if (!dni.trim()) {
+      alert('Por favor ingrese su DNI');
+      return;
+    } else if (terminos == false) {
+      alert('Tiene que aceptar los terminos para continuar');
+    } else {
+      if (!anunciosCountResult) {
+        anunciosCountResult = 0;
+      } else if (anunciosCountResult === 1) {
+        anunciosCountResult = 1;
+      } else if (anunciosCountResult === 2) {
+        anunciosCountResult = 2;
+      } else if (anunciosCountResult === 3) {
+        anunciosCountResult = 3;
+      }
+      let userRef = user.uid;
+
+      let anunciosRef = firebase
         .database()
         .ref(
           'anuncios/' + firebase.auth().currentUser.uid + anunciosCountResult
@@ -420,46 +423,46 @@ const AnunciatePage = ({ navigation }) => {
         .set({
           anuncioId: anunciosCountResult,
           id: user.uid,
-          nombre: formValues.nombre,
-          apellido: formValues.apellido,
+          nombre: nombre,
+          apellido: apellido,
           emailPersonal: firebase.auth().currentUser.email,
-          cuitCuil: formValues.cuitCuil,
-          dni: formValues.dni,
-          actividad: formValues.actividad,
-          telefono: formValues.telefono,
-          celular: formValues.celular,
-          localidad: formValues.localidad,
-          localidadLatitude: formValues.localidadLatitude,
-          localidadLongitude: formValues.localidadLongitude,
-          partido: formValues.partido,
-          partidoLatitude: formValues.partidoLatitude,
-          partidoLongitude: formValues.partidoLongitude,
-          local: formValues.local,
-          empresa: formValues.empresa,
-          factura: formValues.factura,
-          direccionDelLocal: formValues.direccionDelLocal,
-          nombreDeLaEmpresa: formValues.nombreDeLaEmpresa,
-          matricula: formValues.matricula,
-          numeroDeMatricula: formValues.numeroDeMatricula,
-          emailLaboral: formValues.emailLaboral,
-          descripcionPersonal: formValues.descripcionPersonal,
-          palabraClaveUno: formValues.palabraClaveUno,
-          palabraClaveDos: formValues.palabraClaveDos,
-          palabraClaveTres: formValues.palabraClaveTres,
-          diasHorarios: formValues.diasHorarios,
-          desde: formValues.dateDesde,
-          hasta: formValues.dateHasta,
-          terminos: formValues.terminos,
-          latitud: formValues.where.lat,
-          longitud: formValues.where.lng,
+          cuitCuil: cuitCuil,
+          dni: dni,
+          actividad: actividad,
+          telefono: telefono,
+          celular: celular,
+          localidad: localidad,
+          localidadLatitude: localidadLatitude,
+          localidadLongitude: localidadLongitude,
+          partido: partido,
+          partidoLatitude: partidoLatitude,
+          partidoLongitude: partidoLongitude,
+          local: local,
+          empresa: empresa,
+          factura: factura,
+          direccionDelLocal: direccionDelLocal,
+          nombreDeLaEmpresa: nombreDeLaEmpresa,
+          matricula: matricula,
+          numeroDeMatricula: numeroDeMatricula,
+          emailLaboral: emailLaboral,
+          descripcionPersonal: descripcionPersonal,
+          palabraClaveUno,
+          palabraClaveDos,
+          palabraClaveTres,
+          diasHorarios: diasHorarios,
+          desde: dateDesdeParsed,
+          hasta: dateHastaParsed,
+          terminos: terminos,
+          latitud: latitud,
+          longitud: longitud,
+          photoJSONValue: photoJSONValue,
           uuid: uuid,
         })
         .then(function () {
           navigation.navigate('Anuncios');
         })
         .catch(function (error) {
-          Alert.alert(
-            '¡Atención!',
+          alert(
             'Hubo un error al subir su anuncio, por favor compruebe sus datos e intentelo nuevamente.'
           );
         });
@@ -525,16 +528,16 @@ const AnunciatePage = ({ navigation }) => {
             style={{ color: '#000000', marginTop: 30, marginBottom: 25 }}>
             Foto de Perfil
           </Text>
-          {formValues.image && (
+          {image && (
             <Avatar
-              source={{ uri: formValues.image }}
+              source={{ uri: image }}
               size='xlarge'
               avatarStyle={{ borderRadius: 25 }}
             />
           )}
-          {formValues.uploading ? (
+          {uploading ? (
             <View style={styles.progressBarContainer}>
-              <Progress.Bar progress={formValues.transferred} width={300} />
+              <Progress.Bar progress={transferred} width={300} />
             </View>
           ) : (
             <Button
@@ -563,9 +566,9 @@ const AnunciatePage = ({ navigation }) => {
             style={{ color: '#000000', marginTop: 10, marginBottom: 25 }}>
             Información Personal
           </Text>
-          {formValues.image ? (
+          {image ? (
             <Image
-              source={{ uri: formValues.image }}
+              source={{ uri: image }}
               style={{
                 position: 'absolute',
                 with: 300,
@@ -581,12 +584,8 @@ const AnunciatePage = ({ navigation }) => {
             style={{ color: '#000000', fontSize: 16, textAlign: 'center' }}
             inputContainerStyle={{ borderBottomColor: '#000000' }}
             placeholderTextColor='black'
-            onChangeText={(nombre) =>
-              setFormValues({
-                ...formValues,
-                nombre: nombre,
-              })
-            }
+            onChangeText={(nombre) => setNombre(nombre)}
+            value={nombre}
           />
           <Input
             placeholder='Apellido *'
@@ -594,12 +593,8 @@ const AnunciatePage = ({ navigation }) => {
             style={{ color: '#000000', fontSize: 16, textAlign: 'center' }}
             inputContainerStyle={{ borderBottomColor: '#000000' }}
             placeholderTextColor='black'
-            onChangeText={(apellido) =>
-              setFormValues({
-                ...formValues,
-                apellido: apellido,
-              })
-            }
+            onChangeText={(apellido) => setApellido(apellido)}
+            value={apellido}
           />
           <Input
             placeholder='Email Personal'
@@ -607,6 +602,8 @@ const AnunciatePage = ({ navigation }) => {
             style={{ color: '#000000', fontSize: 16, textAlign: 'center' }}
             inputContainerStyle={{ borderBottomColor: '#000000' }}
             placeholderTextColor='black'
+            keyboardType='email-address'
+            autoCapitalize='none'
             disabled
             value={firebase.auth().currentUser.email}
           />
@@ -617,12 +614,8 @@ const AnunciatePage = ({ navigation }) => {
             inputContainerStyle={{ borderBottomColor: '#000000' }}
             placeholderTextColor='black'
             keyboardType='numeric'
-            onChangeText={(dni) =>
-              setFormValues({
-                ...formValues,
-                dni: dni,
-              })
-            }
+            onChangeText={(dni) => setDni(dni)}
+            value={dni}
           />
           <Input
             placeholder='CUIL / CUIT *'
@@ -631,12 +624,8 @@ const AnunciatePage = ({ navigation }) => {
             inputContainerStyle={{ borderBottomColor: '#000000' }}
             placeholderTextColor='black'
             keyboardType='numeric'
-            onChangeText={(cuitCuil) =>
-              setFormValues({
-                ...formValues,
-                cuitCuil: cuitCuil,
-              })
-            }
+            onChangeText={(cuitCuil) => setCuitCuil(cuitCuil)}
+            value={cuitCuil}
           />
         </View>
         <View
@@ -661,12 +650,8 @@ const AnunciatePage = ({ navigation }) => {
               style={{ color: '#000000', fontSize: 16, textAlign: 'center' }}
               inputContainerStyle={{ borderBottomColor: '#000000' }}
               placeholderTextColor='black'
-              onChangeText={(actividad) =>
-                setFormValues({
-                  ...formValues,
-                  actividad: actividad,
-                })
-              }
+              onChangeText={(actividad) => setActividad(actividad)}
+              value={actividad}
               maxLength='15'
             />
           ) : (
@@ -676,12 +661,8 @@ const AnunciatePage = ({ navigation }) => {
               style={{ color: '#000000', fontSize: 16, textAlign: 'center' }}
               inputContainerStyle={{ borderBottomColor: '#000000' }}
               placeholderTextColor='black'
-              onChangeText={(actividad) =>
-                setFormValues({
-                  ...formValues,
-                  actividad: actividad,
-                })
-              }
+              onChangeText={(actividad) => setActividad(actividad)}
+              value={actividad}
               maxLength={15}
             />
           )}
@@ -692,12 +673,8 @@ const AnunciatePage = ({ navigation }) => {
             inputContainerStyle={{ borderBottomColor: '#000000' }}
             placeholderTextColor='black'
             keyboardType='phone-pad'
-            onChangeText={(telefono) =>
-              setFormValues({
-                ...formValues,
-                telefono: telefono,
-              })
-            }
+            onChangeText={(telefono) => setTelefono(telefono)}
+            value={telefono}
           />
           <Input
             placeholder='Celular'
@@ -706,12 +683,8 @@ const AnunciatePage = ({ navigation }) => {
             inputContainerStyle={{ borderBottomColor: '#000000' }}
             placeholderTextColor='black'
             keyboardType='phone-pad'
-            onChangeText={(celular) =>
-              setFormValues({
-                ...formValues,
-                celular: celular,
-              })
-            }
+            onChangeText={(celular) => setCelular(celular)}
+            value={celular}
           />
           <Input
             placeholder='Email laboral'
@@ -721,12 +694,8 @@ const AnunciatePage = ({ navigation }) => {
             placeholderTextColor='black'
             keyboardType='email-address'
             autoCapitalize='none'
-            onChangeText={(emailLaboral) =>
-              setFormValues({
-                ...formValues,
-                emailLaboral: emailLaboral,
-              })
-            }
+            onChangeText={(emailLaboral) => setEmailLaboral(emailLaboral)}
+            value={emailLaboral}
           />
           <GooglePlacesAutocomplete
             placeholder='Localidad'
@@ -734,12 +703,12 @@ const AnunciatePage = ({ navigation }) => {
             returnKeyType={'default'}
             fetchDetails={true}
             onPress={(data, details) => {
-              setFormValues({
-                ...formValues,
-                localidad: data.description,
-                localidadLatitude: details.geometry.location.lat,
-                localidadLongitude: details.geometry.location.lng,
-              });
+              var localidadPlaces = data.description;
+              var localidadLatitudePlaces = details.geometry.location.lat;
+              var localidadLongitudePlaces = details.geometry.location.lng;
+              setLocationFunc(localidadPlaces);
+              setLocationLatitudeFunc(localidadLatitudePlaces);
+              setLocationLongitudeFunc(localidadLongitudePlaces);
             }}
             query={{
               key: DOTLOCATION,
@@ -774,12 +743,12 @@ const AnunciatePage = ({ navigation }) => {
             returnKeyType={'default'}
             fetchDetails={true}
             onPress={(data, details) => {
-              setFormValues({
-                ...formValues,
-                partido: data.description,
-                partidoLatitude: details.geometry.location.lat,
-                partidoLongitude: details.geometry.location.lng,
-              });
+              var partidoPlaces = data.description;
+              var partidoLatitudePlaces = details.geometry.location.lat;
+              var partidoLongitudePlaces = details.geometry.location.lng;
+              setPartidoFunc(partidoPlaces);
+              setPartidoLatitudeFunc(partidoLatitudePlaces);
+              setPartidoLongitudeFunc(partidoLongitudePlaces);
             }}
             query={{
               key: DOTLOCATION,
@@ -815,12 +784,8 @@ const AnunciatePage = ({ navigation }) => {
               style={{ color: '#000000', fontSize: 16, textAlign: 'center' }}
               inputContainerStyle={{ borderBottomColor: '#000000' }}
               placeholderTextColor='black'
-              onChangeText={(local) =>
-                setFormValues({
-                  ...formValues,
-                  local: local,
-                })
-              }
+              onChangeText={(local) => setLocal(local)}
+              value={local}
               maxLength='2'
             />
           ) : (
@@ -830,12 +795,8 @@ const AnunciatePage = ({ navigation }) => {
               style={{ color: '#000000', fontSize: 16, textAlign: 'center' }}
               inputContainerStyle={{ borderBottomColor: '#000000' }}
               placeholderTextColor='black'
-              onChangeText={(local) =>
-                setFormValues({
-                  ...formValues,
-                  local: local,
-                })
-              }
+              onChangeText={(local) => setLocal(local)}
+              value={local}
               maxLength={2}
             />
           )}
@@ -846,11 +807,9 @@ const AnunciatePage = ({ navigation }) => {
             inputContainerStyle={{ borderBottomColor: '#000000' }}
             placeholderTextColor='black'
             onChangeText={(direccionDelLocal) =>
-              setFormValues({
-                ...formValues,
-                direccionDelLocal: direccionDelLocal,
-              })
+              setDireccionDelLocal(direccionDelLocal)
             }
+            value={direccionDelLocal}
           />
           {Platform.os === 'ios' ? (
             <Input
@@ -859,12 +818,8 @@ const AnunciatePage = ({ navigation }) => {
               style={{ color: '#000000', fontSize: 16, textAlign: 'center' }}
               inputContainerStyle={{ borderBottomColor: '#000000' }}
               placeholderTextColor='black'
-              onChangeText={(empresa) =>
-                setFormValues({
-                  ...formValues,
-                  empresa: empresa,
-                })
-              }
+              onChangeText={(empresa) => setEmpresa(empresa)}
+              value={empresa}
               maxLength='2'
             />
           ) : (
@@ -874,12 +829,8 @@ const AnunciatePage = ({ navigation }) => {
               style={{ color: '#000000', fontSize: 16, textAlign: 'center' }}
               inputContainerStyle={{ borderBottomColor: '#000000' }}
               placeholderTextColor='black'
-              onChangeText={(empresa) =>
-                setFormValues({
-                  ...formValues,
-                  empresa: empresa,
-                })
-              }
+              onChangeText={(empresa) => setEmpresa(empresa)}
+              value={empresa}
               maxLength={2}
             />
           )}
@@ -890,11 +841,9 @@ const AnunciatePage = ({ navigation }) => {
             inputContainerStyle={{ borderBottomColor: '#000000' }}
             placeholderTextColor='black'
             onChangeText={(nombreDeLaEmpresa) =>
-              setFormValues({
-                ...formValues,
-                nombreDeLaEmpresa: nombreDeLaEmpresa,
-              })
+              setNombreDeLaEmpresa(nombreDeLaEmpresa)
             }
+            value={nombreDeLaEmpresa}
           />
           <Input
             placeholder='Factura (Tipo)'
@@ -902,12 +851,8 @@ const AnunciatePage = ({ navigation }) => {
             style={{ color: '#000000', fontSize: 16, textAlign: 'center' }}
             inputContainerStyle={{ borderBottomColor: '#000000' }}
             placeholderTextColor='black'
-            onChangeText={(factura) =>
-              setFormValues({
-                ...formValues,
-                factura: factura,
-              })
-            }
+            onChangeText={(factura) => setFactura(factura)}
+            value={factura}
           />
           {Platform.os === 'ios' ? (
             <Input
@@ -916,12 +861,8 @@ const AnunciatePage = ({ navigation }) => {
               style={{ color: '#000000', fontSize: 16, textAlign: 'center' }}
               inputContainerStyle={{ borderBottomColor: '#000000' }}
               placeholderTextColor='black'
-              onChangeText={(matricula) =>
-                setFormValues({
-                  ...formValues,
-                  matricula: matricula,
-                })
-              }
+              onChangeText={(matricula) => setMatricula(matricula)}
+              value={matricula}
               maxLength='2'
             />
           ) : (
@@ -931,12 +872,8 @@ const AnunciatePage = ({ navigation }) => {
               style={{ color: '#000000', fontSize: 16, textAlign: 'center' }}
               inputContainerStyle={{ borderBottomColor: '#000000' }}
               placeholderTextColor='black'
-              onChangeText={(matricula) =>
-                setFormValues({
-                  ...formValues,
-                  matricula: matricula,
-                })
-              }
+              onChangeText={(matricula) => setMatricula(matricula)}
+              value={matricula}
               maxLength={2}
             />
           )}
@@ -948,11 +885,9 @@ const AnunciatePage = ({ navigation }) => {
             placeholderTextColor='black'
             keyboardType='numeric'
             onChangeText={(numeroDeMatricula) =>
-              setFormValues({
-                ...formValues,
-                numeroDeMatricula: numeroDeMatricula,
-              })
+              setNumeroDeMatricula(numeroDeMatricula)
             }
+            value={numeroDeMatricula}
           />
         </View>
         <View
@@ -984,15 +919,13 @@ const AnunciatePage = ({ navigation }) => {
             placeholderTextColor='black'
             multiline={true}
             onChangeText={(descripcionPersonal) =>
-              setFormValues({
-                ...formValues,
-                descripcionPersonal: descripcionPersonal,
-              })
+              setDescripcionPersonal(descripcionPersonal)
             }
             paddingTop={20}
             paddingRight={50}
             paddingLeft={50}
             maxLength={150}
+            value={descripcionPersonal}
           />
           <Text h4 style={{ color: '#000000' }}>
             Palabras clave
@@ -1001,11 +934,9 @@ const AnunciatePage = ({ navigation }) => {
             <Input
               placeholder='#Uno'
               onChangeText={(palabraClaveUno) =>
-                setFormValues({
-                  ...formValues,
-                  palabraClaveUno: palabraClaveUno,
-                })
+                setPalabraClaveUno(palabraClaveUno)
               }
+              value={palabraClaveUno}
               paddingLeft={10}
               paddingRight={10}
               placeholderTextColor='#fd5d13'
@@ -1027,11 +958,9 @@ const AnunciatePage = ({ navigation }) => {
             <Input
               placeholder='#Dos'
               onChangeText={(palabraClaveDos) =>
-                setFormValues({
-                  ...formValues,
-                  palabraClaveDos: palabraClaveDos,
-                })
+                setPalabraClaveDos(palabraClaveDos)
               }
+              value={palabraClaveDos}
               paddingLeft={10}
               paddingRight={10}
               placeholderTextColor='#fd5d13'
@@ -1053,11 +982,9 @@ const AnunciatePage = ({ navigation }) => {
             <Input
               placeholder='#Tres'
               onChangeText={(palabraClaveTres) =>
-                setFormValues({
-                  ...formValues,
-                  palabraClaveTres: palabraClaveTres,
-                })
+                setPalabraClaveTres(palabraClaveTres)
               }
+              value={palabraClaveTres}
               paddingLeft={10}
               paddingRight={10}
               placeholderTextColor='#fd5d13'
@@ -1095,7 +1022,7 @@ const AnunciatePage = ({ navigation }) => {
             <CheckBox
               title='Lunes'
               onPress={() => concatLunes()}
-              checked={formValues.lunesChecked}
+              checked={lunesChecked}
               containerStyle={{
                 backgroundColor: 'transparent',
                 borderColor: 'transparent',
@@ -1110,7 +1037,7 @@ const AnunciatePage = ({ navigation }) => {
             <CheckBox
               title='Martes'
               onPress={() => concatMartes()}
-              checked={formValues.martesChecked}
+              checked={martesChecked}
               containerStyle={{
                 backgroundColor: 'transparent',
                 borderColor: 'transparent',
@@ -1125,7 +1052,7 @@ const AnunciatePage = ({ navigation }) => {
             <CheckBox
               title='Miercoles'
               onPress={() => concatMiercoles()}
-              checked={formValues.miercolesChecked}
+              checked={miercolesChecked}
               containerStyle={{
                 backgroundColor: 'transparent',
                 borderColor: 'transparent',
@@ -1142,7 +1069,7 @@ const AnunciatePage = ({ navigation }) => {
             <CheckBox
               title='Jueves'
               onPress={() => concatJueves()}
-              checked={formValues.juevesChecked}
+              checked={juevesChecked}
               containerStyle={{
                 backgroundColor: 'transparent',
                 borderColor: 'transparent',
@@ -1157,7 +1084,7 @@ const AnunciatePage = ({ navigation }) => {
             <CheckBox
               title='Viernes'
               onPress={() => concatViernes()}
-              checked={formValues.viernesChecked}
+              checked={viernesChecked}
               containerStyle={{
                 backgroundColor: 'transparent',
                 borderColor: 'transparent',
@@ -1172,7 +1099,7 @@ const AnunciatePage = ({ navigation }) => {
             <CheckBox
               title='Sábado'
               onPress={() => concatSabado()}
-              checked={formValues.sabadoChecked}
+              checked={sabadoChecked}
               containerStyle={{
                 backgroundColor: 'transparent',
                 borderColor: 'transparent',
@@ -1189,7 +1116,7 @@ const AnunciatePage = ({ navigation }) => {
             <CheckBox
               title='Domingo'
               onPress={() => concatDomingo()}
-              checked={formValues.domingoChecked}
+              checked={domingoChecked}
               containerStyle={{
                 backgroundColor: 'transparent',
                 borderColor: 'transparent',
@@ -1204,7 +1131,7 @@ const AnunciatePage = ({ navigation }) => {
             <CheckBox
               title='Lunes a Viernes'
               onPress={() => concatLunesViernes()}
-              checked={formValues.lunesViernesChecked}
+              checked={lunesViernesChecked}
               containerStyle={{
                 backgroundColor: 'transparent',
                 borderColor: 'transparent',
@@ -1218,34 +1145,114 @@ const AnunciatePage = ({ navigation }) => {
             />
           </View>
           <View style={{ width: '80%' }}>
-            <Input
-              placeholder='Desde'
-              inputStyle={{ color: '#000000' }}
-              style={{ color: '#000000', fontSize: 16, textAlign: 'center' }}
-              inputContainerStyle={{ borderBottomColor: '#000000' }}
-              placeholderTextColor='black'
-              keyboardType='numeric'
-              onChangeText={(dateDesde) =>
-                setFormValues({
-                  ...formValues,
-                  dateDesde: dateDesde,
-                })
-              }
-            />
-            <Input
-              placeholder='Hasta'
-              inputStyle={{ color: '#000000' }}
-              style={{ color: '#000000', fontSize: 16, textAlign: 'center' }}
-              inputContainerStyle={{ borderBottomColor: '#000000' }}
-              placeholderTextColor='black'
-              keyboardType='numeric'
-              onChangeText={(dateHasta) =>
-                setFormValues({
-                  ...formValues,
-                  dateHasta: dateHasta,
-                })
-              }
-            />
+            <View>
+              <View>
+                <Button
+                  onPress={showTimepicker}
+                  title='Desde'
+                  buttonStyle={{
+                    backgroundColor: '#F4743B',
+                    borderRadius: 25,
+                    marginTop: '10%',
+                    marginBottom: '10%',
+                  }}
+                />
+              </View>
+              {show && (
+                <DateTimePicker
+                  testID='dateTimePickerDesde'
+                  value={dateDesde}
+                  mode={mode}
+                  is24Hour={true}
+                  display='spinner'
+                  onChange={onChangeHourDesde}
+                />
+              )}
+            </View>
+            <View
+              style={{
+                backgroundColor: '#F4743B',
+                borderRadius: 25,
+                width: '20%',
+                alignSelf: 'center',
+                margintop: '5%',
+                marginBottom: '5%',
+              }}>
+              {Platform.OS == 'android' ? (
+                <Text
+                  style={{
+                    textAlign: 'center',
+                    color: '#ffffff',
+                  }}>
+                  {dateDesde.toLocaleTimeString().slice(1, -3)}
+                </Text>
+              ) : (
+                <Text
+                  style={{
+                    textAlign: 'center',
+                    color: '#ffffff',
+                  }}>
+                  {dateDesde.toLocaleTimeString([], {
+                    hour: '2-digit',
+                    minute: '2-digit',
+                  })}
+                </Text>
+              )}
+            </View>
+            <View>
+              <View>
+                <Button
+                  onPress={showTimepicker}
+                  title='Hasta'
+                  buttonStyle={{
+                    backgroundColor: '#F4743B',
+                    borderRadius: 25,
+                    marginTop: '10%',
+                    marginBottom: '10%',
+                  }}
+                />
+              </View>
+              {show && (
+                <DateTimePicker
+                  testID='dateTimePickerHasta'
+                  value={dateHasta}
+                  mode={mode}
+                  is24Hour={true}
+                  display='spinner'
+                  onChange={onChangeHourHasta}
+                />
+              )}
+            </View>
+            <View
+              style={{
+                backgroundColor: '#F4743B',
+                borderRadius: 25,
+                width: '20%',
+                alignSelf: 'center',
+                margintop: '5%',
+                marginBottom: '5%',
+              }}>
+              {Platform.OS == 'android' ? (
+                <Text
+                  style={{
+                    textAlign: 'center',
+                    color: '#ffffff',
+                  }}>
+                  {dateHasta.toLocaleTimeString().slice(1, -3)}
+                </Text>
+              ) : (
+                <Text
+                  style={{
+                    textAlign: 'center',
+                    color: '#ffffff',
+                  }}>
+                  {dateHasta.toLocaleTimeString([], {
+                    hour: '2-digit',
+                    minute: '2-digit',
+                  })}
+                </Text>
+              )}
+            </View>
           </View>
         </View>
         <Text
@@ -1281,7 +1288,7 @@ const AnunciatePage = ({ navigation }) => {
             textStyle={{ color: '#000000' }}
             checkedColor={'#fd5d13'}
             onPress={toggleEfectivo}
-            checked={formValues.efectivo}
+            checked={efectivo}
           />
           <MaterialCommunityIcons
             name='card-bulleted-outline'
@@ -1302,7 +1309,7 @@ const AnunciatePage = ({ navigation }) => {
             textStyle={{ color: '#000000' }}
             checkedColor={'#fd5d13'}
             onPress={togglePagosDigitales}
-            checked={formValues.pagosDigitales}
+            checked={pagosDigitales}
           />
         </View>
         <View
@@ -1327,9 +1334,7 @@ const AnunciatePage = ({ navigation }) => {
               Leer
             </Text>
           </TouchableOpacity>
-          <Overlay
-            isVisible={formValues.visible}
-            onBackdropPress={toggleOverlay}>
+          <Overlay isVisible={visible} onBackdropPress={toggleOverlay}>
             <Text>Acá van los términos.</Text>
           </Overlay>
           <CheckBox
@@ -1345,7 +1350,7 @@ const AnunciatePage = ({ navigation }) => {
             textStyle={{ color: '#000000' }}
             checkedColor={'#fd5d13'}
             onPress={toggleTerminos}
-            checked={formValues.terminos}
+            checked={terminos}
           />
         </View>
         <View
@@ -1357,7 +1362,42 @@ const AnunciatePage = ({ navigation }) => {
             marginBottom: 30,
           }}>
           <Button
-            onPress={() => writeUserData()}
+            onPress={() =>
+              writeUserData(
+                nombre,
+                apellido,
+                cuitCuil,
+                dni,
+                actividad,
+                telefono,
+                celular,
+                localidad,
+                localidadLatitude,
+                localidadLongitude,
+                partido,
+                partidoLatitude,
+                partidoLongitude,
+                local,
+                empresa,
+                factura,
+                direccionDelLocal,
+                nombreDeLaEmpresa,
+                matricula,
+                numeroDeMatricula,
+                emailLaboral,
+                descripcionPersonal,
+                palabraClaveUno,
+                palabraClaveDos,
+                palabraClaveTres,
+                diasHorarios,
+                dateDesdeParsed,
+                dateHastaParsed,
+                terminos,
+                latitud,
+                longitud,
+                photoJSONValue
+              )
+            }
             title='Continuar'
             buttonStyle={{
               backgroundColor: '#F4743B',
