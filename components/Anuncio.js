@@ -30,6 +30,8 @@ import { concat } from 'react-native-reanimated';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import * as Updates from 'expo-updates';
 import * as Font from 'expo-font';
+import { useSelector, useDispatch } from 'react-redux';
+import { increment, decrement } from '../actions/counterActions';
 
 let calificacion = 'calificacion';
 let favs;
@@ -47,6 +49,8 @@ export default function AnuncioSeleccionado({ route, navigation }) {
   const [foundUser, setFoundUser] = useState('');
   const [prevCount, setCount] = useState(recomendacionesTotales);
   const [fontsLoaded, setFontsLoaded] = useState(false);
+  const counter = useSelector((state) => state.counter);
+  const dispatch = useDispatch();
 
   async function loadFonts() {
     await Font.loadAsync({
@@ -264,9 +268,10 @@ export default function AnuncioSeleccionado({ route, navigation }) {
     );
   }
 
-  function handleRecommend() {
-    var newRecomendacionesTotales = setCount((prevCount) => prevCount + 1);
-    var userFoundReference = firebase
+  const handleRecommend = () => {
+    dispatch(increment());
+
+    /* firebase
       .database()
       .ref('anuncios/')
       .orderByChild('id')
@@ -276,8 +281,8 @@ export default function AnuncioSeleccionado({ route, navigation }) {
         snapshot.forEach((child) => {
           child.val().recomendacionesTotales++;
         });
-      });
-  }
+      }); */
+  };
 
   firebase
     .storage()
@@ -512,7 +517,7 @@ export default function AnuncioSeleccionado({ route, navigation }) {
                 fontSize: 14,
                 marginLeft: '2%',
               }}>
-              {recomendacionesTotales}
+              {counter}
             </Text>
           </View>
           <View
@@ -1075,7 +1080,7 @@ export default function AnuncioSeleccionado({ route, navigation }) {
           ) : (
             <Button
               title='Recomendar'
-              onPress={() => handleRecommend()}
+              onPress={handleRecommend}
               titleStyle={{ fontSize: 12, marginBottom: -20 }}
               buttonStyle={{
                 width: 120,
