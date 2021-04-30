@@ -1,5 +1,6 @@
 import React, { useState, setState, useEffect } from 'react';
 import {
+  Alert,
   TouchableOpacity,
   StyleSheet,
   Image,
@@ -41,13 +42,14 @@ export default function AnuncioSeleccionado({ route, navigation }) {
   let uuid = route.params.uuid;
   let index = route.params.index;
   let routeParamsToString = id.toString();
-  let [fotoDePerfil, setFotoDePerfil] = useState('');
+  let hasRecommendedArray = [];
+  const [fotoDePerfil, setFotoDePerfil] = useState('');
   const [isFavorite, setFavorites] = useState([]);
   const naranjaQueDeOficios = '#fd5d13';
   const favoritosBackground = 'transparent';
   const [favoritosTint, setFavoritosTint] = useState(false);
   const [foundUser, setFoundUser] = useState('');
-  const [prevCount, setCount] = useState(recomendacionesTotales);
+  const [isRecommended, setIsRecommended] = useState(false);
   const [fontsLoaded, setFontsLoaded] = useState(false);
   const counter = useSelector((state) => state.counter);
   const dispatch = useDispatch();
@@ -92,7 +94,9 @@ export default function AnuncioSeleccionado({ route, navigation }) {
     pisoDptoCasa,
     provincia,
     telefono,
-    recomendacionesTotales;
+    recomendacionesTotales,
+    hasRecommended;
+
   let dbRef = firebase
     .database()
     .ref('anuncios/')
@@ -122,6 +126,7 @@ export default function AnuncioSeleccionado({ route, navigation }) {
       provincia = child.val().provincia;
       nombreDeLaEmpresa = child.val().nombreDeLaEmpresa;
       recomendacionesTotales = child.val().recomendacionesTotales;
+      hasRecommended = child.val().hasRecommended;
       telefono = child.val().telefono;
       matricula = child.val().matricula;
       numeroDeMatricula = child.val().numeroDeMatricula;
@@ -269,19 +274,28 @@ export default function AnuncioSeleccionado({ route, navigation }) {
   }
 
   const handleRecommend = () => {
-    dispatch(increment());
-
-    /* firebase
-      .database()
-      .ref('anuncios/')
-      .orderByChild('id')
-      .equalTo(id)
-      .once('value')
-      .then(function (snapshot) {
-        snapshot.forEach((child) => {
-          child.val().recomendacionesTotales++;
+    if (id === firebase.auth().currentUser.uid) {
+      Alert.alert('¡Atención!', 'No puedes realizar esta acción.');
+    } else if (isRecommended) {
+      Alert.alert('Recomendación', 'Ya has recomendado a este usuario.');
+    } else {
+      dispatch(increment());
+      setIsRecommended(!isRecommended);
+      Alert.alert('Recomendación', '¡Gracias por recomendarme!');
+      hasRecommendedArray.push({
+        whoRecommended: firebase.auth().currentUser.uid,
+        recommendedUser: id,
+        recommended: true,
+      });
+      firebase
+        .database()
+        .ref('anuncios/')
+        .child(id + contadorAnuncio)
+        .update({
+          recomendacionesTotales: recomendacionesTotales + 1,
+          hasRecommended: hasRecommendedArray,
         });
-      }); */
+    }
   };
 
   firebase
@@ -517,7 +531,7 @@ export default function AnuncioSeleccionado({ route, navigation }) {
                 fontSize: 14,
                 marginLeft: '2%',
               }}>
-              {counter}
+              {recomendacionesTotales}
             </Text>
           </View>
           <View

@@ -183,7 +183,11 @@ class ControlPanel extends React.Component {
               apellido={item.apellido}
               actividad={item.actividad}
               local={item.direccionDelLocal}
-              recomendacionesTotales={'5.4k'}
+              recomendacionesTotales={
+                item.recomendacionesTotales > 0
+                  ? item.recomendacionesTotales
+                  : '0'
+              }
             />
           )}
           sliderWidth={360}
