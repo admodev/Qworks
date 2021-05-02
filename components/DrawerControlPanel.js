@@ -158,6 +158,7 @@ class ControlPanel extends React.Component {
 
     return (
       <SafeAreaView style={{ flex: 1, backgroundColor: '#ffffff' }}>
+        <MapComponent />
         <Image
           source={require('../assets/gradients/20x20.png')}
           style={{
@@ -165,11 +166,9 @@ class ControlPanel extends React.Component {
             position: 'absolute',
             resizeMode: 'cover',
             width: '100%',
-            height: '5%',
+            height: Platform.OS === 'android' ? '5%' : '3%',
           }}
         />
-        <LocationSearch />
-        <MapComponent />
         <Carousel
           ref={(c) => {
             this._carousel = c;
@@ -181,12 +180,18 @@ class ControlPanel extends React.Component {
               idAnuncio={item.idAnuncio}
               uuid={item.uuid}
               nombre={item.nombre}
+              apellido={item.apellido}
               actividad={item.actividad}
               local={item.direccionDelLocal}
+              recomendacionesTotales={
+                item.recomendacionesTotales > 0
+                  ? item.recomendacionesTotales
+                  : '0'
+              }
             />
           )}
           sliderWidth={360}
-          itemWidth={300}
+          itemWidth={310}
           layout={'default'}
           layoutCardOffset={9}
         />

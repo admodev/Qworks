@@ -53,10 +53,10 @@ const LocationSearch = (props) => {
         }}
       />
       <Input
-        placeholder="Buscar en  ¡QuedeOficios!"
+        placeholder="Buscar en Qworks!"
         inputStyle={{
           justifyContent: 'center',
-          marginLeft: 25,
+          marginLeft: 50,
           marginTop: -10,
         }}
         containerStyle={{ marginLeft: 10, marginTop: -10 }}

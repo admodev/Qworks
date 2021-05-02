@@ -35,6 +35,7 @@ import CambiarFotoPerfil from '../pages/CambiarFotoPerfil';
 import EditarInformacionPersonalScreen from '../components/editarAnuncio/InformacionPersonal';
 import EditarInformacionLaboralScreen from '../components/editarAnuncio/InformacionLaboral';
 import EditarResumenPersonalScreen from '../components/editarAnuncio/ResumenPersonal';
+import ControlPanel from '../components/DrawerControlPanel';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -53,34 +54,29 @@ export function MainTabNavigator({ navigation }) {
     <Tab.Navigator
       tabBarOptions={{
         activeTintColor: '#fd5d13',
-      }}
-    >
+      }}>
       <Tab.Screen
-        name="OnboardingPage"
-        component={OnboardingPage}
+        name='OnboardingPage'
+        component={ControlPanel}
         options={{
           tabBarLabel: 'Inicio',
           tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name="home" color={'#fd5d13'} size={size} />
+            <MaterialCommunityIcons name='home' color={'#fd5d13'} size={size} />
           ),
         }}
       />
       <Tab.Screen
-        name="SearchPage"
+        name='SearchPage'
         component={SearchPage}
         options={{
-          tabBarLabel: 'Buscar',
+          tabBarLabel: 'Qdrives!',
           tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons
-              name="magnify"
-              color={'#fd5d13'}
-              size={size}
-            />
+            <MaterialCommunityIcons name='car' color={'#fd5d13'} size={size} />
           ),
         }}
       />
       <Tab.Screen
-        name="MessagesScreen"
+        name='MessagesScreen'
         component={UserMessagesList}
         options={{
           tabBarLabel: 'Mensajes',
@@ -88,7 +84,7 @@ export function MainTabNavigator({ navigation }) {
             <View>
               {Chat.messages >= 1 && (
                 <Badge
-                  status="primary"
+                  status='primary'
                   badgeStyle={{
                     width: 15,
                     height: 15,
@@ -100,7 +96,7 @@ export function MainTabNavigator({ navigation }) {
                 />
               )}
               <MaterialCommunityIcons
-                name="comment-text"
+                name='comment-text'
                 color={'#fd5d13'}
                 size={35}
               />
@@ -109,13 +105,13 @@ export function MainTabNavigator({ navigation }) {
         }}
       />
       <Tab.Screen
-        name="ShopPage"
+        name='ShopPage'
         component={ShopPage}
         options={{
           tabBarLabel: 'Shop',
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons
-              name="shopping"
+              name='shopping'
               color={'#fd5d13'}
               size={size}
             />
@@ -124,13 +120,13 @@ export function MainTabNavigator({ navigation }) {
       />
       {isLogged ? (
         <Tab.Screen
-          name="ProfilePage"
+          name='ProfilePage'
           component={ProfilePage}
           options={{
             tabBarLabel: 'Perfil',
             tabBarIcon: ({ color, size }) => (
               <MaterialCommunityIcons
-                name="account"
+                name='account'
                 color={'#fd5d13'}
                 size={size}
               />
@@ -139,13 +135,13 @@ export function MainTabNavigator({ navigation }) {
         />
       ) : (
         <Tab.Screen
-          name="LoginPage"
+          name='LoginPage'
           component={LoginPage}
           options={{
             tabBarLabel: 'Perfil',
             tabBarIcon: ({ color, size }) => (
               <MaterialCommunityIcons
-                name="account"
+                name='account'
                 color={'#fd5d13'}
                 size={size}
               />
@@ -165,132 +161,131 @@ function MainStackNavigator({ navigation }) {
           headerStyle: { backgroundColor: '#633689' },
           headerTintColor: '#fff',
           headerTitleStyle: { fontWeight: 'bold' },
-        }}
-      >
+        }}>
         <Stack.Screen
-          name="Home"
+          name='Home'
           component={MainTabNavigator}
           options={{ headerShown: false }}
         />
         <Stack.Screen
-          name="CardsUsuarios"
+          name='CardsUsuarios'
           component={CardsUsuarios}
           options={{ title: 'QuedeOficios!', headerShown: false }}
         />
         <Stack.Screen
-          name="SearchPage"
+          name='SearchPage'
           component={SearchPage}
           options={{ title: 'QuedeOficios!', headerShown: false }}
         />
         <Stack.Screen
-          name="ChatPage"
+          name='ChatPage'
           component={ChatPage}
           options={{ title: 'QuedeOficios!', headerShown: false }}
         />
         <Stack.Screen
-          name="ChatComponent"
+          name='ChatComponent'
           component={Chat}
           options={{ title: 'QuedeOficios!', headerShown: false }}
           initialParams={{ firstUserId: null, secondUserId: null }}
         />
         <Stack.Screen
-          name="LoginPage"
+          name='LoginPage'
           component={LoginPage}
           options={{ title: 'QuedeOficios!', headerShown: false }}
         />
         <Stack.Screen
-          name="RegisterPage"
+          name='RegisterPage'
           component={RegisterPage}
           options={{ title: 'QuedeOficios!', headerShown: false }}
         />
         <Stack.Screen
-          name="AnunciatePage"
+          name='AnunciatePage'
           component={AnunciatePage}
           options={{ title: 'QuedeOficios!', headerShown: false }}
         />
         <Stack.Screen
-          name="PagosPage"
+          name='PagosPage'
           component={PagosPage}
           options={{ title: 'QuedeOficios!', headerShown: false }}
         />
         <Stack.Screen
-          name="ShopPage"
+          name='ShopPage'
           component={ShopPage}
           options={{ title: 'QuedeOficios!', headerShown: false }}
         />
         <Stack.Screen
-          name="MessagesScreen"
+          name='MessagesScreen'
           component={MessagesScreen}
           options={{ title: 'QuedeOficios!', headerShown: false }}
         />
         <Stack.Screen
-          name="Anuncios"
+          name='Anuncios'
           component={AnunciosPage}
           options={{ title: 'QuedeOficios!', headerShown: false }}
         />
         <Stack.Screen
-          name="AnuncioSeleccionado"
+          name='AnuncioSeleccionado'
           component={AnuncioSeleccionado}
           options={{ title: 'QuedeOficios!', headerShown: false }}
           initialParams={{ id: null }}
         />
         <Stack.Screen
-          name="MisComentariosPage"
+          name='MisComentariosPage'
           component={MisComentariosPage}
           options={{ title: 'QuedeOficios!', headerShown: false }}
         />
         <Stack.Screen
-          name="CambiarNombreScreen"
+          name='CambiarNombreScreen'
           component={CambiarNombreScreen}
           options={{ title: 'QuedeOficios!', headerShown: false }}
         />
         <Stack.Screen
-          name="RecomendarUsuario"
+          name='RecomendarUsuario'
           component={RecomendarUsuario}
           options={{ title: 'QuedeOficios!', headerShown: false }}
         />
         <Stack.Screen
-          name="ComentarScreen"
+          name='ComentarScreen'
           component={ComentarScreen}
           options={{ title: 'QuedeOficios!', headerShown: false }}
         />
         <Stack.Screen
-          name="FiltroDeComentarios"
+          name='FiltroDeComentarios'
           component={FiltroDeComentarios}
           options={{ title: 'QuedeOficios!', headerShown: false }}
         />
         <Stack.Screen
-          name="EditarAnuncioScreen"
+          name='EditarAnuncioScreen'
           component={EditarAnuncioScreen}
           options={{ title: 'QuedeOficios!', headerShown: false }}
         />
         <Stack.Screen
-          name="RecuperarPasswordScreen"
+          name='RecuperarPasswordScreen'
           component={RecuperarPasswordScreen}
           options={{ title: 'QuedeOficios!', headerShown: false }}
         />
         <Stack.Screen
-          name="RecomendacionesRenderizadas"
+          name='RecomendacionesRenderizadas'
           component={RecomendacionesRenderizadas}
           options={{ title: 'QuedeOficios!', headerShown: false }}
         />
         <Stack.Screen
-          name="CambiarFotoPerfil"
+          name='CambiarFotoPerfil'
           component={CambiarFotoPerfil}
           options={{ title: 'QuedeOficios!', headerShown: false }}
         />
         <Stack.Screen
-          name="EditarInformacionPersonalScreen"
+          name='EditarInformacionPersonalScreen'
           component={EditarInformacionPersonalScreen}
           options={{ title: 'Quedeoficios!', headerShown: false }}
         />
         <Stack.Screen
-          name="EditarInformacionLaboralScreen"
+          name='EditarInformacionLaboralScreen'
           component={EditarInformacionLaboralScreen}
           options={{ title: 'Quedeoficios!', headerShown: false }}
         />
         <Stack.Screen
-          name="EditarResumenPersonalScreen"
+          name='EditarResumenPersonalScreen'
           component={EditarResumenPersonalScreen}
           options={{ title: 'Quedeoficios!', headerShown: false }}
         />

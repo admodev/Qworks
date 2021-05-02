@@ -28,6 +28,9 @@ import {
   DOTLOCATION,
 } from '@env';
 import { StatusBar } from 'expo-status-bar';
+import { createStore } from 'redux';
+import { Provider } from 'react-redux';
+import allReducers from './reducers/allReducers';
 
 if (firebase.apps.length === 0) {
   try {
@@ -55,6 +58,8 @@ Notifications.setNotificationHandler({
     shouldSetBadge: true,
   }),
 });
+
+const store = createStore(allReducers);
 
 export default function App() {
   let [isReady, setIsReady] = React.useState(false);
@@ -115,10 +120,10 @@ export default function App() {
   }
 
   return (
-    <>
+    <Provider store={store}>
       <MainStackNavigator />
-      <StatusBar style="light" />
-    </>
+      <StatusBar style='light' />
+    </Provider>
   );
 }
 

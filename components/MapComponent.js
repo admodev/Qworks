@@ -109,8 +109,6 @@ class MapComponent extends Component {
   filterList(items) {
     return items.filter(
       (itm) =>
-        itm.nombre.toLowerCase().includes(this.state.search.toLowerCase()) ||
-        itm.apellido.toLowerCase().includes(this.state.search.toLowerCase()) ||
         itm.actividad.toLowerCase().includes(this.state.search.toLowerCase()) ||
         itm.palabraClaveUno
           .toLowerCase()
@@ -123,9 +121,7 @@ class MapComponent extends Component {
           .includes(this.state.search.toLowerCase()) ||
         itm.descripcionPersonal
           .toLowerCase()
-          .includes(this.state.search.toLowerCase()) ||
-        itm.localidad.toLowerCase().includes(this.state.search.toLowerCase()) ||
-        itm.provincia.toLowerCase().includes(this.state.search.toLowerCase())
+          .includes(this.state.search.toLowerCase())
     );
   }
 
@@ -203,31 +199,92 @@ class MapComponent extends Component {
               showsUserLocation={this.state.showsUserLocation}
               fitToElements={true}
             >
-              {this.state.items.map((element, index) => {
-                return (
-                  <Marker
-                    coordinate={{
-                      latitude: element.latitud,
-                      longitude: element.longitud,
-                    }}
-                    pinColor={'purple'}
-                    title={element.nombre}
-                    description={element.actividad}
-                    key={element.uuid + index}
-                    focusable={true}
-                  >
-                    <Image
-                      source={require('../assets/icon.png')}
-                      style={{
-                        width: 30,
-                        height: 30,
+              {this.state.search
+                ? this.filterList(this.state.items).map((itm, i) => (
+                    <Marker
+                      coordinate={{
+                        latitude: itm.latitud,
+                        longitude: itm.longitud,
                       }}
-                    />
-                  </Marker>
-                );
-              })}
+                      pinColor={'purple'}
+                      title={itm.nombre}
+                      description={itm.actividad}
+                      key={itm.uuid + i}
+                      focusable={true}
+                    >
+                      <Image
+                        source={require('../assets/icon.png')}
+                        style={{
+                          width: 30,
+                          height: 30,
+                        }}
+                      />
+                    </Marker>
+                  ))
+                : this.state.items.map((element, index) => {
+                    return (
+                      <Marker
+                        coordinate={{
+                          latitude: element.latitud,
+                          longitude: element.longitud,
+                        }}
+                        pinColor={'purple'}
+                        title={element.nombre}
+                        description={element.actividad}
+                        key={element.uuid + index}
+                        focusable={true}
+                      >
+                        <Image
+                          source={require('../assets/icon.png')}
+                          style={{
+                            width: 30,
+                            height: 30,
+                          }}
+                        />
+                      </Marker>
+                    );
+                  })}
             </MapView>
           )}
+          <Input
+            placeholder="Buscar en Qworks!"
+            containerStyle={{
+              ...Platform.select({
+                android: {
+                  position: 'absolute',
+                  top: 50,
+                  left: 20,
+                  maxWidth: '90%',
+                  alignSelf: 'center',
+                  backgroundColor: '#ffffff',
+                  borderRadius: 50,
+                  height: 40,
+                },
+                ios: {
+                  position: 'absolute',
+                  top: 20,
+                  left: 20,
+                  maxWidth: '90%',
+                  alignSelf: 'center',
+                  backgroundColor: '#ffffff',
+                  borderRadius: 50,
+                  height: 40,
+                },
+              }),
+            }}
+            inputStyle={{
+              justifyContent: 'center',
+              marginLeft: '25%',
+            }}
+            inputContainerStyle={{
+              borderWidth: 0,
+              border: 0,
+              borderBottomWidth: 0,
+            }}
+            placeholderTextColor="#000000"
+            onChangeText={(search) => this.setState({ search })}
+            value={this.state.search}
+          />
         </View>
       </SafeAreaView>
     );
@@ -246,11 +303,9 @@ const styles = StyleSheet.create({
     height: SCREEN_HEIGHT,
     ...Platform.select({
       android: {
-        marginTop: '-35%',
         height: SCREEN_HEIGHT,
       },
       ios: {
-        marginTop: '-35%',
         height: SCREEN_HEIGHT,
       },
     }),
