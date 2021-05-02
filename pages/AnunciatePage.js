@@ -306,18 +306,18 @@ const AnunciatePage = ({ navigation }) => {
         Platform.OS === 'ios' ? result.uri.replace('file://', '') : result.uri;
       setUploading(true);
       setTransferred(0);
-      const data = new FormData();
-      data.append('file', blob);
-      data.append('filename', filename);
 
-      const task = fetch('http://192.168.0.20:5000/upload', {
-        method: 'POST',
-        body: data,
-      }).then((response) => {
-        response.json().then((body) => {
-          setImageUrlResponse(`http://192.168.0.20:5000/${body.file}`);
+      const task = firebase
+        .storage()
+        .ref('anunciosPictures/')
+        .child(firebase.auth().currentUser.uid + anunciosCountResult + '.JPG')
+        .put(blob)
+        .then(function () {
+          console.log('Foto subida exitosamente!');
+        })
+        .catch((error) => {
+          console.log('ERROR AL SUBIR LA FOTO', error.message);
         });
-      });
       try {
         await task;
       } catch (e) {

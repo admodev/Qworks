@@ -43,7 +43,7 @@ export default function AnuncioSeleccionado({ route, navigation }) {
   let index = route.params.index;
   let routeParamsToString = id.toString();
   let hasRecommendedArray = [];
-  const [fotoDePerfil, setFotoDePerfil] = useState('');
+  const [fotoDePerfil, setFotoDePerfil] = useState(null);
   const [isFavorite, setFavorites] = useState([]);
   const naranjaQueDeOficios = '#fd5d13';
   const favoritosBackground = 'transparent';
@@ -106,7 +106,6 @@ export default function AnuncioSeleccionado({ route, navigation }) {
     snap.forEach((child) => {
       key = child.key;
       nombre = child.val().nombre;
-      image = child.val().image;
       apellido = child.val().apellido;
       actividad = child.val().actividad;
       emailPersonal = child.val().emailPersonal;
@@ -132,9 +131,32 @@ export default function AnuncioSeleccionado({ route, navigation }) {
       numeroDeMatricula = child.val().numeroDeMatricula;
     });
   });
+
   if (!recomendacionesTotales) {
     recomendacionesTotales = 0;
   }
+
+  image = firebase
+    .storage()
+    .ref('anunciosPictures/')
+    .child(id + contadorAnuncio + '.JPG')
+    .getDownloadURL()
+    .then(function (url) {
+      var xhr = new XMLHttpRequest();
+      xhr.responseType = 'blob';
+      xhr.onload = function (event) {
+        var blob = xhr.response;
+        console.log('EL BLOB', blob);
+      };
+      xhr.open('GET', url);
+      xhr.send();
+      console.log('LA FOTO', url);
+      setFotoDePerfil(url);
+    })
+    .catch(function (error) {
+      console.log('ERROR AL DESCARGAR FOTO', error.message);
+    });
+
   let key, userId, comentario;
   var arr = [];
   let comentariosRef = firebase
@@ -297,26 +319,6 @@ export default function AnuncioSeleccionado({ route, navigation }) {
         });
     }
   };
-
-  firebase
-    .storage()
-    .ref('profilePictures/')
-    .child(id + contadorAnuncio)
-    .getDownloadURL()
-    .then(function (url) {
-      var xhr = new XMLHttpRequest();
-      xhr.responseType = 'blob';
-      xhr.onload = function (event) {
-        var blob = xhr.response;
-      };
-      xhr.open('GET', url);
-      xhr.send();
-
-      setFotoDePerfil(url);
-    })
-    .catch(function (error) {
-      console.log('Hubo un error al cargar las fotos!', error.message);
-    });
 
   function onlyUnique(value, index, self) {
     return self.indexOf(value) === index;
