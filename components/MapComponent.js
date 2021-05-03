@@ -22,6 +22,7 @@ import { StackActions } from '@react-navigation/native';
 import SearchedCardResult from './searchedCard';
 import MapView, { Marker } from 'react-native-maps';
 import Carousel from 'react-native-snap-carousel';
+import FotoMapa from './FotoMapa';
 
 const { width, height } = Dimensions.get('window');
 const SCREEN_WIDTH = width;
@@ -162,16 +163,14 @@ class MapComponent extends Component {
                     alignItems: 'center',
                   },
                 }),
-              }}
-            >
+              }}>
               <Text
-                style={{ fontSize: 18, fontWeight: 'bold', marginBottom: 15 }}
-              >
+                style={{ fontSize: 18, fontWeight: 'bold', marginBottom: 15 }}>
                 Cargando...
               </Text>
               <ActivityIndicator
-                size="large"
-                color="orange"
+                size='large'
+                color='orange'
                 style={{
                   ...Platform.select({
                     android: {
@@ -197,8 +196,7 @@ class MapComponent extends Component {
               initialRegion={region}
               onUserLocationChange={(event) => console.log(event.nativeEvent)}
               showsUserLocation={this.state.showsUserLocation}
-              fitToElements={true}
-            >
+              fitToElements={true}>
               {this.state.search
                 ? this.filterList(this.state.items).map((itm, i) => (
                     <Marker
@@ -210,8 +208,7 @@ class MapComponent extends Component {
                       title={itm.nombre}
                       description={itm.actividad}
                       key={itm.uuid + i}
-                      focusable={true}
-                    >
+                      focusable={true}>
                       <Image
                         source={require('../assets/icon.png')}
                         style={{
@@ -232,14 +229,12 @@ class MapComponent extends Component {
                         title={element.nombre}
                         description={element.actividad}
                         key={element.uuid + index}
-                        focusable={true}
-                      >
-                        <Image
-                          source={require('../assets/icon.png')}
-                          style={{
-                            width: 30,
-                            height: 30,
-                          }}
+                        focusable={true}>
+                        <FotoMapa
+                          key={element.uuid + index}
+                          idAnuncio={element.idAnuncio}
+                          anuncioId={element.anuncioId}
+                          uuid={element.uuid}
                         />
                       </Marker>
                     );
@@ -247,7 +242,7 @@ class MapComponent extends Component {
             </MapView>
           )}
           <Input
-            placeholder="Buscar en Qworks!"
+            placeholder='Buscar en Qworks!'
             containerStyle={{
               ...Platform.select({
                 android: {
@@ -281,7 +276,7 @@ class MapComponent extends Component {
               border: 0,
               borderBottomWidth: 0,
             }}
-            placeholderTextColor="#000000"
+            placeholderTextColor='#000000'
             onChangeText={(search) => this.setState({ search })}
             value={this.state.search}
           />
