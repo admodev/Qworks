@@ -209,12 +209,11 @@ class MapComponent extends Component {
                       description={itm.actividad}
                       key={itm.uuid + i}
                       focusable={true}>
-                      <Image
-                        source={require('../assets/icon.png')}
-                        style={{
-                          width: 30,
-                          height: 30,
-                        }}
+                      <FotoMapa
+                        key={itm.uuid + i}
+                        idAnuncio={itm.idAnuncio}
+                        anuncioId={itm.anuncioId}
+                        uuid={itm.uuid}
                       />
                     </Marker>
                   ))
