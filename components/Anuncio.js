@@ -44,6 +44,7 @@ export default function AnuncioSeleccionado({ route, navigation }) {
   let routeParamsToString = id.toString();
   let hasRecommendedArray = [];
   const [fotoDePerfil, setFotoDePerfil] = useState(null);
+  const [defaultProfilePicture, setDefaultProfilePicture] = useState(null);
   const [isFavorite, setFavorites] = useState([]);
   const naranjaQueDeOficios = '#fd5d13';
   const favoritosBackground = 'transparent';
@@ -157,6 +158,27 @@ export default function AnuncioSeleccionado({ route, navigation }) {
       console.log('ERROR AL DESCARGAR FOTO', error.message);
     });
 
+  let defaultPhoto = firebase
+    .storage()
+    .ref('defaultUserImage/')
+    .child('defaultProfilePictureQworks.png')
+    .getDownloadURL()
+    .then(function (url) {
+      var xhr = new XMLHttpRequest();
+      xhr.responseType = 'blob';
+      xhr.onload = function (event) {
+        var blob = xhr.response;
+        console.log('EL BLOB', blob);
+      };
+      xhr.open('GET', url);
+      xhr.send();
+      console.log('LA FOTO', url);
+      setDefaultProfilePicture(url);
+    })
+    .catch(function (error) {
+      console.log('ERROR AL DESCARGAR FOTO', error.message);
+    });
+
   let key, userId, comentario;
   var arr = [];
   let comentariosRef = firebase
@@ -182,9 +204,6 @@ export default function AnuncioSeleccionado({ route, navigation }) {
 
   let storage = firebase.storage();
   let storageRef = storage.ref();
-  let defaultImageRef = storageRef
-    .child('defaultUserImage/icon.png')
-    .toString();
   let userProfilePic = storageRef.child('userProfilePics/').child(id).child;
   const [visible, setVisible] = useState(false);
   const toggleOverlay = () => {
@@ -426,7 +445,7 @@ export default function AnuncioSeleccionado({ route, navigation }) {
             {!fotoDePerfil ? (
               <View style={{ alignItems: 'center', justifyContent: 'center' }}>
                 <Card.Image
-                  source={require('../assets/icon.png')}
+                  source={{ uri: defaultProfilePicture }}
                   style={{
                     ...Platform.select({
                       android: {
@@ -471,7 +490,7 @@ export default function AnuncioSeleccionado({ route, navigation }) {
             overlayStyle={{ width: '85%', height: 320, borderRadius: 10 }}>
             {!fotoDePerfil ? (
               <Card.Image
-                source={require('../assets/icon.png')}
+                source={{ uri: defaultProfilePicture }}
                 style={{
                   height: 300,
                 }}

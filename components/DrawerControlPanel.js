@@ -178,6 +178,7 @@ class ControlPanel extends React.Component {
             <LocationComponent
               key={item.uuid + index}
               idAnuncio={item.idAnuncio}
+              anuncioId={item.anuncioId}
               uuid={item.uuid}
               nombre={item.nombre}
               apellido={item.apellido}

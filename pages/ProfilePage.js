@@ -31,6 +31,7 @@ import * as Updates from 'expo-updates';
 
 export default function ProfilePage({ navigation }) {
   const [isLogged, setIsLogged] = useState(false);
+  const [defaultProfilePicture, setDefaultProfilePicture] = useState(null);
   const user = firebase.auth().currentUser;
   const signUserOut = () => {
     firebase
@@ -122,6 +123,27 @@ export default function ProfilePage({ navigation }) {
 
   console.log(anunciosCountResult);
 
+  let defaultPhoto = firebase
+    .storage()
+    .ref('defaultUserImage/')
+    .child('defaultProfilePictureQworks.png')
+    .getDownloadURL()
+    .then(function (url) {
+      var xhr = new XMLHttpRequest();
+      xhr.responseType = 'blob';
+      xhr.onload = function (event) {
+        var blob = xhr.response;
+        console.log('EL BLOB', blob);
+      };
+      xhr.open('GET', url);
+      xhr.send();
+      console.log('LA FOTO', url);
+      setDefaultProfilePicture(url);
+    })
+    .catch(function (error) {
+      console.log('ERROR AL DESCARGAR FOTO', error.message);
+    });
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <Image
@@ -154,16 +176,14 @@ export default function ProfilePage({ navigation }) {
               flexDirection: 'row',
               marginTop: 70,
               marginLeft: 15,
-            }}
-          >
+            }}>
             <Overlay
               isVisible={visible}
               onBackdropPress={toggleOverlay}
-              overlayStyle={{ width: '85%', height: '85%', borderRadius: 10 }}
-            >
+              overlayStyle={{ width: '85%', height: '85%', borderRadius: 10 }}>
               {!user.photoURL ? (
                 <Image
-                  source={require('../assets/icon.png')}
+                  source={{ uri: defaultProfilePicture }}
                   style={{
                     width: 60,
                     height: 60,
@@ -183,8 +203,7 @@ export default function ProfilePage({ navigation }) {
             </Overlay>
             {user.photoURL ? (
               <TouchableOpacity
-                onPress={() => navigation.navigate('CambiarFotoPerfil')}
-              >
+                onPress={() => navigation.navigate('CambiarFotoPerfil')}>
                 <Image
                   source={{ uri: user.photoURL }}
                   style={{
@@ -196,13 +215,13 @@ export default function ProfilePage({ navigation }) {
               </TouchableOpacity>
             ) : (
               <TouchableOpacity
-                onPress={() => navigation.navigate('CambiarFotoPerfil')}
-              >
+                onPress={() => navigation.navigate('CambiarFotoPerfil')}>
                 <Image
-                  source={require('../assets/icon.png')}
+                  source={{ uri: defaultProfilePicture }}
                   style={{
                     width: 60,
                     height: 60,
+                    borderRadius: 12,
                   }}
                 />
               </TouchableOpacity>
@@ -210,12 +229,13 @@ export default function ProfilePage({ navigation }) {
             <View style={{ flex: 1, flexDirection: 'column', marginTop: 5 }}>
               {!user.displayName ? (
                 <TouchableOpacity
-                  onPress={() => RootNavigation.navigate('CambiarNombreScreen')}
-                >
+                  onPress={() =>
+                    RootNavigation.navigate('CambiarNombreScreen')
+                  }>
                   <View style={{ flexDirection: 'row' }}>
                     <View style={{ marginLeft: '5%' }}>
                       <MaterialCommunityIcons
-                        name="pen"
+                        name='pen'
                         color={'#fd5d13'}
                         size={20}
                       />
@@ -225,20 +245,20 @@ export default function ProfilePage({ navigation }) {
                         color: '#000000',
                         fontSize: 14,
                         marginLeft: '2%',
-                      }}
-                    >
+                      }}>
                       Usuario
                     </Text>
                   </View>
                 </TouchableOpacity>
               ) : (
                 <TouchableOpacity
-                  onPress={() => RootNavigation.navigate('CambiarNombreScreen')}
-                >
+                  onPress={() =>
+                    RootNavigation.navigate('CambiarNombreScreen')
+                  }>
                   <View style={{ flexDirection: 'row' }}>
                     <View style={{ marginLeft: '5%' }}>
                       <MaterialCommunityIcons
-                        name="pen"
+                        name='pen'
                         color={'#fd5d13'}
                         size={20}
                       />
@@ -248,8 +268,7 @@ export default function ProfilePage({ navigation }) {
                         color: '#000000',
                         fontSize: 14,
                         marginLeft: '2%',
-                      }}
-                    >
+                      }}>
                       {user.displayName}
                     </Text>
                   </View>
@@ -258,7 +277,7 @@ export default function ProfilePage({ navigation }) {
               <View style={{ flexDirection: 'row', marginTop: '2%' }}>
                 <View style={{ marginLeft: '5%' }}>
                   <MaterialCommunityIcons
-                    name="email"
+                    name='email'
                     color={'#000000'}
                     size={20}
                   />
@@ -277,8 +296,7 @@ export default function ProfilePage({ navigation }) {
                         marginLeft: '2%',
                       },
                     }),
-                  }}
-                >
+                  }}>
                   {user.email}
                 </Text>
               </View>
@@ -292,10 +310,9 @@ export default function ProfilePage({ navigation }) {
                 justifyContent: 'center',
                 alignSelf: 'center',
                 marginTop: '30%',
-              }}
-            >
+              }}>
               <Button
-                title="¡Anúnciate!"
+                title='¡Anúnciate!'
                 disabled
                 onPress={() => navigation.navigate('AnunciatePage')}
                 buttonStyle={{
@@ -318,10 +335,9 @@ export default function ProfilePage({ navigation }) {
                 justifyContent: 'center',
                 alignSelf: 'center',
                 marginTop: '30%',
-              }}
-            >
+              }}>
               <Button
-                title="¡Anúnciate!"
+                title='¡Anúnciate!'
                 onPress={() => navigation.navigate('AnunciatePage')}
                 buttonStyle={{
                   backgroundColor: '#fd5d13',
@@ -341,17 +357,15 @@ export default function ProfilePage({ navigation }) {
               flexDirection: 'column',
               justifyContent: 'flex-start',
               bottom: 30,
-            }}
-          >
+            }}>
             <TouchableOpacity onPress={() => navigation.navigate('Anuncios')}>
               <View
                 style={{
                   flexDirection: 'row',
                   marginTop: '7%',
-                }}
-              >
+                }}>
                 <MaterialCommunityIcons
-                  name="bullhorn"
+                  name='bullhorn'
                   color={'#fd5d13'}
                   size={20}
                   style={{
@@ -365,23 +379,20 @@ export default function ProfilePage({ navigation }) {
                     fontSize: 20,
                     marginTop: '3%',
                     marginLeft: '1%',
-                  }}
-                >
+                  }}>
                   Mis Anuncios
                 </Text>
               </View>
             </TouchableOpacity>
             <TouchableOpacity
-              onPress={() => navigation.navigate('MessagesScreen')}
-            >
+              onPress={() => navigation.navigate('MessagesScreen')}>
               <View
                 style={{
                   flexDirection: 'row',
                   marginTop: '2%',
-                }}
-              >
+                }}>
                 <MaterialCommunityIcons
-                  name="comment-text"
+                  name='comment-text'
                   color={'#fd5d13'}
                   size={20}
                   style={{
@@ -395,8 +406,7 @@ export default function ProfilePage({ navigation }) {
                     fontSize: 20,
                     marginTop: '3%',
                     marginLeft: '1%',
-                  }}
-                >
+                  }}>
                   Mensajes
                 </Text>
               </View>
@@ -406,10 +416,9 @@ export default function ProfilePage({ navigation }) {
                 style={{
                   flexDirection: 'row',
                   marginTop: '2%',
-                }}
-              >
+                }}>
                 <MaterialCommunityIcons
-                  name="shopping"
+                  name='shopping'
                   color={'#fd5d13'}
                   size={20}
                   style={{
@@ -423,23 +432,22 @@ export default function ProfilePage({ navigation }) {
                     fontSize: 20,
                     marginTop: '3%',
                     marginLeft: '1%',
-                  }}
-                >
+                  }}>
                   Mis Compras
                 </Text>
               </View>
             </TouchableOpacity>
             <TouchableOpacity
-              onPress={() => navigation.navigate('RecomendacionesRenderizadas')}
-            >
+              onPress={() =>
+                navigation.navigate('RecomendacionesRenderizadas')
+              }>
               <View
                 style={{
                   flexDirection: 'row',
                   marginTop: '2%',
-                }}
-              >
+                }}>
                 <MaterialCommunityIcons
-                  name="account-group"
+                  name='account-group'
                   color={'#fd5d13'}
                   size={20}
                   style={{
@@ -453,8 +461,7 @@ export default function ProfilePage({ navigation }) {
                     fontSize: 20,
                     marginTop: '3%',
                     marginLeft: '1%',
-                  }}
-                >
+                  }}>
                   Consultas
                 </Text>
               </View>
@@ -465,10 +472,9 @@ export default function ProfilePage({ navigation }) {
               flex: 1,
               alignItems: 'center',
               justifyContent: 'center',
-            }}
-          >
+            }}>
             <Button
-              title="Cerrar Sesión"
+              title='Cerrar Sesión'
               onPress={() => signUserOut()}
               buttonStyle={{
                 backgroundColor: '#fd5d13',
