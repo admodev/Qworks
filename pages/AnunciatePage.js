@@ -300,7 +300,7 @@ const AnunciatePage = ({ navigation }) => {
     if (!result.cancelled) {
       setImage(result.uri.toString());
       const response = await fetch(result.uri);
-      const blob = new Blob([response.blob()], { type: 'image/jpeg' });
+      const blob = await response.blob();
       const filename = result.uri.substring(result.uri.lastIndexOf('/') + 1);
       const uploadUri =
         Platform.OS === 'ios' ? result.uri.replace('file://', '') : result.uri;
