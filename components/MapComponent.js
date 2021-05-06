@@ -112,12 +112,6 @@ class MapComponent extends Component {
   filterList(items) {
     return items.filter(
       (itm) =>
-        itm.nombre
-          .toLowerCase()
-          .includes(this.state.search.toLocaleLowerCase()) ||
-        itm.apellido
-          .toLowerCase()
-          .includes(this.state.search.toLocaleLowerCase()) ||
         itm.actividad.toLowerCase().includes(this.state.search.toLowerCase()) ||
         itm.palabraClaveUno
           .toLowerCase()
@@ -126,9 +120,6 @@ class MapComponent extends Component {
           .toLowerCase()
           .includes(this.state.search.toLowerCase()) ||
         itm.palabraClaveTres
-          .toLowerCase()
-          .includes(this.state.search.toLowerCase()) ||
-        itm.descripcionPersonal
           .toLowerCase()
           .includes(this.state.search.toLowerCase())
     );
@@ -195,7 +186,7 @@ class MapComponent extends Component {
               ref={(ref) => {
                 this.mapRef = ref;
               }}
-              provider={this.props.provider}
+              provider='google'
               style={styles.map}
               scrollEnabled={true}
               zoomEnabled={true}
@@ -212,18 +203,12 @@ class MapComponent extends Component {
                         latitude: itm.partidoLatitude,
                         longitude: itm.partidoLongitude,
                       }}
-                      pinColor={'purple'}
+                      pinColor={'#fd5d13'}
                       title={itm.nombre}
                       description={itm.actividad}
-                      key={itm.uuid + i}
-                      focusable={true}>
-                      <FotoMapa
-                        key={Math.max(i) + 1}
-                        idAnuncio={itm.idAnuncio}
-                        anuncioId={itm.anuncioId}
-                        uuid={itm.uuid}
-                      />
-                    </Marker>
+                      key={Math.max(i) + 1}
+                      focusable={true}
+                    />
                   ))
                 : this.state.items.map((element, index) => {
                     return (
@@ -232,18 +217,12 @@ class MapComponent extends Component {
                           latitude: element.partidoLatitude,
                           longitude: element.partidoLongitude,
                         }}
-                        pinColor={'purple'}
+                        pinColor={'#fd5d13'}
                         title={element.nombre}
                         description={element.actividad}
-                        key={element.uuid + index}
-                        focusable={true}>
-                        <FotoMapa
-                          key={Math.max(index) + 1}
-                          idAnuncio={element.idAnuncio}
-                          anuncioId={element.anuncioId}
-                          uuid={element.uuid}
-                        />
-                      </Marker>
+                        key={Math.max(index) + 1}
+                        focusable={true}
+                      />
                     );
                   })}
             </MapView>

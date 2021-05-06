@@ -108,7 +108,7 @@ export function MainTabNavigator({ navigation }) {
         name='ShopPage'
         component={ShopPage}
         options={{
-          tabBarLabel: 'Shop',
+          tabBarLabel: 'Qbuyers!',
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons
               name='shopping'
