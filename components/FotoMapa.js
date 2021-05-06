@@ -70,8 +70,8 @@ const FotoMapa = (props) => {
         uri: fotoDePerfil ? fotoDePerfil : defaultProfilePicture,
       }}
       style={{
-        width: 60,
-        height: 60,
+        width: 40,
+        height: 40,
         top: 15,
         left: 30,
         position: 'absolute',

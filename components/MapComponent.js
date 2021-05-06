@@ -66,6 +66,8 @@ class MapComponent extends Component {
             localidad: child.val().localidad,
             provincia: child.val().provincia,
             palabraClaveUno: child.val().palabraClaveUno,
+            partidoLatitude: child.val().partidoLatitude,
+            partidoLongitude: child.val().partidoLongitude,
             palabraClaveDos: child.val().palabraClaveDos,
             palabraClaveTres: child.val().palabraClaveTres,
             descripcionPersonal: child.val().descripcionPersonal,
@@ -110,6 +112,12 @@ class MapComponent extends Component {
   filterList(items) {
     return items.filter(
       (itm) =>
+        itm.nombre
+          .toLowerCase()
+          .includes(this.state.search.toLocaleLowerCase()) ||
+        itm.apellido
+          .toLowerCase()
+          .includes(this.state.search.toLocaleLowerCase()) ||
         itm.actividad.toLowerCase().includes(this.state.search.toLowerCase()) ||
         itm.palabraClaveUno
           .toLowerCase()
@@ -201,8 +209,8 @@ class MapComponent extends Component {
                 ? this.filterList(this.state.items).map((itm, i) => (
                     <Marker
                       coordinate={{
-                        latitude: itm.latitud,
-                        longitude: itm.longitud,
+                        latitude: itm.partidoLatitude,
+                        longitude: itm.partidoLongitude,
                       }}
                       pinColor={'purple'}
                       title={itm.nombre}
@@ -210,7 +218,7 @@ class MapComponent extends Component {
                       key={itm.uuid + i}
                       focusable={true}>
                       <FotoMapa
-                        key={itm.uuid + i}
+                        key={Math.max(i) + 1}
                         idAnuncio={itm.idAnuncio}
                         anuncioId={itm.anuncioId}
                         uuid={itm.uuid}
@@ -221,8 +229,8 @@ class MapComponent extends Component {
                     return (
                       <Marker
                         coordinate={{
-                          latitude: element.latitud,
-                          longitude: element.longitud,
+                          latitude: element.partidoLatitude,
+                          longitude: element.partidoLongitude,
                         }}
                         pinColor={'purple'}
                         title={element.nombre}
@@ -230,7 +238,7 @@ class MapComponent extends Component {
                         key={element.uuid + index}
                         focusable={true}>
                         <FotoMapa
-                          key={element.uuid + index}
+                          key={Math.max(index) + 1}
                           idAnuncio={element.idAnuncio}
                           anuncioId={element.anuncioId}
                           uuid={element.uuid}
@@ -277,7 +285,6 @@ class MapComponent extends Component {
             }}
             placeholderTextColor='#000000'
             onChangeText={(search) => this.setState({ search })}
-            value={this.state.search}
           />
         </View>
       </SafeAreaView>

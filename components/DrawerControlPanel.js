@@ -176,7 +176,7 @@ class ControlPanel extends React.Component {
           data={this.state.items}
           renderItem={({ item, index }) => (
             <LocationComponent
-              key={item.uuid + index}
+              key={Math.max(index) + 1}
               idAnuncio={item.idAnuncio}
               anuncioId={item.anuncioId}
               uuid={item.uuid}
