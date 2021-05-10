@@ -1,4 +1,4 @@
-import React, { useEffect, useState, setState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   TouchableOpacity,
   StyleSheet,
@@ -7,41 +7,25 @@ import {
   View,
   ScrollView,
   SafeAreaView,
-  Text,
   Share,
 } from 'react-native';
-import {
-  Avatar,
-  Button,
-  Card,
-  Icon,
-  Input,
-  Overlay,
-} from 'react-native-elements';
+import { LinearProgress } from 'react-native-elements';
 import * as firebase from 'firebase';
 import 'firebase/firestore';
 import 'firebase/database';
 import 'firebase/auth';
 import 'firebase/storage';
-import * as RootNavigation from '../RootNavigation.js';
-import { StackActions } from '@react-navigation/native';
-import CardsUsuarios from './Cards';
-import { concat } from 'react-native-reanimated';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import * as Sharing from 'expo-sharing';
 import * as Updates from 'expo-updates';
 import * as Notifications from 'expo-notifications';
-import Dialog from 'react-native-dialog';
-import RenderMisAnuncios from './RenderMisAnuncios';
+import CardMisAnuncios from './CardMisAnuncios';
 
-var anuncioUnoItm = [];
-
-const naranjaQueDeOficios = '#fd5d13';
-
-const AnunciosPage = ({ route, navigation }) => {
+const AnunciosPage = ({ route, navigation }, props) => {
   const [anuncioArr, setAnuncioArr] = useState([]);
   const [visible, setVisible] = useState(false);
-  const [foto, setFoto] = useState(null);
+  const [fotoDePerfil, setFotoDePerfil] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const naranjaQueDeOficios = '#fd5d13';
   let user = firebase.auth().currentUser;
   let id = user.uid;
   let idAnuncio, anuncioId, image, nombre, apellido, actividad, emailPersonal;
@@ -59,29 +43,9 @@ const AnunciosPage = ({ route, navigation }) => {
     setEliminarCuentaIsVisible(!eliminarCuentaIsVisible);
   };
 
-  const fotoDePerfil = firebase
-    .storage()
-    .ref('profilePictures/')
-    .child(firebase.auth().currentUser.uid + 0);
-
-  fotoDePerfil
-    .getDownloadURL()
-    .then(function (url) {
-      var xhr = new XMLHttpRequest();
-      xhr.responseType = 'blob';
-      xhr.onload = function (event) {
-        var blob = xhr.response;
-      };
-      xhr.open('GET', url);
-      xhr.send();
-
-      setFoto(url);
-    })
-    .catch(function (error) {
-      console.log('FATAL ERROR', error.message);
-    });
-
   useEffect(() => {
+    setLoading(true);
+
     firebase
       .database()
       .ref('anuncios/')
@@ -99,10 +63,13 @@ const AnunciosPage = ({ route, navigation }) => {
             emailPersonal: childSnapshot.val().emailPersonal,
             idAnuncio: childSnapshot.val().id,
             anuncioId: childSnapshot.val().anuncioId,
+            uuid: childSnapshot.val().uuid,
           });
           setAnuncioArr(anuncioArr);
         });
       });
+
+      setLoading(false);
   }, []);
 
   function eliminarCuenta() {
@@ -167,14 +134,6 @@ const AnunciosPage = ({ route, navigation }) => {
     }
   }
 
-  const showDialog = () => {
-    setVisible(true);
-  };
-
-  const handleCancel = () => {
-    setVisible(false);
-  };
-
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <Image
@@ -209,8 +168,7 @@ const AnunciosPage = ({ route, navigation }) => {
               backgroundColor: 'transparent',
             },
           }),
-        }}
-      >
+        }}>
         <TouchableOpacity
           onPress={() => navigation.navigate('ProfilePage')}
           style={{
@@ -223,10 +181,9 @@ const AnunciosPage = ({ route, navigation }) => {
                 left: 25,
               },
             }),
-          }}
-        >
+          }}>
           <MaterialCommunityIcons
-            name="arrow-left"
+            name='arrow-left'
             color={naranjaQueDeOficios}
             size={32}
             style={{ backgroundColor: 'transparent' }}
@@ -235,49 +192,32 @@ const AnunciosPage = ({ route, navigation }) => {
       </View>
       <ScrollView>
         {anuncioArr.map((element, index) => {
-          return (
-            <View key={index}>
-              <RenderMisAnuncios
-                image={foto}
-                name={element.nombre}
-                actividad={element.actividad}
-                localidad={element.localidad}
-                provincia={element.provincia}
-                idAnuncio={firebase.auth().currentUser.uid}
-                anuncioCount={element.anuncioId}
-              />
-            </View>
-          );
-        })}
+          return(
+            loading ? (
+              <LinearProgress color="black" trackColor='gray' type='indeterminate' style={{
+                position: 'absolute',
+              }} />
+            ) : (
+              <CardMisAnuncios
+              key={Math.max(index) + 1}
+              idAnuncio={element.idAnuncio}
+              anuncioId={element.anuncioId}
+              uuid={element.uuid}
+              nombre={element.nombre}
+              apellido={element.apellido}
+              actividad={element.actividad}
+              local={element.direccionDelLocal}
+              recomendacionesTotales={
+                element.recomendacionesTotales > 0
+                  ? element.recomendacionesTotales
+                  : '0'
+              }
+            />
+            )
+        )})}
       </ScrollView>
     </SafeAreaView>
   );
 };
-
-const styles = StyleSheet.create({
-  button: {
-    alignItems: 'center',
-    backgroundColor: '#DDDDDD',
-    padding: 10,
-    width: 300,
-    marginTop: 16,
-  },
-  card: {
-    marginTop: 50,
-    backgroundColor: '#483D8B',
-    shadowColor: '#000',
-    borderRadius: 15,
-    paddingTop: -5,
-    paddingBottom: 2,
-    marginBottom: 100,
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-  },
-});
 
 export default AnunciosPage;
