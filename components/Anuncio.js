@@ -1,4 +1,4 @@
-import React, { useState, setState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Alert,
   TouchableOpacity,
@@ -77,6 +77,8 @@ export default function AnuncioSeleccionado({ route, navigation }) {
     apellido,
     actividad,
     contadorAnuncio,
+    efectivo,
+    pagosDigitales,
     emailPersonal,
     celular,
     descripcionPersonal,
@@ -109,6 +111,8 @@ export default function AnuncioSeleccionado({ route, navigation }) {
       nombre = child.val().nombre;
       apellido = child.val().apellido;
       actividad = child.val().actividad;
+      efectivo = child.val().efectivo;
+      pagosDigitales = child.val().pagosDigitales;
       emailPersonal = child.val().emailPersonal;
       id = child.val().id;
       contadorAnuncio = child.val().anuncioId;
@@ -230,8 +234,6 @@ export default function AnuncioSeleccionado({ route, navigation }) {
         setFavorites(isFavorite);
       });
   }, []);
-
-  console.log(isFavorite);
 
   const agregarFavorito = (id) => {
     firebase
@@ -536,7 +538,7 @@ export default function AnuncioSeleccionado({ route, navigation }) {
               justifyContent: 'center',
             }}>
             <Text
-              style={{ color: '#000000', textAlign: 'center', fontSize: 24 }}>
+              style={{ color: '#000000', textAlign: 'center', fontSize: 24, fontFamily: 'comfortaaLight' }}>
               {actividad} -
             </Text>
             <MaterialCommunityIcons
@@ -550,7 +552,7 @@ export default function AnuncioSeleccionado({ route, navigation }) {
                 color: '#8DB600',
                 textAlign: 'center',
                 fontSize: 14,
-                marginLeft: '2%',
+                marginLeft: '2%'
               }}>
               {recomendacionesTotales}
             </Text>
@@ -620,11 +622,10 @@ export default function AnuncioSeleccionado({ route, navigation }) {
             <Text
               style={{
                 color: '#000000',
-                marginLeft: 'auto',
-                marginRight: 'auto',
-                marginTop: 10,
+                marginLeft: '2%',
                 marginBottom: 10,
-                fontSize: 20,
+                fontSize: 18,
+                fontFamily: 'comfortaaLight'
               }}>
               {localidad}
             </Text>
@@ -642,11 +643,10 @@ export default function AnuncioSeleccionado({ route, navigation }) {
             <Text
               style={{
                 color: '#000000',
-                marginLeft: 'auto',
-                marginRight: 'auto',
-                marginTop: 10,
+                marginLeft: '2%',
                 marginBottom: 10,
-                fontSize: 20,
+                fontSize: 18,
+                fontFamily: 'comfortaaLight'
               }}>
               {emailLaboral}
             </Text>
@@ -705,11 +705,11 @@ export default function AnuncioSeleccionado({ route, navigation }) {
             marginLeft: 'auto',
             marginRight: 'auto',
             textAlign: 'center',
-            fontSize: 24,
+            fontSize: 28,
             marginTop: '5%',
             color: '#000000',
             fontWeight: 'bold',
-            textTransform: 'uppercase',
+            fontFamily: 'dmSans'
           }}>
           Información Laboral
         </Text>
@@ -753,12 +753,10 @@ export default function AnuncioSeleccionado({ route, navigation }) {
                 }}>
                 <Text
                   style={{
-                    marginLeft: 'auto',
-                    marginRight: 'auto',
-                    marginTop: 10,
                     textAlign: 'center',
                     fontSize: 20,
                     color: '#000000',
+                    marginLeft: '30%'
                   }}>
                   {diasHorarios.filter(onlyUnique).join(', ')}
                 </Text>
@@ -773,25 +771,12 @@ export default function AnuncioSeleccionado({ route, navigation }) {
                   />
                   <Text
                     style={{
-                      marginLeft: 'auto',
-                      marginRight: 'auto',
-                      marginTop: 10,
                       textAlign: 'center',
                       fontSize: 20,
                       color: '#000000',
+                      marginLeft: '25%'
                     }}>
-                    {desde}
-                  </Text>
-                  <Text
-                    style={{
-                      marginLeft: 'auto',
-                      marginRight: 'auto',
-                      marginTop: 10,
-                      textAlign: 'center',
-                      fontSize: 20,
-                      color: '#000000',
-                    }}>
-                    {hasta}
+                    {desde}  a  {hasta}
                   </Text>
                 </View>
               </View>
@@ -816,6 +801,7 @@ export default function AnuncioSeleccionado({ route, navigation }) {
                   marginTop: 10,
                   marginBottom: 10,
                   fontSize: 20,
+                  fontFamily: 'comfortaaLight'
                 }}>
                 {direccionDelLocal}
               </Text>
@@ -838,6 +824,7 @@ export default function AnuncioSeleccionado({ route, navigation }) {
                 marginTop: 10,
                 marginBottom: 10,
                 fontSize: 20,
+                fontFamily: 'comfortaaLight'
               }}>
               {celular}
             </Text>
@@ -859,6 +846,7 @@ export default function AnuncioSeleccionado({ route, navigation }) {
                 marginTop: 10,
                 marginBottom: 10,
                 fontSize: 20,
+                fontFamily: 'comfortaaLight'
               }}>
               {telefono}
             </Text>
@@ -881,6 +869,7 @@ export default function AnuncioSeleccionado({ route, navigation }) {
                   marginTop: 10,
                   marginBottom: 10,
                   fontSize: 20,
+                  fontFamily: 'comfortaaLight'
                 }}>
                 {nombreDeLaEmpresa}
               </Text>
@@ -903,6 +892,7 @@ export default function AnuncioSeleccionado({ route, navigation }) {
                 marginTop: 10,
                 marginBottom: 10,
                 fontSize: 20,
+                fontFamily: 'comfortaaLight'
               }}>
               {factura}
             </Text>
@@ -911,6 +901,8 @@ export default function AnuncioSeleccionado({ route, navigation }) {
             <View
               style={{
                 flexDirection: 'row',
+                marginTop: '2%',
+                marginBottom: '2%'
               }}>
               <MaterialCommunityIcons
                 name='card-account-details-star-outline'
@@ -925,11 +917,74 @@ export default function AnuncioSeleccionado({ route, navigation }) {
                   marginTop: 10,
                   marginBottom: 10,
                   fontSize: 20,
+                  fontFamily: 'comfortaaLight'
                 }}>
                 {numeroDeMatricula}
               </Text>
             </View>
           )}
+          <Text
+            style={{
+              marginLeft: 'auto',
+              marginRight: 'auto',
+              textAlign: 'center',
+              fontSize: 28,
+              marginTop: 10,
+              color: '#000000',
+              fontFamily: 'dmSans'
+            }}>
+            Medios de Pago
+          </Text>
+          <View style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'center'
+          }}>
+          {efectivo && (
+            <View style={{
+              flexDirection: 'row',
+              marginTop: '5%',
+              marginBottom: '5%'
+            }}>
+              <MaterialCommunityIcons
+                name='cash-usd'
+                color={naranjaQueDeOficios}
+                size={24}
+              />
+              <Text
+                style={{
+                  color: '#000000',
+                  marginLeft: '5%',
+                  fontSize: 20,
+                  fontFamily: 'comfortaaLight'
+                }}>
+                Efectivo
+              </Text>
+            </View>
+          )}
+          {pagosDigitales && (
+            <View style={{
+              flexDirection: 'row',
+              marginTop: '5%',
+              marginBottom: '5%'
+            }}>
+            <MaterialCommunityIcons
+              name='credit-card-multiple-outline'
+              color={naranjaQueDeOficios}
+              size={24}
+            />
+            <Text
+                style={{
+                  color: '#000000',
+                  marginLeft: '5%',
+                  fontSize: 20,
+                  fontFamily: 'comfortaaLight'
+                }}>
+                Pagos Digitales
+              </Text>
+            </View>
+          )}
+          </View>
         </Card>
         {/* Card resumen personal */}
         <Text
@@ -941,8 +996,9 @@ export default function AnuncioSeleccionado({ route, navigation }) {
             marginTop: 10,
             color: '#000000',
             fontWeight: 'bold',
+            fontFamily: 'dmSans'
           }}>
-          Resumen Personal
+          Información Adicional
         </Text>
         <Card
           style={styles.card}
@@ -964,6 +1020,8 @@ export default function AnuncioSeleccionado({ route, navigation }) {
                 borderWidth: 0,
                 maxWidth: '100%',
                 marginTop: '3%',
+                alignItems: 'center',
+                justifyContent: 'center'
               },
             }),
           }}>
@@ -980,12 +1038,14 @@ export default function AnuncioSeleccionado({ route, navigation }) {
               style={{
                 marginLeft: 'auto',
                 marginRight: 'auto',
+                alignSelf: 'center',
                 textAlign: 'center',
                 fontSize: 20,
                 marginRight: 25,
                 marginLeft: 25,
                 marginBottom: 20,
                 color: '#000000',
+                fontFamily: 'comfortaaLight'
               }}>
               "{descripcionPersonal}"
             </Text>
@@ -1001,6 +1061,7 @@ export default function AnuncioSeleccionado({ route, navigation }) {
             marginTop: 10,
             color: '#000000',
             fontWeight: 'bold',
+            fontFamily: 'dmSans'
           }}>
           Comentarios
         </Text>
@@ -1042,6 +1103,7 @@ export default function AnuncioSeleccionado({ route, navigation }) {
                         marginTop: 10,
                         marginBottom: 10,
                         color: '#000000',
+                        fontFamily: 'quickSandLight'
                       }}>
                       -{' '}
                       {u.receptor == id
@@ -1053,6 +1115,7 @@ export default function AnuncioSeleccionado({ route, navigation }) {
                         marginLeft: 10,
                         fontSize: 14,
                         color: naranjaQueDeOficios,
+                        fontFamily: 'dmSans'
                       }}>
                       De:{' '}
                       {u.receptor == id

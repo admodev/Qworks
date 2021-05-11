@@ -390,6 +390,8 @@ const AnunciatePage = ({ navigation }) => {
     diasHorarios,
     dateDesdeParsed,
     dateHastaParsed,
+    efectivo,
+    pagosDigitales,
     terminos,
     latitud,
     longitud,
@@ -452,6 +454,8 @@ const AnunciatePage = ({ navigation }) => {
           diasHorarios: diasHorarios,
           desde: dateDesdeParsed,
           hasta: dateHastaParsed,
+          efectivo: efectivo,
+          pagosDigitales: pagosDigitales,
           terminos: terminos,
           latitud: latitud,
           longitud: longitud,
@@ -1291,7 +1295,7 @@ const AnunciatePage = ({ navigation }) => {
             checked={efectivo}
           />
           <MaterialCommunityIcons
-            name='card-bulleted-outline'
+            name='credit-card-multiple-outline'
             color={'#000'}
             size={35}
             style={{ marginTop: 20 }}
@@ -1392,6 +1396,8 @@ const AnunciatePage = ({ navigation }) => {
                 diasHorarios,
                 dateDesdeParsed,
                 dateHastaParsed,
+                efectivo,
+                pagosDigitales,
                 terminos,
                 latitud,
                 longitud,
