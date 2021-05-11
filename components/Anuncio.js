@@ -435,107 +435,28 @@ export default function AnuncioSeleccionado({ route, navigation }) {
                 borderRadius: 15,
                 backgroundColor: 'transparent',
                 borderWidth: 0,
-                marginTop: '2%',
+                marginTop: '5%',
               },
             }),
           }}>
-          <TouchableOpacity
-            style={{
-              marginTop: '10%',
-            }}
-            onPress={toggleOverlay}>
-            {!fotoDePerfil ? (
-              <View style={{ alignItems: 'center', justifyContent: 'center' }}>
-                <Card.Image
-                  source={{ uri: defaultProfilePicture }}
-                  style={{
-                    ...Platform.select({
-                      android: {
-                        borderRadius: 25,
-                        width: 150,
-                        height: 150,
-                      },
-                      ios: {
-                        borderRadius: 25,
-                        width: 150,
-                        height: 150,
-                      },
-                    }),
-                  }}
-                />
-              </View>
-            ) : (
-              <View style={{ alignItems: 'center', justifyContent: 'center' }}>
-                <Card.Image
-                  source={{ uri: fotoDePerfil }}
-                  style={{
-                    ...Platform.select({
-                      android: {
-                        borderRadius: 25,
-                        width: 200,
-                        height: 200,
-                      },
-                      ios: {
-                        borderRadius: 25,
-                        width: 200,
-                        height: 200,
-                      },
-                    }),
-                  }}
-                />
-              </View>
-            )}
-          </TouchableOpacity>
-          <Overlay
-            isVisible={visible}
-            onBackdropPress={toggleOverlay}
-            overlayStyle={{ width: '85%', height: 320, borderRadius: 10 }}>
-            {!fotoDePerfil ? (
-              <Card.Image
-                source={{ uri: defaultProfilePicture }}
-                style={{
-                  height: 300,
-                }}
-              />
-            ) : (
-              <Card.Image
-                source={{ uri: fotoDePerfil }}
-                style={{
-                  height: 300,
-                }}
-              />
-            )}
-          </Overlay>
-          <AirbnbRating
-            size={24}
-            showRating={true}
-            type='custom'
-            ratingColor={naranjaQueDeOficios}
-            ratingBackgroundColor='#c8c7c8'
-            fractions={1}
-            reviews={['']}
-            onFinishRating={(rating) => setRating(rating)}
-            style={{
-              borderWidth: 0,
-            }}
-          />
-          <View style={{ margin: '3%' }}>
             <Text
               style={{
                 fontFamily: 'dmSans',
                 color: '#000000',
                 textAlign: 'center',
                 fontSize: 30,
+                marginLeft: '16%'
               }}>
               {nombre} {apellido}
             </Text>
-          </View>
-          <View
+            <View
             style={{
               marginTop: '-2%',
               flexDirection: 'row',
               alignItems: 'center',
               justifyContent: 'center',
+              marginTop: '2%',
+              marginLeft: '25%'
             }}>
             <Text
               style={{ color: '#000000', textAlign: 'center', fontSize: 24, fontFamily: 'comfortaaLight' }}>
@@ -557,10 +478,104 @@ export default function AnuncioSeleccionado({ route, navigation }) {
               {recomendacionesTotales}
             </Text>
           </View>
+          <View style={{
+            marginTop: '-8%',
+            marginLeft: '10%' 
+          }}>
+          <AirbnbRating
+            size={20}
+            showRating={true}
+            type='custom'
+            ratingColor={naranjaQueDeOficios}
+            ratingBackgroundColor='#c8c7c8'
+            fractions={1}
+            reviews={['']}
+            onFinishRating={(rating) => setRating(rating)}
+            style={{
+              borderWidth: 0,
+            }}
+          />
+          </View>
+          <TouchableOpacity style={{
+            marginTop: '-7%',
+            marginLeft: '80%'
+          }} onPress={() => shareContent()}>
+                <MaterialCommunityIcons
+                  name='share-variant'
+                  color={naranjaQueDeOficios}
+                  size={28}
+                />
+            </TouchableOpacity>
+          <View
+          style={{
+            marginTop: '-30%'
+          }}>
+            {!fotoDePerfil ? (
+                <Card.Image
+                  source={{ uri: defaultProfilePicture }}
+                  style={{
+                    ...Platform.select({
+                      android: {
+                        borderRadius: 25,
+                        width: 100,
+                        height: 100,
+                      },
+                      ios: {
+                        borderRadius: 25,
+                        width: 100,
+                        height: 100,
+                      },
+                    }),
+                  }}
+                />
+            ) : (
+              <View>
+                <Card.Image
+                  source={{ uri: fotoDePerfil }}
+                  style={{
+                    ...Platform.select({
+                      android: {
+                        borderRadius: 25,
+                        width: 120,
+                        height: 120,
+                      },
+                      ios: {
+                        borderRadius: 25,
+                        width: 120,
+                        height: 120,
+                      },
+                    }),
+                  }}
+                />
+              </View>
+            )}
+          </View>
+          <Overlay
+            isVisible={visible}
+            onBackdropPress={toggleOverlay}
+            overlayStyle={{ width: '85%', height: 320, borderRadius: 10 }}>
+            {!fotoDePerfil ? (
+              <Card.Image
+                source={{ uri: defaultProfilePicture }}
+                style={{
+                  height: 300,
+                }}
+              />
+            ) : (
+              <Card.Image
+                source={{ uri: fotoDePerfil }}
+                style={{
+                  height: 300,
+                }}
+              />
+            )}
+          </Overlay>
+          <View style={{ margin: '3%' }}>
+          </View>
           <View
             style={{
               flexDirection: 'row',
-              marginTop: '2%',
+              marginTop: '15%',
               marginBottom: '5%',
             }}>
             <SocialIcon
@@ -632,60 +647,12 @@ export default function AnuncioSeleccionado({ route, navigation }) {
           </View>
           <View
             style={{
-              flex: 1,
-              flexDirection: 'row',
-            }}>
-            <MaterialCommunityIcons
-              name='email'
-              color={naranjaQueDeOficios}
-              size={24}
-            />
-            <Text
-              style={{
-                color: '#000000',
-                marginLeft: '2%',
-                marginBottom: 10,
-                fontSize: 18,
-                fontFamily: 'comfortaaLight'
-              }}>
-              {emailLaboral}
-            </Text>
-          </View>
-          <View
-            style={{
               flexDirection: 'row',
               alignItems: 'center',
               justifyContent: 'center',
               marginTop: '3%',
               marginBottom: '3%',
             }}>
-            <TouchableOpacity onPress={() => shareContent()}>
-              <Text
-                style={{
-                  ...Platform.select({
-                    android: {
-                      color: '#000000',
-                      marginLeft: 'auto',
-                      marginRight: 'auto',
-                      marginTop: 10,
-                      fontSize: 20,
-                    },
-                    ios: {
-                      color: '#000000',
-                      marginTop: 15,
-                      marginLeft: 10,
-                      fontSize: 20,
-                    },
-                  }),
-                }}>
-                <MaterialCommunityIcons
-                  name='share-variant'
-                  color={naranjaQueDeOficios}
-                  size={24}
-                />{' '}
-                Compartir
-              </Text>
-            </TouchableOpacity>
           </View>
           <View
             style={{
@@ -706,7 +673,6 @@ export default function AnuncioSeleccionado({ route, navigation }) {
             marginRight: 'auto',
             textAlign: 'center',
             fontSize: 28,
-            marginTop: '5%',
             color: '#000000',
             fontWeight: 'bold',
             fontFamily: 'dmSans'
@@ -737,6 +703,27 @@ export default function AnuncioSeleccionado({ route, navigation }) {
             }),
           }}>
           <View style={{ flexDirection: 'column' }}>
+          <View
+            style={{
+              flex: 1,
+              flexDirection: 'row',
+            }}>
+            <MaterialCommunityIcons
+              name='email'
+              color={naranjaQueDeOficios}
+              size={24}
+            />
+            <Text
+              style={{
+                color: '#000000',
+                marginLeft: '2%',
+                marginBottom: 10,
+                fontSize: 18,
+                fontFamily: 'comfortaaLight'
+              }}>
+              {emailLaboral}
+            </Text>
+          </View>
             <View
               style={{
                 flex: 1,
@@ -1161,7 +1148,7 @@ export default function AnuncioSeleccionado({ route, navigation }) {
             margin: 10,
           }}
         />
-        <View style={{ margin: 10, marginLeft: 15 }}>
+        <View style={{ margin: 10, marginLeft: 20 }}>
           {!user ? (
             <Button
               title='Recomendar'
