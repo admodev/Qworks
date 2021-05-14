@@ -10,6 +10,7 @@ import {
   SafeAreaView,
   Text,
   Platform,
+  Touchable,
 } from 'react-native';
 import {
   AirbnbRating,
@@ -263,11 +264,14 @@ const CardMisAnuncios = (props) => {
                   marginBottom: '7%',
                   marginRight: '15%',
                 }}>
-                <MaterialCommunityIcons
-                  name='lead-pencil'
-                  color={'#fd5d13'}
-                  size={20}
-                />
+                <TouchableOpacity
+                  onPress={() => RootNavigation.navigate('EditAnounce')}>
+                  <MaterialCommunityIcons
+                    name='lead-pencil'
+                    color={'#fd5d13'}
+                    size={20}
+                  />
+                </TouchableOpacity>
               </View>
               <View
                 style={{
@@ -296,7 +300,7 @@ const CardMisAnuncios = (props) => {
         </View>
       </View>
     </View>
-  )
-}
+  );
+};
 
-export default CardMisAnuncios
+export default CardMisAnuncios;
