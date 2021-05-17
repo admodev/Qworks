@@ -6,25 +6,31 @@ import {
   ScrollView,
   StyleSheet,
   View,
+  Text,
 } from 'react-native';
-import { Avatar, Button, Input } from 'react-native-elements';
+import {
+  Avatar,
+  Button,
+  CheckBox,
+  Input,
+  SocialIcon,
+} from 'react-native-elements';
 import * as ImagePicker from 'expo-image-picker';
 import { ImageInfo } from 'expo-image-picker/build/ImagePicker.types';
 import * as firebase from 'firebase';
 import 'firebase/auth';
 import 'firebase/database';
 import 'firebase/storage';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 type AnounceProps = {
   actividad: string;
   apellido: string;
   celular: number;
-  cuitCuil: number;
   descripcionPersonal: string;
   desde: string;
   diasHorarios: number[];
   direccionDelLocal: string;
-  dni: number;
   efectivo: boolean;
   emailLaboral: string;
   emailPersonal: string;
@@ -58,13 +64,11 @@ const EditAnounce: React.FunctionComponent<AnounceProps> = () => {
     image: null,
     actividad: '',
     apellido: '',
-    celular: '',
-    cuitCuil: 0,
+    celular: 0,
     descripcionPersonal: '',
     desde: '',
     diasHorarios: [],
     direccionDelLocal: '',
-    dni: 0,
     efectivo: false,
     emailLaboral: '',
     emailPersonal: '',
@@ -180,6 +184,7 @@ const EditAnounce: React.FunctionComponent<AnounceProps> = () => {
           marginTop: Platform.OS === 'android' ? '10%' : '5%',
         }}>
         <View style={styles.firstView}>
+          <Text>Información Personal</Text>
           {values.image && (
             <Avatar
               source={{ uri: values.image }}
@@ -226,8 +231,24 @@ const EditAnounce: React.FunctionComponent<AnounceProps> = () => {
               })
             }
           />
+          <Text>Información Laboral</Text>
           <Input
-            placeholder='DNI'
+            placeholder='Actividad'
+            inputContainerStyle={{
+              width: '85%',
+              marginLeft: 'auto',
+              marginRight: 'auto',
+              marginTop: '5%',
+            }}
+            onChangeText={(actividad) =>
+              setValues({
+                ...values,
+                actividad: actividad,
+              })
+            }
+          />
+          <Input
+            placeholder='Teléfono (Línea)'
             inputContainerStyle={{
               width: '85%',
               marginLeft: 'auto',
@@ -235,15 +256,15 @@ const EditAnounce: React.FunctionComponent<AnounceProps> = () => {
               marginTop: '5%',
             }}
             keyboardType='number-pad'
-            onChangeText={(dni) =>
+            onChangeText={(telefono) =>
               setValues({
                 ...values,
-                dni: parseInt(dni),
+                telefono: parseInt(telefono),
               })
             }
           />
           <Input
-            placeholder='Cuit / Cuil'
+            placeholder='Teléfono (Móvil)'
             inputContainerStyle={{
               width: '85%',
               marginLeft: 'auto',
@@ -251,14 +272,447 @@ const EditAnounce: React.FunctionComponent<AnounceProps> = () => {
               marginTop: '5%',
             }}
             keyboardType='number-pad'
-            onChangeText={(cuitCuil) =>
+            onChangeText={(celular) =>
               setValues({
                 ...values,
-                cuitCuil: parseInt(cuitCuil),
+                celular: parseInt(celular),
               })
             }
           />
+          <Input
+            placeholder='Email Laboral'
+            inputContainerStyle={{
+              width: '85%',
+              marginLeft: 'auto',
+              marginRight: 'auto',
+              marginTop: '5%',
+            }}
+            keyboardType='email-address'
+            onChangeText={(emailLaboral) =>
+              setValues({
+                ...values,
+                emailLaboral: emailLaboral,
+              })
+            }
+          />
+          <Input
+            placeholder='Localidad'
+            inputContainerStyle={{
+              width: '85%',
+              marginLeft: 'auto',
+              marginRight: 'auto',
+              marginTop: '5%',
+            }}
+            onChangeText={(localidad) =>
+              setValues({
+                ...values,
+                localidad: localidad,
+              })
+            }
+          />
+          <Input
+            placeholder='Partido'
+            inputContainerStyle={{
+              width: '85%',
+              marginLeft: 'auto',
+              marginRight: 'auto',
+              marginTop: '5%',
+            }}
+            onChangeText={(partido) =>
+              setValues({
+                ...values,
+                partido: partido,
+              })
+            }
+          />
+          <Input
+            placeholder='Local (Si / No)'
+            inputContainerStyle={{
+              width: '85%',
+              marginLeft: 'auto',
+              marginRight: 'auto',
+              marginTop: '5%',
+            }}
+            onChangeText={(local) =>
+              setValues({
+                ...values,
+                local: local,
+              })
+            }
+          />
+          <Input
+            placeholder='Empresa (Si / No)'
+            inputContainerStyle={{
+              width: '85%',
+              marginLeft: 'auto',
+              marginRight: 'auto',
+              marginTop: '5%',
+            }}
+            onChangeText={(empresa) =>
+              setValues({
+                ...values,
+                empresa: empresa,
+              })
+            }
+          />
+          <Input
+            placeholder='Nombre de la Empresa'
+            inputContainerStyle={{
+              width: '85%',
+              marginLeft: 'auto',
+              marginRight: 'auto',
+              marginTop: '5%',
+            }}
+            onChangeText={(nombreDeLaEmpresa) =>
+              setValues({
+                ...values,
+                nombreDeLaEmpresa: nombreDeLaEmpresa,
+              })
+            }
+          />
+          <Input
+            placeholder='Factura (Tipo)'
+            inputContainerStyle={{
+              width: '85%',
+              marginLeft: 'auto',
+              marginRight: 'auto',
+              marginTop: '5%',
+            }}
+            onChangeText={(factura) =>
+              setValues({
+                ...values,
+                factura: factura,
+              })
+            }
+          />
+          <Input
+            placeholder='Matrícula (Si / No)'
+            inputContainerStyle={{
+              width: '85%',
+              marginLeft: 'auto',
+              marginRight: 'auto',
+              marginTop: '5%',
+            }}
+            onChangeText={(matricula) =>
+              setValues({
+                ...values,
+                matricula: matricula,
+              })
+            }
+          />
+          <Input
+            placeholder='Número de matrícula'
+            inputContainerStyle={{
+              width: '85%',
+              marginLeft: 'auto',
+              marginRight: 'auto',
+              marginTop: '5%',
+            }}
+            onChangeText={(numeroDeMatricula) =>
+              setValues({
+                ...values,
+                numeroDeMatricula: numeroDeMatricula,
+              })
+            }
+          />
+          <Text style={{ color: '#000', marginTop: 10, marginBottom: 25 }}>
+            Información Adicional
+          </Text>
+          <Input
+            placeholder='Ingrese información adicional...'
+            style={{
+              height: 200,
+              width: '80%',
+              borderWidth: 1,
+              borderRadius: 15,
+              borderColor: 'gray',
+              margin: 10,
+              textAlignVertical: 'top',
+              textAlign: 'center',
+            }}
+            inputContainerStyle={{ borderBottomWidth: 0, margin: '5%' }}
+            multiline={true}
+            onChangeText={(descripcionPersonal) =>
+              setValues({
+                ...values,
+                descripcionPersonal: descripcionPersonal,
+              })
+            }
+          />
+          <Text style={{ color: '#000000' }}>Palabras clave</Text>
+          <View style={{ flexDirection: 'row', marginTop: '10%' }}>
+            <Input
+              placeholder='#Uno'
+              onChangeText={(palabraClaveUno) =>
+                setValues({
+                  ...values,
+                  palabraClaveUno: palabraClaveUno,
+                })
+              }
+              placeholderTextColor='#fd5d13'
+              containerStyle={{ width: '35%' }}
+              inputStyle={{
+                color: '#000000',
+                borderColor: '#000000',
+                borderWidth: 1,
+                borderRadius: 25,
+                padding: 15,
+              }}
+              style={{
+                textAlign: 'center',
+              }}
+              inputContainerStyle={{
+                borderBottomWidth: 0,
+              }}
+            />
+            <Input
+              placeholder='#Dos'
+              onChangeText={(palabraClaveDos) =>
+                setValues({
+                  ...values,
+                  palabraClaveDos: palabraClaveDos,
+                })
+              }
+              placeholderTextColor='#fd5d13'
+              containerStyle={{ width: '35%' }}
+              inputStyle={{
+                color: '#000000',
+                borderColor: '#000000',
+                borderWidth: 1,
+                borderRadius: 25,
+                padding: 15,
+              }}
+              style={{
+                textAlign: 'center',
+              }}
+              inputContainerStyle={{
+                borderBottomWidth: 0,
+              }}
+            />
+            <Input
+              placeholder='#Tres'
+              onChangeText={(palabraClaveTres) =>
+                setValues({
+                  ...values,
+                  palabraClaveTres: palabraClaveTres,
+                })
+              }
+              placeholderTextColor='#fd5d13'
+              containerStyle={{ width: '35%' }}
+              inputStyle={{
+                color: '#000000',
+                borderColor: '#000000',
+                borderWidth: 1,
+                borderRadius: 25,
+                padding: 15,
+              }}
+              style={{
+                textAlign: 'center',
+              }}
+              inputContainerStyle={{
+                borderBottomWidth: 0,
+              }}
+            />
+          </View>
+          <Text style={{ color: '#000', textAlign: 'center', marginTop: '5%' }}>
+            ¿Qué medios de pago aceptas?
+          </Text>
+          <View
+            style={{
+              flex: 1,
+              flexDirection: 'row',
+              marginTop: 10,
+              marginBottom: 10,
+              marginLeft: 5,
+              marginRight: 5,
+            }}>
+            <MaterialCommunityIcons
+              name='cash-usd'
+              color={'#000'}
+              size={35}
+              style={{ marginTop: 20 }}
+            />
+            <CheckBox
+              title='Efectivo'
+              containerStyle={{
+                backgroundColor: 'transparent',
+                borderColor: 'transparent',
+                borderWidth: 0,
+                marginTop: 15,
+                marginLeft: 'auto',
+                marginRight: 'auto',
+              }}
+              textStyle={{ color: '#000000' }}
+              checkedColor={'#fd5d13'}
+              checked={values.efectivo}
+            />
+            <MaterialCommunityIcons
+              name='credit-card-multiple-outline'
+              color={'#000'}
+              size={35}
+              style={{ marginTop: 20 }}
+            />
+            <CheckBox
+              title='Pagos Digitales'
+              containerStyle={{
+                backgroundColor: 'transparent',
+                borderColor: 'transparent',
+                borderWidth: 0,
+                marginTop: 15,
+                marginLeft: 'auto',
+                marginRight: 'auto',
+              }}
+              textStyle={{ color: '#000000' }}
+              checkedColor={'#fd5d13'}
+              checked={values.pagosDigitales}
+            />
+          </View>
         </View>
+        <View>
+          <View
+            style={{
+              flexDirection: 'row',
+            }}>
+            <SocialIcon
+              button
+              type='facebook'
+              onPress={() => console.log('Agregar metodo')}
+              style={{
+                width: 50,
+                height: 50,
+              }}
+            />
+            <Input
+              placeholder='Facebook'
+              inputContainerStyle={{
+                width: '75%',
+                marginLeft: '2%',
+                marginTop: '2%',
+              }}
+            />
+          </View>
+          <View
+            style={{
+              flexDirection: 'row',
+            }}>
+            <SocialIcon
+              button
+              type='instagram'
+              onPress={() => console.log('Agregar metodo')}
+              style={{
+                width: 50,
+                height: 50,
+              }}
+            />
+            <Input
+              placeholder='Instagram'
+              inputContainerStyle={{
+                width: '75%',
+                marginLeft: '2%',
+                marginTop: '2%',
+              }}
+            />
+          </View>
+          <View
+            style={{
+              flexDirection: 'row',
+            }}>
+            <SocialIcon
+              button
+              type='linkedin'
+              onPress={() => console.log('Agregar metodo')}
+              style={{
+                width: 50,
+                height: 50,
+              }}
+            />
+            <Input
+              placeholder='Linked-In'
+              inputContainerStyle={{
+                width: '75%',
+                marginLeft: '2%',
+                marginTop: '2%',
+              }}
+            />
+          </View>
+          <View
+            style={{
+              flexDirection: 'row',
+            }}>
+            <SocialIcon
+              button
+              type='youtube'
+              onPress={() => console.log('Agregar metodo')}
+              style={{
+                width: 50,
+                height: 50,
+              }}
+            />
+            <Input
+              placeholder='YouTube'
+              inputContainerStyle={{
+                width: '75%',
+                marginLeft: '2%',
+                marginTop: '2%',
+              }}
+            />
+          </View>
+          <View
+            style={{
+              flexDirection: 'row',
+            }}>
+            <SocialIcon
+              button
+              type='twitch'
+              onPress={() => console.log('Agregar metodo')}
+              style={{
+                width: 50,
+                height: 50,
+              }}
+            />
+            <Input
+              placeholder='Twitch'
+              inputContainerStyle={{
+                width: '75%',
+                marginLeft: '2%',
+                marginTop: '2%',
+              }}
+            />
+          </View>
+          <View
+            style={{
+              flexDirection: 'row',
+            }}>
+            <SocialIcon
+              button
+              type='google'
+              onPress={() => console.log('Agregar metodo')}
+              style={{
+                width: 50,
+                height: 50,
+              }}
+            />
+            <Input
+              placeholder='Google'
+              inputContainerStyle={{
+                width: '75%',
+                marginLeft: '2%',
+                marginTop: '2%',
+              }}
+            />
+          </View>
+        </View>
+        <Button
+          buttonStyle={{
+            marginTop: 20,
+            marginLeft: 'auto',
+            marginRight: 'auto',
+            marginBottom: 20,
+            backgroundColor: '#F4743B',
+            width: '70%',
+          }}
+          title='Guardar'
+        />
       </ScrollView>
     </SafeAreaView>
   );

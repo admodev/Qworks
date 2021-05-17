@@ -954,7 +954,7 @@ const AnunciatePage = ({ navigation }) => {
             marginTop: 25,
           }}>
           <Text h3 style={{ color: '#000', marginTop: 10, marginBottom: 25 }}>
-            Resumen Personal
+            Información Adicional
           </Text>
           <Input
             placeholder='Ingrese una descripción personal...'
