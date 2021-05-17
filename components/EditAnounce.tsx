@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { SafeAreaView, StyleSheet, View } from 'react-native';
+import { Image, Platform, SafeAreaView, StyleSheet, View } from 'react-native';
 import { Input } from 'react-native-elements';
 import * as firebase from 'firebase';
 import 'firebase/auth';
@@ -106,6 +106,13 @@ const EditAnounce: React.FunctionComponent<AnounceProps> = () => {
 
   return (
     <SafeAreaView style={styles.safeAreaView}>
+      <Image
+        source={require('../assets/gradients/20x20.png')}
+        style={{
+          position: 'absolute',
+          height: Platform.OS === 'android' ? '5%' : '3%',
+        }}
+      />
       <View style={styles.firstView}>
         <Input
           placeholder='Nombre'

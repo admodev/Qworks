@@ -60,6 +60,12 @@ const AnunciatePage = ({ navigation }) => {
   const [empresa, setEmpresa] = useState('');
   const [factura, setFactura] = useState('');
   const [direccionDelLocal, setDireccionDelLocal] = useState('');
+  const [direccionDelLocalLatitude, setDireccionDelLocalLatitude] = useState(
+    ''
+  );
+  const [direccionDelLocalLongitude, setDireccionDelLocalLongitude] = useState(
+    ''
+  );
   const [nombreDeLaEmpresa, setNombreDeLaEmpresa] = useState('');
   const [matricula, setMatricula] = useState('');
   const [numeroDeMatricula, setNumeroDeMatricula] = useState('');
@@ -361,6 +367,18 @@ const AnunciatePage = ({ navigation }) => {
     setPartidoLongitude(placesPartidoLongitude);
   }
 
+  function setDireccionDelLocalFunc(direccionDelLocalPlaces) {
+    setDireccionDelLocal(direccionDelLocalPlaces);
+  }
+
+  function setDireccionDelLocalLatitudeFunc(direccionDelLocalLatitudePlaces) {
+    setDireccionDelLocalLatitude(direccionDelLocalLatitudePlaces);
+  }
+
+  function setDireccionDelLocalLongitudeFunc(direccionDelLocalLongitudePlaces) {
+    setDireccionDelLocalLongitude(direccionDelLocalLongitudePlaces);
+  }
+
   function writeUserData(
     nombre,
     apellido,
@@ -379,6 +397,8 @@ const AnunciatePage = ({ navigation }) => {
     empresa,
     factura,
     direccionDelLocal,
+    direccionDelLocalLatitude,
+    direccionDelLocalLongitude,
     nombreDeLaEmpresa,
     matricula,
     numeroDeMatricula,
@@ -402,6 +422,12 @@ const AnunciatePage = ({ navigation }) => {
       return;
     } else if (!dni.trim()) {
       alert('Por favor ingrese su DNI');
+      return;
+    } else if (!localidad) {
+      alert('Por favor ingresa tu localidad');
+      return;
+    } else if (!partido) {
+      alert('Por favor ingresa tu partido');
       return;
     } else if (terminos == false) {
       alert('Tiene que aceptar los terminos para continuar');
@@ -443,6 +469,8 @@ const AnunciatePage = ({ navigation }) => {
           empresa: empresa,
           factura: factura,
           direccionDelLocal: direccionDelLocal,
+          direccionDelLocalLatitude: direccionDelLocalLatitude,
+          direccionDelLocalLongitude: direccionDelLocalLongitude,
           nombreDeLaEmpresa: nombreDeLaEmpresa,
           matricula: matricula,
           numeroDeMatricula: numeroDeMatricula,
@@ -570,18 +598,6 @@ const AnunciatePage = ({ navigation }) => {
             style={{ color: '#000000', marginTop: 10, marginBottom: 25 }}>
             Información Personal
           </Text>
-          {image ? (
-            <Image
-              source={{ uri: image }}
-              style={{
-                position: 'absolute',
-                with: 300,
-                height: 300,
-              }}
-            />
-          ) : (
-            <Text>No image!</Text>
-          )}
           <Input
             placeholder='Nombre *'
             inputStyle={{ color: '#000000' }}
@@ -702,7 +718,7 @@ const AnunciatePage = ({ navigation }) => {
             value={emailLaboral}
           />
           <GooglePlacesAutocomplete
-            placeholder='Localidad'
+            placeholder='Localidad *'
             minLength={2}
             returnKeyType={'default'}
             fetchDetails={true}
@@ -742,7 +758,7 @@ const AnunciatePage = ({ navigation }) => {
             onFail={(error) => console.error(error)}
           />
           <GooglePlacesAutocomplete
-            placeholder='Partido'
+            placeholder='Partido *'
             minLength={2}
             returnKeyType={'default'}
             fetchDetails={true}
@@ -804,17 +820,54 @@ const AnunciatePage = ({ navigation }) => {
               maxLength={2}
             />
           )}
-          <Input
-            placeholder='Dirección del local'
-            inputStyle={{ color: '#000000' }}
-            style={{ color: '#000000', fontSize: 16, textAlign: 'center' }}
-            inputContainerStyle={{ borderBottomColor: '#000000' }}
-            placeholderTextColor='black'
-            onChangeText={(direccionDelLocal) =>
-              setDireccionDelLocal(direccionDelLocal)
-            }
-            value={direccionDelLocal}
-          />
+          {local.toString().toLocaleLowerCase() === 'si' && (
+            <GooglePlacesAutocomplete
+              placeholder='Dirección del local'
+              minLength={2}
+              returnKeyType={'default'}
+              fetchDetails={true}
+              onPress={(data, details) => {
+                var direccionDelLocalPlaces = data.description;
+                var direccionDelLocalLatitudePlaces =
+                  details.geometry.location.lat;
+                var direccionDelLocalLongitudePlaces =
+                  details.geometry.location.lng;
+                setDireccionDelLocalFunc(direccionDelLocalPlaces);
+                setDireccionDelLocalLatitudeFunc(
+                  direccionDelLocalLatitudePlaces
+                );
+                setDireccionDelLocalLongitudeFunc(
+                  direccionDelLocalLongitudePlaces
+                );
+              }}
+              query={{
+                key: DOTLOCATION,
+                language: 'es-419',
+              }}
+              textInputProps={{ placeholderTextColor: 'black' }}
+              styles={{
+                textInputContainer: {
+                  width: '95%',
+                  borderBottomWidth: 1,
+                  borderBottomColor: '#000000',
+                  marginTop: '-2%',
+                  marginBottom: '5%',
+                },
+                textInput: {
+                  height: 38,
+                  color: '#5d5d5d',
+                  fontSize: 16,
+                  backgroundColor: 'transparent',
+                  textAlign: 'center',
+                },
+                predefinedPlacesDescription: {
+                  color: '#1faadb',
+                },
+              }}
+              listViewDisplayed={false}
+              onFail={(error) => console.error(error)}
+            />
+          )}
           {Platform.os === 'ios' ? (
             <Input
               placeholder='Empresa (Si / No)'
@@ -887,7 +940,6 @@ const AnunciatePage = ({ navigation }) => {
             style={{ color: '#000000', fontSize: 16, textAlign: 'center' }}
             inputContainerStyle={{ borderBottomColor: '#000000' }}
             placeholderTextColor='black'
-            keyboardType='numeric'
             onChangeText={(numeroDeMatricula) =>
               setNumeroDeMatricula(numeroDeMatricula)
             }
@@ -1385,6 +1437,8 @@ const AnunciatePage = ({ navigation }) => {
                 empresa,
                 factura,
                 direccionDelLocal,
+                direccionDelLocalLatitude,
+                direccionDelLocalLongitude,
                 nombreDeLaEmpresa,
                 matricula,
                 numeroDeMatricula,
