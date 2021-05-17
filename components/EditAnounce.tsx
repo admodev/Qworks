@@ -1,9 +1,19 @@
 import * as React from 'react';
-import { Image, Platform, SafeAreaView, StyleSheet, View } from 'react-native';
-import { Input } from 'react-native-elements';
+import {
+  Image,
+  Platform,
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  View,
+} from 'react-native';
+import { Avatar, Button, Input } from 'react-native-elements';
+import * as ImagePicker from 'expo-image-picker';
+import { ImageInfo } from 'expo-image-picker/build/ImagePicker.types';
 import * as firebase from 'firebase';
 import 'firebase/auth';
 import 'firebase/database';
+import 'firebase/storage';
 
 type AnounceProps = {
   actividad: string;
@@ -36,10 +46,16 @@ type AnounceProps = {
   telefono: number;
 };
 
-// TODO: Continuar codeando...
+// Foto
+declare var Blob: {
+  prototype: Blob;
+  new (): Blob;
+  new (request: any, mime: string): Blob;
+};
 
 const EditAnounce: React.FunctionComponent<AnounceProps> = () => {
   const [values, setValues] = React.useState({
+    image: null,
     actividad: '',
     apellido: '',
     celular: '',
@@ -69,6 +85,8 @@ const EditAnounce: React.FunctionComponent<AnounceProps> = () => {
     provincia: '',
     telefono: 0,
   });
+  const [uploading, setUploading] = React.useState(false);
+  let anunciosCountResult;
 
   React.useEffect(() => {
     let dbRef = firebase.default
@@ -78,6 +96,7 @@ const EditAnounce: React.FunctionComponent<AnounceProps> = () => {
       .equalTo('uuid');
     let dbResult = dbRef.on('value', (snap) => {
       snap.forEach((child) => {
+        anunciosCountResult = child.val().anuncioId;
         values.nombre = child.val().nombre;
         values.apellido = child.val().apellido;
         values.actividad = child.val().actividad;
@@ -104,6 +123,49 @@ const EditAnounce: React.FunctionComponent<AnounceProps> = () => {
     });
   }, []);
 
+  const pickImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 0.5,
+    });
+    console.log(result);
+    if (!result.cancelled) {
+      const { uri } = result as ImageInfo;
+      setValues({
+        ...values,
+        image: uri.toString(),
+      });
+      const response = await fetch(uri);
+      const blob = await response.blob();
+      const filename = uri.substring(uri.lastIndexOf('/') + 1);
+      const uploadUri =
+        Platform.OS === 'ios' ? uri.replace('file://', '') : uri;
+      setUploading(true);
+
+      const task = firebase.default
+        .storage()
+        .ref('anunciosPictures/')
+        .child(
+          firebase.default.auth().currentUser.uid + anunciosCountResult + '.JPG'
+        )
+        .put(blob)
+        .then(function () {
+          console.log('Foto subida exitosamente!');
+        })
+        .catch((error) => {
+          console.log('ERROR AL SUBIR LA FOTO', error.message);
+        });
+      try {
+        await task;
+      } catch (e) {
+        console.error(e);
+      }
+      setUploading(false);
+    }
+  };
+
   return (
     <SafeAreaView style={styles.safeAreaView}>
       <Image
@@ -113,36 +175,91 @@ const EditAnounce: React.FunctionComponent<AnounceProps> = () => {
           height: Platform.OS === 'android' ? '5%' : '3%',
         }}
       />
-      <View style={styles.firstView}>
-        <Input
-          placeholder='Nombre'
-          onChangeText={(nombre) =>
-            setValues({
-              ...values,
-              nombre: nombre,
-            })
-          }
-        />
-        <Input
-          placeholder='Apellido'
-          onChangeText={(apellido) =>
-            setValues({
-              ...values,
-              apellido: apellido,
-            })
-          }
-        />
-        <Input
-          placeholder='Cuit / Cuil'
-          keyboardType='number-pad'
-          onChangeText={(cuitCuil) =>
-            setValues({
-              ...values,
-              cuitCuil: parseInt(cuitCuil),
-            })
-          }
-        />
-      </View>
+      <ScrollView
+        style={{
+          marginTop: Platform.OS === 'android' ? '10%' : '5%',
+        }}>
+        <View style={styles.firstView}>
+          {values.image && (
+            <Avatar
+              source={{ uri: values.image }}
+              size='xlarge'
+              avatarStyle={{ borderRadius: 25 }}
+            />
+          )}
+          <Button
+            buttonStyle={{
+              marginTop: 10,
+              marginLeft: '2%',
+              backgroundColor: '#F4743B',
+            }}
+            title='Subir foto'
+            onPress={pickImage}
+          />
+          <Input
+            placeholder='Nombre'
+            inputContainerStyle={{
+              width: '85%',
+              marginLeft: 'auto',
+              marginRight: 'auto',
+              marginTop: '5%',
+            }}
+            onChangeText={(nombre) =>
+              setValues({
+                ...values,
+                nombre: nombre,
+              })
+            }
+          />
+          <Input
+            placeholder='Apellido'
+            inputContainerStyle={{
+              width: '85%',
+              marginLeft: 'auto',
+              marginRight: 'auto',
+              marginTop: '5%',
+            }}
+            onChangeText={(apellido) =>
+              setValues({
+                ...values,
+                apellido: apellido,
+              })
+            }
+          />
+          <Input
+            placeholder='DNI'
+            inputContainerStyle={{
+              width: '85%',
+              marginLeft: 'auto',
+              marginRight: 'auto',
+              marginTop: '5%',
+            }}
+            keyboardType='number-pad'
+            onChangeText={(dni) =>
+              setValues({
+                ...values,
+                dni: parseInt(dni),
+              })
+            }
+          />
+          <Input
+            placeholder='Cuit / Cuil'
+            inputContainerStyle={{
+              width: '85%',
+              marginLeft: 'auto',
+              marginRight: 'auto',
+              marginTop: '5%',
+            }}
+            keyboardType='number-pad'
+            onChangeText={(cuitCuil) =>
+              setValues({
+                ...values,
+                cuitCuil: parseInt(cuitCuil),
+              })
+            }
+          />
+        </View>
+      </ScrollView>
     </SafeAreaView>
   );
 };
