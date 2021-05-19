@@ -37,6 +37,7 @@ import EditarInformacionLaboralScreen from '../components/editarAnuncio/Informac
 import EditarResumenPersonalScreen from '../components/editarAnuncio/ResumenPersonal';
 import ControlPanel from '../components/DrawerControlPanel';
 import EditAnounce from '../components/EditAnounce';
+import PaymentScreen from '../components/PaymentScreen';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -294,6 +295,14 @@ function MainStackNavigator({ navigation }) {
           name={'EditAnounce'}
           component={EditAnounce}
           options={{ title: 'Qworks!', headerShown: false }}
+        />
+        <Stack.Screen
+          name={'PaymentScreen'}
+          component={PaymentScreen}
+          options={{
+            title: 'Qworks!',
+            headerShown: false,
+          }}
         />
       </Stack.Navigator>
     </NavigationContainer>

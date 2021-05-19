@@ -1418,46 +1418,7 @@ const AnunciatePage = ({ navigation }) => {
             marginBottom: 30,
           }}>
           <Button
-            onPress={() =>
-              writeUserData(
-                nombre,
-                apellido,
-                cuitCuil,
-                dni,
-                actividad,
-                telefono,
-                celular,
-                localidad,
-                localidadLatitude,
-                localidadLongitude,
-                partido,
-                partidoLatitude,
-                partidoLongitude,
-                local,
-                empresa,
-                factura,
-                direccionDelLocal,
-                direccionDelLocalLatitude,
-                direccionDelLocalLongitude,
-                nombreDeLaEmpresa,
-                matricula,
-                numeroDeMatricula,
-                emailLaboral,
-                descripcionPersonal,
-                palabraClaveUno,
-                palabraClaveDos,
-                palabraClaveTres,
-                diasHorarios,
-                dateDesdeParsed,
-                dateHastaParsed,
-                efectivo,
-                pagosDigitales,
-                terminos,
-                latitud,
-                longitud,
-                photoJSONValue
-              )
-            }
+            onPress={() => navigation.navigate('PaymentScreen')}
             title='Continuar'
             buttonStyle={{
               backgroundColor: '#F4743B',

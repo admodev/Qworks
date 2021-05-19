@@ -26,6 +26,8 @@ import {
   FIREBASE_APP_ID,
   FIREBASE_MEASUREMENT_ID,
   DOTLOCATION,
+  MERCADO_PAGO_TEST_ACCESS_TOKEN,
+  MERCADO_PAGO_TEST_PUBLIC_KEY,
 } from '@env';
 import { StatusBar } from 'expo-status-bar';
 import { createStore } from 'redux';
