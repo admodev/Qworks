@@ -39,11 +39,11 @@ const PaymentScreen = () => {
   const startCheckout = async () => {
     try {
       const preferenceId = await getPreferenceId(`payer@email.com`, {
-        title: 'Nombre del plan',
-        description: 'Descripcion del plan.',
+        title: 'Plan Orange',
+        description: 'El plan mas poronga de todos que se la re banca.',
         quantity: 1,
         currency_id: 'ARS',
-        unit_price: 2.5,
+        unit_price: 2700,
       });
 
       const payment = await MercadoPagoCheckout.createPayment({

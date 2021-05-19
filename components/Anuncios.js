@@ -7,6 +7,7 @@ import {
   View,
   ScrollView,
   SafeAreaView,
+  Text,
   Share,
 } from 'react-native';
 import { LinearProgress } from 'react-native-elements';
@@ -25,6 +26,7 @@ const AnunciosPage = ({ route, navigation }, props) => {
   const [visible, setVisible] = useState(false);
   const [fotoDePerfil, setFotoDePerfil] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [anounceAvailable, setAnounceAvailable] = useState(false);
   const naranjaQueDeOficios = '#fd5d13';
   let user = firebase.auth().currentUser;
   let id = user.uid;
@@ -69,7 +71,11 @@ const AnunciosPage = ({ route, navigation }, props) => {
         });
       });
 
-      setLoading(false);
+    setLoading(false);
+
+    setTimeout(() => {
+      setAnounceAvailable(true);
+    }, 5000);
   }, []);
 
   function eliminarCuenta() {
@@ -192,13 +198,21 @@ const AnunciosPage = ({ route, navigation }, props) => {
       </View>
       <ScrollView>
         {anuncioArr.map((element, index) => {
-          return(
-            loading ? (
-              <LinearProgress color="black" trackColor='gray' type='indeterminate' style={{
+          return loading ? (
+            <LinearProgress
+              color='black'
+              trackColor='gray'
+              type='indeterminate'
+              style={{
                 position: 'absolute',
-              }} />
-            ) : (
-              <CardMisAnuncios
+              }}
+            />
+          ) : !anounceAvailable ? (
+            <View>
+              <Text>Tu anuncio no esta pago...</Text>
+            </View>
+          ) : (
+            <CardMisAnuncios
               key={Math.max(index) + 1}
               idAnuncio={element.idAnuncio}
               anuncioId={element.anuncioId}
@@ -213,8 +227,8 @@ const AnunciosPage = ({ route, navigation }, props) => {
                   : '0'
               }
             />
-            )
-        )})}
+          );
+        })}
       </ScrollView>
     </SafeAreaView>
   );
