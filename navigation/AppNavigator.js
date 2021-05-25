@@ -38,6 +38,7 @@ import EditarResumenPersonalScreen from '../components/editarAnuncio/ResumenPers
 import ControlPanel from '../components/DrawerControlPanel';
 import EditAnounce from '../components/EditAnounce';
 import PaymentScreen from '../components/PaymentScreen';
+import PlanesPage from '../pages/PlanesPage';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -299,6 +300,14 @@ function MainStackNavigator({ navigation }) {
         <Stack.Screen
           name={'PaymentScreen'}
           component={PaymentScreen}
+          options={{
+            title: 'Qworks!',
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name={'PlanesPage'}
+          component={PlanesPage}
           options={{
             title: 'Qworks!',
             headerShown: false,
