@@ -36,6 +36,8 @@
     "expo-updates": "~0.4.1",
     "firebase": "8.4.3",
     "js-cookie": "^2.2.1",
+    "lodash": "^4.17.21",
+    "lodash.debounce": "^4.0.8",
     "react": "16.13.1",
     "react-dom": "16.13.1",
     "react-native": "https://github.com/expo/react-native/archive/sdk-40.0.1.tar.gz",

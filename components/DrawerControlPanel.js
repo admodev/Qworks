@@ -162,11 +162,10 @@ class ControlPanel extends React.Component {
         <Image
           source={require('../assets/gradients/20x20.png')}
           style={{
-            flex: 1,
             position: 'absolute',
             resizeMode: 'cover',
             width: '100%',
-            height: Platform.OS === 'android' ? '5%' : '3%',
+            height: Platform.OS === 'android' ? '5%' : '4%',
           }}
         />
         <Carousel
@@ -194,7 +193,6 @@ class ControlPanel extends React.Component {
           sliderWidth={360}
           itemWidth={310}
           layout={'default'}
-          layoutCardOffset={9}
         />
       </SafeAreaView>
     );

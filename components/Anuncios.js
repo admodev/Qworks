@@ -72,10 +72,6 @@ const AnunciosPage = ({ route, navigation }, props) => {
       });
 
     setLoading(false);
-
-    setTimeout(() => {
-      setAnounceAvailable(true);
-    }, 5000);
   }, []);
 
   function eliminarCuenta() {

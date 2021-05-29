@@ -95,13 +95,11 @@ const LocationComponent = (props) => {
   return (
     <View
       style={{
-        position: 'absolute',
         backgroundColor: '#ffffff',
         width: '100%',
-        height: '65%',
         alignSelf: 'center',
         borderRadius: 10,
-        bottom: 5,
+        height: 210,
       }}>
       <Image
         source={require('../assets/gradients/10X10.png')}
@@ -190,32 +188,29 @@ const LocationComponent = (props) => {
             <MaterialCommunityIcons name='cog' color={'gray'} size={16} />{' '}
             {props.actividad.trim()}
           </Text>
-          {
-            // fix this
-            props.local && (
-              <Text
-                style={{
-                  ...Platform.select({
-                    android: {
-                      marginTop: -5,
-                      fontFamily: 'ComfortaaLight',
-                      fontSize: 18,
-                    },
-                    ios: {
-                      fontFamily: 'ComfortaaLight',
-                      fontSize: 18,
-                    },
-                  }),
-                }}>
-                <MaterialCommunityIcons
-                  name='storefront'
-                  color={'gray'}
-                  size={16}
-                />{' '}
-                {props.local.trim()}
-              </Text>
-            )
-          }
+          {props.local && (
+            <Text
+              style={{
+                ...Platform.select({
+                  android: {
+                    marginTop: -5,
+                    fontFamily: 'ComfortaaLight',
+                    fontSize: 18,
+                  },
+                  ios: {
+                    fontFamily: 'ComfortaaLight',
+                    fontSize: 18,
+                  },
+                }),
+              }}>
+              <MaterialCommunityIcons
+                name='storefront'
+                color={'gray'}
+                size={16}
+              />{' '}
+              {props.local.trim()}
+            </Text>
+          )}
           <Text
             style={{
               ...Platform.select({

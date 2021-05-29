@@ -141,7 +141,7 @@ class MapComponent extends Component {
     };
 
     return (
-      <SafeAreaView style={{ flex: 1 }}>
+      <SafeAreaView style={{ flex: 35 }}>
         <View style={styles.container}>
           {!this.state.ready && (
             <View

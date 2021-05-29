@@ -39,6 +39,7 @@ import ControlPanel from '../components/DrawerControlPanel';
 import EditAnounce from '../components/EditAnounce';
 import PaymentScreen from '../components/PaymentScreen';
 import PlanesPage from '../pages/PlanesPage';
+import Qdrives from '../pages/Qdrives';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -69,8 +70,8 @@ export function MainTabNavigator({ navigation }) {
         }}
       />
       <Tab.Screen
-        name='SearchPage'
-        component={SearchPage}
+        name='Qdrives'
+        component={Qdrives}
         options={{
           tabBarLabel: 'Qdrives!',
           tabBarIcon: ({ color, size }) => (
