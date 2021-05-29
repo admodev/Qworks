@@ -75,7 +75,11 @@ export function MainTabNavigator({ navigation }) {
         options={{
           tabBarLabel: 'Qdrives!',
           tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name='car' color={'#fd5d13'} size={size} />
+            <MaterialCommunityIcons
+              name='truck-fast'
+              color={'#fd5d13'}
+              size={size}
+            />
           ),
         }}
       />

@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { SafeAreaView, Text, View } from 'react-native';
-import { PricingCard } from 'react-native-elements';
+import { Button, PricingCard } from 'react-native-elements';
 import 'react-native-get-random-values';
 import { v4 as uuidv4 } from 'uuid';
 
 const PlanesPage = () => {
+  const [responseData, setResponseData] = useState('');
   const uuid = uuidv4();
 
   const planes = [
@@ -18,6 +19,12 @@ const PlanesPage = () => {
       precio: '$1560+IVA',
     },
   ];
+
+  const fetchPong = () => {
+    fetch('http://localhost:3090/ping')
+      .then((response) => response.json())
+      .then((data) => console.log(data));
+  };
 
   return (
     <SafeAreaView>
@@ -33,6 +40,8 @@ const PlanesPage = () => {
           />
         );
       })}
+      <Button title='Ping' onPress={fetchPong} />
+      <Text>{responseData}</Text>
     </SafeAreaView>
   );
 };
