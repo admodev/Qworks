@@ -4,13 +4,30 @@ import { Button, Overlay, PricingCard } from 'react-native-elements';
 import 'react-native-get-random-values';
 import { v4 as uuidv4 } from 'uuid';
 import * as _ from 'lodash';
+import PlanesCard from '../components/PlanesCard';
 
 const PlanesPage = () => {
   const [responseData, setResponseData] = useState('');
   const uuid = uuidv4();
   const [orangeOverlayVisible, setOrangeOverlayVisible] = useState(false);
-
   const planes = [
+    {
+      id: uuid,
+      color: 'gray',
+      nombre: 'Plan Free',
+      descripcion: `Plan gratuito`,
+      contenido: 'Te damos la bienvenida! Servicios "Premium" para vos!',
+      precio: '$0',
+    },
+    {
+      id: uuid,
+      color: 'green',
+      nombre: 'Plan Green',
+      descripcion: `Este plan te permite tener dos anuncios
+        +2 tus anuncios van a estar donde vos estes.`,
+      contenido: 'Mensajeria 40 minutos + 20 de regalo los primeros 3 meses.',
+      precio: '$1560+IVA',
+    },
     {
       id: uuid,
       color: '#fd5d13',
@@ -29,15 +46,6 @@ Modal donde va el contrato y un check donde dice la leyenda "Lei y acepto los te
     },
     {
       id: uuid,
-      color: 'green',
-      nombre: 'Plan Green',
-      descripcion: `Este plan te permite tener dos anuncios
-        +2 tus anuncios van a estar donde vos estes.`,
-      contenido: 'Mensajeria 40 minutos + 20 de regalo los primeros 3 meses.',
-      precio: '$1560+IVA',
-    },
-    {
-      id: uuid,
       color: 'blue',
       nombre: 'Plan Blue',
       descripcion: `Nuestro plan blue tiene como finalidad que los anuciantes tengan una amplia llegada a tus clientes pudiendo hacer	
@@ -51,16 +59,8 @@ vean resultados`,
       color: 'firebrick',
       nombre: 'Prepago',
       descripcion: `Nuestro plan blue tiene como finalidad que los `,
-      contenido: 'Contenido pendiente...',
-      precio: '$9999,99+IVA',
-    },
-    {
-      id: uuid,
-      color: 'gray',
-      nombre: 'Plan Free',
-      descripcion: `Nuestro plan blue tiene como finalidad que los `,
-      contenido: 'Plan gratuito, por unos dias...',
-      precio: '$0',
+      contenido: '1 anuncio +1 (tu anuncio te sigue donde vayas)',
+      precio: '$400+IVA',
     },
   ];
 
@@ -90,30 +90,12 @@ vean resultados`,
       <ScrollView horizontal={true}>
         {planes.map((plan, index) => {
           return (
-            <PricingCard
+            <PlanesCard
               key={Math.max(index) + 1}
               color={plan.color}
               title={plan.nombre}
               price={plan.precio}
               info={[plan.contenido]}
-              button={{
-                title: 'Mas Info',
-                icon: 'info',
-                onPress: function toggleOrangeOverlay() {
-                  setOrangeOverlayVisible(!orangeOverlayVisible);
-                },
-              }}
-              containerStyle={{
-                height: '60%',
-                width: '14%',
-                alignItems: 'center',
-                justifyContent: 'center',
-                marginTop: 'auto',
-                marginBottom: 'auto',
-              }}
-              wrapperStyle={{
-                padding: 20,
-              }}
             />
           );
         })}
