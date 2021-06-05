@@ -1,4 +1,12 @@
+// @vendor
 import * as React from 'react';
+import * as WebBrowser from 'expo-web-browser';
+import * as Facebook from 'expo-auth-session/providers/facebook';
+import { ResponseType } from 'expo-auth-session';
+import * as firebase from 'firebase';
+// Providers keys & ids
+import { FACEBOOK_APP_ID } from '@env';
+// @components
 import {
   Image,
   Platform,
@@ -17,7 +25,6 @@ import {
 } from 'react-native-elements';
 import * as ImagePicker from 'expo-image-picker';
 import { ImageInfo } from 'expo-image-picker/build/ImagePicker.types';
-import * as firebase from 'firebase';
 import 'firebase/auth';
 import 'firebase/database';
 import 'firebase/storage';
@@ -59,6 +66,8 @@ declare var Blob: {
   new (request: any, mime: string): Blob;
 };
 
+WebBrowser.maybeCompleteAuthSession();
+
 const EditAnounce: React.FunctionComponent<AnounceProps> = () => {
   const [values, setValues] = React.useState({
     image: null,
@@ -90,42 +99,58 @@ const EditAnounce: React.FunctionComponent<AnounceProps> = () => {
     telefono: 0,
   });
   const [uploading, setUploading] = React.useState(false);
+  const [request, response, promptAsync] = Facebook.useAuthRequest({
+    responseType: ResponseType.Token,
+    clientId: FACEBOOK_APP_ID,
+  });
+
   let anunciosCountResult;
 
   React.useEffect(() => {
-    let dbRef = firebase.default
-      .database()
-      .ref('anuncios/')
-      .orderByChild('uuid')
-      .equalTo('uuid');
-    let dbResult = dbRef.on('value', (snap) => {
-      snap.forEach((child) => {
-        anunciosCountResult = child.val().anuncioId;
-        values.nombre = child.val().nombre;
-        values.apellido = child.val().apellido;
-        values.actividad = child.val().actividad;
-        values.efectivo = child.val().efectivo;
-        values.pagosDigitales = child.val().pagosDigitales;
-        values.emailPersonal = child.val().emailPersonal;
-        values.celular = child.val().celular;
-        values.descripcionPersonal = child.val().descripcionPersonal;
-        values.desde = child.val().desde;
-        values.diasHorarios = child.val().diasHorarios;
-        values.direccionDelLocal = child.val().direccionDelLocal;
-        values.emailLaboral = child.val().emailLaboral;
-        values.empresa = child.val().empresa;
-        values.factura = child.val().factura;
-        values.hasta = child.val().hasta;
-        values.local = child.val().local;
-        values.localidad = child.val().localidad;
-        values.provincia = child.val().provincia;
-        values.nombreDeLaEmpresa = child.val().nombreDeLaEmpresa;
-        values.telefono = child.val().telefono;
-        values.matricula = child.val().matricula;
-        values.numeroDeMatricula = child.val().numeroDeMatricula;
-      });
-    });
-  }, []);
+    //let dbRef = firebase.default
+    //.database()
+    //.ref('anuncios/')
+    //.orderByChild('uuid')
+    //.equalTo('uuid');
+    //let dbResult = dbRef.on('value', (snap) => {
+    //snap.forEach((child) => {
+    //anunciosCountResult = child.val().anuncioId;
+    //values.nombre = child.val().nombre;
+    //values.apellido = child.val().apellido;
+    //values.actividad = child.val().actividad;
+    //values.efectivo = child.val().efectivo;
+    //values.pagosDigitales = child.val().pagosDigitales;
+    //values.emailPersonal = child.val().emailPersonal;
+    //values.celular = child.val().celular;
+    //values.descripcionPersonal = child.val().descripcionPersonal;
+    //values.desde = child.val().desde;
+    //values.diasHorarios = child.val().diasHorarios;
+    //values.direccionDelLocal = child.val().direccionDelLocal;
+    //values.emailLaboral = child.val().emailLaboral;
+    //values.empresa = child.val().empresa;
+    //values.factura = child.val().factura;
+    //values.hasta = child.val().hasta;
+    //values.local = child.val().local;
+    //values.localidad = child.val().localidad;
+    //values.provincia = child.val().provincia;
+    //values.nombreDeLaEmpresa = child.val().nombreDeLaEmpresa;
+    //values.telefono = child.val().telefono;
+    //values.matricula = child.val().matricula;
+    //values.numeroDeMatricula = child.val().numeroDeMatricula;
+    //});
+    //});
+
+    // Facebook auth
+    if (response?.type === 'success') {
+      const { access_token } = response.params;
+
+      const credential = firebase.default.auth.FacebookAuthProvider.credential(
+        access_token
+      );
+      // Sign in with the credential from the Facebook user.
+      firebase.default.auth().signInWithCredential(credential);
+    }
+  }, [response]);
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -702,6 +727,21 @@ const EditAnounce: React.FunctionComponent<AnounceProps> = () => {
             />
           </View>
         </View>
+        <Button
+          buttonStyle={{
+            marginTop: 20,
+            marginLeft: 'auto',
+            marginRight: 'auto',
+            marginBottom: 20,
+            backgroundColor: '#F4743B',
+            width: '70%',
+          }}
+          disabled={!request}
+          title='Testear Facebook'
+          onPress={() => {
+            promptAsync();
+          }}
+        />
         <Button
           buttonStyle={{
             marginTop: 20,
