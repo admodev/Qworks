@@ -1,8 +1,8 @@
 {
   "expo": {
-    "name": "quedeoficios",
-    "description": "App para profesionales que ofrecen sus servicios y personas que desean contratarlos.",
-    "slug": "quedeoficios",
+    "name": "Q works!",
+    "description": "Q works! es localizar en tiempo real, un proveedor de servicios.",
+    "slug": "qworks",
     "version": "1.0.0",
     "orientation": "default",
     "icon": "./assets/icon.png",
@@ -20,14 +20,14 @@
     "assetBundlePatterns": ["assets/*"],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.admodev.quedeoficios",
+      "bundleIdentifier": "com.admodev.qworks",
       "buildNumber": "1.0.0",
       "icon": "./assets/icon.png"
     },
     "android": {
       "versionCode": 5,
       "useNextNotificationsApi": true,
-      "package": "com.admodev.quedeoficios",
+      "package": "com.admodev.qworks",
       "icon": "./assets/icon.png"
     },
     "web": {

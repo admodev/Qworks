@@ -32,7 +32,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import * as Updates from 'expo-updates';
 import * as Font from 'expo-font';
 import { useSelector, useDispatch } from 'react-redux';
-import { increment, decrement } from '../actions/counterActions';
+import { increment, decrement } from '../redux/actions/counterActions';
 
 let calificacion = 'calificacion';
 let favs;

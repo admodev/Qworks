@@ -32,7 +32,7 @@ import {
 import { StatusBar } from 'expo-status-bar';
 import { createStore } from 'redux';
 import { Provider } from 'react-redux';
-import allReducers from './reducers/allReducers';
+import allReducers from './redux/reducers/allReducers';
 
 if (firebase.apps.length === 0) {
   try {

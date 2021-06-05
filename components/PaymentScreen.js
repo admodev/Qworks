@@ -40,7 +40,7 @@ const PaymentScreen = () => {
     try {
       const preferenceId = await getPreferenceId(`payer@email.com`, {
         title: 'Plan Orange',
-        description: 'El plan mas poronga de todos que se la re banca.',
+        description: 'Plan Orange',
         quantity: 1,
         currency_id: 'ARS',
         unit_price: 2700,
