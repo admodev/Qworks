@@ -75,11 +75,6 @@ class CardsUsuarios extends Component {
         });
         itm = items;
         this.setState({ items: items });
-        console.log(itm);
-        console.log('itemstate ' + this.state.items);
-        itm.forEach((itms) => {
-          console.log('title*' + itms.title);
-        });
       });
 
     firebase.auth().onAuthStateChanged(function (user) {

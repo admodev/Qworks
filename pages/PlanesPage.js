@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
-import { Image, ScrollView } from 'react-native';
+import { Image, ScrollView, Text } from 'react-native';
 import { Button, Overlay, PricingCard } from 'react-native-elements';
 import 'react-native-get-random-values';
 import { v4 as uuidv4 } from 'uuid';
 import * as _ from 'lodash';
 import PlanesCard from '../components/PlanesCard';
 
-const PlanesPage = () => {
+const PlanesPage = ({ route }) => {
+  const { pendingAnounceData } = route.params.pendingAnounce;
   const [responseData, setResponseData] = useState('');
   const uuid = uuidv4();
   const [orangeOverlayVisible, setOrangeOverlayVisible] = useState(false);
@@ -64,6 +65,8 @@ vean resultados`,
     },
   ];
 
+  console.log(route.params.pendingAnounce.nombre);
+
   return (
     <>
       <Image
@@ -87,18 +90,10 @@ vean resultados`,
           }),
         }}
       />
-      <ScrollView horizontal={true}>
-        {planes.map((plan, index) => {
-          return (
-            <PlanesCard
-              key={Math.max(index) + 1}
-              color={plan.color}
-              title={plan.nombre}
-              price={plan.precio}
-              info={[plan.contenido]}
-            />
-          );
-        })}
+      <ScrollView>
+        <Text style={{ fontSize: 30 }}>
+          {JSON.stringify(route.params.pendingAnounce)}
+        </Text>
       </ScrollView>
     </>
   );

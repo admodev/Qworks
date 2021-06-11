@@ -60,12 +60,10 @@ const AnunciatePage = ({ navigation }) => {
   const [empresa, setEmpresa] = useState('');
   const [factura, setFactura] = useState('');
   const [direccionDelLocal, setDireccionDelLocal] = useState('');
-  const [direccionDelLocalLatitude, setDireccionDelLocalLatitude] = useState(
-    ''
-  );
-  const [direccionDelLocalLongitude, setDireccionDelLocalLongitude] = useState(
-    ''
-  );
+  const [direccionDelLocalLatitude, setDireccionDelLocalLatitude] =
+    useState('');
+  const [direccionDelLocalLongitude, setDireccionDelLocalLongitude] =
+    useState('');
   const [nombreDeLaEmpresa, setNombreDeLaEmpresa] = useState('');
   const [matricula, setMatricula] = useState('');
   const [numeroDeMatricula, setNumeroDeMatricula] = useState('');
@@ -178,9 +176,8 @@ const AnunciatePage = ({ navigation }) => {
   useEffect(() => {
     (async () => {
       if (Platform.OS !== 'web') {
-        const {
-          status,
-        } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+        const { status } =
+          await ImagePicker.requestMediaLibraryPermissionsAsync();
         if (status !== 'granted') {
           alert(
             '¡Perdón, necesitamos acceder a la galería para que pueda subir una foto!'
@@ -489,9 +486,6 @@ const AnunciatePage = ({ navigation }) => {
           longitud: longitud,
           photoJSONValue: photoJSONValue,
           uuid: uuid,
-        })
-        .then(function () {
-          navigation.navigate('Anuncios');
         })
         .catch(function (error) {
           alert(
@@ -1418,7 +1412,52 @@ const AnunciatePage = ({ navigation }) => {
             marginBottom: 30,
           }}>
           <Button
-            onPress={() => navigation.navigate('PaymentScreen')}
+            onPress={() =>
+              navigation.navigate('PlanesPage', {
+                pendingAnounce: {
+                  anuncioId: anunciosCountResult,
+                  id: user.uid,
+                  nombre: nombre,
+                  apellido: apellido,
+                  emailPersonal: firebase.auth().currentUser.email,
+                  cuitCuil: cuitCuil,
+                  dni: dni,
+                  actividad: actividad,
+                  telefono: telefono,
+                  celular: celular,
+                  localidad: localidad,
+                  localidadLatitude: localidadLatitude,
+                  localidadLongitude: localidadLongitude,
+                  partido: partido,
+                  partidoLatitude: partidoLatitude,
+                  partidoLongitude: partidoLongitude,
+                  local: local,
+                  empresa: empresa,
+                  factura: factura,
+                  direccionDelLocal: direccionDelLocal,
+                  direccionDelLocalLatitude: direccionDelLocalLatitude,
+                  direccionDelLocalLongitude: direccionDelLocalLongitude,
+                  nombreDeLaEmpresa: nombreDeLaEmpresa,
+                  matricula: matricula,
+                  numeroDeMatricula: numeroDeMatricula,
+                  emailLaboral: emailLaboral,
+                  descripcionPersonal: descripcionPersonal,
+                  palabraClaveUno,
+                  palabraClaveDos,
+                  palabraClaveTres,
+                  diasHorarios: diasHorarios,
+                  desde: dateDesdeParsed,
+                  hasta: dateHastaParsed,
+                  efectivo: efectivo,
+                  pagosDigitales: pagosDigitales,
+                  terminos: terminos,
+                  latitud: latitud,
+                  longitud: longitud,
+                  photoJSONValue: photoJSONValue,
+                  uuid: uuid,
+                },
+              })
+            }
             title='Continuar'
             buttonStyle={{
               backgroundColor: '#F4743B',

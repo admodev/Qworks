@@ -115,7 +115,7 @@ export default function LoginPage({ navigation }) {
             justifyContent: 'center',
           }}>
           <Image
-            source={require('../assets/loginBackground.jpg')}
+            source={require('../assets/loginBackground.png')}
             style={{
               flex: 1,
               position: 'absolute',

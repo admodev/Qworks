@@ -82,11 +82,6 @@ class ControlPanel extends React.Component {
         itm = items;
         funcItm = items;
         this.setState({ items: items });
-        console.log(itm);
-        console.log('itemstate ' + this.state.items);
-        itm.forEach((itms) => {
-          console.log('title*' + itms.title);
-        });
       });
 
     this.setState({ ready: false, error: null });
@@ -103,7 +98,6 @@ class ControlPanel extends React.Component {
     );
   }
   geoSuccess = (position) => {
-    console.log(position);
     this.setState({
       ready: true,
       where: { lat: position.coords.latitude, lng: position.coords.longitude },

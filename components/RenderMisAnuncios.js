@@ -91,7 +91,6 @@ function eliminarAnuncio() {
           promises.push(child.ref.remove());
         });
         Promise.all(promises).then(function () {
-          console.log('All removed!');
           this.setState({ visible: false });
         });
       });
@@ -144,8 +143,7 @@ class RenderMisAnuncios extends Component {
               alignSelf: 'center',
             },
           }),
-        }}
-      >
+        }}>
         <View
           style={{
             ...Platform.select({
@@ -159,8 +157,7 @@ class RenderMisAnuncios extends Component {
                 backgroundColor: 'transparent',
               },
             }),
-          }}
-        >
+          }}>
           <Image
             source={require('../assets/patron.jpg')}
             style={{
@@ -238,8 +235,7 @@ class RenderMisAnuncios extends Component {
                 textAlign: 'center',
                 fontSize: 30,
                 fontWeight: 'bold',
-              }}
-            >
+              }}>
               {this.props.name}
             </Text>
           </View>
@@ -249,19 +245,17 @@ class RenderMisAnuncios extends Component {
               flexDirection: 'row',
               alignItems: 'center',
               justifyContent: 'center',
-            }}
-          >
+            }}>
             <Text
               style={{
                 color: '#ffffff',
                 textAlign: 'center',
                 fontSize: 24,
-              }}
-            >
+              }}>
               {this.props.actividad} -
             </Text>
             <MaterialCommunityIcons
-              name="account-group"
+              name='account-group'
               color={naranjaQueDeOficios}
               size={22}
               style={{ marginLeft: '3%' }}
@@ -272,8 +266,7 @@ class RenderMisAnuncios extends Component {
                 textAlign: 'center',
                 fontSize: 14,
                 marginLeft: '2%',
-              }}
-            >
+              }}>
               100
             </Text>
           </View>
@@ -283,8 +276,7 @@ class RenderMisAnuncios extends Component {
                 color: '#ffffff',
                 textAlign: 'center',
                 fontSize: 16,
-              }}
-            >
+              }}>
               {this.props.localidad} - {this.props.provincia}
             </Text>
           </View>
@@ -294,8 +286,7 @@ class RenderMisAnuncios extends Component {
               alignItems: 'flex-start',
               justifyContent: 'flex-start',
               marginLeft: '10%',
-            }}
-          >
+            }}>
             <TouchableOpacity onPress={() => shareContent()}>
               <Text
                 style={{
@@ -317,10 +308,9 @@ class RenderMisAnuncios extends Component {
                       fontSize: 20,
                     },
                   }),
-                }}
-              >
+                }}>
                 <MaterialCommunityIcons
-                  name="share-variant"
+                  name='share-variant'
                   color={'#fd5d13'}
                   size={24}
                 />{' '}
@@ -334,11 +324,9 @@ class RenderMisAnuncios extends Component {
               alignItems: 'flex-start',
               justifyContent: 'flex-start',
               marginLeft: '10%',
-            }}
-          >
+            }}>
             <TouchableOpacity
-              onPress={() => RootNavigation.navigate('EditarAnuncioScreen')}
-            >
+              onPress={() => RootNavigation.navigate('EditarAnuncioScreen')}>
               <Text
                 style={{
                   ...Platform.select({
@@ -359,10 +347,9 @@ class RenderMisAnuncios extends Component {
                       fontSize: 20,
                     },
                   }),
-                }}
-              >
+                }}>
                 <MaterialCommunityIcons
-                  name="lead-pencil"
+                  name='lead-pencil'
                   color={'#fd5d13'}
                   size={24}
                 />{' '}
@@ -376,16 +363,15 @@ class RenderMisAnuncios extends Component {
               alignItems: 'flex-start',
               justifyContent: 'flex-start',
               marginLeft: '10%',
-            }}
-          >
+            }}>
             <Dialog.Container visible={this.state.visible}>
               <Dialog.Title>Eliminar Anuncio</Dialog.Title>
               <Dialog.Description>
                 Todos tus datos se perderán ¿Deseas continuar?
               </Dialog.Description>
-              <Dialog.Button label="No" onPress={handleCancel} />
+              <Dialog.Button label='No' onPress={handleCancel} />
               <Dialog.Button
-                label="Si"
+                label='Si'
                 onPress={() => eliminarAnuncio(this.props.anuncioCount)}
               />
             </Dialog.Container>
@@ -412,10 +398,9 @@ class RenderMisAnuncios extends Component {
                       marginBottom: '5%',
                     },
                   }),
-                }}
-              >
+                }}>
                 <MaterialCommunityIcons
-                  name="eraser"
+                  name='eraser'
                   color={'#fd5d13'}
                   size={24}
                 />{' '}
@@ -457,10 +442,9 @@ class RenderMisAnuncios extends Component {
                       fontSize: 20,
                     },
                   }),
-                }}
-              >
+                }}>
                 <MaterialCommunityIcons
-                  name="account-off"
+                  name='account-off'
                   color={'#fd5d13'}
                   size={24}
                 />{' '}
@@ -469,15 +453,13 @@ class RenderMisAnuncios extends Component {
             </TouchableOpacity>
             <Overlay
               isVisible={this.state.eliminarCuentaIsVisible}
-              onBackdropPress={toggleEliminarCuenta}
-            >
+              onBackdropPress={toggleEliminarCuenta}>
               <Text
                 style={{
                   fontSize: 14,
                   marginTop: '5%',
                   textAlign: 'center',
-                }}
-              >
+                }}>
                 Todos tus datos se perderan ¿Deseas continuar?
               </Text>
               <View
@@ -485,10 +467,9 @@ class RenderMisAnuncios extends Component {
                   flexDirection: 'row',
                   alignItems: 'center',
                   justifyContent: 'center',
-                }}
-              >
+                }}>
                 <Button
-                  title="No"
+                  title='No'
                   buttonStyle={{
                     width: 80,
                     height: 40,
@@ -497,7 +478,7 @@ class RenderMisAnuncios extends Component {
                   }}
                 />
                 <Button
-                  title="Si"
+                  title='Si'
                   buttonStyle={{
                     width: 80,
                     height: 40,

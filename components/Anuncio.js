@@ -151,11 +151,9 @@ export default function AnuncioSeleccionado({ route, navigation }) {
       xhr.responseType = 'blob';
       xhr.onload = function (event) {
         var blob = xhr.response;
-        console.log('EL BLOB', blob);
       };
       xhr.open('GET', url);
       xhr.send();
-      console.log('LA FOTO', url);
       setFotoDePerfil(url);
     })
     .catch(function (error) {
@@ -172,11 +170,9 @@ export default function AnuncioSeleccionado({ route, navigation }) {
       xhr.responseType = 'blob';
       xhr.onload = function (event) {
         var blob = xhr.response;
-        console.log('EL BLOB', blob);
       };
       xhr.open('GET', url);
       xhr.send();
-      console.log('LA FOTO', url);
       setDefaultProfilePicture(url);
     })
     .catch(function (error) {
@@ -262,9 +258,7 @@ export default function AnuncioSeleccionado({ route, navigation }) {
           snapshot.forEach(function (child) {
             promises.push(child.ref.remove());
           });
-          Promise.all(promises).then(function () {
-            console.log('All removed!');
-          });
+          Promise.all(promises);
           Updates.reloadAsync();
         });
     } catch (error) {
@@ -1101,10 +1095,7 @@ export default function AnuncioSeleccionado({ route, navigation }) {
                         color: '#000000',
                         fontFamily: 'quickSandLight',
                       }}>
-                      -{' '}
-                      {u.receptor == id
-                        ? JSON.stringify(u.comentario)
-                        : console.log('No comments')}
+                      - {u.receptor == id && JSON.stringify(u.comentario)}
                     </Text>
                     <Text
                       style={{
@@ -1113,10 +1104,7 @@ export default function AnuncioSeleccionado({ route, navigation }) {
                         color: naranjaQueDeOficios,
                         fontFamily: 'dmSans',
                       }}>
-                      De:{' '}
-                      {u.receptor == id
-                        ? JSON.stringify(u.emisorEmail)
-                        : console.log('No email')}
+                      De: {u.receptor == id && JSON.stringify(u.emisorEmail)}
                     </Text>
                   </View>
                 )}

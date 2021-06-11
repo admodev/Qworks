@@ -78,11 +78,6 @@ class MapComponent extends Component {
         });
         itm = items;
         this.setState({ items: items });
-        console.log(itm);
-        console.log('itemstate ' + this.state.items);
-        itm.forEach((itms) => {
-          console.log('title*' + itms.title);
-        });
       });
 
     this.setState({ ready: false, error: null });
@@ -99,7 +94,6 @@ class MapComponent extends Component {
     );
   }
   geoSuccess = (position) => {
-    console.log(position);
     this.setState({
       ready: true,
       where: { lat: position.coords.latitude, lng: position.coords.longitude },
@@ -193,7 +187,7 @@ class MapComponent extends Component {
               pitchEnabled={true}
               rotateEnabled={true}
               initialRegion={region}
-              onUserLocationChange={(event) => console.log(event.nativeEvent)}
+              // onUserLocationChange={(event) => console.log(event.nativeEvent)}
               showsUserLocation={this.state.showsUserLocation}
               fitToElements={true}>
               {this.state.search

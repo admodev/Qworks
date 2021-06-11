@@ -59,11 +59,9 @@ const CardMisAnuncios = (props) => {
       xhr.responseType = 'blob';
       xhr.onload = function (event) {
         var blob = xhr.response;
-        console.log('EL BLOB', blob);
       };
       xhr.open('GET', url);
       xhr.send();
-      console.log('LA FOTO', url);
       setFotoDePerfil(url);
     })
     .catch(function (error) {
@@ -80,11 +78,9 @@ const CardMisAnuncios = (props) => {
       xhr.responseType = 'blob';
       xhr.onload = function (event) {
         var blob = xhr.response;
-        console.log('EL BLOB', blob);
       };
       xhr.open('GET', url);
       xhr.send();
-      console.log('LA FOTO', url);
       setDefaultProfilePicture(url);
     })
     .catch(function (error) {

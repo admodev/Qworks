@@ -118,10 +118,6 @@ export default function Chat({ route, navigation }) {
     let currentTime = time;
   }
 
-  totalDuration > 0
-    ? console.log('El tiempo está corriendo')
-    : console.log('Te quedaste sin tiempo!');
-
   const textoChatVacio = 'Empieza a hablar para iniciar una conversación!';
 
   const receiver = secondUserId;
@@ -163,9 +159,8 @@ export default function Chat({ route, navigation }) {
 
     (async () => {
       if (Platform.OS !== 'web') {
-        const {
-          status,
-        } = await ImagePicker.requestCameraRollPermissionsAsync();
+        const { status } =
+          await ImagePicker.requestCameraRollPermissionsAsync();
         if (status !== 'granted') {
           alert(
             'Perdón, necesitamos tu permiso para que puedas subir una foto!'
@@ -200,7 +195,7 @@ export default function Chat({ route, navigation }) {
     return (
       <Send {...props}>
         <View style={{ marginRight: 10, marginBottom: 10 }}>
-          <MaterialCommunityIcons name="send" color={'#fd5d13'} size={28} />
+          <MaterialCommunityIcons name='send' color={'#fd5d13'} size={28} />
         </View>
       </Send>
     );
@@ -215,7 +210,7 @@ export default function Chat({ route, navigation }) {
         }}
         icon={() => (
           <MaterialCommunityIcons
-            name="camera"
+            name='camera'
             color={'#fd5d13'}
             size={24}
             style={{
@@ -225,7 +220,7 @@ export default function Chat({ route, navigation }) {
             }}
           />
         )}
-        onSend={() => console.log(handleSend)}
+        onSend={handleSend}
       />
     );
   }
@@ -237,7 +232,6 @@ export default function Chat({ route, navigation }) {
       aspect: [4, 3],
       quality: 0.5,
     });
-    console.log(result);
     if (!result.cancelled) {
       setImage(result.uri.toString());
       const response = await fetch(uri);
@@ -273,14 +267,12 @@ export default function Chat({ route, navigation }) {
               marginTop: 25,
               marginLeft: 15,
               backgroundColor: 'transparent',
-            }}
-          >
+            }}>
             <TouchableOpacity
               onPress={() => navigation.goBack()}
-              style={{ backgroundColor: 'transparent' }}
-            >
+              style={{ backgroundColor: 'transparent' }}>
               <MaterialCommunityIcons
-                name="arrow-left"
+                name='arrow-left'
                 color={'#fd5d13'}
                 size={32}
                 style={{
@@ -306,11 +298,11 @@ export default function Chat({ route, navigation }) {
               renderUsernameOnMessage={true}
               onInputTextChanged={(text) => setText(text)}
               renderLoading={() => (
-                <ActivityIndicator size="large" color="#fd5d13" />
+                <ActivityIndicator size='large' color='#fd5d13' />
               )}
               isAnimated
               renderAvatarOnTop
-              placeholder="Escribe tu mensaje..."
+              placeholder='Escribe tu mensaje...'
               receiver={{
                 receiver: receiver,
                 user: 2,
@@ -319,7 +311,7 @@ export default function Chat({ route, navigation }) {
               scrollToBottom
               scrollToBottomComponent={() => (
                 <MaterialCommunityIcons
-                  name="arrow-down"
+                  name='arrow-down'
                   color={'#fd5d13'}
                   size={20}
                 />
@@ -338,8 +330,7 @@ export default function Chat({ route, navigation }) {
                   marginRight: '20%',
                   fontWeight: 'bold',
                   fontSize: 24,
-                }}
-              >
+                }}>
                 Tu tiempo se acabó, adquiere más tiempo para continuar
                 conversando...
               </Text>
@@ -354,8 +345,7 @@ export default function Chat({ route, navigation }) {
                     fontWeight: 'bold',
                     fontSize: 24,
                     color: 'orange',
-                  }}
-                >
+                  }}>
                   Comprar más tiempo.
                 </Text>
               </TouchableOpacity>
