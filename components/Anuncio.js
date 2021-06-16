@@ -13,7 +13,6 @@ import {
 } from 'react-native';
 import {
   AirbnbRating,
-  Avatar,
   Button,
   Card,
   Overlay,
@@ -25,14 +24,12 @@ import 'firebase/database';
 import 'firebase/auth';
 import 'firebase/storage';
 import * as RootNavigation from '../RootNavigation.js';
-import { StackActions } from '@react-navigation/native';
-import CardsUsuarios from './Cards';
-import { concat } from 'react-native-reanimated';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import * as Updates from 'expo-updates';
 import * as Font from 'expo-font';
 import { useSelector, useDispatch } from 'react-redux';
 import { increment, decrement } from '../redux/actions/counterActions';
+import * as Linking from 'expo-linking';
 
 let calificacion = 'calificacion';
 let favs;
@@ -339,6 +336,10 @@ export default function AnuncioSeleccionado({ route, navigation }) {
     return self.indexOf(value) === index;
   }
 
+  const handleLinkOpen = () => {
+    Linking.openURL('https://www.google.com');
+  };
+
   return (
     <SafeAreaView
       style={{
@@ -429,88 +430,13 @@ export default function AnuncioSeleccionado({ route, navigation }) {
                 borderRadius: 15,
                 backgroundColor: 'transparent',
                 borderWidth: 0,
-                marginTop: '5%',
               },
             }),
           }}>
-          <Text
-            style={{
-              fontFamily: 'dmSans',
-              color: '#000000',
-              textAlign: 'center',
-              fontSize: 30,
-              marginLeft: '16%',
-            }}>
-            {nombre} {apellido}
-          </Text>
           <View
             style={{
-              marginTop: '-2%',
-              flexDirection: 'row',
               alignItems: 'center',
               justifyContent: 'center',
-              marginTop: '2%',
-              marginLeft: '25%',
-            }}>
-            <Text
-              style={{
-                color: '#000000',
-                textAlign: 'center',
-                fontSize: 24,
-                fontFamily: 'comfortaaLight',
-              }}>
-              {actividad} -
-            </Text>
-            <MaterialCommunityIcons
-              name='account-group'
-              color={naranjaQueDeOficios}
-              size={22}
-              style={{ marginLeft: '3%' }}
-            />
-            <Text
-              style={{
-                color: '#8DB600',
-                textAlign: 'center',
-                fontSize: 14,
-                marginLeft: '2%',
-              }}>
-              {recomendacionesTotales}
-            </Text>
-          </View>
-          <View
-            style={{
-              marginTop: '-8%',
-              marginLeft: '10%',
-            }}>
-            <AirbnbRating
-              size={20}
-              showRating={true}
-              type='custom'
-              ratingColor={naranjaQueDeOficios}
-              ratingBackgroundColor='#c8c7c8'
-              fractions={1}
-              reviews={['']}
-              onFinishRating={(rating) => setRating(rating)}
-              style={{
-                borderWidth: 0,
-              }}
-            />
-          </View>
-          <TouchableOpacity
-            style={{
-              marginTop: '-7%',
-              marginLeft: '80%',
-            }}
-            onPress={() => shareContent()}>
-            <MaterialCommunityIcons
-              name='share-variant'
-              color={naranjaQueDeOficios}
-              size={28}
-            />
-          </TouchableOpacity>
-          <View
-            style={{
-              marginTop: '-30%',
             }}>
             {!fotoDePerfil ? (
               <Card.Image
@@ -551,6 +477,38 @@ export default function AnuncioSeleccionado({ route, navigation }) {
                 />
               </View>
             )}
+            <View style={{ flexDirection: 'row' }}>
+              <AirbnbRating
+                size={20}
+                showRating={true}
+                type='custom'
+                ratingColor={naranjaQueDeOficios}
+                ratingBackgroundColor='#c8c7c8'
+                fractions={1}
+                reviews={['']}
+                onFinishRating={(rating) => setRating(rating)}
+              />
+              <TouchableOpacity
+                onPress={() => shareContent()}
+                style={{
+                  ...Platform.select({
+                    android: {
+                      marginTop: '15%',
+                      marginLeft: '5%',
+                    },
+                    ios: {
+                      marginTop: '10%',
+                      marginLeft: '5%',
+                    },
+                  }),
+                }}>
+                <MaterialCommunityIcons
+                  name='share-variant'
+                  color={naranjaQueDeOficios}
+                  size={28}
+                />
+              </TouchableOpacity>
+            </View>
           </View>
           <Overlay
             isVisible={visible}
@@ -572,7 +530,40 @@ export default function AnuncioSeleccionado({ route, navigation }) {
               />
             )}
           </Overlay>
-          <View style={{ margin: '3%' }}></View>
+          <Text
+            style={{
+              fontFamily: 'dmSans',
+              color: '#000000',
+              fontSize: 30,
+              textAlign: 'center',
+            }}>
+            {nombre} {apellido}
+          </Text>
+          <View style={{ flexDirection: 'row' }}>
+            <Text
+              style={{
+                color: '#000000',
+                fontSize: 24,
+                fontFamily: 'comfortaaLight',
+                marginLeft: '25%',
+              }}>
+              {actividad} -
+            </Text>
+            <MaterialCommunityIcons
+              name='account-group'
+              color={naranjaQueDeOficios}
+              size={22}
+              style={{ marginLeft: 4 }}
+            />
+            <Text
+              style={{
+                color: '#8DB600',
+                fontSize: 14,
+                margin: 4,
+              }}>
+              {recomendacionesTotales}
+            </Text>
+          </View>
           <View
             style={{
               flexDirection: 'row',
@@ -677,7 +668,7 @@ export default function AnuncioSeleccionado({ route, navigation }) {
             fontWeight: 'bold',
             fontFamily: 'dmSans',
           }}>
-          Información Laboral
+          Datos de Contacto
         </Text>
         <Card
           style={styles.card}
@@ -714,59 +705,29 @@ export default function AnuncioSeleccionado({ route, navigation }) {
                 size={24}
               />
               <Text
+                onPress={() => Linking.openURL(`mailto:${emailLaboral}`)}
                 style={{
-                  color: '#000000',
-                  marginLeft: '2%',
-                  marginBottom: 10,
-                  fontSize: 18,
-                  fontFamily: 'comfortaaLight',
+                  ...Platform.select({
+                    android: {
+                      color: '#0000EE',
+                      marginLeft: '10%',
+                      marginBottom: 10,
+                      fontSize: 18,
+                      fontFamily: 'comfortaaLight',
+                    },
+                    ios: {
+                      color: '#0000EE',
+                      marginLeft: '15%',
+                      marginBottom: 10,
+                      fontSize: 18,
+                      fontFamily: 'comfortaaLight',
+                    },
+                  }),
                 }}>
-                {emailLaboral}
+                {emailLaboral.length > 20
+                  ? emailLaboral.substr(0, emailLaboral.length - 8) + '...'
+                  : emailLaboral}
               </Text>
-            </View>
-            <View
-              style={{
-                flex: 1,
-                flexDirection: 'row',
-              }}>
-              <MaterialCommunityIcons
-                name='calendar-clock'
-                color={naranjaQueDeOficios}
-                size={24}
-              />
-              <View
-                style={{
-                  flexDirection: 'column',
-                }}>
-                <Text
-                  style={{
-                    textAlign: 'center',
-                    fontSize: 20,
-                    color: '#000000',
-                    marginLeft: '30%',
-                  }}>
-                  {diasHorarios.filter(onlyUnique).join(', ')}
-                </Text>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                  }}>
-                  <MaterialCommunityIcons
-                    name='clock-outline'
-                    color={naranjaQueDeOficios}
-                    size={24}
-                  />
-                  <Text
-                    style={{
-                      textAlign: 'center',
-                      fontSize: 20,
-                      color: '#000000',
-                      marginLeft: '25%',
-                    }}>
-                    {desde} a {hasta}
-                  </Text>
-                </View>
-              </View>
             </View>
           </View>
           {local && (
@@ -774,6 +735,7 @@ export default function AnuncioSeleccionado({ route, navigation }) {
               style={{
                 flex: 1,
                 flexDirection: 'row',
+                marginTop: '2%',
               }}>
               <MaterialCommunityIcons
                 name='storefront'
@@ -781,8 +743,9 @@ export default function AnuncioSeleccionado({ route, navigation }) {
                 size={24}
               />
               <Text
+                onPress={handleLinkOpen}
                 style={{
-                  color: '#000000',
+                  color: '#0000EE',
                   marginLeft: 'auto',
                   marginRight: 'auto',
                   marginTop: 10,
@@ -790,7 +753,10 @@ export default function AnuncioSeleccionado({ route, navigation }) {
                   fontSize: 20,
                   fontFamily: 'comfortaaLight',
                 }}>
-                {direccionDelLocal}
+                {direccionDelLocal.length > 30
+                  ? direccionDelLocal.substr(0, direccionDelLocal.length - 45) +
+                    '...'
+                  : direccionDelLocal}
               </Text>
             </View>
           )}
@@ -826,8 +792,9 @@ export default function AnuncioSeleccionado({ route, navigation }) {
               size={24}
             />
             <Text
+              onPress={() => Linking.openURL(`tel:${telefono}`)}
               style={{
-                color: '#000000',
+                color: '#0000EE',
                 marginLeft: 'auto',
                 marginRight: 'auto',
                 marginTop: 10,

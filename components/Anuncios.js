@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import {
+  Alert,
   TouchableOpacity,
-  StyleSheet,
   Image,
   Platform,
   View,
@@ -32,9 +32,8 @@ const AnunciosPage = ({ route, navigation }, props) => {
   let id = user.uid;
   let idAnuncio, anuncioId, image, nombre, apellido, actividad, emailPersonal;
 
-  const [eliminarAnuncioIsVisible, setEliminarAnuncioIsVisible] = useState(
-    false
-  );
+  const [eliminarAnuncioIsVisible, setEliminarAnuncioIsVisible] =
+    useState(false);
   const [eliminarCuentaIsVisible, setEliminarCuentaIsVisible] = useState(false);
 
   const toggleEliminarAnuncio = () => {
@@ -80,16 +79,17 @@ const AnunciosPage = ({ route, navigation }, props) => {
       .then(function () {
         Notifications.scheduleNotificationAsync({
           content: {
-            title: '¡QuedeOficios! 📬',
+            title: 'Q works! 📬',
             body: '¡Te esperamos Pronto!',
-            data: { data: 'El equipo de ¡QuedeOficios!' },
+            data: { data: 'El equipo de Q works!' },
           },
           trigger: { seconds: 2 },
         });
         Updates.reloadAsync();
       })
       .catch(function (error) {
-        alert(
+        Alert.alert(
+          'Error',
           'Hubo un error al eliminar su cuenta! por favor cierre sesión y vuelva a ingresar antes de intentarlo nuevamente.'
         );
       });
@@ -203,7 +203,7 @@ const AnunciosPage = ({ route, navigation }, props) => {
                 position: 'absolute',
               }}
             />
-          ) : !anounceAvailable ? (
+          ) : anounceAvailable ? (
             <View>
               <Text>Tu anuncio no esta pago...</Text>
             </View>

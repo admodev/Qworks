@@ -26,6 +26,7 @@ import 'firebase/database';
 import 'firebase/auth';
 import { useFonts } from 'expo-font';
 import * as RootNavigation from '../RootNavigation';
+import * as Linking from 'expo-linking';
 
 const naranjaQueDeOficios = '#fd5d13';
 
@@ -95,7 +96,7 @@ const LocationComponent = (props) => {
         width: '100%',
         alignSelf: 'center',
         borderRadius: 10,
-        height: 210,
+        height: 190,
       }}>
       <Image
         source={require('../assets/gradients/10X10.png')}
@@ -171,6 +172,7 @@ const LocationComponent = (props) => {
             style={{
               fontFamily: 'DmSans',
               fontSize: 20,
+              marginTop: 2,
             }}>
             <MaterialCommunityIcons name='account' color={'gray'} size={16} />{' '}
             {props.nombre.split(' ').shift()} {props.apellido}
@@ -179,7 +181,6 @@ const LocationComponent = (props) => {
             style={{
               fontFamily: 'DmSans',
               fontSize: 20,
-              marginTop: '-1%',
             }}>
             <MaterialCommunityIcons name='cog' color={'gray'} size={16} />{' '}
             {props.actividad.trim()}
@@ -192,10 +193,14 @@ const LocationComponent = (props) => {
                     marginTop: -5,
                     fontFamily: 'ComfortaaLight',
                     fontSize: 18,
+                    marginTop: 1,
+                    color: '#0000EE',
                   },
                   ios: {
                     fontFamily: 'ComfortaaLight',
                     fontSize: 18,
+                    marginTop: '2%',
+                    color: '#0000EE',
                   },
                 }),
               }}>
@@ -204,21 +209,26 @@ const LocationComponent = (props) => {
                 color={'gray'}
                 size={16}
               />{' '}
-              {props.local.trim()}
+              {props.local.length > 30
+                ? props.local.substr(0, props.local.length - 45) + '...'
+                : props.local}
             </Text>
           )}
           <Text
+            onPress={() => Linking.openURL('https://www.google.com/maps')}
             style={{
               ...Platform.select({
                 android: {
                   fontFamily: 'ComfortaaLight',
                   fontSize: 16,
                   width: 350,
+                  marginTop: '1%',
                 },
                 ios: {
                   fontFamily: 'ComfortaaLight',
                   fontSize: 16,
                   width: 300,
+                  marginTop: '2%',
                 },
               }),
             }}>
@@ -227,7 +237,9 @@ const LocationComponent = (props) => {
               color={'gray'}
               size={16}
             />{' '}
-            Morón, Provincia de Buenos Aires
+            {props.localidad.length > 10
+              ? props.localidad.substr(0, props.localidad.length - 15) + '...'
+              : props.localidad}
           </Text>
           <TouchableOpacity
             onPress={() => {

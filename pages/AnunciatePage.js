@@ -1,11 +1,10 @@
-import React, { useState, useEffect, setState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Image,
   View,
   Platform,
   ScrollView,
   StyleSheet,
-  TextInput,
   TouchableOpacity,
 } from 'react-native';
 import {
@@ -21,27 +20,18 @@ import 'firebase/auth';
 import 'firebase/database';
 import 'firebase/storage';
 import * as ImagePicker from 'expo-image-picker';
-import * as Updates from 'expo-updates';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import * as Progress from 'react-native-progress';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import 'react-native-get-random-values';
 import { v4 as uuidv4 } from 'uuid';
 import Cookies from 'js-cookie';
-import axios from 'axios';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import { DOTLOCATION } from '@env';
 
 const AnunciatePage = ({ navigation }) => {
-  let database = firebase.database();
   let user = firebase.auth().currentUser;
   let id = user.uid;
-  let storage = firebase.storage();
-  let storageRef = storage.ref();
-  var userDefaultImage = storageRef.child('userDefaultImage/icon.png');
-  const [photoJSONValue, setPhotoJSONValue] = useState([]);
-  const [location, setLocation] = useState(null);
-  const [errorMsg, setErrorMsg] = useState(null);
   const [image, setImage] = useState(null);
   const [nombre, setNombre] = useState('');
   const [apellido, setApellido] = useState('');
@@ -74,10 +64,7 @@ const AnunciatePage = ({ navigation }) => {
   const [palabraClaveTres, setPalabraClaveTres] = useState('');
   const [palabrasClave, setPalabrasclave] = useState([]);
   const [diasHorarios, setDiasHorarios] = useState([]);
-  const [desde, setDesde] = useState('');
-  const [hasta, setHasta] = useState('');
   const [efectivo, setEfectivo] = useState(false);
-  const [uploadedImage, setUploadedImage] = useState(null);
   const [uploading, setUploading] = useState(false);
   const [transferred, setTransferred] = useState(0);
   const toggleEfectivo = React.useCallback(() => setEfectivo(!efectivo));
@@ -87,55 +74,6 @@ const AnunciatePage = ({ navigation }) => {
   );
   const [terminos, setTerminos] = useState(false);
   const toggleTerminos = React.useCallback(() => setTerminos(!terminos));
-  const [lunesChecked, setLunesChecked] = useState(false);
-  const toggleLunesChecked = React.useCallback(() =>
-    setLunesChecked(!lunesChecked)
-  );
-  const [martesChecked, setMartesChecked] = useState(false);
-  const toggleMartesChecked = React.useCallback(() =>
-    setMartesChecked(!martesChecked)
-  );
-  const [miercolesChecked, setMiercolesChecked] = useState(false);
-  const toggleMiercolesChecked = React.useCallback(() =>
-    setMiercolesChecked(!miercolesChecked)
-  );
-  const [juevesChecked, setJuevesChecked] = useState(false);
-  const toggleJuevesChecked = React.useCallback(() =>
-    setJuevesChecked(!juevesChecked)
-  );
-  const [viernesChecked, setViernesChecked] = useState(false);
-  const toggleViernesChecked = React.useCallback(() =>
-    setViernesChecked(!viernesChecked)
-  );
-  const [sabadoChecked, setSabadoChecked] = useState(false);
-  const toggleSabadoChecked = React.useCallback(() =>
-    setSabadoChecked(!sabadoChecked)
-  );
-  const [domingoChecked, setDomingoChecked] = useState(false);
-  const toggleDomingoChecked = React.useCallback(() =>
-    setDomingoChecked(!domingoChecked)
-  );
-  const [lunesViernesChecked, setLunesViernesChecked] = useState(false);
-  const toggleLunesViernesChecked = React.useCallback(() => {
-    setLunesViernesChecked(!lunesViernesChecked);
-  });
-  const [desdeAmChecked, setDesdeAmChecked] = useState(false);
-  const toggleDesdeAmChecked = React.useCallback(() =>
-    setDesdeAmChecked(!desdeAmChecked)
-  );
-  const [desdePmChecked, setDesdePmChecked] = useState(false);
-  const toggleDesdePmChecked = React.useCallback(() =>
-    setDesdePmChecked(!desdePmChecked)
-  );
-  const [hastaAmChecked, setHastaAmChecked] = useState(false);
-  const toggleHastaAmChecked = React.useCallback(() =>
-    setHastaAmChecked(!hastaAmChecked)
-  );
-  const [hastaPmChecked, setHastaPmChecked] = useState(false);
-  const toggleHastaPmChecked = React.useCallback(() =>
-    setHastaPmChecked(!hastaPmChecked)
-  );
-  const [imageUrlResponse, setImageUrlResponse] = useState('');
   const [ready, setReady] = useState(false);
   const [where, setWhere] = useState({ lat: null, lng: null });
   const [error, setError] = useState(null);
@@ -144,31 +82,6 @@ const AnunciatePage = ({ navigation }) => {
   const [visible, setVisible] = useState(false);
   const toggleOverlay = () => {
     setVisible(!visible);
-  };
-  const [dateDesde, setDateDesde] = useState(new Date(1598051730000));
-  const [dateHasta, setDateHasta] = useState(new Date(1598051730000));
-  const [mode, setMode] = useState('date');
-  const [show, setShow] = useState(false);
-
-  const onChangeHourDesde = (eventDesde, selectedDateDesde) => {
-    const currentDate = selectedDateDesde || date;
-    setShow(Platform.OS === 'ios');
-    setDateDesde(currentDate);
-  };
-
-  const onChangeHourHasta = (eventHasta, selectedDateHasta) => {
-    const currentDate = selectedDateHasta || date;
-    setShow(Platform.OS === 'ios');
-    setDateHasta(currentDate);
-  };
-
-  const showMode = (currentMode) => {
-    setShow(true);
-    setMode(currentMode);
-  };
-
-  const showTimepicker = () => {
-    showMode('time');
   };
 
   const uuid = uuidv4();
@@ -329,16 +242,6 @@ const AnunciatePage = ({ navigation }) => {
       setUploading(false);
     }
   };
-
-  let dateDesdeParsed = dateDesde.toLocaleTimeString([], {
-    hour: '2-digit',
-    minute: '2-digit',
-  });
-
-  let dateHastaParsed = dateHasta.toLocaleTimeString([], {
-    hour: '2-digit',
-    minute: '2-digit',
-  });
 
   function setLocationFunc(placesLocation) {
     setLocalidad(placesLocation);
@@ -655,7 +558,7 @@ const AnunciatePage = ({ navigation }) => {
           <Text
             h3
             style={{ color: '#000000', marginTop: 10, marginBottom: 25 }}>
-            Información Laboral
+            Datos de Contacto
           </Text>
           {Platform.os === 'ios' ? (
             <Input
@@ -1055,256 +958,6 @@ const AnunciatePage = ({ navigation }) => {
             />
           </View>
         </View>
-        <View
-          style={{
-            flex: 1,
-            alignItems: 'center',
-            justifyContent: 'center',
-            marginTop: 25,
-            width: '95%',
-            marginLeft: 'auto',
-            marginRight: 'auto',
-          }}>
-          <Text h3 style={{ color: '#000', marginTop: 10, marginBottom: 25 }}>
-            Dias y horarios
-          </Text>
-          <View style={{ flex: 1, flexDirection: 'row' }}>
-            <CheckBox
-              title='Lunes'
-              onPress={() => concatLunes()}
-              checked={lunesChecked}
-              containerStyle={{
-                backgroundColor: 'transparent',
-                borderColor: 'transparent',
-                borderWidth: 0,
-                marginTop: 15,
-                marginLeft: 'auto',
-                marginRight: 'auto',
-              }}
-              textStyle={{ color: '#000000' }}
-              checkedColor={'#fd5d13'}
-            />
-            <CheckBox
-              title='Martes'
-              onPress={() => concatMartes()}
-              checked={martesChecked}
-              containerStyle={{
-                backgroundColor: 'transparent',
-                borderColor: 'transparent',
-                borderWidth: 0,
-                marginTop: 15,
-                marginLeft: 'auto',
-                marginRight: 'auto',
-              }}
-              textStyle={{ color: '#000000' }}
-              checkedColor={'#fd5d13'}
-            />
-            <CheckBox
-              title='Miercoles'
-              onPress={() => concatMiercoles()}
-              checked={miercolesChecked}
-              containerStyle={{
-                backgroundColor: 'transparent',
-                borderColor: 'transparent',
-                borderWidth: 0,
-                marginTop: 15,
-                marginLeft: 'auto',
-                marginRight: 'auto',
-              }}
-              textStyle={{ color: '#000000' }}
-              checkedColor={'#fd5d13'}
-            />
-          </View>
-          <View style={{ flex: 1, flexDirection: 'row' }}>
-            <CheckBox
-              title='Jueves'
-              onPress={() => concatJueves()}
-              checked={juevesChecked}
-              containerStyle={{
-                backgroundColor: 'transparent',
-                borderColor: 'transparent',
-                borderWidth: 0,
-                marginTop: 15,
-                marginLeft: 'auto',
-                marginRight: 'auto',
-              }}
-              textStyle={{ color: '#000000' }}
-              checkedColor={'#fd5d13'}
-            />
-            <CheckBox
-              title='Viernes'
-              onPress={() => concatViernes()}
-              checked={viernesChecked}
-              containerStyle={{
-                backgroundColor: 'transparent',
-                borderColor: 'transparent',
-                borderWidth: 0,
-                marginTop: 15,
-                marginLeft: 'auto',
-                marginRight: 'auto',
-              }}
-              textStyle={{ color: '#000000' }}
-              checkedColor={'#fd5d13'}
-            />
-            <CheckBox
-              title='Sábado'
-              onPress={() => concatSabado()}
-              checked={sabadoChecked}
-              containerStyle={{
-                backgroundColor: 'transparent',
-                borderColor: 'transparent',
-                borderWidth: 0,
-                marginTop: 15,
-                marginLeft: 'auto',
-                marginRight: 'auto',
-              }}
-              textStyle={{ color: '#000000' }}
-              checkedColor={'#fd5d13'}
-            />
-          </View>
-          <View style={{ flexDirection: 'row' }}>
-            <CheckBox
-              title='Domingo'
-              onPress={() => concatDomingo()}
-              checked={domingoChecked}
-              containerStyle={{
-                backgroundColor: 'transparent',
-                borderColor: 'transparent',
-                borderWidth: 0,
-                marginTop: 15,
-                marginLeft: 'auto',
-                marginRight: 'auto',
-              }}
-              textStyle={{ color: '#000000' }}
-              checkedColor={'#fd5d13'}
-            />
-            <CheckBox
-              title='Lunes a Viernes'
-              onPress={() => concatLunesViernes()}
-              checked={lunesViernesChecked}
-              containerStyle={{
-                backgroundColor: 'transparent',
-                borderColor: 'transparent',
-                borderWidth: 0,
-                marginTop: 15,
-                marginLeft: 'auto',
-                marginRight: 'auto',
-              }}
-              textStyle={{ color: '#000000' }}
-              checkedColor={'#fd5d13'}
-            />
-          </View>
-          <View style={{ width: '80%' }}>
-            <View>
-              <View>
-                <Button
-                  onPress={showTimepicker}
-                  title='Desde'
-                  buttonStyle={{
-                    backgroundColor: '#F4743B',
-                    borderRadius: 25,
-                    marginTop: '10%',
-                    marginBottom: '10%',
-                  }}
-                />
-              </View>
-              {show && (
-                <DateTimePicker
-                  testID='dateTimePickerDesde'
-                  value={dateDesde}
-                  mode={mode}
-                  is24Hour={true}
-                  display='spinner'
-                  onChange={onChangeHourDesde}
-                />
-              )}
-            </View>
-            <View
-              style={{
-                backgroundColor: '#F4743B',
-                borderRadius: 25,
-                width: '20%',
-                alignSelf: 'center',
-                margintop: '5%',
-                marginBottom: '5%',
-              }}>
-              {Platform.OS == 'android' ? (
-                <Text
-                  style={{
-                    textAlign: 'center',
-                    color: '#ffffff',
-                  }}>
-                  {dateDesde.toLocaleTimeString().slice(1, -3)}
-                </Text>
-              ) : (
-                <Text
-                  style={{
-                    textAlign: 'center',
-                    color: '#ffffff',
-                  }}>
-                  {dateDesde.toLocaleTimeString([], {
-                    hour: '2-digit',
-                    minute: '2-digit',
-                  })}
-                </Text>
-              )}
-            </View>
-            <View>
-              <View>
-                <Button
-                  onPress={showTimepicker}
-                  title='Hasta'
-                  buttonStyle={{
-                    backgroundColor: '#F4743B',
-                    borderRadius: 25,
-                    marginTop: '10%',
-                    marginBottom: '10%',
-                  }}
-                />
-              </View>
-              {show && (
-                <DateTimePicker
-                  testID='dateTimePickerHasta'
-                  value={dateHasta}
-                  mode={mode}
-                  is24Hour={true}
-                  display='spinner'
-                  onChange={onChangeHourHasta}
-                />
-              )}
-            </View>
-            <View
-              style={{
-                backgroundColor: '#F4743B',
-                borderRadius: 25,
-                width: '20%',
-                alignSelf: 'center',
-                margintop: '5%',
-                marginBottom: '5%',
-              }}>
-              {Platform.OS == 'android' ? (
-                <Text
-                  style={{
-                    textAlign: 'center',
-                    color: '#ffffff',
-                  }}>
-                  {dateHasta.toLocaleTimeString().slice(1, -3)}
-                </Text>
-              ) : (
-                <Text
-                  style={{
-                    textAlign: 'center',
-                    color: '#ffffff',
-                  }}>
-                  {dateHasta.toLocaleTimeString([], {
-                    hour: '2-digit',
-                    minute: '2-digit',
-                  })}
-                </Text>
-              )}
-            </View>
-          </View>
-        </View>
         <Text
           h3
           style={{ color: '#000', textAlign: 'center', marginTop: '5%' }}>
@@ -1442,18 +1095,14 @@ const AnunciatePage = ({ navigation }) => {
                   numeroDeMatricula: numeroDeMatricula,
                   emailLaboral: emailLaboral,
                   descripcionPersonal: descripcionPersonal,
-                  palabraClaveUno,
-                  palabraClaveDos,
-                  palabraClaveTres,
-                  diasHorarios: diasHorarios,
-                  desde: dateDesdeParsed,
-                  hasta: dateHastaParsed,
+                  palabraClaveUno: palabraClaveUno,
+                  palabraClaveDos: palabraClaveDos,
+                  palabraClaveTres: palabraClaveTres,
                   efectivo: efectivo,
                   pagosDigitales: pagosDigitales,
                   terminos: terminos,
                   latitud: latitud,
                   longitud: longitud,
-                  photoJSONValue: photoJSONValue,
                   uuid: uuid,
                 },
               })

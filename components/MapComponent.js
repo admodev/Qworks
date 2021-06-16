@@ -222,7 +222,7 @@ class MapComponent extends Component {
             </MapView>
           )}
           <Input
-            placeholder='Buscar en Qworks!'
+            placeholder='Buscar en Q works!'
             containerStyle={{
               ...Platform.select({
                 android: {

@@ -177,6 +177,7 @@ class ControlPanel extends React.Component {
               apellido={item.apellido}
               actividad={item.actividad}
               local={item.direccionDelLocal}
+              localidad={item.localidad}
               recomendacionesTotales={
                 item.recomendacionesTotales > 0
                   ? item.recomendacionesTotales
