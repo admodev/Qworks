@@ -27,6 +27,7 @@ import 'firebase/auth';
 import { useFonts } from 'expo-font';
 import * as RootNavigation from '../RootNavigation';
 import * as Linking from 'expo-linking';
+import * as WebBrowser from 'expo-web-browser';
 
 const naranjaQueDeOficios = '#fd5d13';
 
@@ -187,6 +188,9 @@ const LocationComponent = (props) => {
           </Text>
           {props.local && (
             <Text
+              onPress={() =>
+                WebBrowser.openBrowserAsync(`https://www.google.com/maps`)
+              }
               style={{
                 ...Platform.select({
                   android: {
@@ -209,13 +213,10 @@ const LocationComponent = (props) => {
                 color={'gray'}
                 size={16}
               />{' '}
-              {props.local.length > 30
-                ? props.local.substr(0, props.local.length - 45) + '...'
-                : props.local}
+              {props.local.substr(0, 25) + '\u2026'}
             </Text>
           )}
           <Text
-            onPress={() => Linking.openURL('https://www.google.com/maps')}
             style={{
               ...Platform.select({
                 android: {
@@ -237,9 +238,7 @@ const LocationComponent = (props) => {
               color={'gray'}
               size={16}
             />{' '}
-            {props.localidad.length > 10
-              ? props.localidad.substr(0, props.localidad.length - 15) + '...'
-              : props.localidad}
+            {props.localidad.substr(0, 25) + '\u2026'}
           </Text>
           <TouchableOpacity
             onPress={() => {
