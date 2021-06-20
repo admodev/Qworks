@@ -1164,6 +1164,7 @@ export default function AnuncioSeleccionado({ route, navigation }) {
                 RootNavigation.navigate('ChatComponent', {
                   userOne: firebase.auth().currentUser.uid,
                   userTwo: id,
+                  uuid: route.params.uuid,
                 })
               }
               titleStyle={{ fontSize: 12, marginTop: 18 }}

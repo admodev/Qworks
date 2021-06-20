@@ -102,6 +102,21 @@ export default function Chat({ route, navigation }) {
       });
     });
 
+  let userTwoNombre, userTwoActividad, userTwoEmail;
+
+  firebase.default
+    .database()
+    .ref('anuncios/')
+    .orderByChild('uuid')
+    .equalTo(route.params.uuid)
+    .once('value', (snap) => {
+      snap.forEach((child) => {
+        userTwoNombre = child.val().nombre;
+        userTwoActividad = child.val().actividad;
+        userTwoEmail = child.val().emailLaboral;
+      });
+    });
+
   function toggleTimer() {
     setTimerStart(!timerStart);
   }
@@ -284,41 +299,68 @@ export default function Chat({ route, navigation }) {
             </TouchableOpacity>
           </View>
           {totalDuration > 0 ? (
-            <GiftedChat
-              messages={messages}
-              onSend={handleSend}
-              user={{
-                _id: firebase.auth().currentUser && currentUser,
-                user: 1,
-                name: nombre,
-                receiver: receiver,
-              }}
-              text={text}
-              alwaysShowSend={text ? true : false || image ? true : false}
-              renderUsernameOnMessage={true}
-              onInputTextChanged={(text) => setText(text)}
-              renderLoading={() => (
-                <ActivityIndicator size='large' color='#fd5d13' />
-              )}
-              isAnimated
-              renderAvatarOnTop
-              placeholder='Escribe tu mensaje...'
-              receiver={{
-                receiver: receiver,
-                user: 2,
-              }}
-              loadEarlier={messages.length >= 20}
-              scrollToBottom
-              scrollToBottomComponent={() => (
-                <MaterialCommunityIcons
-                  name='arrow-down'
-                  color={'#fd5d13'}
-                  size={20}
-                />
-              )}
-              renderSend={renderSend}
-              renderActions={() => renderActions()}
-            />
+            <>
+              <Text
+                style={{
+                  margin: '2%',
+                  fontSize: 16,
+                }}>
+                Estas chateando con: {userTwoNombre}
+              </Text>
+              <Text
+                style={{
+                  margin: '2%',
+                  fontSize: 16,
+                  color: '#fd5d13',
+                }}>
+                Email: {userTwoEmail}
+              </Text>
+              <Text
+                style={{
+                  margin: '2%',
+                  fontSize: 16,
+                }}>
+                Profesion: {userTwoActividad}
+              </Text>
+              <GiftedChat
+                messages={messages}
+                onSend={handleSend}
+                user={{
+                  _id: firebase.auth().currentUser && currentUser,
+                  user: 1,
+                  name: nombre,
+                  receiver: receiver,
+                }}
+                text={text}
+                alwaysShowSend={text ? true : false || image ? true : false}
+                renderUsernameOnMessage={true}
+                onInputTextChanged={(text) => setText(text)}
+                renderLoading={() => (
+                  <ActivityIndicator size='large' color='#fd5d13' />
+                )}
+                isAnimated
+                renderAvatarOnTop
+                placeholder='Escribe tu mensaje...'
+                receiver={{
+                  receiver: receiver,
+                  user: 2,
+                  name: userTwoNombre,
+                  actividad: userTwoActividad,
+                  userTwoEmail: userTwoEmail,
+                }}
+                loadEarlier={messages.length >= 20}
+                scrollToBottom
+                scrollToBottomComponent={() => (
+                  <MaterialCommunityIcons
+                    name='arrow-down'
+                    color={'#fd5d13'}
+                    size={20}
+                  />
+                )}
+                renderSend={renderSend}
+                renderActions={() => renderActions()}
+              />
+            </>
           ) : (
             <View>
               <Text
