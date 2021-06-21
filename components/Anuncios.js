@@ -47,12 +47,12 @@ const AnunciosPage = ({ route, navigation }, props) => {
   useEffect(() => {
     setLoading(true);
 
-    firebase
+    firebase.default
       .database()
       .ref('anuncios/')
       .orderByChild('id')
       .equalTo(firebase.auth().currentUser.uid)
-      .once('value', (snapshot) => {
+      .on('value', (snapshot) => {
         let anuncioArr = [];
         snapshot.forEach((childSnapshot) => {
           anuncioArr.push({

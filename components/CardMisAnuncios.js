@@ -1,25 +1,6 @@
-import React, { Component, useState } from 'react';
-import {
-  ActivityIndicator,
-  Dimensions,
-  TouchableOpacity,
-  StyleSheet,
-  Image,
-  View,
-  ScrollView,
-  SafeAreaView,
-  Text,
-  Platform,
-  Touchable,
-} from 'react-native';
-import {
-  AirbnbRating,
-  Avatar,
-  Button,
-  Card,
-  Icon,
-  Input,
-} from 'react-native-elements';
+import React, { useState } from 'react';
+import { TouchableOpacity, Image, View, Text, Platform } from 'react-native';
+import { AirbnbRating, Button, Overlay } from 'react-native-elements';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import * as firebase from 'firebase';
 import 'firebase/firestore';
@@ -31,6 +12,8 @@ import * as RootNavigation from '../RootNavigation';
 const CardMisAnuncios = (props) => {
   const [defaultProfilePicture, setDefaultProfilePicture] = useState(null);
   const [fotoDePerfil, setFotoDePerfil] = useState(null);
+  const [eliminarCuentaAproved, setEliminarCuentaAproved] = useState(false);
+  const [visible, setVisible] = useState(false);
   const [loaded] = useFonts({
     // Nombres, apellidos, títulos y subtítulos
     DmSans: require('../assets/fonts/DM_Sans/DMSans-Regular.ttf'),
@@ -87,17 +70,71 @@ const CardMisAnuncios = (props) => {
       console.log('ERROR AL DESCARGAR FOTO', error.message);
     });
 
+  const handleDeleteAccount = async () => {
+    setVisible(!visible);
+
+    if (eliminarCuentaAproved) {
+      firebase.default
+        .auth()
+        .currentUser.delete()
+        .then(function () {
+          alert('Eliminando su cuenta, aguarde por favor...');
+          return setTimeout(() => {
+            RootNavigation.navigate('OnboardingPage');
+          }, 2000);
+        })
+        .catch(function (error) {
+          alert(
+            "Para eliminar su cuenta debe oprimir 'si' en el recuadro de alerta."
+          );
+          console.error('Ocurrio un error al eliminar su cuenta...', error);
+        });
+    }
+  };
+
   return (
     <View
       style={{
         backgroundColor: '#ffffff',
         width: '95%',
-        height: '65%',
         marginTop: '5%',
         alignSelf: 'center',
         borderRadius: 10,
-        bottom: 5,
       }}>
+      <Overlay isVisible={visible} onBackdropPress={() => setVisible(!visible)}>
+        <Text style={{ fontSize: 16, textAlign: 'center', margin: 5 }}>
+          Esta a punto de eliminar su cuenta y perder todos sus datos, desea
+          continuar?
+        </Text>
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'center',
+            marginTop: '2%',
+          }}>
+          <Button
+            title='Si'
+            buttonStyle={{
+              backgroundColor: '#fd5d13',
+              opacity: 0.8,
+              width: 120,
+              borderRadius: 12,
+              margin: 5,
+            }}
+            onPress={() => setEliminarCuentaAproved(true)}
+          />
+          <Button
+            title='No'
+            buttonStyle={{
+              backgroundColor: '#fd5d13',
+              width: 120,
+              borderRadius: 12,
+              margin: 5,
+            }}
+            onPress={() => setEliminarCuentaAproved(false)}
+          />
+        </View>
+      </Overlay>
       <Image
         source={require('../assets/gradients/10X10.png')}
         style={{
@@ -166,6 +203,7 @@ const CardMisAnuncios = (props) => {
           style={{
             marginTop: '25%',
             marginLeft: '2%',
+            marginBottom: '2%',
             maxWidth: '85%',
           }}>
           <Text
@@ -299,11 +337,13 @@ const CardMisAnuncios = (props) => {
                   marginBottom: '7%',
                   marginRight: '15%',
                 }}>
-                <MaterialCommunityIcons
-                  name='account-off'
-                  color={'#fd5d13'}
-                  size={20}
-                />
+                <TouchableOpacity onPress={handleDeleteAccount}>
+                  <MaterialCommunityIcons
+                    name='account-off'
+                    color={'#fd5d13'}
+                    size={20}
+                  />
+                </TouchableOpacity>
               </View>
             </View>
           </TouchableOpacity>
