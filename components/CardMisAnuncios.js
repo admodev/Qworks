@@ -261,7 +261,13 @@ const CardMisAnuncios = (props) => {
                   marginRight: '15%',
                 }}>
                 <TouchableOpacity
-                  onPress={() => RootNavigation.navigate('EditAnounce')}>
+                  onPress={() => {
+                    RootNavigation.navigate('EditAnounce', {
+                      id: props.idAnuncio,
+                      uuid: props.uuid,
+                      index: props.key,
+                    });
+                  }}>
                   <MaterialCommunityIcons
                     name='lead-pencil'
                     color={'#fd5d13'}
@@ -274,11 +280,19 @@ const CardMisAnuncios = (props) => {
                   marginBottom: '7%',
                   marginRight: '15%',
                 }}>
-                <MaterialCommunityIcons
-                  name='eraser'
-                  color={'#fd5d13'}
-                  size={20}
-                />
+                <TouchableOpacity
+                  onPress={() =>
+                    firebase.default
+                      .database()
+                      .ref('anuncios/' + props.idAnuncio + props.anuncioId)
+                      .remove()
+                  }>
+                  <MaterialCommunityIcons
+                    name='eraser'
+                    color={'#fd5d13'}
+                    size={20}
+                  />
+                </TouchableOpacity>
               </View>
               <View
                 style={{

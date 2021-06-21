@@ -1,6 +1,7 @@
 // @vendor
 import * as React from 'react';
 import * as WebBrowser from 'expo-web-browser';
+import * as Google from 'expo-auth-session/providers/google';
 import * as Facebook from 'expo-auth-session/providers/facebook';
 import { ResponseType } from 'expo-auth-session';
 import * as firebase from 'firebase';
@@ -15,6 +16,7 @@ import {
   StyleSheet,
   View,
   Text,
+  TouchableOpacity,
 } from 'react-native';
 import {
   Avatar,
@@ -30,45 +32,7 @@ import 'firebase/database';
 import 'firebase/storage';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
-type AnounceProps = {
-  actividad: string;
-  apellido: string;
-  celular: number;
-  descripcionPersonal: string;
-  desde: string;
-  diasHorarios: number[];
-  direccionDelLocal: string;
-  efectivo: boolean;
-  emailLaboral: string;
-  emailPersonal: string;
-  empresa: string;
-  factura: string;
-  hasta: string;
-  local: string;
-  localidad: string;
-  matricula: string;
-  nombre: string;
-  nombreDeLaEmpresa: string;
-  numeroDeMatricula: string;
-  pagosDigitales: boolean;
-  palabraClaveUno: string;
-  palabraClaveDos: string;
-  palabraClaveTres: string;
-  partido: string;
-  provincia: string;
-  telefono: number;
-};
-
-// Foto
-declare var Blob: {
-  prototype: Blob;
-  new (): Blob;
-  new (request: any, mime: string): Blob;
-};
-
-WebBrowser.maybeCompleteAuthSession();
-
-const EditAnounce: React.FunctionComponent<AnounceProps> = () => {
+const EditAnounce = ({ route }) => {
   const [values, setValues] = React.useState({
     image: null,
     actividad: '',
@@ -99,58 +63,80 @@ const EditAnounce: React.FunctionComponent<AnounceProps> = () => {
     telefono: 0,
   });
   const [uploading, setUploading] = React.useState(false);
-  const [request, response, promptAsync] = Facebook.useAuthRequest({
-    responseType: ResponseType.Token,
-    clientId: FACEBOOK_APP_ID,
+
+  let image,
+    nombre,
+    apellido,
+    actividad,
+    contadorAnuncio,
+    efectivo,
+    pagosDigitales,
+    emailPersonal,
+    celular,
+    descripcionPersonal,
+    desde,
+    diasHorarios,
+    direccionDelLocal,
+    emailLaboral,
+    empresa,
+    factura,
+    hasta,
+    local,
+    localidad,
+    matricula,
+    nombreDeLaEmpresa,
+    numeroDeMatricula,
+    palabraClaveUno,
+    palabraClaveDos,
+    palabraClaveTres,
+    partido,
+    pisoDptoCasa,
+    provincia,
+    telefono,
+    recomendacionesTotales,
+    hasRecommended;
+
+  let dbRef = firebase
+    .database()
+    .ref('anuncios/')
+    .orderByChild('uuid')
+    .equalTo(route.params.uuid);
+  let dbResult = dbRef.on('value', (snap) => {
+    snap.forEach((child) => {
+      nombre = child.val().nombre;
+      apellido = child.val().apellido;
+      actividad = child.val().actividad;
+      efectivo = child.val().efectivo;
+      pagosDigitales = child.val().pagosDigitales;
+      emailPersonal = child.val().emailPersonal;
+      id = child.val().id;
+      contadorAnuncio = child.val().anuncioId;
+      celular = child.val().celular;
+      descripcionPersonal = child.val().descripcionPersonal;
+      desde = child.val().desde;
+      diasHorarios = child.val().diasHorarios;
+      direccionDelLocal = child.val().direccionDelLocal;
+      emailLaboral = child.val().emailLaboral;
+      empresa = child.val().empresa;
+      factura = child.val().factura;
+      hasta = child.val().hasta;
+      local = child.val().local;
+      localidad = child.val().localidad;
+      palabraClaveUno = child.val().palabraClaveUno;
+      palabraClaveDos = child.val().palabraClaveDos;
+      palabraClaveTres = child.val().palabraClaveTres;
+      partido = child.val().partido;
+      provincia = child.val().provincia;
+      nombreDeLaEmpresa = child.val().nombreDeLaEmpresa;
+      recomendacionesTotales = child.val().recomendacionesTotales;
+      hasRecommended = child.val().hasRecommended;
+      telefono = child.val().telefono;
+      matricula = child.val().matricula;
+      numeroDeMatricula = child.val().numeroDeMatricula;
+    });
   });
 
-  let anunciosCountResult;
-
-  React.useEffect(() => {
-    //let dbRef = firebase.default
-    //.database()
-    //.ref('anuncios/')
-    //.orderByChild('uuid')
-    //.equalTo('uuid');
-    //let dbResult = dbRef.on('value', (snap) => {
-    //snap.forEach((child) => {
-    //anunciosCountResult = child.val().anuncioId;
-    //values.nombre = child.val().nombre;
-    //values.apellido = child.val().apellido;
-    //values.actividad = child.val().actividad;
-    //values.efectivo = child.val().efectivo;
-    //values.pagosDigitales = child.val().pagosDigitales;
-    //values.emailPersonal = child.val().emailPersonal;
-    //values.celular = child.val().celular;
-    //values.descripcionPersonal = child.val().descripcionPersonal;
-    //values.desde = child.val().desde;
-    //values.diasHorarios = child.val().diasHorarios;
-    //values.direccionDelLocal = child.val().direccionDelLocal;
-    //values.emailLaboral = child.val().emailLaboral;
-    //values.empresa = child.val().empresa;
-    //values.factura = child.val().factura;
-    //values.hasta = child.val().hasta;
-    //values.local = child.val().local;
-    //values.localidad = child.val().localidad;
-    //values.provincia = child.val().provincia;
-    //values.nombreDeLaEmpresa = child.val().nombreDeLaEmpresa;
-    //values.telefono = child.val().telefono;
-    //values.matricula = child.val().matricula;
-    //values.numeroDeMatricula = child.val().numeroDeMatricula;
-    //});
-    //});
-
-    // Facebook auth
-    if (response?.type === 'success') {
-      const { access_token } = response.params;
-
-      const credential = firebase.default.auth.FacebookAuthProvider.credential(
-        access_token
-      );
-      // Sign in with the credential from the Facebook user.
-      firebase.default.auth().signInWithCredential(credential);
-    }
-  }, [response]);
+  //provider.addScope('https://www.googleapis.com/auth/userinfo.profile');
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -161,7 +147,7 @@ const EditAnounce: React.FunctionComponent<AnounceProps> = () => {
     });
     console.log(result);
     if (!result.cancelled) {
-      const { uri } = result as ImageInfo;
+      const uri = result;
       setValues({
         ...values,
         image: uri.toString(),
@@ -177,7 +163,7 @@ const EditAnounce: React.FunctionComponent<AnounceProps> = () => {
         .storage()
         .ref('anunciosPictures/')
         .child(
-          firebase.default.auth().currentUser.uid + anunciosCountResult + '.JPG'
+          firebase.default.auth().currentUser.uid + contadorAnuncio + '.JPG'
         )
         .put(blob)
         .then(function () {
@@ -194,6 +180,24 @@ const EditAnounce: React.FunctionComponent<AnounceProps> = () => {
       setUploading(false);
     }
   };
+
+  const [request, response, promptAsync] = Google.useAuthRequest({
+    expoClientId:
+      '224428348880-r23dsomdtlivf7vgecq8485350eg57v1.apps.googleusercontent.com',
+    iosClientId:
+      '224428348880-r23dsomdtlivf7vgecq8485350eg57v1.apps.googleusercontent.com',
+    androidClientId:
+      '224428348880-r23dsomdtlivf7vgecq8485350eg57v1.apps.googleusercontent.com',
+    webClientId:
+      '224428348880-r23dsomdtlivf7vgecq8485350eg57v1.apps.googleusercontent.com',
+  });
+
+  React.useEffect(() => {
+    if (response?.type === 'success') {
+      const { authentication } = response;
+      console.log(authentication);
+    }
+  }, [response]);
 
   return (
     <SafeAreaView style={styles.safeAreaView}>
@@ -227,7 +231,7 @@ const EditAnounce: React.FunctionComponent<AnounceProps> = () => {
             onPress={pickImage}
           />
           <Input
-            placeholder='Nombre'
+            placeholder={nombre}
             inputContainerStyle={{
               width: '85%',
               marginLeft: 'auto',
@@ -242,7 +246,7 @@ const EditAnounce: React.FunctionComponent<AnounceProps> = () => {
             }
           />
           <Input
-            placeholder='Apellido'
+            placeholder={apellido}
             inputContainerStyle={{
               width: '85%',
               marginLeft: 'auto',
@@ -258,7 +262,7 @@ const EditAnounce: React.FunctionComponent<AnounceProps> = () => {
           />
           <Text>Información Laboral</Text>
           <Input
-            placeholder='Actividad'
+            placeholder={actividad}
             inputContainerStyle={{
               width: '85%',
               marginLeft: 'auto',
@@ -273,7 +277,7 @@ const EditAnounce: React.FunctionComponent<AnounceProps> = () => {
             }
           />
           <Input
-            placeholder='Teléfono (Línea)'
+            placeholder={telefono}
             inputContainerStyle={{
               width: '85%',
               marginLeft: 'auto',
@@ -289,7 +293,7 @@ const EditAnounce: React.FunctionComponent<AnounceProps> = () => {
             }
           />
           <Input
-            placeholder='Teléfono (Móvil)'
+            placeholder={celular}
             inputContainerStyle={{
               width: '85%',
               marginLeft: 'auto',
@@ -305,7 +309,7 @@ const EditAnounce: React.FunctionComponent<AnounceProps> = () => {
             }
           />
           <Input
-            placeholder='Email Laboral'
+            placeholder={emailLaboral}
             inputContainerStyle={{
               width: '85%',
               marginLeft: 'auto',
@@ -321,7 +325,7 @@ const EditAnounce: React.FunctionComponent<AnounceProps> = () => {
             }
           />
           <Input
-            placeholder='Localidad'
+            placeholder={localidad}
             inputContainerStyle={{
               width: '85%',
               marginLeft: 'auto',
@@ -336,7 +340,7 @@ const EditAnounce: React.FunctionComponent<AnounceProps> = () => {
             }
           />
           <Input
-            placeholder='Partido'
+            placeholder={partido}
             inputContainerStyle={{
               width: '85%',
               marginLeft: 'auto',
@@ -381,7 +385,7 @@ const EditAnounce: React.FunctionComponent<AnounceProps> = () => {
             }
           />
           <Input
-            placeholder='Nombre de la Empresa'
+            placeholder={empresa ? empresa : 'Empresa'}
             inputContainerStyle={{
               width: '85%',
               marginLeft: 'auto',
@@ -396,7 +400,7 @@ const EditAnounce: React.FunctionComponent<AnounceProps> = () => {
             }
           />
           <Input
-            placeholder='Factura (Tipo)'
+            placeholder={factura ? factura : 'Factura (Tipo)'}
             inputContainerStyle={{
               width: '85%',
               marginLeft: 'auto',
@@ -411,7 +415,7 @@ const EditAnounce: React.FunctionComponent<AnounceProps> = () => {
             }
           />
           <Input
-            placeholder='Matrícula (Si / No)'
+            placeholder={matricula ? matricula : 'Matrícula (Si / No)'}
             inputContainerStyle={{
               width: '85%',
               marginLeft: 'auto',
@@ -426,7 +430,7 @@ const EditAnounce: React.FunctionComponent<AnounceProps> = () => {
             }
           />
           <Input
-            placeholder='Número de matrícula'
+            placeholder={matricula ? numeroDeMatricula : 'Número de matrícula'}
             inputContainerStyle={{
               width: '85%',
               marginLeft: 'auto',
@@ -444,7 +448,11 @@ const EditAnounce: React.FunctionComponent<AnounceProps> = () => {
             Información Adicional
           </Text>
           <Input
-            placeholder='Ingrese información adicional...'
+            placeholder={
+              descripcionPersonal
+                ? descripcionPersonal
+                : 'Ingrese información adicional...'
+            }
             style={{
               height: 200,
               width: '80%',
@@ -467,7 +475,7 @@ const EditAnounce: React.FunctionComponent<AnounceProps> = () => {
           <Text style={{ color: '#000000' }}>Palabras clave</Text>
           <View style={{ flexDirection: 'row', marginTop: '10%' }}>
             <Input
-              placeholder='#Uno'
+              placeholder={palabraClaveUno ? palabraClaveUno : '#Uno'}
               onChangeText={(palabraClaveUno) =>
                 setValues({
                   ...values,
@@ -491,7 +499,7 @@ const EditAnounce: React.FunctionComponent<AnounceProps> = () => {
               }}
             />
             <Input
-              placeholder='#Dos'
+              placeholder={palabraClaveDos ? palabraClaveDos : '#Dos'}
               onChangeText={(palabraClaveDos) =>
                 setValues({
                   ...values,
@@ -515,7 +523,7 @@ const EditAnounce: React.FunctionComponent<AnounceProps> = () => {
               }}
             />
             <Input
-              placeholder='#Tres'
+              placeholder={palabraClaveTres ? palabraClaveTres : '#Tres'}
               onChangeText={(palabraClaveTres) =>
                 setValues({
                   ...values,
@@ -711,7 +719,10 @@ const EditAnounce: React.FunctionComponent<AnounceProps> = () => {
             <SocialIcon
               button
               type='google'
-              onPress={() => console.log('Agregar metodo')}
+              disabled={!request}
+              onPress={() => {
+                promptAsync();
+              }}
               style={{
                 width: 50,
                 height: 50,
@@ -719,6 +730,7 @@ const EditAnounce: React.FunctionComponent<AnounceProps> = () => {
             />
             <Input
               placeholder='Google'
+              disabled
               inputContainerStyle={{
                 width: '75%',
                 marginLeft: '2%',
@@ -727,21 +739,6 @@ const EditAnounce: React.FunctionComponent<AnounceProps> = () => {
             />
           </View>
         </View>
-        <Button
-          buttonStyle={{
-            marginTop: 20,
-            marginLeft: 'auto',
-            marginRight: 'auto',
-            marginBottom: 20,
-            backgroundColor: '#F4743B',
-            width: '70%',
-          }}
-          disabled={!request}
-          title='Testear Facebook'
-          onPress={() => {
-            promptAsync();
-          }}
-        />
         <Button
           buttonStyle={{
             marginTop: 20,
