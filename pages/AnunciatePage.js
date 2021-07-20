@@ -38,8 +38,6 @@ const AnunciatePage = ({ navigation }) => {
   const [cuitCuil, setCuitCuil] = useState('');
   const [dni, setDni] = useState('');
   const [actividad, setActividad] = useState('');
-  const [telefono, setTelefono] = useState('');
-  const [celular, setCelular] = useState('');
   const [localidad, setLocalidad] = useState('');
   const [localidadLatitude, setLocalidadLatitude] = useState('');
   const [localidadLongitude, setLocalidadLongitude] = useState('');
@@ -47,16 +45,11 @@ const AnunciatePage = ({ navigation }) => {
   const [partidoLatitude, setPartidoLatitude] = useState('');
   const [partidoLongitude, setPartidoLongitude] = useState('');
   const [local, setLocal] = useState('');
-  const [empresa, setEmpresa] = useState('');
-  const [factura, setFactura] = useState('');
   const [direccionDelLocal, setDireccionDelLocal] = useState('');
   const [direccionDelLocalLatitude, setDireccionDelLocalLatitude] =
     useState('');
   const [direccionDelLocalLongitude, setDireccionDelLocalLongitude] =
     useState('');
-  const [nombreDeLaEmpresa, setNombreDeLaEmpresa] = useState('');
-  const [matricula, setMatricula] = useState('');
-  const [numeroDeMatricula, setNumeroDeMatricula] = useState('');
   const [emailLaboral, setEmailLaboral] = useState('');
   const [descripcionPersonal, setDescripcionPersonal] = useState('');
   const [palabraClaveUno, setPalabraClaveUno] = useState('');
@@ -279,44 +272,7 @@ const AnunciatePage = ({ navigation }) => {
     setDireccionDelLocalLongitude(direccionDelLocalLongitudePlaces);
   }
 
-  function writeUserData(
-    nombre,
-    apellido,
-    cuitCuil,
-    dni,
-    actividad,
-    telefono,
-    celular,
-    localidad,
-    localidadLatitude,
-    localidadLongitude,
-    partido,
-    partidoLatitude,
-    partidoLongitude,
-    local,
-    empresa,
-    factura,
-    direccionDelLocal,
-    direccionDelLocalLatitude,
-    direccionDelLocalLongitude,
-    nombreDeLaEmpresa,
-    matricula,
-    numeroDeMatricula,
-    emailLaboral,
-    descripcionPersonal,
-    palabraClaveUno,
-    palabraClaveDos,
-    palabraClaveTres,
-    diasHorarios,
-    dateDesdeParsed,
-    dateHastaParsed,
-    efectivo,
-    pagosDigitales,
-    terminos,
-    latitud,
-    longitud,
-    photoJSONValue
-  ) {
+  async function writeUserData() {
     if (!cuitCuil.trim()) {
       alert('Por favor ingrese su cuit/cuil');
       return;
@@ -343,7 +299,7 @@ const AnunciatePage = ({ navigation }) => {
       }
       let userRef = user.uid;
 
-      let anunciosRef = firebase
+      let anunciosRef = await firebase
         .database()
         .ref(
           'anuncios/' + firebase.auth().currentUser.uid + anunciosCountResult
@@ -354,47 +310,42 @@ const AnunciatePage = ({ navigation }) => {
           nombre: nombre,
           apellido: apellido,
           emailPersonal: firebase.auth().currentUser.email,
-          cuitCuil: cuitCuil,
-          dni: dni,
+          dni: Number(dni),
+          cuitCuil: Number(cuitCuil),
           actividad: actividad,
-          telefono: telefono,
-          celular: celular,
-          localidad: localidad,
-          localidadLatitude: localidadLatitude,
-          localidadLongitude: localidadLongitude,
-          partido: partido,
-          partidoLatitude: partidoLatitude,
-          partidoLongitude: partidoLongitude,
-          local: local,
-          empresa: empresa,
-          factura: factura,
-          direccionDelLocal: direccionDelLocal,
-          direccionDelLocalLatitude: direccionDelLocalLatitude,
-          direccionDelLocalLongitude: direccionDelLocalLongitude,
-          nombreDeLaEmpresa: nombreDeLaEmpresa,
-          matricula: matricula,
-          numeroDeMatricula: numeroDeMatricula,
           emailLaboral: emailLaboral,
-          descripcionPersonal: descripcionPersonal,
-          palabraClaveUno,
-          palabraClaveDos,
-          palabraClaveTres,
-          diasHorarios: diasHorarios,
-          desde: dateDesdeParsed,
-          hasta: dateHastaParsed,
-          efectivo: efectivo,
-          pagosDigitales: pagosDigitales,
-          terminos: terminos,
-          latitud: latitud,
-          longitud: longitud,
-          photoJSONValue: photoJSONValue,
+          localidad: localidad,
+          localidadLatitude: Number(localidadLatitude),
+          localidadLongitude: Number(localidadLongitude),
+          partido: partido,
+          partidoLatitude: Number(partidoLatitude),
+          partidoLongitude: Number(partidoLongitude),
+          local: local ? true : false,
+          direccionDelLocal: direccionDelLocal ? direccionDelLocal : null,
+          descripcionPersonal: descripcionPersonal
+            ? descripcionPersonal
+            : 'Sin descripcion',
+          palabraClaveUno: palabraClaveUno ? palabraClaveUno : null,
+          palabraClaveDos: palabraClaveDos ? palabraClaveDos : null,
+          palabraClaveTres: palabraClaveTres ? palabraClaveTres : null,
+          efectivo: efectivo ? true : false,
+          pagosDigitales: pagosDigitales ? true : false,
+          terminos: terminos ? true : false,
+          latitud: Number(latitud),
+          longitud: Number(longitud),
           uuid: uuid,
         })
         .catch(function (error) {
           alert(
             'Hubo un error al subir su anuncio, por favor compruebe sus datos e intentelo nuevamente.'
           );
+
+          console.log(error);
         });
+
+      navigation.navigate('OnboardingPage');
+
+      return anunciosRef;
     }
   }
 
@@ -584,26 +535,6 @@ const AnunciatePage = ({ navigation }) => {
             />
           )}
           <Input
-            placeholder='Teléfono'
-            inputStyle={{ color: '#000000' }}
-            style={{ color: '#000000', fontSize: 18 }}
-            inputContainerStyle={{ borderBottomColor: '#000000' }}
-            placeholderTextColor='black'
-            keyboardType='phone-pad'
-            onChangeText={(telefono) => setTelefono(telefono)}
-            value={telefono}
-          />
-          <Input
-            placeholder='Celular'
-            inputStyle={{ color: '#000000' }}
-            style={{ color: '#000000', fontSize: 18 }}
-            inputContainerStyle={{ borderBottomColor: '#000000' }}
-            placeholderTextColor='black'
-            keyboardType='phone-pad'
-            onChangeText={(celular) => setCelular(celular)}
-            value={celular}
-          />
-          <Input
             placeholder='Email laboral'
             inputStyle={{ color: '#000000' }}
             style={{ color: '#000000', fontSize: 18 }}
@@ -715,7 +646,7 @@ const AnunciatePage = ({ navigation }) => {
               maxLength={2}
             />
           )}
-          {local.toString().toLocaleLowerCase() === 'si' && (
+          {local.toString().toLocaleLowerCase() === 'si' ? (
             <GooglePlacesAutocomplete
               placeholder='Dirección del local'
               minLength={2}
@@ -761,84 +692,16 @@ const AnunciatePage = ({ navigation }) => {
               listViewDisplayed={false}
               onFail={(error) => console.error(error)}
             />
-          )}
-          {Platform.os === 'ios' ? (
-            <Input
-              placeholder='Empresa (Si / No)'
-              inputStyle={{ color: '#000000' }}
-              style={{ color: '#000000', fontSize: 18 }}
-              inputContainerStyle={{ borderBottomColor: '#000000' }}
-              placeholderTextColor='black'
-              onChangeText={(empresa) => setEmpresa(empresa)}
-              value={empresa}
-              maxLength='2'
-            />
           ) : (
             <Input
-              placeholder='Empresa (Si / No)'
+              placeholder='Sin especificar'
               inputStyle={{ color: '#000000' }}
               style={{ color: '#000000', fontSize: 18 }}
               inputContainerStyle={{ borderBottomColor: '#000000' }}
               placeholderTextColor='black'
-              onChangeText={(empresa) => setEmpresa(empresa)}
-              value={empresa}
-              maxLength={2}
+              disabled={true}
             />
           )}
-          <Input
-            placeholder='Nombre de la empresa'
-            inputStyle={{ color: '#000000' }}
-            style={{ color: '#000000', fontSize: 18 }}
-            inputContainerStyle={{ borderBottomColor: '#000000' }}
-            placeholderTextColor='black'
-            onChangeText={(nombreDeLaEmpresa) =>
-              setNombreDeLaEmpresa(nombreDeLaEmpresa)
-            }
-            value={nombreDeLaEmpresa}
-          />
-          <Input
-            placeholder='Factura (Tipo)'
-            inputStyle={{ color: '#000000' }}
-            style={{ color: '#000000', fontSize: 18 }}
-            inputContainerStyle={{ borderBottomColor: '#000000' }}
-            placeholderTextColor='black'
-            onChangeText={(factura) => setFactura(factura)}
-            value={factura}
-          />
-          {Platform.os === 'ios' ? (
-            <Input
-              placeholder='Matrícula (Si / No)'
-              inputStyle={{ color: '#000000' }}
-              style={{ color: '#000000', fontSize: 18 }}
-              inputContainerStyle={{ borderBottomColor: '#000000' }}
-              placeholderTextColor='black'
-              onChangeText={(matricula) => setMatricula(matricula)}
-              value={matricula}
-              maxLength='2'
-            />
-          ) : (
-            <Input
-              placeholder='Matrícula (Si / No)'
-              inputStyle={{ color: '#000000' }}
-              style={{ color: '#000000', fontSize: 18 }}
-              inputContainerStyle={{ borderBottomColor: '#000000' }}
-              placeholderTextColor='black'
-              onChangeText={(matricula) => setMatricula(matricula)}
-              value={matricula}
-              maxLength={2}
-            />
-          )}
-          <Input
-            placeholder='Número de matrícula'
-            inputStyle={{ color: '#000000' }}
-            style={{ color: '#000000', fontSize: 18 }}
-            inputContainerStyle={{ borderBottomColor: '#000000' }}
-            placeholderTextColor='black'
-            onChangeText={(numeroDeMatricula) =>
-              setNumeroDeMatricula(numeroDeMatricula)
-            }
-            value={numeroDeMatricula}
-          />
         </View>
         <View
           style={{
@@ -851,7 +714,7 @@ const AnunciatePage = ({ navigation }) => {
             Información Adicional
           </Text>
           <Input
-            placeholder='Ingrese una descripción personal...'
+            placeholder='Ingrese una breve descripción adiciona...'
             placeholderTextColor={'black'}
             style={{
               height: 200,
@@ -1062,49 +925,8 @@ const AnunciatePage = ({ navigation }) => {
             marginBottom: 30,
           }}>
           <Button
-            onPress={() =>
-              navigation.navigate('PlanesPage', {
-                pendingAnounce: {
-                  anuncioId: anunciosCountResult,
-                  id: user.uid,
-                  nombre: nombre,
-                  apellido: apellido,
-                  emailPersonal: firebase.auth().currentUser.email,
-                  cuitCuil: cuitCuil,
-                  dni: dni,
-                  actividad: actividad,
-                  telefono: telefono,
-                  celular: celular,
-                  localidad: localidad,
-                  localidadLatitude: localidadLatitude,
-                  localidadLongitude: localidadLongitude,
-                  partido: partido,
-                  partidoLatitude: partidoLatitude,
-                  partidoLongitude: partidoLongitude,
-                  local: local,
-                  empresa: empresa,
-                  factura: factura,
-                  direccionDelLocal: direccionDelLocal,
-                  direccionDelLocalLatitude: direccionDelLocalLatitude,
-                  direccionDelLocalLongitude: direccionDelLocalLongitude,
-                  nombreDeLaEmpresa: nombreDeLaEmpresa,
-                  matricula: matricula,
-                  numeroDeMatricula: numeroDeMatricula,
-                  emailLaboral: emailLaboral,
-                  descripcionPersonal: descripcionPersonal,
-                  palabraClaveUno: palabraClaveUno,
-                  palabraClaveDos: palabraClaveDos,
-                  palabraClaveTres: palabraClaveTres,
-                  efectivo: efectivo,
-                  pagosDigitales: pagosDigitales,
-                  terminos: terminos,
-                  latitud: latitud,
-                  longitud: longitud,
-                  uuid: uuid,
-                },
-              })
-            }
-            title='Continuar'
+            onPress={() => writeUserData()}
+            title='Crear Anuncio'
             buttonStyle={{
               backgroundColor: '#F4743B',
             }}

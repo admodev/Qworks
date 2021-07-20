@@ -43,6 +43,7 @@ export default function AnuncioSeleccionado({ route, navigation }) {
   const [fotoDePerfil, setFotoDePerfil] = useState(null);
   const [defaultProfilePicture, setDefaultProfilePicture] = useState(null);
   const [isFavorite, setFavorites] = useState([]);
+  const [comments, setComments] = useState([]);
   const naranjaQueDeOficios = '#fd5d13';
   const favoritosBackground = 'transparent';
   const [favoritosTint, setFavoritosTint] = useState(false);
@@ -176,28 +177,29 @@ export default function AnuncioSeleccionado({ route, navigation }) {
       console.log('ERROR AL DESCARGAR FOTO', error.message);
     });
 
-  let key, userId, comentario;
-  var arr = [];
-  let comentariosRef = firebase
-    .database()
-    .ref('comentarios/')
-    .orderByKey()
-    .on('value', function snapshotToArray(snapshot) {
-      var returnArr = [];
-      snapshot.forEach(function (childSnapshot) {
-        let item = childSnapshot.val();
-        item.key = childSnapshot.key;
-        returnArr.push({
-          key: item.key,
-          id: item.id,
-          receptor: item.receptor,
-          comentario: item.comentario,
-          emisorEmail: item.emisorEmail,
+  async function fetchComments() {
+    let comentariosRef = await firebase.default
+      .database()
+      .ref('comentarios/')
+      .orderByChild('receptor')
+      .equalTo(firebase.default.auth().currentUser.uid)
+      .on('value', function (snapshot) {
+        let comentarios = [];
+
+        snapshot.forEach(function (child) {
+          comentarios.push({
+            id: child.val().id,
+            receptor: child.val().receptor,
+            comentario: child.val().comentario,
+            emisorEmail: child.val().emisorEmail,
+          });
         });
-        arr = returnArr;
-        console.log(arr);
+
+        setComments(comentarios);
       });
-    });
+
+    return comentariosRef;
+  }
 
   let storage = firebase.storage();
   let storageRef = storage.ref();
@@ -212,7 +214,7 @@ export default function AnuncioSeleccionado({ route, navigation }) {
   useEffect(() => {
     loadFonts();
 
-    comentariosRef;
+    fetchComments();
 
     firebase
       .database()
@@ -1047,10 +1049,10 @@ export default function AnuncioSeleccionado({ route, navigation }) {
               },
             }),
           }}>
-          {arr.map((u, index) => {
+          {comments.map((element, index) => {
             return (
               <View key={index}>
-                {u.receptor == id && (
+                {element.receptor == id && (
                   <View>
                     <Text
                       style={{
@@ -1062,7 +1064,9 @@ export default function AnuncioSeleccionado({ route, navigation }) {
                         color: '#000000',
                         fontFamily: 'quickSandLight',
                       }}>
-                      - {u.receptor == id && JSON.stringify(u.comentario)}
+                      -{' '}
+                      {element.receptor == id &&
+                        JSON.stringify(element.comentario)}
                     </Text>
                     <Text
                       style={{
@@ -1071,7 +1075,9 @@ export default function AnuncioSeleccionado({ route, navigation }) {
                         color: naranjaQueDeOficios,
                         fontFamily: 'dmSans',
                       }}>
-                      De: {u.receptor == id && JSON.stringify(u.emisorEmail)}
+                      De:{' '}
+                      {element.receptor == id &&
+                        JSON.stringify(element.emisorEmail)}
                     </Text>
                   </View>
                 )}
