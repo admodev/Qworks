@@ -1,24 +1,6 @@
-import React, { Component, useState } from 'react';
-import {
-  ActivityIndicator,
-  Dimensions,
-  TouchableOpacity,
-  StyleSheet,
-  Image,
-  View,
-  ScrollView,
-  SafeAreaView,
-  Text,
-  Platform,
-} from 'react-native';
-import {
-  AirbnbRating,
-  Avatar,
-  Button,
-  Card,
-  Icon,
-  Input,
-} from 'react-native-elements';
+import React, { useState } from 'react';
+import { TouchableOpacity, Image, View, Text, Platform } from 'react-native';
+import { AirbnbRating, Button, Overlay } from 'react-native-elements';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import * as firebase from 'firebase';
 import 'firebase/firestore';
@@ -26,14 +8,12 @@ import 'firebase/database';
 import 'firebase/auth';
 import { useFonts } from 'expo-font';
 import * as RootNavigation from '../RootNavigation';
-import * as Linking from 'expo-linking';
-import * as WebBrowser from 'expo-web-browser';
 
-const naranjaQueDeOficios = '#fd5d13';
-
-const LocationComponent = (props) => {
+const CardMisAnuncios = (props) => {
   const [defaultProfilePicture, setDefaultProfilePicture] = useState(null);
   const [fotoDePerfil, setFotoDePerfil] = useState(null);
+  const [eliminarCuentaAproved, setEliminarCuentaAproved] = useState(false);
+  const [visible, setVisible] = useState(false);
   const [loaded] = useFonts({
     // Nombres, apellidos, títulos y subtítulos
     DmSans: require('../assets/fonts/DM_Sans/DMSans-Regular.ttf'),
@@ -90,15 +70,71 @@ const LocationComponent = (props) => {
       console.log('ERROR AL DESCARGAR FOTO', error.message);
     });
 
+  const handleDeleteAccount = async () => {
+    setVisible(!visible);
+
+    if (eliminarCuentaAproved) {
+      firebase.default
+        .auth()
+        .currentUser.delete()
+        .then(function () {
+          alert('Eliminando su cuenta, aguarde por favor...');
+          return setTimeout(() => {
+            RootNavigation.navigate('OnboardingPage');
+          }, 2000);
+        })
+        .catch(function (error) {
+          alert(
+            "Para eliminar su cuenta debe oprimir 'si' en el recuadro de alerta."
+          );
+          console.error('Ocurrio un error al eliminar su cuenta...', error);
+        });
+    }
+  };
+
   return (
     <View
       style={{
         backgroundColor: '#ffffff',
-        width: '100%',
+        width: '95%',
+        marginTop: '5%',
         alignSelf: 'center',
         borderRadius: 10,
-        height: 190,
       }}>
+      <Overlay isVisible={visible} onBackdropPress={() => setVisible(!visible)}>
+        <Text style={{ fontSize: 16, textAlign: 'center', margin: 5 }}>
+          Esta a punto de eliminar su cuenta y perder todos sus datos, desea
+          continuar?
+        </Text>
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'center',
+            marginTop: '2%',
+          }}>
+          <Button
+            title='Si'
+            buttonStyle={{
+              backgroundColor: '#fd5d13',
+              opacity: 0.8,
+              width: 120,
+              borderRadius: 12,
+              margin: 5,
+            }}
+            onPress={() => setEliminarCuentaAproved(true)}
+          />
+          <Button
+            title='No'
+            buttonStyle={{
+              backgroundColor: '#fd5d13',
+              width: 120,
+              borderRadius: 12,
+              margin: 5,
+            }}
+            onPress={() => setEliminarCuentaAproved(false)}
+          />
+        </View>
+      </Overlay>
       <Image
         source={require('../assets/gradients/10X10.png')}
         style={{
@@ -147,7 +183,7 @@ const LocationComponent = (props) => {
           </View>
           <MaterialCommunityIcons
             name='account-group'
-            color={naranjaQueDeOficios}
+            color={'#fd5d13'}
             size={20}
             style={{ position: 'absolute', top: 32, right: -30 }}
           />
@@ -167,13 +203,13 @@ const LocationComponent = (props) => {
           style={{
             marginTop: '25%',
             marginLeft: '2%',
+            marginBottom: '2%',
             maxWidth: '85%',
           }}>
           <Text
             style={{
               fontFamily: 'DmSans',
               fontSize: 20,
-              marginTop: 2,
             }}>
             <MaterialCommunityIcons name='account' color={'gray'} size={16} />{' '}
             {props.nombre.split(' ').shift()} {props.apellido}
@@ -182,40 +218,37 @@ const LocationComponent = (props) => {
             style={{
               fontFamily: 'DmSans',
               fontSize: 20,
+              marginTop: '-1%',
             }}>
             <MaterialCommunityIcons name='cog' color={'gray'} size={16} />{' '}
             {props.actividad.trim()}
           </Text>
-          {props.local && (
-            <Text
-              onPress={() =>
-                WebBrowser.openBrowserAsync(`https://www.google.com/maps`)
-              }
-              style={{
-                ...Platform.select({
-                  android: {
-                    marginTop: -5,
-                    fontFamily: 'ComfortaaLight',
-                    fontSize: 18,
-                    marginTop: 1,
-                    color: '#0000EE',
-                  },
-                  ios: {
-                    fontFamily: 'ComfortaaLight',
-                    fontSize: 18,
-                    marginTop: '2%',
-                    color: '#0000EE',
-                  },
-                }),
-              }}>
-              <MaterialCommunityIcons
-                name='storefront'
-                color={'gray'}
-                size={16}
-              />{' '}
-              {props.local.substr(0, 25) + '\u2026'}
-            </Text>
-          )}
+          {
+            // fix this
+            props.local && (
+              <Text
+                style={{
+                  ...Platform.select({
+                    android: {
+                      marginTop: -5,
+                      fontFamily: 'ComfortaaLight',
+                      fontSize: 18,
+                    },
+                    ios: {
+                      fontFamily: 'ComfortaaLight',
+                      fontSize: 18,
+                    },
+                  }),
+                }}>
+                <MaterialCommunityIcons
+                  name='storefront'
+                  color={'gray'}
+                  size={16}
+                />{' '}
+                {props.local.trim()}
+              </Text>
+            )
+          }
           <Text
             style={{
               ...Platform.select({
@@ -223,13 +256,11 @@ const LocationComponent = (props) => {
                   fontFamily: 'ComfortaaLight',
                   fontSize: 16,
                   width: 350,
-                  marginTop: '1%',
                 },
                 ios: {
                   fontFamily: 'ComfortaaLight',
                   fontSize: 16,
                   width: 300,
-                  marginTop: '2%',
                 },
               }),
             }}>
@@ -238,7 +269,7 @@ const LocationComponent = (props) => {
               color={'gray'}
               size={16}
             />{' '}
-            {props.localidad.substr(0, 25) + '\u2026'}
+            Morón, Provincia de Buenos Aires
           </Text>
           <TouchableOpacity
             onPress={() => {
@@ -251,7 +282,7 @@ const LocationComponent = (props) => {
             style={{
               borderRadius: 25,
               position: 'absolute',
-              top: -62,
+              top: -75,
               right: -45,
               backgroundColor: 'transparent',
               width: 150,
@@ -262,27 +293,57 @@ const LocationComponent = (props) => {
                 justifyContent: 'center',
                 flexDirection: 'row',
               }}>
-              <Text
-                style={{
-                  color: naranjaQueDeOficios,
-                  marginLeft: 'auto',
-                  marginRight: 'auto',
-                  fontFamily: 'DmSansBold',
-                  fontSize: 16,
-                  marginBottom: '8%',
-                }}>
-                ¡Comunícate!
-              </Text>
               <View
                 style={{
                   marginBottom: '7%',
                   marginRight: '15%',
                 }}>
-                <MaterialCommunityIcons
-                  name='comment-text'
-                  color={naranjaQueDeOficios}
-                  size={20}
-                />
+                <TouchableOpacity
+                  onPress={() => {
+                    RootNavigation.navigate('EditAnounce', {
+                      id: props.idAnuncio,
+                      uuid: props.uuid,
+                      index: props.key,
+                    });
+                  }}>
+                  <MaterialCommunityIcons
+                    name='lead-pencil'
+                    color={'#fd5d13'}
+                    size={20}
+                  />
+                </TouchableOpacity>
+              </View>
+              <View
+                style={{
+                  marginBottom: '7%',
+                  marginRight: '15%',
+                }}>
+                <TouchableOpacity
+                  onPress={() =>
+                    firebase.default
+                      .database()
+                      .ref('anuncios/' + props.idAnuncio + props.anuncioId)
+                      .remove()
+                  }>
+                  <MaterialCommunityIcons
+                    name='eraser'
+                    color={'#fd5d13'}
+                    size={20}
+                  />
+                </TouchableOpacity>
+              </View>
+              <View
+                style={{
+                  marginBottom: '7%',
+                  marginRight: '15%',
+                }}>
+                <TouchableOpacity onPress={handleDeleteAccount}>
+                  <MaterialCommunityIcons
+                    name='account-off'
+                    color={'#fd5d13'}
+                    size={20}
+                  />
+                </TouchableOpacity>
               </View>
             </View>
           </TouchableOpacity>
@@ -292,4 +353,4 @@ const LocationComponent = (props) => {
   );
 };
 
-export default LocationComponent;
+export default CardMisAnuncios;

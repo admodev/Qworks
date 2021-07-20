@@ -75,11 +75,6 @@ class CardsUsuarios extends Component {
         });
         itm = items;
         this.setState({ items: items });
-        console.log(itm);
-        console.log('itemstate ' + this.state.items);
-        itm.forEach((itms) => {
-          console.log('title*' + itms.title);
-        });
       });
 
     firebase.auth().onAuthStateChanged(function (user) {
@@ -141,8 +136,7 @@ class CardsUsuarios extends Component {
                 marginTop: 20,
                 width: '80%',
                 alignSelf: 'center',
-              }}
-            >
+              }}>
               <Image
                 source={require('../assets/icon.png')}
                 style={{
@@ -153,14 +147,14 @@ class CardsUsuarios extends Component {
                 }}
               />
               <Input
-                placeholder="Buscar en  ¡QuedeOficios!"
+                placeholder='Buscar en  ¡QuedeOficios!'
                 inputStyle={{
                   justifyContent: 'center',
                   marginLeft: 25,
                   marginTop: -10,
                 }}
                 containerStyle={{ marginLeft: 10, marginTop: -10 }}
-                placeholderTextColor="#000000"
+                placeholderTextColor='#000000'
                 onChangeText={(search) => this.setState({ search })}
               />
             </View>
@@ -176,8 +170,7 @@ class CardsUsuarios extends Component {
                 marginTop: '8%',
                 alignSelf: 'center',
                 width: '80%',
-              }}
-            >
+              }}>
               <Image
                 source={require('../assets/icon.png')}
                 style={{
@@ -188,14 +181,14 @@ class CardsUsuarios extends Component {
                 }}
               />
               <Input
-                placeholder="Buscar en  ¡QuedeOficios!"
+                placeholder='Buscar en  ¡QuedeOficios!'
                 inputStyle={{
                   justifyContent: 'center',
                   marginLeft: 25,
                   marginTop: -10,
                 }}
                 containerStyle={{ marginLeft: 10, marginTop: -10 }}
-                placeholderTextColor="#000000"
+                placeholderTextColor='#000000'
                 onChangeText={(search) => this.setState({ search })}
               />
             </View>
@@ -204,7 +197,7 @@ class CardsUsuarios extends Component {
         {this.state.search
           ? this.filterList(this.state.items).map((itm, i) => (
               <CardSearchRender
-                key={itm.uuid + i}
+                key={Math.max(i) + 1}
                 image={require('../assets/icon.png')}
                 name={itm.nombre}
                 actividad={itm.actividad}
@@ -223,7 +216,7 @@ class CardsUsuarios extends Component {
                   provincia={element.provincia}
                   idAnuncio={element.idAnuncio}
                   uuid={element.uuid}
-                  key={element.uuid + index}
+                  key={Math.max(index) + 1}
                   rating={element.rating}
                 />
               );

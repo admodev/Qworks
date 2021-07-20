@@ -26,11 +26,13 @@ import {
   FIREBASE_APP_ID,
   FIREBASE_MEASUREMENT_ID,
   DOTLOCATION,
+  MERCADO_PAGO_TEST_ACCESS_TOKEN,
+  MERCADO_PAGO_TEST_PUBLIC_KEY,
 } from '@env';
 import { StatusBar } from 'expo-status-bar';
 import { createStore } from 'redux';
 import { Provider } from 'react-redux';
-import allReducers from './reducers/allReducers';
+import allReducers from './redux/reducers/allReducers';
 
 if (firebase.apps.length === 0) {
   try {

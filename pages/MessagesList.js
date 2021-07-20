@@ -69,10 +69,6 @@ export default function UserMessagesList({ route, navigation }) {
     resetTimer();
   }
 
-  function getFormattedTime(time) {
-    let currentTime = time;
-  }
-
   if (timerStart === false) {
     toggleTimer();
   }
@@ -101,8 +97,7 @@ export default function UserMessagesList({ route, navigation }) {
                         userOne: firebase.auth().currentUser.uid,
                         userTwo: u.usuario,
                       })
-                    }
-                  >
+                    }>
                     <ListItem.Title>
                       {!u.nombreDelUsuario
                         ? u.emailDelUsuario
@@ -122,8 +117,7 @@ export default function UserMessagesList({ route, navigation }) {
           alignItems: 'center',
           justifyContent: 'center',
           bottom: 0,
-        }}
-      >
+        }}>
         <Text style={{ fontSize: 18 }}>Se productivo, te quedan: </Text>
         <View
           style={{
@@ -131,16 +125,17 @@ export default function UserMessagesList({ route, navigation }) {
             alignItems: 'center',
             justifyContent: 'center',
             flexDirection: 'row',
-          }}
-        >
-          <MaterialCommunityIcons name="clock" color={'orange'} size={35} />
+          }}>
+          <MaterialCommunityIcons name='clock' color={'orange'} size={35} />
           <Timer
             totalDuration={totalDuration}
-            msecs
+            minutes
             start={timerStart}
             reset={timerReset}
             handleFinish={handleTimerComplete}
-            getTime={getFormattedTime}
+            // getTime={(time) =>
+            //   console.log('El tiempo corre a un segundo', time)
+            // }
             options={options}
           />
         </View>

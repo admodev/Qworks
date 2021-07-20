@@ -106,7 +106,6 @@ const AnuncioSeleccionado = ({ navigation }) => {
           comentario: item.comentario,
         });
         arr = returnArr;
-        console.log(arr);
       });
     });
 
@@ -187,8 +186,7 @@ const AnuncioSeleccionado = ({ navigation }) => {
     <SafeAreaView
       style={{
         flex: 1,
-      }}
-    >
+      }}>
       <Image
         source={require('../assets/gradients/20x20.png')}
         style={{
@@ -223,8 +221,7 @@ const AnuncioSeleccionado = ({ navigation }) => {
               backgroundColor: 'transparent',
             },
           }),
-        }}
-      >
+        }}>
         <TouchableOpacity
           onPress={() => navigation.goBack()}
           style={{
@@ -237,10 +234,9 @@ const AnuncioSeleccionado = ({ navigation }) => {
                 bottom: 25,
               },
             }),
-          }}
-        >
+          }}>
           <MaterialCommunityIcons
-            name="arrow-left"
+            name='arrow-left'
             color={naranjaQueDeOficios}
             size={32}
             style={{ backgroundColor: 'transparent' }}
@@ -268,14 +264,12 @@ const AnuncioSeleccionado = ({ navigation }) => {
                 marginTop: '2%',
               },
             }),
-          }}
-        >
+          }}>
           <TouchableOpacity
             style={{
               marginTop: '10%',
             }}
-            onPress={toggleOverlay}
-          >
+            onPress={toggleOverlay}>
             {image == null ? (
               <View style={{ alignItems: 'center', justifyContent: 'center' }}>
                 <Card.Image
@@ -329,8 +323,7 @@ const AnuncioSeleccionado = ({ navigation }) => {
           <Overlay
             isVisible={visible}
             onBackdropPress={toggleOverlay}
-            overlayStyle={{ width: '85%', height: '85%', borderRadius: 10 }}
-          >
+            overlayStyle={{ width: '85%', height: '85%', borderRadius: 10 }}>
             {image == null ? (
               <Card.Image
                 source={require('../assets/icon.png')}
@@ -362,9 +355,9 @@ const AnuncioSeleccionado = ({ navigation }) => {
           <Rating
             size={28}
             showRating={true}
-            type="custom"
+            type='custom'
             ratingColor={naranjaQueDeOficios}
-            ratingBackgroundColor="#c8c7c8"
+            ratingBackgroundColor='#c8c7c8'
             fractions={1}
             reviews={['']}
             onFinishRating={(rating) => setRating(rating)}
@@ -377,11 +370,10 @@ const AnuncioSeleccionado = ({ navigation }) => {
               <TouchableOpacity
                 onPress={() =>
                   navigation.navigate('EditarInformacionPersonalScreen')
-                }
-              >
+                }>
                 <View style={{ marginLeft: '5%' }}>
                   <MaterialCommunityIcons
-                    name="pen"
+                    name='pen'
                     color={'#fd5d13'}
                     size={20}
                   />
@@ -393,8 +385,7 @@ const AnuncioSeleccionado = ({ navigation }) => {
                   textAlign: 'center',
                   fontSize: 30,
                   fontWeight: 'bold',
-                }}
-              >
+                }}>
                 {nombre} {apellido}
               </Text>
             </View>
@@ -405,15 +396,13 @@ const AnuncioSeleccionado = ({ navigation }) => {
               flexDirection: 'row',
               alignItems: 'center',
               justifyContent: 'center',
-            }}
-          >
+            }}>
             <Text
-              style={{ color: '#ffffff', textAlign: 'center', fontSize: 24 }}
-            >
+              style={{ color: '#ffffff', textAlign: 'center', fontSize: 24 }}>
               {actividad} -
             </Text>
             <MaterialCommunityIcons
-              name="account-group"
+              name='account-group'
               color={naranjaQueDeOficios}
               size={22}
               style={{ marginLeft: '3%' }}
@@ -424,8 +413,7 @@ const AnuncioSeleccionado = ({ navigation }) => {
                 textAlign: 'center',
                 fontSize: 14,
                 marginLeft: '2%',
-              }}
-            >
+              }}>
               100
             </Text>
           </View>
@@ -435,8 +423,7 @@ const AnuncioSeleccionado = ({ navigation }) => {
               textAlign: 'center',
               fontSize: 16,
               marginTop: '5%',
-            }}
-          >
+            }}>
             {localidad}, {provincia}
           </Text>
           <Text
@@ -447,8 +434,7 @@ const AnuncioSeleccionado = ({ navigation }) => {
               textAlign: 'center',
               fontSize: 20,
               color: '#fff',
-            }}
-          >
+            }}>
             {emailPersonal}
           </Text>
           <View
@@ -461,23 +447,20 @@ const AnuncioSeleccionado = ({ navigation }) => {
                   flex: 1,
                 },
               }),
-            }}
-          ></View>
+            }}></View>
         </Card>
         {/* Card detalles */}
         <View
           style={{
             flex: 1,
             flexDirection: 'row',
-          }}
-        >
+          }}>
           <TouchableOpacity
             onPress={() =>
               navigation.navigate('EditarInformacionLaboralScreen')
-            }
-          >
+            }>
             <View style={{ marginLeft: '5%' }}>
-              <MaterialCommunityIcons name="pen" color={'#fd5d13'} size={20} />
+              <MaterialCommunityIcons name='pen' color={'#fd5d13'} size={20} />
             </View>
           </TouchableOpacity>
           <Text
@@ -490,8 +473,7 @@ const AnuncioSeleccionado = ({ navigation }) => {
               color: '#fff',
               fontWeight: 'bold',
               textTransform: 'uppercase',
-            }}
-          >
+            }}>
             Información Laboral
           </Text>
         </View>
@@ -516,16 +498,14 @@ const AnuncioSeleccionado = ({ navigation }) => {
                 marginTop: '3%',
               },
             }),
-          }}
-        >
+          }}>
           <Text
             style={{
               color: '#fff',
               marginTop: 10,
               marginBottom: 10,
               fontSize: 20,
-            }}
-          >
+            }}>
             - Email laboral:
           </Text>
           <Text
@@ -536,8 +516,7 @@ const AnuncioSeleccionado = ({ navigation }) => {
               marginTop: 10,
               marginBottom: 10,
               fontSize: 20,
-            }}
-          >
+            }}>
             {emailPersonal}
           </Text>
           <View style={{ flexDirection: 'column' }}>
@@ -546,8 +525,7 @@ const AnuncioSeleccionado = ({ navigation }) => {
                 marginTop: 10,
                 fontSize: 20,
                 color: '#fff',
-              }}
-            >
+              }}>
               - Dias y horarios:
             </Text>
             <Text
@@ -558,8 +536,7 @@ const AnuncioSeleccionado = ({ navigation }) => {
                 textAlign: 'center',
                 fontSize: 20,
                 color: '#fff',
-              }}
-            >
+              }}>
               {diasHorarios.join(', ')}
             </Text>
           </View>
@@ -570,8 +547,7 @@ const AnuncioSeleccionado = ({ navigation }) => {
                   marginTop: 10,
                   fontSize: 20,
                   color: '#fff',
-                }}
-              >
+                }}>
                 - Local:
               </Text>
               <Text
@@ -582,8 +558,7 @@ const AnuncioSeleccionado = ({ navigation }) => {
                   marginTop: 10,
                   marginBottom: 10,
                   fontSize: 20,
-                }}
-              >
+                }}>
                 {direccionDelLocal}
               </Text>
             </View>
@@ -593,8 +568,7 @@ const AnuncioSeleccionado = ({ navigation }) => {
               fontSize: 20,
               marginTop: 10,
               color: '#fff',
-            }}
-          >
+            }}>
             - Celular:
           </Text>
           <Text
@@ -605,8 +579,7 @@ const AnuncioSeleccionado = ({ navigation }) => {
               marginTop: 10,
               marginBottom: 10,
               fontSize: 20,
-            }}
-          >
+            }}>
             {celular}
           </Text>
           {empresa.toString().toLowerCase() == 'si' && (
@@ -617,8 +590,7 @@ const AnuncioSeleccionado = ({ navigation }) => {
                   marginTop: 10,
                   marginBottom: 10,
                   fontSize: 20,
-                }}
-              >
+                }}>
                 Nombre de la empresa:
               </Text>
               <Text
@@ -629,8 +601,7 @@ const AnuncioSeleccionado = ({ navigation }) => {
                   marginTop: 10,
                   marginBottom: 10,
                   fontSize: 20,
-                }}
-              >
+                }}>
                 {nombreDeLaEmpresa}
               </Text>
             </View>
@@ -641,8 +612,7 @@ const AnuncioSeleccionado = ({ navigation }) => {
               marginTop: 10,
               marginBottom: 10,
               fontSize: 20,
-            }}
-          >
+            }}>
             - Factura:
           </Text>
           <Text
@@ -653,8 +623,7 @@ const AnuncioSeleccionado = ({ navigation }) => {
               marginTop: 10,
               marginBottom: 10,
               fontSize: 20,
-            }}
-          >
+            }}>
             {factura}
           </Text>
         </Card>
@@ -663,13 +632,11 @@ const AnuncioSeleccionado = ({ navigation }) => {
           style={{
             flex: 1,
             flexDirection: 'row',
-          }}
-        >
+          }}>
           <TouchableOpacity
-            onPress={() => navigation.navigate('EditarResumenPersonalScreen')}
-          >
+            onPress={() => navigation.navigate('EditarResumenPersonalScreen')}>
             <View style={{ marginLeft: '5%' }}>
-              <MaterialCommunityIcons name="pen" color={'#fd5d13'} size={20} />
+              <MaterialCommunityIcons name='pen' color={'#fd5d13'} size={20} />
             </View>
           </TouchableOpacity>
           <Text
@@ -681,8 +648,7 @@ const AnuncioSeleccionado = ({ navigation }) => {
               marginTop: 10,
               color: '#fff',
               fontWeight: 'bold',
-            }}
-          >
+            }}>
             Resumen Personal
           </Text>
         </View>
@@ -707,8 +673,7 @@ const AnuncioSeleccionado = ({ navigation }) => {
                 marginTop: '3%',
               },
             }),
-          }}
-        >
+          }}>
           <Text
             style={{
               marginLeft: 'auto',
@@ -717,8 +682,7 @@ const AnuncioSeleccionado = ({ navigation }) => {
               fontSize: 20,
               marginTop: 10,
               color: '#fff',
-            }}
-          ></Text>
+            }}></Text>
           <Text
             style={{
               marginLeft: 'auto',
@@ -729,8 +693,7 @@ const AnuncioSeleccionado = ({ navigation }) => {
               marginLeft: 25,
               marginBottom: 20,
               color: '#fff',
-            }}
-          >
+            }}>
             "{descripcionPersonal}"
           </Text>
         </Card>

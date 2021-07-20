@@ -36,6 +36,10 @@ import EditarInformacionPersonalScreen from '../components/editarAnuncio/Informa
 import EditarInformacionLaboralScreen from '../components/editarAnuncio/InformacionLaboral';
 import EditarResumenPersonalScreen from '../components/editarAnuncio/ResumenPersonal';
 import ControlPanel from '../components/DrawerControlPanel';
+import EditAnounce from '../components/EditAnounce';
+import PaymentScreen from '../components/PaymentScreen';
+import PlanesPage from '../pages/PlanesPage';
+import Qdrives from '../pages/Qdrives';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -66,12 +70,16 @@ export function MainTabNavigator({ navigation }) {
         }}
       />
       <Tab.Screen
-        name='SearchPage'
-        component={SearchPage}
+        name='Qdrives'
+        component={Qdrives}
         options={{
           tabBarLabel: 'Qdrives!',
           tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name='car' color={'#fd5d13'} size={size} />
+            <MaterialCommunityIcons
+              name='truck-fast'
+              color={'#fd5d13'}
+              size={size}
+            />
           ),
         }}
       />
@@ -108,7 +116,7 @@ export function MainTabNavigator({ navigation }) {
         name='ShopPage'
         component={ShopPage}
         options={{
-          tabBarLabel: 'Shop',
+          tabBarLabel: 'Qbuyers!',
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons
               name='shopping'
@@ -288,6 +296,27 @@ function MainStackNavigator({ navigation }) {
           name='EditarResumenPersonalScreen'
           component={EditarResumenPersonalScreen}
           options={{ title: 'Quedeoficios!', headerShown: false }}
+        />
+        <Stack.Screen
+          name={'EditAnounce'}
+          component={EditAnounce}
+          options={{ title: 'Qworks!', headerShown: false }}
+        />
+        <Stack.Screen
+          name={'PaymentScreen'}
+          component={PaymentScreen}
+          options={{
+            title: 'Qworks!',
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name={'PlanesPage'}
+          component={PlanesPage}
+          options={{
+            title: 'Qworks!',
+            headerShown: false,
+          }}
         />
       </Stack.Navigator>
     </NavigationContainer>

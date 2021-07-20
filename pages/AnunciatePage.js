@@ -1,11 +1,10 @@
-import React, { useState, useEffect, setState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Image,
   View,
   Platform,
   ScrollView,
   StyleSheet,
-  TextInput,
   TouchableOpacity,
 } from 'react-native';
 import {
@@ -21,27 +20,18 @@ import 'firebase/auth';
 import 'firebase/database';
 import 'firebase/storage';
 import * as ImagePicker from 'expo-image-picker';
-import * as Updates from 'expo-updates';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import * as Progress from 'react-native-progress';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import 'react-native-get-random-values';
 import { v4 as uuidv4 } from 'uuid';
 import Cookies from 'js-cookie';
-import axios from 'axios';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import { DOTLOCATION } from '@env';
 
 const AnunciatePage = ({ navigation }) => {
-  let database = firebase.database();
   let user = firebase.auth().currentUser;
   let id = user.uid;
-  let storage = firebase.storage();
-  let storageRef = storage.ref();
-  var userDefaultImage = storageRef.child('userDefaultImage/icon.png');
-  const [photoJSONValue, setPhotoJSONValue] = useState([]);
-  const [location, setLocation] = useState(null);
-  const [errorMsg, setErrorMsg] = useState(null);
   const [image, setImage] = useState(null);
   const [nombre, setNombre] = useState('');
   const [apellido, setApellido] = useState('');
@@ -60,6 +50,10 @@ const AnunciatePage = ({ navigation }) => {
   const [empresa, setEmpresa] = useState('');
   const [factura, setFactura] = useState('');
   const [direccionDelLocal, setDireccionDelLocal] = useState('');
+  const [direccionDelLocalLatitude, setDireccionDelLocalLatitude] =
+    useState('');
+  const [direccionDelLocalLongitude, setDireccionDelLocalLongitude] =
+    useState('');
   const [nombreDeLaEmpresa, setNombreDeLaEmpresa] = useState('');
   const [matricula, setMatricula] = useState('');
   const [numeroDeMatricula, setNumeroDeMatricula] = useState('');
@@ -70,10 +64,7 @@ const AnunciatePage = ({ navigation }) => {
   const [palabraClaveTres, setPalabraClaveTres] = useState('');
   const [palabrasClave, setPalabrasclave] = useState([]);
   const [diasHorarios, setDiasHorarios] = useState([]);
-  const [desde, setDesde] = useState('');
-  const [hasta, setHasta] = useState('');
   const [efectivo, setEfectivo] = useState(false);
-  const [uploadedImage, setUploadedImage] = useState(null);
   const [uploading, setUploading] = useState(false);
   const [transferred, setTransferred] = useState(0);
   const toggleEfectivo = React.useCallback(() => setEfectivo(!efectivo));
@@ -83,55 +74,6 @@ const AnunciatePage = ({ navigation }) => {
   );
   const [terminos, setTerminos] = useState(false);
   const toggleTerminos = React.useCallback(() => setTerminos(!terminos));
-  const [lunesChecked, setLunesChecked] = useState(false);
-  const toggleLunesChecked = React.useCallback(() =>
-    setLunesChecked(!lunesChecked)
-  );
-  const [martesChecked, setMartesChecked] = useState(false);
-  const toggleMartesChecked = React.useCallback(() =>
-    setMartesChecked(!martesChecked)
-  );
-  const [miercolesChecked, setMiercolesChecked] = useState(false);
-  const toggleMiercolesChecked = React.useCallback(() =>
-    setMiercolesChecked(!miercolesChecked)
-  );
-  const [juevesChecked, setJuevesChecked] = useState(false);
-  const toggleJuevesChecked = React.useCallback(() =>
-    setJuevesChecked(!juevesChecked)
-  );
-  const [viernesChecked, setViernesChecked] = useState(false);
-  const toggleViernesChecked = React.useCallback(() =>
-    setViernesChecked(!viernesChecked)
-  );
-  const [sabadoChecked, setSabadoChecked] = useState(false);
-  const toggleSabadoChecked = React.useCallback(() =>
-    setSabadoChecked(!sabadoChecked)
-  );
-  const [domingoChecked, setDomingoChecked] = useState(false);
-  const toggleDomingoChecked = React.useCallback(() =>
-    setDomingoChecked(!domingoChecked)
-  );
-  const [lunesViernesChecked, setLunesViernesChecked] = useState(false);
-  const toggleLunesViernesChecked = React.useCallback(() => {
-    setLunesViernesChecked(!lunesViernesChecked);
-  });
-  const [desdeAmChecked, setDesdeAmChecked] = useState(false);
-  const toggleDesdeAmChecked = React.useCallback(() =>
-    setDesdeAmChecked(!desdeAmChecked)
-  );
-  const [desdePmChecked, setDesdePmChecked] = useState(false);
-  const toggleDesdePmChecked = React.useCallback(() =>
-    setDesdePmChecked(!desdePmChecked)
-  );
-  const [hastaAmChecked, setHastaAmChecked] = useState(false);
-  const toggleHastaAmChecked = React.useCallback(() =>
-    setHastaAmChecked(!hastaAmChecked)
-  );
-  const [hastaPmChecked, setHastaPmChecked] = useState(false);
-  const toggleHastaPmChecked = React.useCallback(() =>
-    setHastaPmChecked(!hastaPmChecked)
-  );
-  const [imageUrlResponse, setImageUrlResponse] = useState('');
   const [ready, setReady] = useState(false);
   const [where, setWhere] = useState({ lat: null, lng: null });
   const [error, setError] = useState(null);
@@ -141,40 +83,14 @@ const AnunciatePage = ({ navigation }) => {
   const toggleOverlay = () => {
     setVisible(!visible);
   };
-  const [dateDesde, setDateDesde] = useState(new Date(1598051730000));
-  const [dateHasta, setDateHasta] = useState(new Date(1598051730000));
-  const [mode, setMode] = useState('date');
-  const [show, setShow] = useState(false);
-
-  const onChangeHourDesde = (eventDesde, selectedDateDesde) => {
-    const currentDate = selectedDateDesde || date;
-    setShow(Platform.OS === 'ios');
-    setDateDesde(currentDate);
-  };
-
-  const onChangeHourHasta = (eventHasta, selectedDateHasta) => {
-    const currentDate = selectedDateHasta || date;
-    setShow(Platform.OS === 'ios');
-    setDateHasta(currentDate);
-  };
-
-  const showMode = (currentMode) => {
-    setShow(true);
-    setMode(currentMode);
-  };
-
-  const showTimepicker = () => {
-    showMode('time');
-  };
 
   const uuid = uuidv4();
 
   useEffect(() => {
     (async () => {
       if (Platform.OS !== 'web') {
-        const {
-          status,
-        } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+        const { status } =
+          await ImagePicker.requestMediaLibraryPermissionsAsync();
         if (status !== 'granted') {
           alert(
             '¡Perdón, necesitamos acceder a la galería para que pueda subir una foto!'
@@ -300,7 +216,7 @@ const AnunciatePage = ({ navigation }) => {
     if (!result.cancelled) {
       setImage(result.uri.toString());
       const response = await fetch(result.uri);
-      const blob = new Blob([response.blob()], { type: 'image/jpeg' });
+      const blob = await response.blob();
       const filename = result.uri.substring(result.uri.lastIndexOf('/') + 1);
       const uploadUri =
         Platform.OS === 'ios' ? result.uri.replace('file://', '') : result.uri;
@@ -327,16 +243,6 @@ const AnunciatePage = ({ navigation }) => {
     }
   };
 
-  let dateDesdeParsed = dateDesde.toLocaleTimeString([], {
-    hour: '2-digit',
-    minute: '2-digit',
-  });
-
-  let dateHastaParsed = dateHasta.toLocaleTimeString([], {
-    hour: '2-digit',
-    minute: '2-digit',
-  });
-
   function setLocationFunc(placesLocation) {
     setLocalidad(placesLocation);
   }
@@ -361,6 +267,18 @@ const AnunciatePage = ({ navigation }) => {
     setPartidoLongitude(placesPartidoLongitude);
   }
 
+  function setDireccionDelLocalFunc(direccionDelLocalPlaces) {
+    setDireccionDelLocal(direccionDelLocalPlaces);
+  }
+
+  function setDireccionDelLocalLatitudeFunc(direccionDelLocalLatitudePlaces) {
+    setDireccionDelLocalLatitude(direccionDelLocalLatitudePlaces);
+  }
+
+  function setDireccionDelLocalLongitudeFunc(direccionDelLocalLongitudePlaces) {
+    setDireccionDelLocalLongitude(direccionDelLocalLongitudePlaces);
+  }
+
   function writeUserData(
     nombre,
     apellido,
@@ -379,6 +297,8 @@ const AnunciatePage = ({ navigation }) => {
     empresa,
     factura,
     direccionDelLocal,
+    direccionDelLocalLatitude,
+    direccionDelLocalLongitude,
     nombreDeLaEmpresa,
     matricula,
     numeroDeMatricula,
@@ -390,6 +310,8 @@ const AnunciatePage = ({ navigation }) => {
     diasHorarios,
     dateDesdeParsed,
     dateHastaParsed,
+    efectivo,
+    pagosDigitales,
     terminos,
     latitud,
     longitud,
@@ -400,6 +322,12 @@ const AnunciatePage = ({ navigation }) => {
       return;
     } else if (!dni.trim()) {
       alert('Por favor ingrese su DNI');
+      return;
+    } else if (!localidad) {
+      alert('Por favor ingresa tu localidad');
+      return;
+    } else if (!partido) {
+      alert('Por favor ingresa tu partido');
       return;
     } else if (terminos == false) {
       alert('Tiene que aceptar los terminos para continuar');
@@ -441,6 +369,8 @@ const AnunciatePage = ({ navigation }) => {
           empresa: empresa,
           factura: factura,
           direccionDelLocal: direccionDelLocal,
+          direccionDelLocalLatitude: direccionDelLocalLatitude,
+          direccionDelLocalLongitude: direccionDelLocalLongitude,
           nombreDeLaEmpresa: nombreDeLaEmpresa,
           matricula: matricula,
           numeroDeMatricula: numeroDeMatricula,
@@ -452,14 +382,13 @@ const AnunciatePage = ({ navigation }) => {
           diasHorarios: diasHorarios,
           desde: dateDesdeParsed,
           hasta: dateHastaParsed,
+          efectivo: efectivo,
+          pagosDigitales: pagosDigitales,
           terminos: terminos,
           latitud: latitud,
           longitud: longitud,
           photoJSONValue: photoJSONValue,
           uuid: uuid,
-        })
-        .then(function () {
-          navigation.navigate('Anuncios');
         })
         .catch(function (error) {
           alert(
@@ -564,24 +493,12 @@ const AnunciatePage = ({ navigation }) => {
           <Text
             h3
             style={{ color: '#000000', marginTop: 10, marginBottom: 25 }}>
-            Información Personal
+            Información Básica
           </Text>
-          {image ? (
-            <Image
-              source={{ uri: image }}
-              style={{
-                position: 'absolute',
-                with: 300,
-                height: 300,
-              }}
-            />
-          ) : (
-            <Text>No image!</Text>
-          )}
           <Input
             placeholder='Nombre *'
             inputStyle={{ color: '#000000' }}
-            style={{ color: '#000000', fontSize: 16, textAlign: 'center' }}
+            style={{ color: '#000000', fontSize: 18 }}
             inputContainerStyle={{ borderBottomColor: '#000000' }}
             placeholderTextColor='black'
             onChangeText={(nombre) => setNombre(nombre)}
@@ -590,7 +507,7 @@ const AnunciatePage = ({ navigation }) => {
           <Input
             placeholder='Apellido *'
             inputStyle={{ color: '#000000' }}
-            style={{ color: '#000000', fontSize: 16, textAlign: 'center' }}
+            style={{ color: '#000000', fontSize: 18 }}
             inputContainerStyle={{ borderBottomColor: '#000000' }}
             placeholderTextColor='black'
             onChangeText={(apellido) => setApellido(apellido)}
@@ -599,7 +516,7 @@ const AnunciatePage = ({ navigation }) => {
           <Input
             placeholder='Email Personal'
             inputStyle={{ color: '#000000' }}
-            style={{ color: '#000000', fontSize: 16, textAlign: 'center' }}
+            style={{ color: '#000000', fontSize: 18 }}
             inputContainerStyle={{ borderBottomColor: '#000000' }}
             placeholderTextColor='black'
             keyboardType='email-address'
@@ -610,7 +527,7 @@ const AnunciatePage = ({ navigation }) => {
           <Input
             placeholder='DNI *'
             inputStyle={{ color: '#000000' }}
-            style={{ color: '#000000', fontSize: 16, textAlign: 'center' }}
+            style={{ color: '#000000', fontSize: 18 }}
             inputContainerStyle={{ borderBottomColor: '#000000' }}
             placeholderTextColor='black'
             keyboardType='numeric'
@@ -620,7 +537,7 @@ const AnunciatePage = ({ navigation }) => {
           <Input
             placeholder='CUIL / CUIT *'
             inputStyle={{ color: '#000000' }}
-            style={{ color: '#000000', fontSize: 16, textAlign: 'center' }}
+            style={{ color: '#000000', fontSize: 18 }}
             inputContainerStyle={{ borderBottomColor: '#000000' }}
             placeholderTextColor='black'
             keyboardType='numeric'
@@ -641,13 +558,13 @@ const AnunciatePage = ({ navigation }) => {
           <Text
             h3
             style={{ color: '#000000', marginTop: 10, marginBottom: 25 }}>
-            Información Laboral
+            Datos de Contacto
           </Text>
           {Platform.os === 'ios' ? (
             <Input
-              placeholder='Actividad *'
+              placeholder='A que te dedicas?*'
               inputStyle={{ color: '#000000' }}
-              style={{ color: '#000000', fontSize: 16, textAlign: 'center' }}
+              style={{ color: '#000000', fontSize: 18 }}
               inputContainerStyle={{ borderBottomColor: '#000000' }}
               placeholderTextColor='black'
               onChangeText={(actividad) => setActividad(actividad)}
@@ -656,9 +573,9 @@ const AnunciatePage = ({ navigation }) => {
             />
           ) : (
             <Input
-              placeholder='Actividad *'
+              placeholder='A que te dedicas? *'
               inputStyle={{ color: '#000000' }}
-              style={{ color: '#000000', fontSize: 16, textAlign: 'center' }}
+              style={{ color: '#000000', fontSize: 18 }}
               inputContainerStyle={{ borderBottomColor: '#000000' }}
               placeholderTextColor='black'
               onChangeText={(actividad) => setActividad(actividad)}
@@ -669,7 +586,7 @@ const AnunciatePage = ({ navigation }) => {
           <Input
             placeholder='Teléfono'
             inputStyle={{ color: '#000000' }}
-            style={{ color: '#000000', fontSize: 16, textAlign: 'center' }}
+            style={{ color: '#000000', fontSize: 18 }}
             inputContainerStyle={{ borderBottomColor: '#000000' }}
             placeholderTextColor='black'
             keyboardType='phone-pad'
@@ -679,7 +596,7 @@ const AnunciatePage = ({ navigation }) => {
           <Input
             placeholder='Celular'
             inputStyle={{ color: '#000000' }}
-            style={{ color: '#000000', fontSize: 16, textAlign: 'center' }}
+            style={{ color: '#000000', fontSize: 18 }}
             inputContainerStyle={{ borderBottomColor: '#000000' }}
             placeholderTextColor='black'
             keyboardType='phone-pad'
@@ -689,7 +606,7 @@ const AnunciatePage = ({ navigation }) => {
           <Input
             placeholder='Email laboral'
             inputStyle={{ color: '#000000' }}
-            style={{ color: '#000000', fontSize: 16, textAlign: 'center' }}
+            style={{ color: '#000000', fontSize: 18 }}
             inputContainerStyle={{ borderBottomColor: '#000000' }}
             placeholderTextColor='black'
             keyboardType='email-address'
@@ -698,7 +615,7 @@ const AnunciatePage = ({ navigation }) => {
             value={emailLaboral}
           />
           <GooglePlacesAutocomplete
-            placeholder='Localidad'
+            placeholder='Localidad *'
             minLength={2}
             returnKeyType={'default'}
             fetchDetails={true}
@@ -726,9 +643,8 @@ const AnunciatePage = ({ navigation }) => {
               textInput: {
                 height: 38,
                 color: '#5d5d5d',
-                fontSize: 16,
+                fontSize: 18,
                 backgroundColor: 'transparent',
-                textAlign: 'center',
               },
               predefinedPlacesDescription: {
                 color: '#1faadb',
@@ -738,7 +654,7 @@ const AnunciatePage = ({ navigation }) => {
             onFail={(error) => console.error(error)}
           />
           <GooglePlacesAutocomplete
-            placeholder='Partido'
+            placeholder='Partido *'
             minLength={2}
             returnKeyType={'default'}
             fetchDetails={true}
@@ -766,9 +682,8 @@ const AnunciatePage = ({ navigation }) => {
               textInput: {
                 height: 38,
                 color: '#5d5d5d',
-                fontSize: 16,
+                fontSize: 18,
                 backgroundColor: 'transparent',
-                textAlign: 'center',
               },
               predefinedPlacesDescription: {
                 color: '#1faadb',
@@ -781,7 +696,7 @@ const AnunciatePage = ({ navigation }) => {
             <Input
               placeholder='Local (Si / No)'
               inputStyle={{ color: '#000000' }}
-              style={{ color: '#000000', fontSize: 16, textAlign: 'center' }}
+              style={{ color: '#000000', fontSize: 18 }}
               inputContainerStyle={{ borderBottomColor: '#000000' }}
               placeholderTextColor='black'
               onChangeText={(local) => setLocal(local)}
@@ -792,7 +707,7 @@ const AnunciatePage = ({ navigation }) => {
             <Input
               placeholder='Local (Si / No)'
               inputStyle={{ color: '#000000' }}
-              style={{ color: '#000000', fontSize: 16, textAlign: 'center' }}
+              style={{ color: '#000000', fontSize: 18 }}
               inputContainerStyle={{ borderBottomColor: '#000000' }}
               placeholderTextColor='black'
               onChangeText={(local) => setLocal(local)}
@@ -800,22 +715,58 @@ const AnunciatePage = ({ navigation }) => {
               maxLength={2}
             />
           )}
-          <Input
-            placeholder='Dirección del local'
-            inputStyle={{ color: '#000000' }}
-            style={{ color: '#000000', fontSize: 16, textAlign: 'center' }}
-            inputContainerStyle={{ borderBottomColor: '#000000' }}
-            placeholderTextColor='black'
-            onChangeText={(direccionDelLocal) =>
-              setDireccionDelLocal(direccionDelLocal)
-            }
-            value={direccionDelLocal}
-          />
+          {local.toString().toLocaleLowerCase() === 'si' && (
+            <GooglePlacesAutocomplete
+              placeholder='Dirección del local'
+              minLength={2}
+              returnKeyType={'default'}
+              fetchDetails={true}
+              onPress={(data, details) => {
+                var direccionDelLocalPlaces = data.description;
+                var direccionDelLocalLatitudePlaces =
+                  details.geometry.location.lat;
+                var direccionDelLocalLongitudePlaces =
+                  details.geometry.location.lng;
+                setDireccionDelLocalFunc(direccionDelLocalPlaces);
+                setDireccionDelLocalLatitudeFunc(
+                  direccionDelLocalLatitudePlaces
+                );
+                setDireccionDelLocalLongitudeFunc(
+                  direccionDelLocalLongitudePlaces
+                );
+              }}
+              query={{
+                key: DOTLOCATION,
+                language: 'es-419',
+              }}
+              textInputProps={{ placeholderTextColor: 'black' }}
+              styles={{
+                textInputContainer: {
+                  width: '95%',
+                  borderBottomWidth: 1,
+                  borderBottomColor: '#000000',
+                  marginTop: '-2%',
+                  marginBottom: '5%',
+                },
+                textInput: {
+                  height: 38,
+                  color: '#5d5d5d',
+                  fontSize: 18,
+                  backgroundColor: 'transparent',
+                },
+                predefinedPlacesDescription: {
+                  color: '#1faadb',
+                },
+              }}
+              listViewDisplayed={false}
+              onFail={(error) => console.error(error)}
+            />
+          )}
           {Platform.os === 'ios' ? (
             <Input
               placeholder='Empresa (Si / No)'
               inputStyle={{ color: '#000000' }}
-              style={{ color: '#000000', fontSize: 16, textAlign: 'center' }}
+              style={{ color: '#000000', fontSize: 18 }}
               inputContainerStyle={{ borderBottomColor: '#000000' }}
               placeholderTextColor='black'
               onChangeText={(empresa) => setEmpresa(empresa)}
@@ -826,7 +777,7 @@ const AnunciatePage = ({ navigation }) => {
             <Input
               placeholder='Empresa (Si / No)'
               inputStyle={{ color: '#000000' }}
-              style={{ color: '#000000', fontSize: 16, textAlign: 'center' }}
+              style={{ color: '#000000', fontSize: 18 }}
               inputContainerStyle={{ borderBottomColor: '#000000' }}
               placeholderTextColor='black'
               onChangeText={(empresa) => setEmpresa(empresa)}
@@ -837,7 +788,7 @@ const AnunciatePage = ({ navigation }) => {
           <Input
             placeholder='Nombre de la empresa'
             inputStyle={{ color: '#000000' }}
-            style={{ color: '#000000', fontSize: 16, textAlign: 'center' }}
+            style={{ color: '#000000', fontSize: 18 }}
             inputContainerStyle={{ borderBottomColor: '#000000' }}
             placeholderTextColor='black'
             onChangeText={(nombreDeLaEmpresa) =>
@@ -848,7 +799,7 @@ const AnunciatePage = ({ navigation }) => {
           <Input
             placeholder='Factura (Tipo)'
             inputStyle={{ color: '#000000' }}
-            style={{ color: '#000000', fontSize: 16, textAlign: 'center' }}
+            style={{ color: '#000000', fontSize: 18 }}
             inputContainerStyle={{ borderBottomColor: '#000000' }}
             placeholderTextColor='black'
             onChangeText={(factura) => setFactura(factura)}
@@ -858,7 +809,7 @@ const AnunciatePage = ({ navigation }) => {
             <Input
               placeholder='Matrícula (Si / No)'
               inputStyle={{ color: '#000000' }}
-              style={{ color: '#000000', fontSize: 16, textAlign: 'center' }}
+              style={{ color: '#000000', fontSize: 18 }}
               inputContainerStyle={{ borderBottomColor: '#000000' }}
               placeholderTextColor='black'
               onChangeText={(matricula) => setMatricula(matricula)}
@@ -869,7 +820,7 @@ const AnunciatePage = ({ navigation }) => {
             <Input
               placeholder='Matrícula (Si / No)'
               inputStyle={{ color: '#000000' }}
-              style={{ color: '#000000', fontSize: 16, textAlign: 'center' }}
+              style={{ color: '#000000', fontSize: 18 }}
               inputContainerStyle={{ borderBottomColor: '#000000' }}
               placeholderTextColor='black'
               onChangeText={(matricula) => setMatricula(matricula)}
@@ -880,10 +831,9 @@ const AnunciatePage = ({ navigation }) => {
           <Input
             placeholder='Número de matrícula'
             inputStyle={{ color: '#000000' }}
-            style={{ color: '#000000', fontSize: 16, textAlign: 'center' }}
+            style={{ color: '#000000', fontSize: 18 }}
             inputContainerStyle={{ borderBottomColor: '#000000' }}
             placeholderTextColor='black'
-            keyboardType='numeric'
             onChangeText={(numeroDeMatricula) =>
               setNumeroDeMatricula(numeroDeMatricula)
             }
@@ -898,7 +848,7 @@ const AnunciatePage = ({ navigation }) => {
             marginTop: 25,
           }}>
           <Text h3 style={{ color: '#000', marginTop: 10, marginBottom: 25 }}>
-            Resumen Personal
+            Información Adicional
           </Text>
           <Input
             placeholder='Ingrese una descripción personal...'
@@ -1005,256 +955,6 @@ const AnunciatePage = ({ navigation }) => {
             />
           </View>
         </View>
-        <View
-          style={{
-            flex: 1,
-            alignItems: 'center',
-            justifyContent: 'center',
-            marginTop: 25,
-            width: '95%',
-            marginLeft: 'auto',
-            marginRight: 'auto',
-          }}>
-          <Text h3 style={{ color: '#000', marginTop: 10, marginBottom: 25 }}>
-            Dias y horarios
-          </Text>
-          <View style={{ flex: 1, flexDirection: 'row' }}>
-            <CheckBox
-              title='Lunes'
-              onPress={() => concatLunes()}
-              checked={lunesChecked}
-              containerStyle={{
-                backgroundColor: 'transparent',
-                borderColor: 'transparent',
-                borderWidth: 0,
-                marginTop: 15,
-                marginLeft: 'auto',
-                marginRight: 'auto',
-              }}
-              textStyle={{ color: '#000000' }}
-              checkedColor={'#fd5d13'}
-            />
-            <CheckBox
-              title='Martes'
-              onPress={() => concatMartes()}
-              checked={martesChecked}
-              containerStyle={{
-                backgroundColor: 'transparent',
-                borderColor: 'transparent',
-                borderWidth: 0,
-                marginTop: 15,
-                marginLeft: 'auto',
-                marginRight: 'auto',
-              }}
-              textStyle={{ color: '#000000' }}
-              checkedColor={'#fd5d13'}
-            />
-            <CheckBox
-              title='Miercoles'
-              onPress={() => concatMiercoles()}
-              checked={miercolesChecked}
-              containerStyle={{
-                backgroundColor: 'transparent',
-                borderColor: 'transparent',
-                borderWidth: 0,
-                marginTop: 15,
-                marginLeft: 'auto',
-                marginRight: 'auto',
-              }}
-              textStyle={{ color: '#000000' }}
-              checkedColor={'#fd5d13'}
-            />
-          </View>
-          <View style={{ flex: 1, flexDirection: 'row' }}>
-            <CheckBox
-              title='Jueves'
-              onPress={() => concatJueves()}
-              checked={juevesChecked}
-              containerStyle={{
-                backgroundColor: 'transparent',
-                borderColor: 'transparent',
-                borderWidth: 0,
-                marginTop: 15,
-                marginLeft: 'auto',
-                marginRight: 'auto',
-              }}
-              textStyle={{ color: '#000000' }}
-              checkedColor={'#fd5d13'}
-            />
-            <CheckBox
-              title='Viernes'
-              onPress={() => concatViernes()}
-              checked={viernesChecked}
-              containerStyle={{
-                backgroundColor: 'transparent',
-                borderColor: 'transparent',
-                borderWidth: 0,
-                marginTop: 15,
-                marginLeft: 'auto',
-                marginRight: 'auto',
-              }}
-              textStyle={{ color: '#000000' }}
-              checkedColor={'#fd5d13'}
-            />
-            <CheckBox
-              title='Sábado'
-              onPress={() => concatSabado()}
-              checked={sabadoChecked}
-              containerStyle={{
-                backgroundColor: 'transparent',
-                borderColor: 'transparent',
-                borderWidth: 0,
-                marginTop: 15,
-                marginLeft: 'auto',
-                marginRight: 'auto',
-              }}
-              textStyle={{ color: '#000000' }}
-              checkedColor={'#fd5d13'}
-            />
-          </View>
-          <View style={{ flexDirection: 'row' }}>
-            <CheckBox
-              title='Domingo'
-              onPress={() => concatDomingo()}
-              checked={domingoChecked}
-              containerStyle={{
-                backgroundColor: 'transparent',
-                borderColor: 'transparent',
-                borderWidth: 0,
-                marginTop: 15,
-                marginLeft: 'auto',
-                marginRight: 'auto',
-              }}
-              textStyle={{ color: '#000000' }}
-              checkedColor={'#fd5d13'}
-            />
-            <CheckBox
-              title='Lunes a Viernes'
-              onPress={() => concatLunesViernes()}
-              checked={lunesViernesChecked}
-              containerStyle={{
-                backgroundColor: 'transparent',
-                borderColor: 'transparent',
-                borderWidth: 0,
-                marginTop: 15,
-                marginLeft: 'auto',
-                marginRight: 'auto',
-              }}
-              textStyle={{ color: '#000000' }}
-              checkedColor={'#fd5d13'}
-            />
-          </View>
-          <View style={{ width: '80%' }}>
-            <View>
-              <View>
-                <Button
-                  onPress={showTimepicker}
-                  title='Desde'
-                  buttonStyle={{
-                    backgroundColor: '#F4743B',
-                    borderRadius: 25,
-                    marginTop: '10%',
-                    marginBottom: '10%',
-                  }}
-                />
-              </View>
-              {show && (
-                <DateTimePicker
-                  testID='dateTimePickerDesde'
-                  value={dateDesde}
-                  mode={mode}
-                  is24Hour={true}
-                  display='spinner'
-                  onChange={onChangeHourDesde}
-                />
-              )}
-            </View>
-            <View
-              style={{
-                backgroundColor: '#F4743B',
-                borderRadius: 25,
-                width: '20%',
-                alignSelf: 'center',
-                margintop: '5%',
-                marginBottom: '5%',
-              }}>
-              {Platform.OS == 'android' ? (
-                <Text
-                  style={{
-                    textAlign: 'center',
-                    color: '#ffffff',
-                  }}>
-                  {dateDesde.toLocaleTimeString().slice(1, -3)}
-                </Text>
-              ) : (
-                <Text
-                  style={{
-                    textAlign: 'center',
-                    color: '#ffffff',
-                  }}>
-                  {dateDesde.toLocaleTimeString([], {
-                    hour: '2-digit',
-                    minute: '2-digit',
-                  })}
-                </Text>
-              )}
-            </View>
-            <View>
-              <View>
-                <Button
-                  onPress={showTimepicker}
-                  title='Hasta'
-                  buttonStyle={{
-                    backgroundColor: '#F4743B',
-                    borderRadius: 25,
-                    marginTop: '10%',
-                    marginBottom: '10%',
-                  }}
-                />
-              </View>
-              {show && (
-                <DateTimePicker
-                  testID='dateTimePickerHasta'
-                  value={dateHasta}
-                  mode={mode}
-                  is24Hour={true}
-                  display='spinner'
-                  onChange={onChangeHourHasta}
-                />
-              )}
-            </View>
-            <View
-              style={{
-                backgroundColor: '#F4743B',
-                borderRadius: 25,
-                width: '20%',
-                alignSelf: 'center',
-                margintop: '5%',
-                marginBottom: '5%',
-              }}>
-              {Platform.OS == 'android' ? (
-                <Text
-                  style={{
-                    textAlign: 'center',
-                    color: '#ffffff',
-                  }}>
-                  {dateHasta.toLocaleTimeString().slice(1, -3)}
-                </Text>
-              ) : (
-                <Text
-                  style={{
-                    textAlign: 'center',
-                    color: '#ffffff',
-                  }}>
-                  {dateHasta.toLocaleTimeString([], {
-                    hour: '2-digit',
-                    minute: '2-digit',
-                  })}
-                </Text>
-              )}
-            </View>
-          </View>
-        </View>
         <Text
           h3
           style={{ color: '#000', textAlign: 'center', marginTop: '5%' }}>
@@ -1291,7 +991,7 @@ const AnunciatePage = ({ navigation }) => {
             checked={efectivo}
           />
           <MaterialCommunityIcons
-            name='card-bulleted-outline'
+            name='credit-card-multiple-outline'
             color={'#000'}
             size={35}
             style={{ marginTop: 20 }}
@@ -1363,40 +1063,46 @@ const AnunciatePage = ({ navigation }) => {
           }}>
           <Button
             onPress={() =>
-              writeUserData(
-                nombre,
-                apellido,
-                cuitCuil,
-                dni,
-                actividad,
-                telefono,
-                celular,
-                localidad,
-                localidadLatitude,
-                localidadLongitude,
-                partido,
-                partidoLatitude,
-                partidoLongitude,
-                local,
-                empresa,
-                factura,
-                direccionDelLocal,
-                nombreDeLaEmpresa,
-                matricula,
-                numeroDeMatricula,
-                emailLaboral,
-                descripcionPersonal,
-                palabraClaveUno,
-                palabraClaveDos,
-                palabraClaveTres,
-                diasHorarios,
-                dateDesdeParsed,
-                dateHastaParsed,
-                terminos,
-                latitud,
-                longitud,
-                photoJSONValue
-              )
+              navigation.navigate('PlanesPage', {
+                pendingAnounce: {
+                  anuncioId: anunciosCountResult,
+                  id: user.uid,
+                  nombre: nombre,
+                  apellido: apellido,
+                  emailPersonal: firebase.auth().currentUser.email,
+                  cuitCuil: cuitCuil,
+                  dni: dni,
+                  actividad: actividad,
+                  telefono: telefono,
+                  celular: celular,
+                  localidad: localidad,
+                  localidadLatitude: localidadLatitude,
+                  localidadLongitude: localidadLongitude,
+                  partido: partido,
+                  partidoLatitude: partidoLatitude,
+                  partidoLongitude: partidoLongitude,
+                  local: local,
+                  empresa: empresa,
+                  factura: factura,
+                  direccionDelLocal: direccionDelLocal,
+                  direccionDelLocalLatitude: direccionDelLocalLatitude,
+                  direccionDelLocalLongitude: direccionDelLocalLongitude,
+                  nombreDeLaEmpresa: nombreDeLaEmpresa,
+                  matricula: matricula,
+                  numeroDeMatricula: numeroDeMatricula,
+                  emailLaboral: emailLaboral,
+                  descripcionPersonal: descripcionPersonal,
+                  palabraClaveUno: palabraClaveUno,
+                  palabraClaveDos: palabraClaveDos,
+                  palabraClaveTres: palabraClaveTres,
+                  efectivo: efectivo,
+                  pagosDigitales: pagosDigitales,
+                  terminos: terminos,
+                  latitud: latitud,
+                  longitud: longitud,
+                  uuid: uuid,
+                },
+              })
             }
             title='Continuar'
             buttonStyle={{

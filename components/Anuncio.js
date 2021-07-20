@@ -1,4 +1,4 @@
-import React, { useState, setState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Alert,
   TouchableOpacity,
@@ -13,7 +13,6 @@ import {
 } from 'react-native';
 import {
   AirbnbRating,
-  Avatar,
   Button,
   Card,
   Overlay,
@@ -25,14 +24,12 @@ import 'firebase/database';
 import 'firebase/auth';
 import 'firebase/storage';
 import * as RootNavigation from '../RootNavigation.js';
-import { StackActions } from '@react-navigation/native';
-import CardsUsuarios from './Cards';
-import { concat } from 'react-native-reanimated';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import * as Updates from 'expo-updates';
 import * as Font from 'expo-font';
 import { useSelector, useDispatch } from 'react-redux';
-import { increment, decrement } from '../actions/counterActions';
+import { increment, decrement } from '../redux/actions/counterActions';
+import * as Linking from 'expo-linking';
 
 let calificacion = 'calificacion';
 let favs;
@@ -44,6 +41,7 @@ export default function AnuncioSeleccionado({ route, navigation }) {
   let routeParamsToString = id.toString();
   let hasRecommendedArray = [];
   const [fotoDePerfil, setFotoDePerfil] = useState(null);
+  const [defaultProfilePicture, setDefaultProfilePicture] = useState(null);
   const [isFavorite, setFavorites] = useState([]);
   const naranjaQueDeOficios = '#fd5d13';
   const favoritosBackground = 'transparent';
@@ -76,6 +74,8 @@ export default function AnuncioSeleccionado({ route, navigation }) {
     apellido,
     actividad,
     contadorAnuncio,
+    efectivo,
+    pagosDigitales,
     emailPersonal,
     celular,
     descripcionPersonal,
@@ -108,6 +108,8 @@ export default function AnuncioSeleccionado({ route, navigation }) {
       nombre = child.val().nombre;
       apellido = child.val().apellido;
       actividad = child.val().actividad;
+      efectivo = child.val().efectivo;
+      pagosDigitales = child.val().pagosDigitales;
       emailPersonal = child.val().emailPersonal;
       id = child.val().id;
       contadorAnuncio = child.val().anuncioId;
@@ -146,12 +148,29 @@ export default function AnuncioSeleccionado({ route, navigation }) {
       xhr.responseType = 'blob';
       xhr.onload = function (event) {
         var blob = xhr.response;
-        console.log('EL BLOB', blob);
       };
       xhr.open('GET', url);
       xhr.send();
-      console.log('LA FOTO', url);
       setFotoDePerfil(url);
+    })
+    .catch(function (error) {
+      console.log('ERROR AL DESCARGAR FOTO', error.message);
+    });
+
+  let defaultPhoto = firebase
+    .storage()
+    .ref('defaultUserImage/')
+    .child('defaultProfilePictureQworks.png')
+    .getDownloadURL()
+    .then(function (url) {
+      var xhr = new XMLHttpRequest();
+      xhr.responseType = 'blob';
+      xhr.onload = function (event) {
+        var blob = xhr.response;
+      };
+      xhr.open('GET', url);
+      xhr.send();
+      setDefaultProfilePicture(url);
     })
     .catch(function (error) {
       console.log('ERROR AL DESCARGAR FOTO', error.message);
@@ -182,9 +201,6 @@ export default function AnuncioSeleccionado({ route, navigation }) {
 
   let storage = firebase.storage();
   let storageRef = storage.ref();
-  let defaultImageRef = storageRef
-    .child('defaultUserImage/icon.png')
-    .toString();
   let userProfilePic = storageRef.child('userProfilePics/').child(id).child;
   const [visible, setVisible] = useState(false);
   const toggleOverlay = () => {
@@ -211,8 +227,6 @@ export default function AnuncioSeleccionado({ route, navigation }) {
         setFavorites(isFavorite);
       });
   }, []);
-
-  console.log(isFavorite);
 
   const agregarFavorito = (id) => {
     firebase
@@ -241,9 +255,7 @@ export default function AnuncioSeleccionado({ route, navigation }) {
           snapshot.forEach(function (child) {
             promises.push(child.ref.remove());
           });
-          Promise.all(promises).then(function () {
-            console.log('All removed!');
-          });
+          Promise.all(promises);
           Updates.reloadAsync();
         });
     } catch (error) {
@@ -323,6 +335,10 @@ export default function AnuncioSeleccionado({ route, navigation }) {
   function onlyUnique(value, index, self) {
     return self.indexOf(value) === index;
   }
+
+  const handleLinkOpen = () => {
+    Linking.openURL('https://www.google.com');
+  };
 
   return (
     <SafeAreaView
@@ -414,64 +430,93 @@ export default function AnuncioSeleccionado({ route, navigation }) {
                 borderRadius: 15,
                 backgroundColor: 'transparent',
                 borderWidth: 0,
-                marginTop: '2%',
               },
             }),
           }}>
-          <TouchableOpacity
+          <View
             style={{
-              marginTop: '10%',
-            }}
-            onPress={toggleOverlay}>
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}>
             {!fotoDePerfil ? (
-              <View style={{ alignItems: 'center', justifyContent: 'center' }}>
-                <Card.Image
-                  source={require('../assets/icon.png')}
-                  style={{
-                    ...Platform.select({
-                      android: {
-                        borderRadius: 25,
-                        width: 150,
-                        height: 150,
-                      },
-                      ios: {
-                        borderRadius: 25,
-                        width: 150,
-                        height: 150,
-                      },
-                    }),
-                  }}
-                />
-              </View>
+              <Card.Image
+                source={{ uri: defaultProfilePicture }}
+                style={{
+                  ...Platform.select({
+                    android: {
+                      borderRadius: 25,
+                      width: 100,
+                      height: 100,
+                    },
+                    ios: {
+                      borderRadius: 25,
+                      width: 100,
+                      height: 100,
+                    },
+                  }),
+                }}
+              />
             ) : (
-              <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+              <View>
                 <Card.Image
                   source={{ uri: fotoDePerfil }}
                   style={{
                     ...Platform.select({
                       android: {
                         borderRadius: 25,
-                        width: 200,
-                        height: 200,
+                        width: 120,
+                        height: 120,
                       },
                       ios: {
                         borderRadius: 25,
-                        width: 200,
-                        height: 200,
+                        width: 120,
+                        height: 120,
                       },
                     }),
                   }}
                 />
               </View>
             )}
-          </TouchableOpacity>
+            <View style={{ flexDirection: 'row' }}>
+              <AirbnbRating
+                size={20}
+                showRating={true}
+                type='custom'
+                ratingColor={naranjaQueDeOficios}
+                ratingBackgroundColor='#c8c7c8'
+                fractions={1}
+                reviews={['']}
+                onFinishRating={(rating) => setRating(rating)}
+              />
+              <TouchableOpacity
+                onPress={() => shareContent()}
+                style={{
+                  ...Platform.select({
+                    android: {
+                      marginTop: '15%',
+                      marginLeft: '5%',
+                    },
+                    ios: {
+                      marginTop: '10%',
+                      marginLeft: '5%',
+                    },
+                  }),
+                }}>
+                <MaterialCommunityIcons
+                  name='share-variant'
+                  color={naranjaQueDeOficios}
+                  size={28}
+                />
+              </TouchableOpacity>
+            </View>
+          </View>
           <Overlay
             isVisible={visible}
             onBackdropPress={toggleOverlay}
             overlayStyle={{ width: '85%', height: 320, borderRadius: 10 }}>
             {!fotoDePerfil ? (
               <Card.Image
-                source={require('../assets/icon.png')}
+                source={{ uri: defaultProfilePicture }}
                 style={{
                   height: 300,
                 }}
@@ -485,53 +530,36 @@ export default function AnuncioSeleccionado({ route, navigation }) {
               />
             )}
           </Overlay>
-          <AirbnbRating
-            size={24}
-            showRating={true}
-            type='custom'
-            ratingColor={naranjaQueDeOficios}
-            ratingBackgroundColor='#c8c7c8'
-            fractions={1}
-            reviews={['']}
-            onFinishRating={(rating) => setRating(rating)}
+          <Text
             style={{
-              borderWidth: 0,
-            }}
-          />
-          <View style={{ margin: '3%' }}>
+              fontFamily: 'dmSans',
+              color: '#000000',
+              fontSize: 30,
+              textAlign: 'center',
+            }}>
+            {nombre} {apellido}
+          </Text>
+          <View style={{ flexDirection: 'row' }}>
             <Text
               style={{
-                fontFamily: 'dmSans',
                 color: '#000000',
-                textAlign: 'center',
-                fontSize: 30,
+                fontSize: 24,
+                fontFamily: 'comfortaaLight',
+                marginLeft: '25%',
               }}>
-              {nombre} {apellido}
-            </Text>
-          </View>
-          <View
-            style={{
-              marginTop: '-2%',
-              flexDirection: 'row',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}>
-            <Text
-              style={{ color: '#000000', textAlign: 'center', fontSize: 24 }}>
               {actividad} -
             </Text>
             <MaterialCommunityIcons
               name='account-group'
               color={naranjaQueDeOficios}
               size={22}
-              style={{ marginLeft: '3%' }}
+              style={{ marginLeft: 4 }}
             />
             <Text
               style={{
                 color: '#8DB600',
-                textAlign: 'center',
                 fontSize: 14,
-                marginLeft: '2%',
+                margin: 4,
               }}>
               {recomendacionesTotales}
             </Text>
@@ -539,7 +567,7 @@ export default function AnuncioSeleccionado({ route, navigation }) {
           <View
             style={{
               flexDirection: 'row',
-              marginTop: '2%',
+              marginTop: '15%',
               marginBottom: '5%',
             }}>
             <SocialIcon
@@ -601,35 +629,12 @@ export default function AnuncioSeleccionado({ route, navigation }) {
             <Text
               style={{
                 color: '#000000',
-                marginLeft: 'auto',
-                marginRight: 'auto',
-                marginTop: 10,
+                marginLeft: '2%',
                 marginBottom: 10,
-                fontSize: 20,
+                fontSize: 18,
+                fontFamily: 'comfortaaLight',
               }}>
               {localidad}
-            </Text>
-          </View>
-          <View
-            style={{
-              flex: 1,
-              flexDirection: 'row',
-            }}>
-            <MaterialCommunityIcons
-              name='email'
-              color={naranjaQueDeOficios}
-              size={24}
-            />
-            <Text
-              style={{
-                color: '#000000',
-                marginLeft: 'auto',
-                marginRight: 'auto',
-                marginTop: 10,
-                marginBottom: 10,
-                fontSize: 20,
-              }}>
-              {emailLaboral}
             </Text>
           </View>
           <View
@@ -639,35 +644,7 @@ export default function AnuncioSeleccionado({ route, navigation }) {
               justifyContent: 'center',
               marginTop: '3%',
               marginBottom: '3%',
-            }}>
-            <TouchableOpacity onPress={() => shareContent()}>
-              <Text
-                style={{
-                  ...Platform.select({
-                    android: {
-                      color: '#000000',
-                      marginLeft: 'auto',
-                      marginRight: 'auto',
-                      marginTop: 10,
-                      fontSize: 20,
-                    },
-                    ios: {
-                      color: '#000000',
-                      marginTop: 15,
-                      marginLeft: 10,
-                      fontSize: 20,
-                    },
-                  }),
-                }}>
-                <MaterialCommunityIcons
-                  name='share-variant'
-                  color={naranjaQueDeOficios}
-                  size={24}
-                />{' '}
-                Compartir
-              </Text>
-            </TouchableOpacity>
-          </View>
+            }}></View>
           <View
             style={{
               ...Platform.select({
@@ -686,13 +663,12 @@ export default function AnuncioSeleccionado({ route, navigation }) {
             marginLeft: 'auto',
             marginRight: 'auto',
             textAlign: 'center',
-            fontSize: 24,
-            marginTop: '5%',
+            fontSize: 28,
             color: '#000000',
             fontWeight: 'bold',
-            textTransform: 'uppercase',
+            fontFamily: 'dmSans',
           }}>
-          Información Laboral
+          Datos de Contacto
         </Text>
         <Card
           style={styles.card}
@@ -724,58 +700,34 @@ export default function AnuncioSeleccionado({ route, navigation }) {
                 flexDirection: 'row',
               }}>
               <MaterialCommunityIcons
-                name='calendar-clock'
+                name='email'
                 color={naranjaQueDeOficios}
                 size={24}
               />
-              <View
+              <Text
+                onPress={() => Linking.openURL(`mailto:${emailLaboral}`)}
                 style={{
-                  flexDirection: 'column',
+                  ...Platform.select({
+                    android: {
+                      color: '#0000EE',
+                      marginLeft: '10%',
+                      marginBottom: 10,
+                      fontSize: 18,
+                      fontFamily: 'comfortaaLight',
+                    },
+                    ios: {
+                      color: '#0000EE',
+                      marginLeft: '15%',
+                      marginBottom: 10,
+                      fontSize: 18,
+                      fontFamily: 'comfortaaLight',
+                    },
+                  }),
                 }}>
-                <Text
-                  style={{
-                    marginLeft: 'auto',
-                    marginRight: 'auto',
-                    marginTop: 10,
-                    textAlign: 'center',
-                    fontSize: 20,
-                    color: '#000000',
-                  }}>
-                  {diasHorarios.filter(onlyUnique).join(', ')}
-                </Text>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                  }}>
-                  <MaterialCommunityIcons
-                    name='clock-outline'
-                    color={naranjaQueDeOficios}
-                    size={24}
-                  />
-                  <Text
-                    style={{
-                      marginLeft: 'auto',
-                      marginRight: 'auto',
-                      marginTop: 10,
-                      textAlign: 'center',
-                      fontSize: 20,
-                      color: '#000000',
-                    }}>
-                    {desde}
-                  </Text>
-                  <Text
-                    style={{
-                      marginLeft: 'auto',
-                      marginRight: 'auto',
-                      marginTop: 10,
-                      textAlign: 'center',
-                      fontSize: 20,
-                      color: '#000000',
-                    }}>
-                    {hasta}
-                  </Text>
-                </View>
-              </View>
+                {emailLaboral.length > 20
+                  ? emailLaboral.substr(0, emailLaboral.length - 8) + '...'
+                  : emailLaboral}
+              </Text>
             </View>
           </View>
           {local && (
@@ -783,6 +735,7 @@ export default function AnuncioSeleccionado({ route, navigation }) {
               style={{
                 flex: 1,
                 flexDirection: 'row',
+                marginTop: '2%',
               }}>
               <MaterialCommunityIcons
                 name='storefront'
@@ -790,15 +743,20 @@ export default function AnuncioSeleccionado({ route, navigation }) {
                 size={24}
               />
               <Text
+                onPress={handleLinkOpen}
                 style={{
-                  color: '#000000',
+                  color: '#0000EE',
                   marginLeft: 'auto',
                   marginRight: 'auto',
                   marginTop: 10,
                   marginBottom: 10,
                   fontSize: 20,
+                  fontFamily: 'comfortaaLight',
                 }}>
-                {direccionDelLocal}
+                {direccionDelLocal.length > 30
+                  ? direccionDelLocal.substr(0, direccionDelLocal.length - 45) +
+                    '...'
+                  : direccionDelLocal}
               </Text>
             </View>
           )}
@@ -819,6 +777,7 @@ export default function AnuncioSeleccionado({ route, navigation }) {
                 marginTop: 10,
                 marginBottom: 10,
                 fontSize: 20,
+                fontFamily: 'comfortaaLight',
               }}>
               {celular}
             </Text>
@@ -833,13 +792,15 @@ export default function AnuncioSeleccionado({ route, navigation }) {
               size={24}
             />
             <Text
+              onPress={() => Linking.openURL(`tel:${telefono}`)}
               style={{
-                color: '#000000',
+                color: '#0000EE',
                 marginLeft: 'auto',
                 marginRight: 'auto',
                 marginTop: 10,
                 marginBottom: 10,
                 fontSize: 20,
+                fontFamily: 'comfortaaLight',
               }}>
               {telefono}
             </Text>
@@ -862,6 +823,7 @@ export default function AnuncioSeleccionado({ route, navigation }) {
                   marginTop: 10,
                   marginBottom: 10,
                   fontSize: 20,
+                  fontFamily: 'comfortaaLight',
                 }}>
                 {nombreDeLaEmpresa}
               </Text>
@@ -884,6 +846,7 @@ export default function AnuncioSeleccionado({ route, navigation }) {
                 marginTop: 10,
                 marginBottom: 10,
                 fontSize: 20,
+                fontFamily: 'comfortaaLight',
               }}>
               {factura}
             </Text>
@@ -892,6 +855,8 @@ export default function AnuncioSeleccionado({ route, navigation }) {
             <View
               style={{
                 flexDirection: 'row',
+                marginTop: '2%',
+                marginBottom: '2%',
               }}>
               <MaterialCommunityIcons
                 name='card-account-details-star-outline'
@@ -906,11 +871,77 @@ export default function AnuncioSeleccionado({ route, navigation }) {
                   marginTop: 10,
                   marginBottom: 10,
                   fontSize: 20,
+                  fontFamily: 'comfortaaLight',
                 }}>
                 {numeroDeMatricula}
               </Text>
             </View>
           )}
+          <Text
+            style={{
+              marginLeft: 'auto',
+              marginRight: 'auto',
+              textAlign: 'center',
+              fontSize: 28,
+              marginTop: 10,
+              color: '#000000',
+              fontFamily: 'dmSans',
+            }}>
+            Medios de Pago
+          </Text>
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}>
+            {efectivo && (
+              <View
+                style={{
+                  flexDirection: 'row',
+                  marginTop: '5%',
+                  marginBottom: '5%',
+                }}>
+                <MaterialCommunityIcons
+                  name='cash-usd'
+                  color={naranjaQueDeOficios}
+                  size={24}
+                />
+                <Text
+                  style={{
+                    color: '#000000',
+                    marginLeft: '5%',
+                    fontSize: 20,
+                    fontFamily: 'comfortaaLight',
+                  }}>
+                  Efectivo
+                </Text>
+              </View>
+            )}
+            {pagosDigitales && (
+              <View
+                style={{
+                  flexDirection: 'row',
+                  marginTop: '5%',
+                  marginBottom: '5%',
+                }}>
+                <MaterialCommunityIcons
+                  name='credit-card-multiple-outline'
+                  color={naranjaQueDeOficios}
+                  size={24}
+                />
+                <Text
+                  style={{
+                    color: '#000000',
+                    marginLeft: '5%',
+                    fontSize: 20,
+                    fontFamily: 'comfortaaLight',
+                  }}>
+                  Pagos Digitales
+                </Text>
+              </View>
+            )}
+          </View>
         </Card>
         {/* Card resumen personal */}
         <Text
@@ -922,8 +953,9 @@ export default function AnuncioSeleccionado({ route, navigation }) {
             marginTop: 10,
             color: '#000000',
             fontWeight: 'bold',
+            fontFamily: 'dmSans',
           }}>
-          Resumen Personal
+          Información Adicional
         </Text>
         <Card
           style={styles.card}
@@ -945,6 +977,8 @@ export default function AnuncioSeleccionado({ route, navigation }) {
                 borderWidth: 0,
                 maxWidth: '100%',
                 marginTop: '3%',
+                alignItems: 'center',
+                justifyContent: 'center',
               },
             }),
           }}>
@@ -961,12 +995,14 @@ export default function AnuncioSeleccionado({ route, navigation }) {
               style={{
                 marginLeft: 'auto',
                 marginRight: 'auto',
+                alignSelf: 'center',
                 textAlign: 'center',
                 fontSize: 20,
                 marginRight: 25,
                 marginLeft: 25,
                 marginBottom: 20,
                 color: '#000000',
+                fontFamily: 'comfortaaLight',
               }}>
               "{descripcionPersonal}"
             </Text>
@@ -982,6 +1018,7 @@ export default function AnuncioSeleccionado({ route, navigation }) {
             marginTop: 10,
             color: '#000000',
             fontWeight: 'bold',
+            fontFamily: 'dmSans',
           }}>
           Comentarios
         </Text>
@@ -1023,22 +1060,18 @@ export default function AnuncioSeleccionado({ route, navigation }) {
                         marginTop: 10,
                         marginBottom: 10,
                         color: '#000000',
+                        fontFamily: 'quickSandLight',
                       }}>
-                      -{' '}
-                      {u.receptor == id
-                        ? JSON.stringify(u.comentario)
-                        : console.log('No comments')}
+                      - {u.receptor == id && JSON.stringify(u.comentario)}
                     </Text>
                     <Text
                       style={{
                         marginLeft: 10,
                         fontSize: 14,
                         color: naranjaQueDeOficios,
+                        fontFamily: 'dmSans',
                       }}>
-                      De:{' '}
-                      {u.receptor == id
-                        ? JSON.stringify(u.emisorEmail)
-                        : console.log('No email')}
+                      De: {u.receptor == id && JSON.stringify(u.emisorEmail)}
                     </Text>
                   </View>
                 )}
@@ -1079,7 +1112,7 @@ export default function AnuncioSeleccionado({ route, navigation }) {
             margin: 10,
           }}
         />
-        <View style={{ margin: 10, marginLeft: 15 }}>
+        <View style={{ margin: 10, marginLeft: 20 }}>
           {!user ? (
             <Button
               title='Recomendar'
@@ -1131,6 +1164,7 @@ export default function AnuncioSeleccionado({ route, navigation }) {
                 RootNavigation.navigate('ChatComponent', {
                   userOne: firebase.auth().currentUser.uid,
                   userTwo: id,
+                  uuid: route.params.uuid,
                 })
               }
               titleStyle={{ fontSize: 12, marginTop: 18 }}

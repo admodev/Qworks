@@ -9,7 +9,7 @@ import {
 import * as Font from 'expo-font';
 import { StackActions } from '@react-navigation/native';
 
-export default function ShopPage({ navigation }) {
+export default function Qdrives({ navigation }) {
   const [fontsLoaded, setFontsLoaded] = useState(false);
 
   useEffect(() => {
@@ -76,7 +76,7 @@ export default function ShopPage({ navigation }) {
         </Text>
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Image
-            source={require('../assets/worldwide.png')}
+            source={require('../assets/shipping-truck.png')}
             style={{
               ...Platform.select({
                 android: {

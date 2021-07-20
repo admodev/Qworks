@@ -22,6 +22,7 @@ import { StackActions } from '@react-navigation/native';
 import SearchedCardResult from './searchedCard';
 import MapView, { Marker } from 'react-native-maps';
 import Carousel from 'react-native-snap-carousel';
+import FotoMapa from './FotoMapa';
 
 const { width, height } = Dimensions.get('window');
 const SCREEN_WIDTH = width;
@@ -65,6 +66,8 @@ class MapComponent extends Component {
             localidad: child.val().localidad,
             provincia: child.val().provincia,
             palabraClaveUno: child.val().palabraClaveUno,
+            partidoLatitude: child.val().partidoLatitude,
+            partidoLongitude: child.val().partidoLongitude,
             palabraClaveDos: child.val().palabraClaveDos,
             palabraClaveTres: child.val().palabraClaveTres,
             descripcionPersonal: child.val().descripcionPersonal,
@@ -75,11 +78,6 @@ class MapComponent extends Component {
         });
         itm = items;
         this.setState({ items: items });
-        console.log(itm);
-        console.log('itemstate ' + this.state.items);
-        itm.forEach((itms) => {
-          console.log('title*' + itms.title);
-        });
       });
 
     this.setState({ ready: false, error: null });
@@ -96,7 +94,6 @@ class MapComponent extends Component {
     );
   }
   geoSuccess = (position) => {
-    console.log(position);
     this.setState({
       ready: true,
       where: { lat: position.coords.latitude, lng: position.coords.longitude },
@@ -118,9 +115,6 @@ class MapComponent extends Component {
           .includes(this.state.search.toLowerCase()) ||
         itm.palabraClaveTres
           .toLowerCase()
-          .includes(this.state.search.toLowerCase()) ||
-        itm.descripcionPersonal
-          .toLowerCase()
           .includes(this.state.search.toLowerCase())
     );
   }
@@ -141,7 +135,7 @@ class MapComponent extends Component {
     };
 
     return (
-      <SafeAreaView style={{ flex: 1 }}>
+      <SafeAreaView style={{ flex: 35 }}>
         <View style={styles.container}>
           {!this.state.ready && (
             <View
@@ -162,16 +156,14 @@ class MapComponent extends Component {
                     alignItems: 'center',
                   },
                 }),
-              }}
-            >
+              }}>
               <Text
-                style={{ fontSize: 18, fontWeight: 'bold', marginBottom: 15 }}
-              >
+                style={{ fontSize: 18, fontWeight: 'bold', marginBottom: 15 }}>
                 Cargando...
               </Text>
               <ActivityIndicator
-                size="large"
-                color="orange"
+                size='large'
+                color='orange'
                 style={{
                   ...Platform.select({
                     android: {
@@ -188,66 +180,49 @@ class MapComponent extends Component {
               ref={(ref) => {
                 this.mapRef = ref;
               }}
-              provider={this.props.provider}
+              provider='google'
               style={styles.map}
               scrollEnabled={true}
               zoomEnabled={true}
               pitchEnabled={true}
               rotateEnabled={true}
               initialRegion={region}
-              onUserLocationChange={(event) => console.log(event.nativeEvent)}
+              // onUserLocationChange={(event) => console.log(event.nativeEvent)}
               showsUserLocation={this.state.showsUserLocation}
-              fitToElements={true}
-            >
+              fitToElements={true}>
               {this.state.search
                 ? this.filterList(this.state.items).map((itm, i) => (
                     <Marker
                       coordinate={{
-                        latitude: itm.latitud,
-                        longitude: itm.longitud,
+                        latitude: itm.partidoLatitude,
+                        longitude: itm.partidoLongitude,
                       }}
-                      pinColor={'purple'}
+                      pinColor={'#fd5d13'}
                       title={itm.nombre}
                       description={itm.actividad}
-                      key={itm.uuid + i}
+                      key={Math.max(i) + 1}
                       focusable={true}
-                    >
-                      <Image
-                        source={require('../assets/icon.png')}
-                        style={{
-                          width: 30,
-                          height: 30,
-                        }}
-                      />
-                    </Marker>
+                    />
                   ))
                 : this.state.items.map((element, index) => {
                     return (
                       <Marker
                         coordinate={{
-                          latitude: element.latitud,
-                          longitude: element.longitud,
+                          latitude: element.partidoLatitude,
+                          longitude: element.partidoLongitude,
                         }}
-                        pinColor={'purple'}
+                        pinColor={'#fd5d13'}
                         title={element.nombre}
                         description={element.actividad}
-                        key={element.uuid + index}
+                        key={Math.max(index) + 1}
                         focusable={true}
-                      >
-                        <Image
-                          source={require('../assets/icon.png')}
-                          style={{
-                            width: 30,
-                            height: 30,
-                          }}
-                        />
-                      </Marker>
+                      />
                     );
                   })}
             </MapView>
           )}
           <Input
-            placeholder="Buscar en Qworks!"
+            placeholder='Buscar en Q works!'
             containerStyle={{
               ...Platform.select({
                 android: {
@@ -281,9 +256,8 @@ class MapComponent extends Component {
               border: 0,
               borderBottomWidth: 0,
             }}
-            placeholderTextColor="#000000"
+            placeholderTextColor='#000000'
             onChangeText={(search) => this.setState({ search })}
-            value={this.state.search}
           />
         </View>
       </SafeAreaView>

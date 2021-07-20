@@ -82,11 +82,6 @@ class ControlPanel extends React.Component {
         itm = items;
         funcItm = items;
         this.setState({ items: items });
-        console.log(itm);
-        console.log('itemstate ' + this.state.items);
-        itm.forEach((itms) => {
-          console.log('title*' + itms.title);
-        });
       });
 
     this.setState({ ready: false, error: null });
@@ -103,7 +98,6 @@ class ControlPanel extends React.Component {
     );
   }
   geoSuccess = (position) => {
-    console.log(position);
     this.setState({
       ready: true,
       where: { lat: position.coords.latitude, lng: position.coords.longitude },
@@ -162,11 +156,10 @@ class ControlPanel extends React.Component {
         <Image
           source={require('../assets/gradients/20x20.png')}
           style={{
-            flex: 1,
             position: 'absolute',
             resizeMode: 'cover',
             width: '100%',
-            height: Platform.OS === 'android' ? '5%' : '3%',
+            height: Platform.OS === 'android' ? '5%' : '4%',
           }}
         />
         <Carousel
@@ -176,13 +169,15 @@ class ControlPanel extends React.Component {
           data={this.state.items}
           renderItem={({ item, index }) => (
             <LocationComponent
-              key={item.uuid + index}
+              key={Math.max(index) + 1}
               idAnuncio={item.idAnuncio}
+              anuncioId={item.anuncioId}
               uuid={item.uuid}
               nombre={item.nombre}
               apellido={item.apellido}
               actividad={item.actividad}
               local={item.direccionDelLocal}
+              localidad={item.localidad}
               recomendacionesTotales={
                 item.recomendacionesTotales > 0
                   ? item.recomendacionesTotales
@@ -193,7 +188,6 @@ class ControlPanel extends React.Component {
           sliderWidth={360}
           itemWidth={310}
           layout={'default'}
-          layoutCardOffset={9}
         />
       </SafeAreaView>
     );
