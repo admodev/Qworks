@@ -30,6 +30,7 @@ import * as Font from 'expo-font';
 import { useSelector, useDispatch } from 'react-redux';
 import { increment, decrement } from '../redux/actions/counterActions';
 import * as Linking from 'expo-linking';
+import axios from 'axios';
 
 let calificacion = 'calificacion';
 let favs;
@@ -178,27 +179,31 @@ export default function AnuncioSeleccionado({ route, navigation }) {
     });
 
   async function fetchComments() {
-    let comentariosRef = await firebase.default
-      .database()
-      .ref('comentarios/')
-      .orderByChild('receptor')
-      .equalTo(firebase.default.auth().currentUser.uid)
-      .on('value', function (snapshot) {
-        let comentarios = [];
+    try {
+      let comentariosRef = await firebase.default
+        .database()
+        .ref('comentarios/')
+        .orderByChild('receptor')
+        .equalTo(firebase.default.auth().currentUser.uid)
+        .on('value', function (snapshot) {
+          let comentarios = [];
 
-        snapshot.forEach(function (child) {
-          comentarios.push({
-            id: child.val().id,
-            receptor: child.val().receptor,
-            comentario: child.val().comentario,
-            emisorEmail: child.val().emisorEmail,
+          snapshot.forEach(function (child) {
+            comentarios.push({
+              id: child.val().id,
+              receptor: child.val().receptor,
+              comentario: child.val().comentario,
+              emisorEmail: child.val().emisorEmail,
+            });
           });
+
+          setComments(comentarios);
         });
 
-        setComments(comentarios);
-      });
-
-    return comentariosRef;
+      return comentariosRef;
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   let storage = firebase.storage();
@@ -244,7 +249,7 @@ export default function AnuncioSeleccionado({ route, navigation }) {
       });
   };
 
-  function quitarFavorito(id) {
+  async function quitarFavorito(id) {
     try {
       firebase
         .database()
@@ -258,7 +263,6 @@ export default function AnuncioSeleccionado({ route, navigation }) {
             promises.push(child.ref.remove());
           });
           Promise.all(promises);
-          Updates.reloadAsync();
         });
     } catch (error) {
       console.log(error.message);
@@ -289,18 +293,15 @@ export default function AnuncioSeleccionado({ route, navigation }) {
           ratedUser: id,
           rating: ratingString,
         },
-      })
-      .then(function () {
-        Updates.reloadAsync();
       });
   }
 
   function shareContent() {
     Share.share(
       {
-        message: `Dale un vistazo al perfil de ${nombre} en QuedeOficios!`,
-        url: 'http://dominioquedeoficios.com',
-        title: 'QuedeOficios!',
+        message: `Dale un vistazo al perfil de ${nombre} en Qworks!`,
+        url: 'http://qiuworks.com',
+        title: 'Qworks!',
       },
       {
         // Android only:
@@ -338,8 +339,15 @@ export default function AnuncioSeleccionado({ route, navigation }) {
     return self.indexOf(value) === index;
   }
 
-  const handleLinkOpen = () => {
-    Linking.openURL('https://www.google.com');
+  // TODO: finish this...
+  const handleLinkOpen = async () => {
+    try {
+      let fetchMapsData = axios.get(
+        'https://maps.googleapis.com/maps/api/place/findplacefromtext/output?parameters'
+      );
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
@@ -568,58 +576,6 @@ export default function AnuncioSeleccionado({ route, navigation }) {
           </View>
           <View
             style={{
-              flexDirection: 'row',
-              marginTop: '15%',
-              marginBottom: '5%',
-            }}>
-            <SocialIcon
-              button
-              type='facebook'
-              onPress={() => console.log('Agregar metodo')}
-              style={{
-                width: 50,
-                height: 50,
-              }}
-            />
-            <SocialIcon
-              button
-              type='instagram'
-              onPress={() => console.log('Agregar metodo')}
-              style={{
-                width: 50,
-                height: 50,
-              }}
-            />
-            <SocialIcon
-              button
-              type='linkedin'
-              onPress={() => console.log('Agregar metodo')}
-              style={{
-                width: 50,
-                height: 50,
-              }}
-            />
-            <SocialIcon
-              button
-              type='youtube'
-              onPress={() => console.log('Agregar metodo')}
-              style={{
-                width: 50,
-                height: 50,
-              }}
-            />
-            <SocialIcon
-              button
-              type='google'
-              onPress={() => console.log('Agregar metodo')}
-              style={{
-                width: 50,
-                height: 50,
-              }}
-            />
-          </View>
-          <View
-            style={{
               flex: 1,
               flexDirection: 'row',
             }}>
@@ -744,22 +700,26 @@ export default function AnuncioSeleccionado({ route, navigation }) {
                 color={naranjaQueDeOficios}
                 size={24}
               />
-              <Text
-                onPress={handleLinkOpen}
-                style={{
-                  color: '#0000EE',
-                  marginLeft: 'auto',
-                  marginRight: 'auto',
-                  marginTop: 10,
-                  marginBottom: 10,
-                  fontSize: 20,
-                  fontFamily: 'comfortaaLight',
-                }}>
-                {direccionDelLocal.length > 30
-                  ? direccionDelLocal.substr(0, direccionDelLocal.length - 45) +
-                    '...'
-                  : direccionDelLocal}
-              </Text>
+              {direccionDelLocal && (
+                <Text
+                  onPress={handleLinkOpen}
+                  style={{
+                    color: '#0000EE',
+                    marginLeft: 'auto',
+                    marginRight: 'auto',
+                    marginTop: 10,
+                    marginBottom: 10,
+                    fontSize: 20,
+                    fontFamily: 'comfortaaLight',
+                  }}>
+                  {direccionDelLocal.length > 30
+                    ? direccionDelLocal.substr(
+                        0,
+                        direccionDelLocal.length - 45
+                      ) + '...'
+                    : direccionDelLocal}
+                </Text>
+              )}
             </View>
           )}
           <View
@@ -807,30 +767,6 @@ export default function AnuncioSeleccionado({ route, navigation }) {
               {telefono}
             </Text>
           </View>
-          {empresa.toString().toLowerCase() == 'si' && (
-            <View
-              style={{
-                flexDirection: 'row',
-              }}>
-              <MaterialCommunityIcons
-                name='office-building'
-                color={naranjaQueDeOficios}
-                size={24}
-              />
-              <Text
-                style={{
-                  color: '#000000',
-                  marginLeft: 'auto',
-                  marginRight: 'auto',
-                  marginTop: 10,
-                  marginBottom: 10,
-                  fontSize: 20,
-                  fontFamily: 'comfortaaLight',
-                }}>
-                {nombreDeLaEmpresa}
-              </Text>
-            </View>
-          )}
           <View
             style={{
               flexDirection: 'row',
@@ -853,32 +789,6 @@ export default function AnuncioSeleccionado({ route, navigation }) {
               {factura}
             </Text>
           </View>
-          {matricula.toString().toLowerCase() === 'si' && (
-            <View
-              style={{
-                flexDirection: 'row',
-                marginTop: '2%',
-                marginBottom: '2%',
-              }}>
-              <MaterialCommunityIcons
-                name='card-account-details-star-outline'
-                color={naranjaQueDeOficios}
-                size={24}
-              />
-              <Text
-                style={{
-                  color: '#000000',
-                  marginLeft: 'auto',
-                  marginRight: 'auto',
-                  marginTop: 10,
-                  marginBottom: 10,
-                  fontSize: 20,
-                  fontFamily: 'comfortaaLight',
-                }}>
-                {numeroDeMatricula}
-              </Text>
-            </View>
-          )}
           <Text
             style={{
               marginLeft: 'auto',
