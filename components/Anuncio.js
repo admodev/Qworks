@@ -31,9 +31,13 @@ import { useSelector, useDispatch } from 'react-redux';
 import { increment, decrement } from '../redux/actions/counterActions';
 import * as Linking from 'expo-linking';
 import axios from 'axios';
+import Places from 'google-places-web';
 
 let calificacion = 'calificacion';
 let favs;
+
+Places.apiKey = 'AIzaSyAQzBk0AjO0KZr9XPhPFNiFi-_RqR73mII';
+Places.debug = __DEV__;
 
 export default function AnuncioSeleccionado({ route, navigation }) {
   let id = route.params.id;
@@ -339,12 +343,27 @@ export default function AnuncioSeleccionado({ route, navigation }) {
     return self.indexOf(value) === index;
   }
 
-  // TODO: finish this...
   const handleLinkOpen = async () => {
     try {
-      let fetchMapsData = axios.get(
-        'https://maps.googleapis.com/maps/api/place/findplacefromtext/output?parameters'
-      );
+      let place_id_search;
+
+      const response = await Places.textsearch({
+        query: direccionDelLocal.toString(),
+      });
+
+      const { status, results } = response;
+
+      if (results) {
+        results.map((detail) => {
+          place_id_search = detail.place_id;
+        });
+
+        Linking.openURL(
+          `https://www.google.com/maps/search/?api=1&query=Google&query_place_id=${place_id_search}`
+        );
+      }
+
+      return { status: status, result: results };
     } catch (error) {
       console.error(error);
     }
