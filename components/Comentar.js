@@ -89,6 +89,8 @@ export default function ComentarScreen({ route, navigation }) {
               title: 'Qworks! 📬',
               body: 'Gracias por comentar 🙋‍♀️🙋‍♂️',
               data: { data: 'El equipo de Qworks!' },
+              ios: { sound: true },
+              sound: true,
             },
             trigger: { seconds: 2 },
           });

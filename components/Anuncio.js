@@ -14,6 +14,7 @@ import {
 } from 'react-native';
 import {
   AirbnbRating,
+  Badge,
   Button,
   Card,
   Overlay,
@@ -58,6 +59,9 @@ export default function AnuncioSeleccionado({ route, navigation }) {
   const [fontsLoaded, setFontsLoaded] = useState(false);
   const counter = useSelector((state) => state.counter);
   const dispatch = useDispatch();
+  const [isFollowing, setIsFollowing] = useState(false);
+  const [isFollowingUser, setIsFollowingUser] = useState(false);
+  const [followsCuantity, setFollowsCuantity] = useState(0);
 
   let image,
     nombre,
@@ -192,6 +196,63 @@ export default function AnuncioSeleccionado({ route, navigation }) {
 
   let user = firebase.auth().currentUser;
 
+  async function followUser(follows) {
+    try {
+      let followersArray = [];
+
+      followersArray.push(follows);
+
+      let sendFollowStatus = await firebase.default
+        .database()
+        .ref('siguiendo/' + id)
+        .update({
+          user: id,
+          isFollowing: followersArray,
+        });
+
+      return sendFollowStatus;
+    } catch (error) {
+      Alert.alert(
+        'Error',
+        'Error al procesar su solicitud, intentelo nuevamente mas tarde, por favor...'
+      );
+
+      return console.error(error);
+    }
+  }
+
+  function handleFollow(follows) {
+    setIsFollowing(!follows);
+    console.log(isFollowing);
+    followUser(firebase.default.auth().currentUser.uid);
+  }
+
+  const fetchFollowing = async () => {
+    try {
+      let fetchFollow = await firebase.default
+        .database()
+        .ref('siguiendo/')
+        .orderByKey()
+        .equalTo(id)
+        .on('value', function (snapshot) {
+          snapshot.forEach(function (child) {
+            setFollowsCuantity(child.val().isFollowing.length);
+            child
+              .val()
+              .isFollowing.includes(
+                firebase.default.auth().currentUser.uid.toString()
+              )
+              ? setIsFollowingUser(true)
+              : setIsFollowingUser(false);
+          });
+        });
+
+      return fetchFollow;
+    } catch (error) {
+      return console.error(error);
+    }
+  };
+
   useEffect(() => {
     Font.loadAsync({
       // Nombres, apellidos, títulos y subtítulos
@@ -210,6 +271,8 @@ export default function AnuncioSeleccionado({ route, navigation }) {
     });
 
     fetchComments();
+
+    fetchFollowing();
 
     firebase
       .database()
@@ -527,6 +590,26 @@ export default function AnuncioSeleccionado({ route, navigation }) {
                       size={28}
                     />
                   </TouchableOpacity>
+                  <View>
+                    <Badge
+                      value={followsCuantity}
+                      badgeStyle={{
+                        position: 'absolute',
+                        top: 5,
+                        right: 0,
+                        backgroundColor: '#fd5d13',
+                      }}
+                    />
+                    <Button
+                      title={isFollowingUser ? 'Siguiendo' : 'Seguir'}
+                      onPress={() => handleFollow(isFollowing)}
+                      buttonStyle={{
+                        marginTop: 25,
+                        marginLeft: 20,
+                        backgroundColor: '#fd5d13',
+                      }}
+                    />
+                  </View>
                 </View>
               </View>
               <Overlay
