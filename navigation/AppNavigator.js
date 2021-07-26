@@ -40,6 +40,8 @@ import EditAnounce from '../components/EditAnounce';
 import PaymentScreen from '../components/PaymentScreen';
 import PlanesPage from '../pages/PlanesPage';
 import Qdrives from '../pages/Qdrives';
+import Qsuite from '../pages/Qsuite';
+import Feed from '../pages/Feed';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -70,13 +72,13 @@ export function MainTabNavigator({ navigation }) {
         }}
       />
       <Tab.Screen
-        name='Qdrives'
-        component={Qdrives}
+        name='Qsuite'
+        component={Qsuite}
         options={{
-          tabBarLabel: 'Qdrives!',
+          tabBarLabel: 'Qsuite!',
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons
-              name='truck-fast'
+              name='apple-icloud'
               color={'#fd5d13'}
               size={size}
             />
@@ -113,13 +115,13 @@ export function MainTabNavigator({ navigation }) {
         }}
       />
       <Tab.Screen
-        name='ShopPage'
-        component={ShopPage}
+        name='Feed'
+        component={Feed}
         options={{
-          tabBarLabel: 'Qbuyers!',
+          tabBarLabel: 'Qsocial!',
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons
-              name='shopping'
+              name='home-account'
               color={'#fd5d13'}
               size={size}
             />

@@ -53,10 +53,10 @@ class ControlPanel extends React.Component {
   componentDidMount() {
     functionalItems = [];
 
-    firebase
+    firebase.default
       .database()
       .ref('anuncios/')
-      .orderByKey()
+      .orderByChild('recomendacionesTotales')
       .on('value', (snap) => {
         let items = [];
         snap.forEach((child) => {
@@ -79,7 +79,7 @@ class ControlPanel extends React.Component {
             uuid: child.val().uuid,
           });
         });
-        itm = items;
+        itm = items.reverse();
         funcItm = items;
         this.setState({ items: items });
       });

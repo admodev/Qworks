@@ -51,7 +51,6 @@ class MapComponent extends Component {
     firebase
       .database()
       .ref('anuncios/')
-      .orderByKey()
       .on('value', (snap) => {
         let items = [];
         snap.forEach((child) => {
