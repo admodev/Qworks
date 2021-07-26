@@ -1103,8 +1103,8 @@ export default function AnuncioSeleccionado({ route, navigation }) {
                   title='Enviar Mensaje'
                   onPress={() =>
                     RootNavigation.navigate('ChatComponent', {
-                      userOne: firebase.auth().currentUser.uid,
-                      userTwo: id,
+                      userOneId: firebase.auth().currentUser.uid,
+                      userTwoId: id,
                       uuid: route.params.uuid,
                     })
                   }

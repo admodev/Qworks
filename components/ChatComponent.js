@@ -9,6 +9,7 @@ import {
 } from 'react-native-gifted-chat';
 import {
   ActivityIndicator,
+  Alert,
   Image,
   SafeAreaView,
   StyleSheet,
@@ -34,7 +35,6 @@ import LoginPage from '../pages/LoginPage';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import * as ImagePicker from 'expo-image-picker';
 import * as Notifications from 'expo-notifications';
-import { Timer } from 'react-native-stopwatch-timer';
 
 if (firebase.apps.length === 0) {
   try {
@@ -56,139 +56,88 @@ if (firebase.apps.length === 0) {
 }
 
 export default function Chat({ route, navigation }) {
-  let [timerStart, setTimerStart] = useState(false);
-  let [totalDuration, setTotalDuration] = useState(180000000);
-  let [timerReset, setTimerReset] = useState(false);
+  const [senderData, setSenderData] = useState({
+    nombre: '',
+  });
 
-  let firstUserId = route.params.userOne;
-  let secondUserId = route.params.userTwo;
+  const [receiverData, setReceiverData] = useState({
+    nombre: '',
+    actividad: '',
+  });
   const [messages, setMessages] = useState([]);
   const [text, setText] = useState(false);
-  const currentUser = firebase.auth().currentUser.uid;
-  const usersIds = firstUserId + secondUserId;
-  const db = firebase.firestore();
-  const chatsRef = db.collection('chats/');
-  const chatsArray = chatsRef.doc(usersIds);
-  const chat = chatsArray.collection('/chat/');
-  const selectedChat = chat.where('user', '==', currentUser);
-  const database = firebase.database();
-  const storage = firebase.storage();
-  // Estado del chat mediante la función setTimeOut().
-  const [chatActivo, setChatActivo] = useState(true);
-  const storageRef = storage.ref();
-  const defaultImageRef = storageRef.child('/defaultUserImage/icon.png');
-  let [image, setImage] = useState('');
+  const [loading, setLoading] = useState(false);
 
-  const handleTimerComplete = () => alert('Te quedaste sin tiempo!');
+  async function fetchSenderData() {
+    try {
+      setLoading(true);
 
-  let key;
-  let nombre;
-  let fotoPerfil;
-  let actividad;
-  let emailPersonal;
+      let fetchData = await firebase.default
+        .database()
+        .ref('anuncios/')
+        .orderByChild('id')
+        .equalTo(firebase.default.auth().currentUser.uid)
+        .on('value', (snap) => {
+          snap.forEach((child) => {
+            setSenderData({
+              ...senderData,
+              nombre: child.val().nombre,
+            });
+          });
+        });
 
-  let fetchName = firebase
-    .database()
-    .ref('anuncios/')
-    .orderByChild('id')
-    .equalTo(currentUser)
-    .on('value', (snap) => {
-      snap.forEach((child) => {
-        key = child.key;
-        nombre = child.val().nombre;
-        fotoPerfil = child.val().image;
-        actividad = child.val().actividad;
-        emailPersonal = child.val().emailPersonal;
-      });
-    });
+      setLoading(false);
 
-  let userTwoNombre, userTwoActividad, userTwoEmail;
+      return fetchData;
+    } catch (error) {
+      Alert.alert('Error', 'Error al conseguir los datos.');
 
-  firebase.default
-    .database()
-    .ref('anuncios/')
-    .orderByChild('uuid')
-    .equalTo(route.params.uuid)
-    .once('value', (snap) => {
-      snap.forEach((child) => {
-        userTwoNombre = child.val().nombre;
-        userTwoActividad = child.val().actividad;
-        userTwoEmail = child.val().emailLaboral;
-      });
-    });
-
-  function toggleTimer() {
-    setTimerStart(!timerStart);
+      return console.error(error);
+    }
   }
 
-  function resetTimer() {
-    setTimerReset(!timerReset);
+  async function fetchUserData() {
+    try {
+      setLoading(true);
+
+      let fetchData = await firebase.default
+        .database()
+        .ref('anuncios/')
+        .orderByChild('uuid')
+        .equalTo(route.params.uuid)
+        .once('value', (snap) => {
+          snap.forEach((child) => {
+            setReceiverData({
+              ...receiverData,
+              nombre: child.val().nombre,
+              actividad: child.val().actividad,
+            });
+          });
+        });
+
+      setLoading(false);
+
+      return fetchData;
+    } catch (error) {
+      Alert.alert('Error', 'Error al conseguir los datos.');
+
+      return console.error(error);
+    }
   }
 
-  if (timerStart == true && totalDuration == 0) {
-    resetTimer();
-  }
-
-  function getFormattedTime(time) {
-    let currentTime = time;
-  }
-
-  const textoChatVacio = 'Empieza a hablar para iniciar una conversación!';
-
-  const receiver = secondUserId;
+  const pickImage = () => {
+    console.log('Placeholder function.');
+  };
 
   useEffect(() => {
-    toggleTimer();
-
-    if (chatsRef.where('user.receiver', '==', receiver)) {
-      const unsubscribe = chatsRef
-        .where('user.receiver', '==', receiver)
-        .onSnapshot((querySnapshot) => {
-          const messagesFirestore = querySnapshot
-            .docChanges()
-            .filter(({ type }) => type === 'added')
-            .map(({ doc }) => {
-              const message = doc.data();
-              return { ...message, createdAt: message.createdAt.toDate() };
-            })
-            .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
-          appendMessages(messagesFirestore);
-        });
-      return () => unsubscribe();
-    } else if (chatsRef.where('user.receiver', '==', currentUser)) {
-      const unsubscribe = chatsRef
-        .where('user.receiver', '==', receiver)
-        .onSnapshot((querySnapshot) => {
-          const messagesFirestore = querySnapshot
-            .docChanges()
-            .filter(({ type }) => type === 'added')
-            .map(({ doc }) => {
-              const message = doc.data();
-              return { ...message, createdAt: message.createdAt.toDate() };
-            })
-            .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
-          appendMessages(messagesFirestore);
-        });
-      return () => unsubscribe();
-    }
-
-    (async () => {
-      if (Platform.OS !== 'web') {
-        const { status } =
-          await ImagePicker.requestCameraRollPermissionsAsync();
-        if (status !== 'granted') {
-          alert(
-            'Perdón, necesitamos tu permiso para que puedas subir una foto!'
-          );
-        }
-      }
-    })();
+    fetchSenderData();
+    fetchUserData();
   }, []);
 
   const appendMessages = useCallback(
     (messages) => {
       setMessages((previousMessages) =>
-        GiftedChat.prepend(previousMessages, messages, image)
+        GiftedChat.prepend(previousMessages, messages)
       );
     },
     [messages]
@@ -196,14 +145,14 @@ export default function Chat({ route, navigation }) {
 
   async function handleSend(messages) {
     const data = {
-      senderId: firebase.auth().currentUser && currentUser,
+      senderId: firebase.default.auth().currentUser.uid,
       receiverType: 'user',
       messageType: 'text',
-      receiver: receiver,
+      receiver: 'receiver',
       content: messages,
     };
-    const writes = messages.map((m) => chatsRef.add(m));
-    await Promise.all([writes, data]);
+    /* const writes = messages.map((m) => chatsRef.add(m));
+    await Promise.all([writes, data]); */
   }
 
   function renderSend(props) {
@@ -240,25 +189,6 @@ export default function Chat({ route, navigation }) {
     );
   }
 
-  const pickImage = async () => {
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
-      allowsEditing: true,
-      aspect: [4, 3],
-      quality: 0.5,
-    });
-    if (!result.cancelled) {
-      setImage(result.uri.toString());
-      const response = await fetch(uri);
-      const blob = await response.blob();
-      var photoRef = firebase
-        .storage()
-        .ref()
-        .child('profilePictures/' + user.uid + '-' + ++anunciosCountResult);
-      return photoRef.put(blob);
-    }
-  };
-
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <Image
@@ -271,8 +201,10 @@ export default function Chat({ route, navigation }) {
           height: '5%',
         }}
       />
-      {currentUser ? (
-        <SafeAreaView style={{ flex: 1, marginTop: 10 }}>
+      {loading ? (
+        <Text>Cargando...</Text>
+      ) : (
+        <View style={{ flex: 1, marginTop: 10 }}>
           <View
             style={{
               width: 30,
@@ -298,104 +230,56 @@ export default function Chat({ route, navigation }) {
               />
             </TouchableOpacity>
           </View>
-          {totalDuration > 0 ? (
-            <>
-              <Text
-                style={{
-                  margin: '2%',
-                  fontSize: 16,
-                }}>
-                Estas chateando con: {userTwoNombre}
-              </Text>
-              <Text
-                style={{
-                  margin: '2%',
-                  fontSize: 16,
-                  color: '#fd5d13',
-                }}>
-                Email: {userTwoEmail}
-              </Text>
-              <Text
-                style={{
-                  margin: '2%',
-                  fontSize: 16,
-                }}>
-                Profesion: {userTwoActividad}
-              </Text>
-              <GiftedChat
-                messages={messages}
-                onSend={handleSend}
-                user={{
-                  _id: firebase.auth().currentUser && currentUser,
-                  user: 1,
-                  name: nombre,
-                  receiver: receiver,
-                }}
-                text={text}
-                alwaysShowSend={text ? true : false || image ? true : false}
-                renderUsernameOnMessage={true}
-                onInputTextChanged={(text) => setText(text)}
-                renderLoading={() => (
-                  <ActivityIndicator size='large' color='#fd5d13' />
-                )}
-                isAnimated
-                renderAvatarOnTop
-                placeholder='Escribe tu mensaje...'
-                receiver={{
-                  receiver: receiver,
-                  user: 2,
-                  name: userTwoNombre,
-                  actividad: userTwoActividad,
-                  userTwoEmail: userTwoEmail,
-                }}
-                loadEarlier={messages.length >= 20}
-                scrollToBottom
-                scrollToBottomComponent={() => (
-                  <MaterialCommunityIcons
-                    name='arrow-down'
-                    color={'#fd5d13'}
-                    size={20}
-                  />
-                )}
-                renderSend={renderSend}
-                renderActions={() => renderActions()}
-              />
-            </>
-          ) : (
-            <View>
-              <Text
-                style={{
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  marginTop: '50%',
-                  marginLeft: '20%',
-                  marginRight: '20%',
-                  fontWeight: 'bold',
-                  fontSize: 24,
-                }}>
-                Tu tiempo se acabó, adquiere más tiempo para continuar
-                conversando...
-              </Text>
-              <TouchableOpacity onPress={() => alert('Proximamente...')}>
-                <Text
-                  style={{
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    marginTop: '10%',
-                    marginLeft: '20%',
-                    marginRight: '20%',
-                    fontWeight: 'bold',
-                    fontSize: 24,
-                    color: 'orange',
-                  }}>
-                  Comprar más tiempo.
-                </Text>
-              </TouchableOpacity>
-            </View>
-          )}
-        </SafeAreaView>
-      ) : (
-        <LoginPage />
+          <>
+            <Text
+              style={{
+                margin: '2%',
+                fontSize: 16,
+              }}>
+              Estas chateando con: {receiverData.nombre}
+            </Text>
+            <Text
+              style={{
+                margin: '2%',
+                fontSize: 16,
+              }}>
+              Profesion: {receiverData.actividad}
+            </Text>
+            <GiftedChat
+              messages={messages}
+              onSend={handleSend}
+              user={{
+                _id:
+                  firebase.default.auth().currentUser &&
+                  firebase.default.auth().currentUser.uid,
+                user: 1,
+                name: senderData.nombre,
+                receiver: route.params.uuid,
+              }}
+              text={text}
+              alwaysShowSend={text ? true : false}
+              renderUsernameOnMessage={true}
+              onInputTextChanged={(text) => setText(text)}
+              renderLoading={() => (
+                <ActivityIndicator size='large' color='#fd5d13' />
+              )}
+              isAnimated
+              renderAvatarOnTop
+              placeholder='Escribe tu mensaje...'
+              loadEarlier={messages.length >= 20}
+              scrollToBottom
+              scrollToBottomComponent={() => (
+                <MaterialCommunityIcons
+                  name='arrow-down'
+                  color={'#fd5d13'}
+                  size={20}
+                />
+              )}
+              renderSend={renderSend}
+              renderActions={() => renderActions()}
+            />
+          </>
+        </View>
       )}
     </SafeAreaView>
   );
