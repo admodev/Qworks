@@ -65,6 +65,7 @@ export default function Chat({ route, navigation }) {
     actividad: '',
   });
   const [messages, setMessages] = useState([]);
+  const [chatMessages, setChatMessages] = useState([]);
   const [text, setText] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -127,15 +128,21 @@ export default function Chat({ route, navigation }) {
 
   async function fetchMessages() {
     try {
+      let newMessages = [];
+
       let messagesData = await firebase.default
         .database()
         .ref('chats/')
-        .once('value', function (snapshot) {
+        .on('value', function (snapshot) {
           snapshot.forEach(function (child) {
             child.forEach((nestedChild) => {
               if (nestedChild.val().user.receiver === route.params.uuid) {
-                // setear los mensajes aca...
-                console.log(true);
+                newMessages.push({
+                  newMessages: nestedChild.val().text,
+                });
+                setChatMessages(newMessages);
+
+                console.log(chatMessages);
               }
             });
           });
@@ -278,6 +285,13 @@ export default function Chat({ route, navigation }) {
               }}>
               Profesion: {receiverData.actividad}
             </Text>
+            {chatMessages.map((element, index) => {
+              return (
+                <View key={index}>
+                  <Text>{element.newMessages}</Text>
+                </View>
+              );
+            })}
             <GiftedChat
               messages={messages}
               onSend={handleSend}
