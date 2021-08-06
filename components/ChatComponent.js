@@ -125,6 +125,28 @@ export default function Chat({ route, navigation }) {
     }
   }
 
+  async function fetchMessages() {
+    try {
+      let messagesData = await firebase.default
+        .database()
+        .ref('chats/')
+        .once('value', function (snapshot) {
+          snapshot.forEach(function (child) {
+            child.forEach((nestedChild) => {
+              if (nestedChild.val().user.receiver === route.params.uuid) {
+                // setear los mensajes aca...
+                console.log(true);
+              }
+            });
+          });
+        });
+
+      return messagesData;
+    } catch (error) {
+      return console.error(error);
+    }
+  }
+
   const pickImage = () => {
     console.log('Placeholder function.');
   };
@@ -132,6 +154,7 @@ export default function Chat({ route, navigation }) {
   useEffect(() => {
     fetchSenderData();
     fetchUserData();
+    fetchMessages();
   }, []);
 
   const appendMessages = useCallback(
@@ -144,15 +167,25 @@ export default function Chat({ route, navigation }) {
   );
 
   async function handleSend(messages) {
-    const data = {
-      senderId: firebase.default.auth().currentUser.uid,
-      receiverType: 'user',
-      messageType: 'text',
-      receiver: 'receiver',
-      content: messages,
-    };
-    /* const writes = messages.map((m) => chatsRef.add(m));
-    await Promise.all([writes, data]); */
+    try {
+      let data = {
+        senderId: firebase.default.auth().currentUser.uid,
+        receiverType: 'user',
+        messageType: 'text',
+        receiver: 'receiver',
+        content: messages,
+      };
+
+      let sendMessagesToDatabase = await firebase.default
+        .database()
+        .ref('chats/')
+        .push()
+        .set(messages);
+
+      return sendMessagesToDatabase;
+    } catch (error) {
+      return console.error(error);
+    }
   }
 
   function renderSend(props) {
