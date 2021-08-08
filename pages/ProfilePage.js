@@ -74,9 +74,8 @@ export default function ProfilePage({ navigation }) {
   useEffect(() => {
     (async () => {
       if (Platform.OS !== 'web') {
-        const {
-          status,
-        } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+        const { status } =
+          await ImagePicker.requestMediaLibraryPermissionsAsync();
         if (status !== 'granted') {
           alert(
             'Perdón, necesitamos tu permiso para que puedas subir una foto!'
@@ -463,32 +462,6 @@ export default function ProfilePage({ navigation }) {
                     marginLeft: '1%',
                   }}>
                   Consultas
-                </Text>
-              </View>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => navigation.navigate('PlanesPage')}>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  marginTop: '2%',
-                }}>
-                <MaterialCommunityIcons
-                  name='handshake'
-                  color={'#fd5d13'}
-                  size={20}
-                  style={{
-                    marginTop: '3.5%',
-                    marginLeft: '4%',
-                  }}
-                />
-                <Text
-                  style={{
-                    color: '#000000',
-                    fontSize: 20,
-                    marginTop: '3%',
-                    marginLeft: '1%',
-                  }}>
-                  Planes
                 </Text>
               </View>
             </TouchableOpacity>

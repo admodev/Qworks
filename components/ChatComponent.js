@@ -136,13 +136,15 @@ export default function Chat({ route, navigation }) {
         .on('value', function (snapshot) {
           snapshot.forEach(function (child) {
             child.forEach((nestedChild) => {
-              if (nestedChild.val().user.receiver === route.params.uuid) {
+              if (
+                nestedChild.val().user.receiver === route.params.uuid &&
+                nestedChild.val().user._id ===
+                  firebase.default.auth().currentUser.uid
+              ) {
                 newMessages.push({
                   newMessages: nestedChild.val().text,
                 });
                 setChatMessages(newMessages);
-
-                console.log(chatMessages);
               }
             });
           });
