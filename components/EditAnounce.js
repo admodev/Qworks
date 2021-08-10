@@ -136,7 +136,39 @@ const EditAnounce = ({ route }) => {
     });
   });
 
-  //provider.addScope('https://www.googleapis.com/auth/userinfo.profile');
+  async function updateAnounceData() {
+    try {
+      let update = await firebase.default
+        .database()
+        .ref(
+          'anuncios/' +
+            firebase.default.auth().currentUser.uid +
+            contadorAnuncio
+        )
+        .update({
+          nombre: values.nombre,
+          apellido: values.apellido,
+          actividad: values.actividad,
+          emailLaboral: values.emailLaboral,
+          localidad: values.localidad,
+          partido: values.partido,
+          local: values.local,
+          direccionDelLocal: values.direccionDelLocal,
+          descripcionPersonal: values.descripcionPersonal,
+          palabraClaveUno: values.palabraClaveUno,
+          palabraClaveDos: values.palabraClaveDos,
+          palabraClaveTres: values.palabraClaveTres,
+          efectivo: values.efectivo,
+          pagosDigitales: values.pagosDigitales,
+        });
+
+      let nav = navigation.navigate('MisAnuncios');
+
+      return { update, nav };
+    } catch (error) {
+      return console.error(error);
+    }
+  }
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -198,6 +230,8 @@ const EditAnounce = ({ route }) => {
       console.log(authentication);
     }
   }, [response]);
+
+  //TODO: eliminar los inputs de los datos que quitamos de "AnunciatePage"
 
   return (
     <SafeAreaView style={styles.safeAreaView}>
@@ -611,6 +645,7 @@ const EditAnounce = ({ route }) => {
             width: '70%',
           }}
           title='Guardar'
+          onPress={() => updateAnounceData()}
         />
       </ScrollView>
     </SafeAreaView>
