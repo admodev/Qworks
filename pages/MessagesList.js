@@ -32,46 +32,42 @@ let chatsRef = db.collection('chats/');
 var itm = [];
 
 export default function UserMessagesList({ route, navigation }) {
-  let [timerStart, setTimerStart] = useState(false);
-  let [totalDuration, setTotalDuration] = useState(1800000);
-  let [timerReset, setTimerReset] = useState(false);
-  const handleTimerComplete = () => alert('Te quedaste sin tiempo!');
   let [items, setItems] = useState([]);
 
-  useEffect(() => {
-    chatsRef
-      .where('user._id', '==', firebase.auth().currentUser.uid)
-      .get()
-      .then((snapshot) => {
-        let items = [];
-        snapshot.docs.forEach((doc) => {
-          items.push({
-            ultimoMensaje: doc.data().text,
-            nombreDelUsuario: doc.data().user.name,
-            emailDelUsuario: doc.data().user.email,
-            usuario: doc.data().user._id,
+  async function fetchMessages() {
+    let fetch = await firebase.default
+      .database()
+      .ref('chats/')
+      .orderByKey()
+      .on('value', function (snapshot) {
+        let newItems = [];
+        snapshot.forEach(function (child) {
+          child.forEach((nestedChild) => {
+            if (
+              nestedChild.val().user._id ===
+              firebase.default.auth().currentUser.uid
+            ) {
+              newItems.push({
+                _id: nestedChild.val()._id,
+                text: nestedChild.val().text,
+                user: nestedChild.val().user,
+              });
+            }
           });
         });
-        itm = items;
-        setItems((items = items));
+        setItems(newItems);
       });
-  });
 
-  function toggleTimer() {
-    setTimerStart(!timerStart);
+    try {
+      await fetch;
+    } catch (error) {
+      return console.error(error);
+    }
   }
 
-  function resetTimer() {
-    setTimerReset(!timerReset);
-  }
-
-  if (timerStart == true && totalDuration == 0) {
-    resetTimer();
-  }
-
-  if (timerStart === false) {
-    toggleTimer();
-  }
+  useEffect(() => {
+    fetchMessages();
+  }, []);
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -86,60 +82,31 @@ export default function UserMessagesList({ route, navigation }) {
         }}
       />
       <ScrollView>
-        {items.map((u, i) => {
+        {items.map((item, index) => {
           return (
-            <View key={i}>
-              <ListItem bottomDivider>
-                <ListItem.Content>
-                  <TouchableOpacity
-                    onPress={() =>
-                      navigation.navigate('ChatComponent', {
-                        userOne: firebase.auth().currentUser.uid,
-                        userTwo: u.usuario,
-                      })
-                    }>
-                    <ListItem.Title>
-                      {!u.nombreDelUsuario
-                        ? u.emailDelUsuario
-                        : u.nombreDelUsuario}
-                    </ListItem.Title>
-                    <ListItem.Subtitle>{u.ultimoMensaje}</ListItem.Subtitle>
-                  </TouchableOpacity>
-                </ListItem.Content>
-              </ListItem>
+            <View key={index}>
+              {item.user._id === firebase.default.auth().currentUser.uid && (
+                <ListItem bottomDivider>
+                  <ListItem.Content>
+                    <TouchableOpacity
+                      onPress={() =>
+                        navigation.navigate('ChatComponent', {
+                          userOneId: firebase.default.auth().currentUser.uid,
+                          uuid: item.user.receiver,
+                        })
+                      }>
+                      <ListItem.Title>
+                        {!item.user.name ? 'Usuario' : item.user.name}
+                      </ListItem.Title>
+                      <ListItem.Subtitle>{item.text}</ListItem.Subtitle>
+                    </TouchableOpacity>
+                  </ListItem.Content>
+                </ListItem>
+              )}
             </View>
           );
         })}
       </ScrollView>
-      <View
-        style={{
-          flex: 1,
-          alignItems: 'center',
-          justifyContent: 'center',
-          bottom: 0,
-        }}>
-        <Text style={{ fontSize: 18 }}>Se productivo, te quedan: </Text>
-        <View
-          style={{
-            flex: 1,
-            alignItems: 'center',
-            justifyContent: 'center',
-            flexDirection: 'row',
-          }}>
-          <MaterialCommunityIcons name='clock' color={'orange'} size={35} />
-          <Timer
-            totalDuration={totalDuration}
-            minutes
-            start={timerStart}
-            reset={timerReset}
-            handleFinish={handleTimerComplete}
-            // getTime={(time) =>
-            //   console.log('El tiempo corre a un segundo', time)
-            // }
-            options={options}
-          />
-        </View>
-      </View>
     </SafeAreaView>
   );
 }
