@@ -28,8 +28,7 @@ import * as RootNavigation from '../RootNavigation.js';
 const EditAnounce = ({ route }) => {
   const [uploading, setUploading] = React.useState(false);
 
-  let image,
-    nombre,
+  let nombre,
     apellido,
     actividad,
     contadorAnuncio,
@@ -60,7 +59,8 @@ const EditAnounce = ({ route }) => {
     .ref('anuncios/')
     .orderByChild('uuid')
     .equalTo(route.params.uuid);
-  let dbResult = dbRef.on('value', (snap) => {
+
+  dbRef.on('value', (snap) => {
     snap.forEach((child) => {
       nombre = child.val().nombre;
       apellido = child.val().apellido;
@@ -91,7 +91,6 @@ const EditAnounce = ({ route }) => {
   });
 
   const [values, setValues] = React.useState({
-    image: null,
     actividad: actividad,
     apellido: apellido,
     descripcionPersonal: descripcionPersonal,
@@ -110,6 +109,8 @@ const EditAnounce = ({ route }) => {
     provincia: provincia,
   });
 
+  const [image, setImage] = React.useState(null);
+
   async function updateAnounceData() {
     try {
       let update = await firebase.default
@@ -127,7 +128,10 @@ const EditAnounce = ({ route }) => {
           localidad: values.localidad,
           partido: values.partido,
           local: values.local,
-          direccionDelLocal: values.direccionDelLocal,
+          direccionDelLocal:
+            local.toString() === 'Si'
+              ? values.direccionDelLocal
+              : 'Sin Especificar',
           descripcionPersonal: values.descripcionPersonal,
           palabraClaveUno: values.palabraClaveUno,
           palabraClaveDos: values.palabraClaveDos,
@@ -153,16 +157,12 @@ const EditAnounce = ({ route }) => {
     });
     console.log(result);
     if (!result.cancelled) {
-      const uri = result;
-      setValues({
-        ...values,
-        image: uri.toString(),
-      });
-      const response = await fetch(uri);
+      setImage(result.uri.toString());
+      const response = await fetch(result.uri);
       const blob = await response.blob();
-      const filename = uri.substring(uri.lastIndexOf('/') + 1);
+      const filename = result.uri.substring(result.uri.lastIndexOf('/') + 1);
       const uploadUri =
-        Platform.OS === 'ios' ? uri.replace('file://', '') : uri;
+        Platform.OS === 'ios' ? result.uri.replace('file://', '') : result.uri;
       setUploading(true);
 
       const task = firebase.default
@@ -202,9 +202,9 @@ const EditAnounce = ({ route }) => {
         }}>
         <View style={styles.firstView}>
           <Text>Información Personal</Text>
-          {values.image && (
+          {image && (
             <Avatar
-              source={{ uri: values.image }}
+              source={{ uri: image }}
               size='xlarge'
               avatarStyle={{ borderRadius: 25 }}
             />
