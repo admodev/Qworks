@@ -1,12 +1,6 @@
 // @vendor
 import * as React from 'react';
-import * as WebBrowser from 'expo-web-browser';
-import * as Google from 'expo-auth-session/providers/google';
-import * as Facebook from 'expo-auth-session/providers/facebook';
-import { ResponseType } from 'expo-auth-session';
 import * as firebase from 'firebase';
-// Providers keys & ids
-import { FACEBOOK_APP_ID } from '@env';
 // @components
 import {
   Image,
@@ -16,7 +10,6 @@ import {
   StyleSheet,
   View,
   Text,
-  TouchableOpacity,
 } from 'react-native';
 import {
   Avatar,
@@ -26,42 +19,13 @@ import {
   SocialIcon,
 } from 'react-native-elements';
 import * as ImagePicker from 'expo-image-picker';
-import { ImageInfo } from 'expo-image-picker/build/ImagePicker.types';
 import 'firebase/auth';
 import 'firebase/database';
 import 'firebase/storage';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import * as RootNavigation from '../RootNavigation.js';
 
 const EditAnounce = ({ route }) => {
-  const [values, setValues] = React.useState({
-    image: null,
-    actividad: '',
-    apellido: '',
-    celular: 0,
-    descripcionPersonal: '',
-    desde: '',
-    diasHorarios: [],
-    direccionDelLocal: '',
-    efectivo: false,
-    emailLaboral: '',
-    emailPersonal: '',
-    empresa: '',
-    factura: '',
-    hasta: '',
-    local: '',
-    localidad: '',
-    matricula: '',
-    nombre: '',
-    nombreDeLaEmpresa: '',
-    numeroDeMatricula: '',
-    pagosDigitales: false,
-    palabraClaveUno: '',
-    palabraClaveDos: '',
-    palabraClaveTres: '',
-    partido: '',
-    provincia: '',
-    telefono: 0,
-  });
   const [uploading, setUploading] = React.useState(false);
 
   let image,
@@ -78,14 +42,9 @@ const EditAnounce = ({ route }) => {
     diasHorarios,
     direccionDelLocal,
     emailLaboral,
-    empresa,
-    factura,
     hasta,
     local,
     localidad,
-    matricula,
-    nombreDeLaEmpresa,
-    numeroDeMatricula,
     palabraClaveUno,
     palabraClaveDos,
     palabraClaveTres,
@@ -117,8 +76,6 @@ const EditAnounce = ({ route }) => {
       diasHorarios = child.val().diasHorarios;
       direccionDelLocal = child.val().direccionDelLocal;
       emailLaboral = child.val().emailLaboral;
-      empresa = child.val().empresa;
-      factura = child.val().factura;
       hasta = child.val().hasta;
       local = child.val().local;
       localidad = child.val().localidad;
@@ -127,13 +84,30 @@ const EditAnounce = ({ route }) => {
       palabraClaveTres = child.val().palabraClaveTres;
       partido = child.val().partido;
       provincia = child.val().provincia;
-      nombreDeLaEmpresa = child.val().nombreDeLaEmpresa;
       recomendacionesTotales = child.val().recomendacionesTotales;
       hasRecommended = child.val().hasRecommended;
       telefono = child.val().telefono;
-      matricula = child.val().matricula;
-      numeroDeMatricula = child.val().numeroDeMatricula;
     });
+  });
+
+  const [values, setValues] = React.useState({
+    image: null,
+    actividad: actividad,
+    apellido: apellido,
+    descripcionPersonal: descripcionPersonal,
+    direccionDelLocal: direccionDelLocal,
+    efectivo: efectivo,
+    emailLaboral: emailLaboral,
+    emailPersonal: emailPersonal,
+    local: local,
+    localidad: localidad,
+    nombre: nombre,
+    pagosDigitales: pagosDigitales,
+    palabraClaveUno: palabraClaveUno,
+    palabraClaveDos: palabraClaveDos,
+    palabraClaveTres: palabraClaveTres,
+    partido: partido,
+    provincia: provincia,
   });
 
   async function updateAnounceData() {
@@ -162,7 +136,7 @@ const EditAnounce = ({ route }) => {
           pagosDigitales: values.pagosDigitales,
         });
 
-      let nav = navigation.navigate('MisAnuncios');
+      let nav = RootNavigation.navigate('Anuncios');
 
       return { update, nav };
     } catch (error) {
@@ -212,26 +186,6 @@ const EditAnounce = ({ route }) => {
       setUploading(false);
     }
   };
-
-  const [request, response, promptAsync] = Google.useAuthRequest({
-    expoClientId:
-      '224428348880-r23dsomdtlivf7vgecq8485350eg57v1.apps.googleusercontent.com',
-    iosClientId:
-      '224428348880-r23dsomdtlivf7vgecq8485350eg57v1.apps.googleusercontent.com',
-    androidClientId:
-      '224428348880-r23dsomdtlivf7vgecq8485350eg57v1.apps.googleusercontent.com',
-    webClientId:
-      '224428348880-r23dsomdtlivf7vgecq8485350eg57v1.apps.googleusercontent.com',
-  });
-
-  React.useEffect(() => {
-    if (response?.type === 'success') {
-      const { authentication } = response;
-      console.log(authentication);
-    }
-  }, [response]);
-
-  //TODO: eliminar los inputs de los datos que quitamos de "AnunciatePage"
 
   return (
     <SafeAreaView style={styles.safeAreaView}>
@@ -311,38 +265,6 @@ const EditAnounce = ({ route }) => {
             }
           />
           <Input
-            placeholder={telefono}
-            inputContainerStyle={{
-              width: '85%',
-              marginLeft: 'auto',
-              marginRight: 'auto',
-              marginTop: '5%',
-            }}
-            keyboardType='number-pad'
-            onChangeText={(telefono) =>
-              setValues({
-                ...values,
-                telefono: parseInt(telefono),
-              })
-            }
-          />
-          <Input
-            placeholder={celular}
-            inputContainerStyle={{
-              width: '85%',
-              marginLeft: 'auto',
-              marginRight: 'auto',
-              marginTop: '5%',
-            }}
-            keyboardType='number-pad'
-            onChangeText={(celular) =>
-              setValues({
-                ...values,
-                celular: parseInt(celular),
-              })
-            }
-          />
-          <Input
             placeholder={emailLaboral}
             inputContainerStyle={{
               width: '85%',
@@ -400,81 +322,6 @@ const EditAnounce = ({ route }) => {
               setValues({
                 ...values,
                 local: local,
-              })
-            }
-          />
-          <Input
-            placeholder='Empresa (Si / No)'
-            inputContainerStyle={{
-              width: '85%',
-              marginLeft: 'auto',
-              marginRight: 'auto',
-              marginTop: '5%',
-            }}
-            onChangeText={(empresa) =>
-              setValues({
-                ...values,
-                empresa: empresa,
-              })
-            }
-          />
-          <Input
-            placeholder={empresa ? empresa : 'Empresa'}
-            inputContainerStyle={{
-              width: '85%',
-              marginLeft: 'auto',
-              marginRight: 'auto',
-              marginTop: '5%',
-            }}
-            onChangeText={(nombreDeLaEmpresa) =>
-              setValues({
-                ...values,
-                nombreDeLaEmpresa: nombreDeLaEmpresa,
-              })
-            }
-          />
-          <Input
-            placeholder={factura ? factura : 'Factura (Tipo)'}
-            inputContainerStyle={{
-              width: '85%',
-              marginLeft: 'auto',
-              marginRight: 'auto',
-              marginTop: '5%',
-            }}
-            onChangeText={(factura) =>
-              setValues({
-                ...values,
-                factura: factura,
-              })
-            }
-          />
-          <Input
-            placeholder={matricula ? matricula : 'Matrícula (Si / No)'}
-            inputContainerStyle={{
-              width: '85%',
-              marginLeft: 'auto',
-              marginRight: 'auto',
-              marginTop: '5%',
-            }}
-            onChangeText={(matricula) =>
-              setValues({
-                ...values,
-                matricula: matricula,
-              })
-            }
-          />
-          <Input
-            placeholder={matricula ? numeroDeMatricula : 'Número de matrícula'}
-            inputContainerStyle={{
-              width: '85%',
-              marginLeft: 'auto',
-              marginRight: 'auto',
-              marginTop: '5%',
-            }}
-            onChangeText={(numeroDeMatricula) =>
-              setValues({
-                ...values,
-                numeroDeMatricula: numeroDeMatricula,
               })
             }
           />
@@ -612,6 +459,12 @@ const EditAnounce = ({ route }) => {
               textStyle={{ color: '#000000' }}
               checkedColor={'#fd5d13'}
               checked={values.efectivo}
+              onPress={() =>
+                setValues({
+                  ...values,
+                  efectivo: !values.efectivo,
+                })
+              }
             />
             <MaterialCommunityIcons
               name='credit-card-multiple-outline'
@@ -632,6 +485,12 @@ const EditAnounce = ({ route }) => {
               textStyle={{ color: '#000000' }}
               checkedColor={'#fd5d13'}
               checked={values.pagosDigitales}
+              onPress={() =>
+                setValues({
+                  ...values,
+                  pagosDigitales: !values.pagosDigitales,
+                })
+              }
             />
           </View>
         </View>
