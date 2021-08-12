@@ -135,21 +135,21 @@ const LocationComponent = (props) => {
                 android: {
                   marginTop: '-15%',
                 },
+                ios: {
+                  marginTop: 35,
+                  marginLeft: 5,
+                },
               }),
             }}>
-            <AirbnbRating
-              size={14}
-              showRating={true}
-              reviews={['']}
-              type='star'
-              // onFinishRating={this.setState({ rating: rating })}
-            />
+            <Text style={{ color: '#fd5d13', fontWeight: 'bold' }}>
+              Rating: {props.rating}
+            </Text>
           </View>
           <MaterialCommunityIcons
             name='account-group'
             color={naranjaQueDeOficios}
             size={20}
-            style={{ position: 'absolute', top: 32, right: -30 }}
+            style={{ position: 'absolute', top: 32, right: -45 }}
           />
           <Text
             style={{

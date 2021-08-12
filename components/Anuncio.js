@@ -418,6 +418,41 @@ export default function AnuncioSeleccionado({ route, navigation }) {
     }
   };
 
+  const handleRating = async (rating) => {
+    let userId;
+    let contador;
+    let ratesArray = [];
+
+    let rate = firebase.default
+      .database()
+      .ref('anuncios/')
+      .orderByChild('uuid')
+      .equalTo(uuid)
+      .once('value', (snapshot) => {
+        snapshot.forEach((child) => {
+          userId = child.val().id;
+          contador = child.val().anuncioId;
+          child.val().rating &&
+            child.val().rating.forEach((rate) => {
+              ratesArray.push(rate);
+            });
+        });
+      });
+
+    let update = firebase.default
+      .database()
+      .ref('anuncios/' + userId + contador)
+      .update({
+        rating: [...ratesArray, rating],
+      });
+
+    try {
+      await { rate, update };
+    } catch (error) {
+      return console.error(error);
+    }
+  };
+
   return (
     <SafeAreaView
       style={{
@@ -568,7 +603,7 @@ export default function AnuncioSeleccionado({ route, navigation }) {
                     ratingBackgroundColor='#c8c7c8'
                     fractions={1}
                     reviews={['']}
-                    onFinishRating={(rating) => setRating(rating)}
+                    onFinishRating={(rating) => handleRating(rating)}
                   />
                   <TouchableOpacity
                     onPress={() => shareContent()}

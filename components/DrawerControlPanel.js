@@ -76,6 +76,7 @@ class ControlPanel extends React.Component {
             descripcionPersonal: child.val().descripcionPersonal,
             recomendacionesTotales: child.val().recomendacionesTotales,
             direccionDelLocal: child.val().direccionDelLocal,
+            rating: child.val().rating,
             uuid: child.val().uuid,
           });
         });
@@ -178,6 +179,13 @@ class ControlPanel extends React.Component {
               actividad={item.actividad}
               local={item.direccionDelLocal}
               localidad={item.localidad}
+              rating={
+                item.rating
+                  ? parseFloat(
+                      item.rating.reduce((a, b) => a + b) / item.rating.length
+                    ).toFixed(2) + ' / 5'
+                  : 0
+              }
               recomendacionesTotales={
                 item.recomendacionesTotales > 0
                   ? item.recomendacionesTotales
