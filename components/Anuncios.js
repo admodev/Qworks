@@ -73,10 +73,10 @@ const AnunciosPage = ({ route, navigation }, props) => {
     setLoading(false);
   }, []);
 
-  function eliminarCuenta() {
-    user
-      .delete()
-      .then(function () {
+  async function eliminarCuenta() {
+    try {
+      let deleteUser = firebase.default.auth().currentUser.delete();
+      let notify = () =>
         Notifications.scheduleNotificationAsync({
           content: {
             title: 'Q works! 📬',
@@ -85,14 +85,15 @@ const AnunciosPage = ({ route, navigation }, props) => {
           },
           trigger: { seconds: 2 },
         });
-        Updates.reloadAsync();
-      })
-      .catch(function (error) {
-        Alert.alert(
-          'Error',
-          'Hubo un error al eliminar su cuenta! por favor cierre sesión y vuelva a ingresar antes de intentarlo nuevamente.'
-        );
-      });
+      let redirect = navigation.navigate('LoginPage');
+
+      return await { deleteUser, notify, redirect };
+    } catch (error) {
+      let userError = console.log(
+        'Ocurrio un error al eliminar su cuenta, por favor intentelo nuevamente.'
+      );
+      return { userError, error };
+    }
   }
 
   function shareContent() {

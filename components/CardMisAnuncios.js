@@ -92,6 +92,29 @@ const CardMisAnuncios = (props) => {
     }
   };
 
+  async function eliminarCuenta() {
+    try {
+      let deleteUser = firebase.default.auth().currentUser.delete();
+      let notify = () =>
+        Notifications.scheduleNotificationAsync({
+          content: {
+            title: 'Q works! 📬',
+            body: '¡Te esperamos Pronto!',
+            data: { data: 'El equipo de Q works!' },
+          },
+          trigger: { seconds: 2 },
+        });
+      let redirect = navigation.navigate('LoginPage');
+
+      return await { deleteUser, notify, redirect };
+    } catch (error) {
+      let userError = console.log(
+        'Ocurrio un error al eliminar su cuenta, por favor intentelo nuevamente.'
+      );
+      return { userError, error };
+    }
+  }
+
   return (
     <View
       style={{
@@ -289,15 +312,12 @@ const CardMisAnuncios = (props) => {
             }}>
             <View
               style={{
-                alignItems: 'center',
-                justifyContent: 'center',
+                flex: 1,
+                alignItems: 'flex-end',
+                justifyContent: 'space-evenly',
                 flexDirection: 'row',
               }}>
-              <View
-                style={{
-                  marginBottom: '7%',
-                  marginRight: '15%',
-                }}>
+              <View style={{}}>
                 <TouchableOpacity
                   onPress={() => {
                     RootNavigation.navigate('EditAnounce', {
@@ -313,11 +333,7 @@ const CardMisAnuncios = (props) => {
                   />
                 </TouchableOpacity>
               </View>
-              <View
-                style={{
-                  marginBottom: '7%',
-                  marginRight: '15%',
-                }}>
+              <View style={{}}>
                 <TouchableOpacity
                   onPress={() =>
                     firebase.default
@@ -332,12 +348,8 @@ const CardMisAnuncios = (props) => {
                   />
                 </TouchableOpacity>
               </View>
-              <View
-                style={{
-                  marginBottom: '7%',
-                  marginRight: '15%',
-                }}>
-                <TouchableOpacity onPress={handleDeleteAccount}>
+              <View style={{}}>
+                <TouchableOpacity onPress={() => eliminarCuenta()}>
                   <MaterialCommunityIcons
                     name='account-off'
                     color={'#fd5d13'}
