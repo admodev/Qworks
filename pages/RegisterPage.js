@@ -122,11 +122,11 @@ export default function RegisterPage({ navigation }) {
 
         Notifications.scheduleNotificationAsync({
           content: {
-            title: '¡QuedeOficios! 📬',
-            body: '¡Bienvenid@ a QuedeOficios!',
-            data: { data: 'El equipo de ¡QuedeOficios!' },
+            title: 'Qworks! 📬',
+            body: '¡Bienvenid@ a Qworks!',
+            data: { data: 'El equipo de Qworks!' },
           },
-          trigger: { seconds: 3 },
+          trigger: { seconds: 2 },
         });
       });
   }

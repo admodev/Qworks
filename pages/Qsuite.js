@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image, SafeAreaView, View } from 'react-native';
+import { Alert, Image, SafeAreaView, View } from 'react-native';
 import { ListItem } from 'react-native-elements';
 
 const Qsuite = () => {
@@ -33,6 +33,12 @@ const Qsuite = () => {
             padding: 10,
             borderRadius: 15,
           }}
+          onPress={() =>
+            Alert.alert(
+              'Proximamente!',
+              'Pronto podras disfrutar de los beneficios de Qsuite!'
+            )
+          }
           bottomDivider>
           <ListItem.Content>
             <ListItem.Title>Qdrives!</ListItem.Title>
@@ -45,6 +51,12 @@ const Qsuite = () => {
             padding: 10,
             borderRadius: 15,
           }}
+          onPress={() =>
+            Alert.alert(
+              'Proximamente!',
+              'Pronto podras disfrutar de los beneficios de Qsuite!'
+            )
+          }
           bottomDivider>
           <ListItem.Content>
             <ListItem.Title>Qbuyers!</ListItem.Title>
