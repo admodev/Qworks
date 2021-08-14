@@ -714,7 +714,7 @@ const AnunciatePage = ({ navigation }) => {
             Información Adicional
           </Text>
           <Input
-            placeholder='Ingrese una breve descripción adiciona...'
+            placeholder='Ingrese una breve descripción adicional...'
             placeholderTextColor={'black'}
             style={{
               height: 200,

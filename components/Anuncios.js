@@ -60,6 +60,7 @@ const AnunciosPage = ({ route, navigation }, props) => {
             apellido: childSnapshot.val().apellido,
             actividad: childSnapshot.val().actividad,
             localidad: childSnapshot.val().localidad,
+            direccionDelLocal: childSnapshot.val().direccionDelLocal,
             provincia: childSnapshot.val().provincia,
             emailPersonal: childSnapshot.val().emailPersonal,
             idAnuncio: childSnapshot.val().id,
@@ -217,7 +218,12 @@ const AnunciosPage = ({ route, navigation }, props) => {
               nombre={element.nombre}
               apellido={element.apellido}
               actividad={element.actividad}
-              local={element.direccionDelLocal}
+              local={
+                element.direccionDelLocal
+                  ? element.direccionDelLocal
+                  : 'Sin especificar'
+              }
+              localidad={element.localidad}
               recomendacionesTotales={
                 element.recomendacionesTotales > 0
                   ? element.recomendacionesTotales

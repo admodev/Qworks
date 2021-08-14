@@ -8,6 +8,7 @@ import {
   SafeAreaView,
   ScrollView,
   StyleSheet,
+  TouchableOpacity,
   View,
   Text,
 } from 'react-native';
@@ -25,7 +26,7 @@ import 'firebase/storage';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import * as RootNavigation from '../RootNavigation.js';
 
-const EditAnounce = ({ route }) => {
+const EditAnounce = ({ navigation, route }) => {
   const [uploading, setUploading] = React.useState(false);
 
   let nombre,
@@ -196,12 +197,56 @@ const EditAnounce = ({ route }) => {
           height: Platform.OS === 'android' ? '5%' : '3%',
         }}
       />
+      <View
+        style={{
+          ...Platform.select({
+            android: {
+              width: 30,
+              height: 30,
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              flexDirection: 'row',
+              marginTop: '12%',
+              marginLeft: '3%',
+            },
+            ios: {
+              width: 30,
+              height: 30,
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              flexDirection: 'row',
+              marginTop: '3%',
+              backgroundColor: 'transparent',
+            },
+          }),
+        }}>
+        <TouchableOpacity
+          onPress={() => navigation.goBack()}
+          style={{
+            ...Platform.select({
+              android: {
+                backgroundColor: 'transparent',
+              },
+              ios: {
+                backgroundColor: 'transparent',
+                left: 12,
+              },
+            }),
+          }}>
+          <MaterialCommunityIcons
+            name='arrow-left'
+            color={'#fd5d13'}
+            size={32}
+            style={{ backgroundColor: 'transparent' }}
+          />
+        </TouchableOpacity>
+      </View>
       <ScrollView
         style={{
           marginTop: Platform.OS === 'android' ? '10%' : '5%',
         }}>
         <View style={styles.firstView}>
-          <Text>Información Personal</Text>
+          <Text>Información Básica</Text>
           {image && (
             <Avatar
               source={{ uri: image }}
@@ -248,7 +293,7 @@ const EditAnounce = ({ route }) => {
               })
             }
           />
-          <Text>Información Laboral</Text>
+          <Text>Datos de Contacto</Text>
           <Input
             placeholder={actividad}
             inputContainerStyle={{

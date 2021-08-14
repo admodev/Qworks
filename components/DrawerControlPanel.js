@@ -177,7 +177,11 @@ class ControlPanel extends React.Component {
               nombre={item.nombre}
               apellido={item.apellido}
               actividad={item.actividad}
-              local={item.direccionDelLocal}
+              local={
+                item.direccionDelLocal
+                  ? item.direccionDelLocal
+                  : 'Sin Especificar'
+              }
               localidad={item.localidad}
               rating={
                 item.rating

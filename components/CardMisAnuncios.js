@@ -268,7 +268,9 @@ const CardMisAnuncios = (props) => {
                   color={'gray'}
                   size={16}
                 />{' '}
-                {props.local.trim()}
+                {props.local.length > 30
+                  ? props.local.substr(0, props.local.length - 40) + '...'
+                  : props.local}
               </Text>
             )
           }
@@ -292,7 +294,7 @@ const CardMisAnuncios = (props) => {
               color={'gray'}
               size={16}
             />{' '}
-            Morón, Provincia de Buenos Aires
+            {props.localidad}
           </Text>
           <TouchableOpacity
             onPress={() => {

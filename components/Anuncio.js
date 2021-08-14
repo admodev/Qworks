@@ -705,6 +705,7 @@ export default function AnuncioSeleccionado({ route, navigation }) {
                 style={{
                   flex: 1,
                   flexDirection: 'row',
+                  marginTop: 10,
                 }}>
                 <MaterialCommunityIcons
                   name='map-marker'
@@ -714,8 +715,7 @@ export default function AnuncioSeleccionado({ route, navigation }) {
                 <Text
                   style={{
                     color: '#000000',
-                    marginLeft: '2%',
-                    marginBottom: 10,
+                    marginBottom: 5,
                     fontSize: 18,
                     fontFamily: 'comfortaaLight',
                   }}>
@@ -802,7 +802,7 @@ export default function AnuncioSeleccionado({ route, navigation }) {
                         },
                         ios: {
                           color: '#0000EE',
-                          marginLeft: '15%',
+                          marginLeft: '8%',
                           marginBottom: 10,
                           fontSize: 18,
                           fontFamily: 'comfortaaLight',
@@ -810,7 +810,7 @@ export default function AnuncioSeleccionado({ route, navigation }) {
                       }),
                     }}>
                     {emailLaboral.length > 20
-                      ? emailLaboral.substr(0, emailLaboral.length - 8) + '...'
+                      ? emailLaboral.substr(0, emailLaboral.length - 5) + '...'
                       : emailLaboral}
                   </Text>
                 </View>
@@ -827,24 +827,37 @@ export default function AnuncioSeleccionado({ route, navigation }) {
                     color={naranjaQueDeOficios}
                     size={24}
                   />
-                  {direccionDelLocal && (
+                  {direccionDelLocal ? (
                     <Text
                       onPress={handleLinkOpen}
                       style={{
                         color: '#0000EE',
                         marginLeft: 'auto',
                         marginRight: 'auto',
-                        marginTop: 10,
+                        marginTop: 5,
                         marginBottom: 10,
-                        fontSize: 20,
+                        fontSize: 18,
                         fontFamily: 'comfortaaLight',
                       }}>
                       {direccionDelLocal.length > 30
                         ? direccionDelLocal.substr(
                             0,
-                            direccionDelLocal.length - 45
+                            direccionDelLocal.length - 40
                           ) + '...'
                         : direccionDelLocal}
+                    </Text>
+                  ) : (
+                    <Text
+                      onPress={handleLinkOpen}
+                      style={{
+                        color: '#0000EE',
+                        marginTop: 5,
+                        marginLeft: 25,
+                        marginBottom: 10,
+                        fontSize: 18,
+                        fontFamily: 'comfortaaLight',
+                      }}>
+                      Sin especificar...
                     </Text>
                   )}
                 </View>

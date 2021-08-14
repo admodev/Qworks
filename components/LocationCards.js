@@ -196,13 +196,13 @@ const LocationComponent = (props) => {
                   android: {
                     marginTop: -5,
                     fontFamily: 'ComfortaaLight',
-                    fontSize: 18,
+                    fontSize: 16,
                     marginTop: 1,
                     color: '#0000EE',
                   },
                   ios: {
                     fontFamily: 'ComfortaaLight',
-                    fontSize: 18,
+                    fontSize: 16,
                     marginTop: '2%',
                     color: '#0000EE',
                   },
