@@ -86,9 +86,11 @@ export default function ComentarScreen({ route, navigation }) {
         .then(() => {
           Notifications.scheduleNotificationAsync({
             content: {
-              title: '¡QuedeOficios! 📬',
+              title: 'Qworks! 📬',
               body: 'Gracias por comentar 🙋‍♀️🙋‍♂️',
-              data: { data: 'El equipo de ¡QuedeOficios!' },
+              data: { data: 'El equipo de Qworks!' },
+              ios: { sound: true },
+              sound: true,
             },
             trigger: { seconds: 2 },
           });
@@ -101,8 +103,7 @@ export default function ComentarScreen({ route, navigation }) {
 
   return (
     <SafeAreaView
-      style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}
-    >
+      style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
       <Image
         source={require('../assets/gradients/20x20.png')}
         style={{
@@ -122,11 +123,10 @@ export default function ComentarScreen({ route, navigation }) {
           top: 50,
           left: 10,
           position: 'absolute',
-        }}
-      >
+        }}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <MaterialCommunityIcons
-            name="arrow-left"
+            name='arrow-left'
             color={'#fd5d13'}
             size={32}
             style={{ marginTop: 'auto', marginBottom: 'auto' }}
@@ -136,26 +136,25 @@ export default function ComentarScreen({ route, navigation }) {
       <KeyboardAvoidingView
         style={{
           width: '100%',
-        }}
-      >
+        }}>
         {Platform.os === 'ios' ? (
           <Input
-            placeholder="Deja un comentario..."
+            placeholder='Deja un comentario...'
             onChangeText={(comentario) => setComentario(comentario)}
             value={comentario}
-            maxLength="140"
-            multiline="true"
+            maxLength='140'
+            multiline='true'
           />
         ) : (
           <Input
-            placeholder="Deja un comentario..."
+            placeholder='Deja un comentario...'
             onChangeText={(comentario) => setComentario(comentario)}
             value={comentario}
             maxLength={140}
             multiline={true}
           />
         )}
-        <Button title="Comentar" onPress={() => comentarUsuario()} />
+        <Button title='Comentar' onPress={() => comentarUsuario()} />
       </KeyboardAvoidingView>
     </SafeAreaView>
   );

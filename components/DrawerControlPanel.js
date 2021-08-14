@@ -53,10 +53,10 @@ class ControlPanel extends React.Component {
   componentDidMount() {
     functionalItems = [];
 
-    firebase
+    firebase.default
       .database()
       .ref('anuncios/')
-      .orderByKey()
+      .orderByChild('recomendacionesTotales')
       .on('value', (snap) => {
         let items = [];
         snap.forEach((child) => {
@@ -76,10 +76,11 @@ class ControlPanel extends React.Component {
             descripcionPersonal: child.val().descripcionPersonal,
             recomendacionesTotales: child.val().recomendacionesTotales,
             direccionDelLocal: child.val().direccionDelLocal,
+            rating: child.val().rating,
             uuid: child.val().uuid,
           });
         });
-        itm = items;
+        itm = items.reverse();
         funcItm = items;
         this.setState({ items: items });
       });
@@ -176,8 +177,19 @@ class ControlPanel extends React.Component {
               nombre={item.nombre}
               apellido={item.apellido}
               actividad={item.actividad}
-              local={item.direccionDelLocal}
+              local={
+                item.direccionDelLocal
+                  ? item.direccionDelLocal
+                  : 'Sin Especificar'
+              }
               localidad={item.localidad}
+              rating={
+                item.rating
+                  ? parseFloat(
+                      item.rating.reduce((a, b) => a + b) / item.rating.length
+                    ).toFixed(2) + ' / 5'
+                  : 0
+              }
               recomendacionesTotales={
                 item.recomendacionesTotales > 0
                   ? item.recomendacionesTotales

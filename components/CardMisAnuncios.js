@@ -1,25 +1,6 @@
-import React, { Component, useState } from 'react';
-import {
-  ActivityIndicator,
-  Dimensions,
-  TouchableOpacity,
-  StyleSheet,
-  Image,
-  View,
-  ScrollView,
-  SafeAreaView,
-  Text,
-  Platform,
-  Touchable,
-} from 'react-native';
-import {
-  AirbnbRating,
-  Avatar,
-  Button,
-  Card,
-  Icon,
-  Input,
-} from 'react-native-elements';
+import React, { useState } from 'react';
+import { TouchableOpacity, Image, View, Text, Platform } from 'react-native';
+import { AirbnbRating, Button, Overlay } from 'react-native-elements';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import * as firebase from 'firebase';
 import 'firebase/firestore';
@@ -31,6 +12,8 @@ import * as RootNavigation from '../RootNavigation';
 const CardMisAnuncios = (props) => {
   const [defaultProfilePicture, setDefaultProfilePicture] = useState(null);
   const [fotoDePerfil, setFotoDePerfil] = useState(null);
+  const [eliminarCuentaAproved, setEliminarCuentaAproved] = useState(false);
+  const [visible, setVisible] = useState(false);
   const [loaded] = useFonts({
     // Nombres, apellidos, títulos y subtítulos
     DmSans: require('../assets/fonts/DM_Sans/DMSans-Regular.ttf'),
@@ -87,17 +70,94 @@ const CardMisAnuncios = (props) => {
       console.log('ERROR AL DESCARGAR FOTO', error.message);
     });
 
+  const handleDeleteAccount = async () => {
+    setVisible(!visible);
+
+    if (eliminarCuentaAproved) {
+      firebase.default
+        .auth()
+        .currentUser.delete()
+        .then(function () {
+          alert('Eliminando su cuenta, aguarde por favor...');
+          return setTimeout(() => {
+            RootNavigation.navigate('OnboardingPage');
+          }, 2000);
+        })
+        .catch(function (error) {
+          alert(
+            "Para eliminar su cuenta debe oprimir 'si' en el recuadro de alerta."
+          );
+          console.error('Ocurrio un error al eliminar su cuenta...', error);
+        });
+    }
+  };
+
+  async function eliminarCuenta() {
+    try {
+      let deleteUser = firebase.default.auth().currentUser.delete();
+      let notify = () =>
+        Notifications.scheduleNotificationAsync({
+          content: {
+            title: 'Q works! 📬',
+            body: '¡Te esperamos Pronto!',
+            data: { data: 'El equipo de Q works!' },
+          },
+          trigger: { seconds: 2 },
+        });
+      let redirect = navigation.navigate('LoginPage');
+
+      return await { deleteUser, notify, redirect };
+    } catch (error) {
+      let userError = console.log(
+        'Ocurrio un error al eliminar su cuenta, por favor intentelo nuevamente.'
+      );
+      return { userError, error };
+    }
+  }
+
   return (
     <View
       style={{
         backgroundColor: '#ffffff',
         width: '95%',
-        height: '65%',
         marginTop: '5%',
         alignSelf: 'center',
         borderRadius: 10,
-        bottom: 5,
       }}>
+      <Overlay isVisible={visible} onBackdropPress={() => setVisible(!visible)}>
+        <Text style={{ fontSize: 16, textAlign: 'center', margin: 5 }}>
+          Esta a punto de eliminar su cuenta y perder todos sus datos, desea
+          continuar?
+        </Text>
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'center',
+            marginTop: '2%',
+          }}>
+          <Button
+            title='Si'
+            buttonStyle={{
+              backgroundColor: '#fd5d13',
+              opacity: 0.8,
+              width: 120,
+              borderRadius: 12,
+              margin: 5,
+            }}
+            onPress={() => setEliminarCuentaAproved(true)}
+          />
+          <Button
+            title='No'
+            buttonStyle={{
+              backgroundColor: '#fd5d13',
+              width: 120,
+              borderRadius: 12,
+              margin: 5,
+            }}
+            onPress={() => setEliminarCuentaAproved(false)}
+          />
+        </View>
+      </Overlay>
       <Image
         source={require('../assets/gradients/10X10.png')}
         style={{
@@ -166,6 +226,7 @@ const CardMisAnuncios = (props) => {
           style={{
             marginTop: '25%',
             marginLeft: '2%',
+            marginBottom: '2%',
             maxWidth: '85%',
           }}>
           <Text
@@ -207,7 +268,9 @@ const CardMisAnuncios = (props) => {
                   color={'gray'}
                   size={16}
                 />{' '}
-                {props.local.trim()}
+                {props.local.length > 30
+                  ? props.local.substr(0, props.local.length - 40) + '...'
+                  : props.local}
               </Text>
             )
           }
@@ -231,7 +294,7 @@ const CardMisAnuncios = (props) => {
               color={'gray'}
               size={16}
             />{' '}
-            Morón, Provincia de Buenos Aires
+            {props.localidad}
           </Text>
           <TouchableOpacity
             onPress={() => {
@@ -251,17 +314,20 @@ const CardMisAnuncios = (props) => {
             }}>
             <View
               style={{
-                alignItems: 'center',
-                justifyContent: 'center',
+                flex: 1,
+                alignItems: 'flex-end',
+                justifyContent: 'space-evenly',
                 flexDirection: 'row',
               }}>
-              <View
-                style={{
-                  marginBottom: '7%',
-                  marginRight: '15%',
-                }}>
+              <View style={{}}>
                 <TouchableOpacity
-                  onPress={() => RootNavigation.navigate('EditAnounce')}>
+                  onPress={() => {
+                    RootNavigation.navigate('EditAnounce', {
+                      id: props.idAnuncio,
+                      uuid: props.uuid,
+                      index: props.key,
+                    });
+                  }}>
                   <MaterialCommunityIcons
                     name='lead-pencil'
                     color={'#fd5d13'}
@@ -269,27 +335,29 @@ const CardMisAnuncios = (props) => {
                   />
                 </TouchableOpacity>
               </View>
-              <View
-                style={{
-                  marginBottom: '7%',
-                  marginRight: '15%',
-                }}>
-                <MaterialCommunityIcons
-                  name='eraser'
-                  color={'#fd5d13'}
-                  size={20}
-                />
+              <View style={{}}>
+                <TouchableOpacity
+                  onPress={() =>
+                    firebase.default
+                      .database()
+                      .ref('anuncios/' + props.idAnuncio + props.anuncioId)
+                      .remove()
+                  }>
+                  <MaterialCommunityIcons
+                    name='eraser'
+                    color={'#fd5d13'}
+                    size={20}
+                  />
+                </TouchableOpacity>
               </View>
-              <View
-                style={{
-                  marginBottom: '7%',
-                  marginRight: '15%',
-                }}>
-                <MaterialCommunityIcons
-                  name='account-off'
-                  color={'#fd5d13'}
-                  size={20}
-                />
+              <View style={{}}>
+                <TouchableOpacity onPress={() => eliminarCuenta()}>
+                  <MaterialCommunityIcons
+                    name='account-off'
+                    color={'#fd5d13'}
+                    size={20}
+                  />
+                </TouchableOpacity>
               </View>
             </View>
           </TouchableOpacity>

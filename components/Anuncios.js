@@ -47,12 +47,12 @@ const AnunciosPage = ({ route, navigation }, props) => {
   useEffect(() => {
     setLoading(true);
 
-    firebase
+    firebase.default
       .database()
       .ref('anuncios/')
       .orderByChild('id')
       .equalTo(firebase.auth().currentUser.uid)
-      .once('value', (snapshot) => {
+      .on('value', (snapshot) => {
         let anuncioArr = [];
         snapshot.forEach((childSnapshot) => {
           anuncioArr.push({
@@ -60,6 +60,7 @@ const AnunciosPage = ({ route, navigation }, props) => {
             apellido: childSnapshot.val().apellido,
             actividad: childSnapshot.val().actividad,
             localidad: childSnapshot.val().localidad,
+            direccionDelLocal: childSnapshot.val().direccionDelLocal,
             provincia: childSnapshot.val().provincia,
             emailPersonal: childSnapshot.val().emailPersonal,
             idAnuncio: childSnapshot.val().id,
@@ -73,10 +74,10 @@ const AnunciosPage = ({ route, navigation }, props) => {
     setLoading(false);
   }, []);
 
-  function eliminarCuenta() {
-    user
-      .delete()
-      .then(function () {
+  async function eliminarCuenta() {
+    try {
+      let deleteUser = firebase.default.auth().currentUser.delete();
+      let notify = () =>
         Notifications.scheduleNotificationAsync({
           content: {
             title: 'Q works! 📬',
@@ -85,14 +86,15 @@ const AnunciosPage = ({ route, navigation }, props) => {
           },
           trigger: { seconds: 2 },
         });
-        Updates.reloadAsync();
-      })
-      .catch(function (error) {
-        Alert.alert(
-          'Error',
-          'Hubo un error al eliminar su cuenta! por favor cierre sesión y vuelva a ingresar antes de intentarlo nuevamente.'
-        );
-      });
+      let redirect = navigation.navigate('LoginPage');
+
+      return await { deleteUser, notify, redirect };
+    } catch (error) {
+      let userError = console.log(
+        'Ocurrio un error al eliminar su cuenta, por favor intentelo nuevamente.'
+      );
+      return { userError, error };
+    }
   }
 
   function shareContent() {
@@ -216,7 +218,12 @@ const AnunciosPage = ({ route, navigation }, props) => {
               nombre={element.nombre}
               apellido={element.apellido}
               actividad={element.actividad}
-              local={element.direccionDelLocal}
+              local={
+                element.direccionDelLocal
+                  ? element.direccionDelLocal
+                  : 'Sin especificar'
+              }
+              localidad={element.localidad}
               recomendacionesTotales={
                 element.recomendacionesTotales > 0
                   ? element.recomendacionesTotales

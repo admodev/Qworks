@@ -27,6 +27,7 @@ import 'firebase/auth';
 import { useFonts } from 'expo-font';
 import * as RootNavigation from '../RootNavigation';
 import * as Linking from 'expo-linking';
+import * as WebBrowser from 'expo-web-browser';
 
 const naranjaQueDeOficios = '#fd5d13';
 
@@ -134,21 +135,21 @@ const LocationComponent = (props) => {
                 android: {
                   marginTop: '-15%',
                 },
+                ios: {
+                  marginTop: 35,
+                  marginLeft: 5,
+                },
               }),
             }}>
-            <AirbnbRating
-              size={14}
-              showRating={true}
-              reviews={['']}
-              type='star'
-              // onFinishRating={this.setState({ rating: rating })}
-            />
+            <Text style={{ color: '#fd5d13', fontWeight: 'bold' }}>
+              Rating: {props.rating}
+            </Text>
           </View>
           <MaterialCommunityIcons
             name='account-group'
             color={naranjaQueDeOficios}
             size={20}
-            style={{ position: 'absolute', top: 32, right: -30 }}
+            style={{ position: 'absolute', top: 32, right: -45 }}
           />
           <Text
             style={{
@@ -187,18 +188,21 @@ const LocationComponent = (props) => {
           </Text>
           {props.local && (
             <Text
+              onPress={() =>
+                WebBrowser.openBrowserAsync(`https://www.google.com/maps`)
+              }
               style={{
                 ...Platform.select({
                   android: {
                     marginTop: -5,
                     fontFamily: 'ComfortaaLight',
-                    fontSize: 18,
+                    fontSize: 16,
                     marginTop: 1,
                     color: '#0000EE',
                   },
                   ios: {
                     fontFamily: 'ComfortaaLight',
-                    fontSize: 18,
+                    fontSize: 16,
                     marginTop: '2%',
                     color: '#0000EE',
                   },
@@ -209,13 +213,10 @@ const LocationComponent = (props) => {
                 color={'gray'}
                 size={16}
               />{' '}
-              {props.local.length > 30
-                ? props.local.substr(0, props.local.length - 45) + '...'
-                : props.local}
+              {props.local.substr(0, 25) + '\u2026'}
             </Text>
           )}
           <Text
-            onPress={() => Linking.openURL('https://www.google.com/maps')}
             style={{
               ...Platform.select({
                 android: {
@@ -237,9 +238,7 @@ const LocationComponent = (props) => {
               color={'gray'}
               size={16}
             />{' '}
-            {props.localidad.length > 10
-              ? props.localidad.substr(0, props.localidad.length - 15) + '...'
-              : props.localidad}
+            {props.localidad.substr(0, 25) + '\u2026'}
           </Text>
           <TouchableOpacity
             onPress={() => {
