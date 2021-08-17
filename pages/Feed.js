@@ -1,5 +1,12 @@
 import React from 'react';
-import { Alert, Image, SafeAreaView, ScrollView, View } from 'react-native';
+import {
+  Alert,
+  Image,
+  Platform,
+  SafeAreaView,
+  ScrollView,
+  View,
+} from 'react-native';
 import { Avatar, Button, Card, Icon, Input, Text } from 'react-native-elements';
 
 const Feed = () => {
@@ -36,7 +43,7 @@ const Feed = () => {
             borderWidth: 1,
             borderColor: '#000111',
             borderRadius: 15,
-            margin: 20,
+            margin: Platform.OS === 'android' ? 50 : 20,
             padding: 5,
             height: 'auto',
           }}>
@@ -55,7 +62,7 @@ const Feed = () => {
             title='Publicar'
             buttonStyle={{
               width: 120,
-              marginLeft: 190,
+              marginLeft: Platform.OS === 'android' ? 120 : 190,
               marginBottom: 5,
               padding: 5,
               borderRadius: 15,

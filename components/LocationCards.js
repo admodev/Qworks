@@ -133,7 +133,8 @@ const LocationComponent = (props) => {
             style={{
               ...Platform.select({
                 android: {
-                  marginTop: '-15%',
+                  marginTop: 35,
+                  marginLeft: 5,
                 },
                 ios: {
                   marginTop: 35,

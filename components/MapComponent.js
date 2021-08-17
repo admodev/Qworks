@@ -10,6 +10,7 @@ import {
   SafeAreaView,
   Text,
   Platform,
+  Alert,
 } from 'react-native';
 import { Avatar, Button, Card, Icon, Input } from 'react-native-elements';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -73,6 +74,7 @@ class MapComponent extends Component {
             recomendacionesTotales: child.val().recomendacionesTotales,
             latitud: child.val().latitud,
             longitud: child.val().longitud,
+            uuid: child.val().uuid,
           });
         });
         itm = items;
@@ -197,6 +199,30 @@ class MapComponent extends Component {
                         longitude: itm.partidoLongitude,
                       }}
                       pinColor={'#fd5d13'}
+                      onCalloutPress={() =>
+                        firebase.auth().currentUser
+                          ? RootNavigation.navigate('ChatComponent', {
+                              userOneId: firebase.auth().currentUser.uid,
+                              userTwoId: itm.idAnuncio,
+                              uuid: itm.uuid,
+                            })
+                          : Alert.alert(
+                              'Alerta',
+                              'Por favor ingresa para entablar una conversacion!'
+                            )
+                      }
+                      onPress={() =>
+                        firebase.auth().currentUser
+                          ? RootNavigation.navigate('ChatComponent', {
+                              userOneId: firebase.auth().currentUser.uid,
+                              userTwoId: itm.idAnuncio,
+                              uuid: itm.uuid,
+                            })
+                          : Alert.alert(
+                              'Alerta',
+                              'Por favor ingresa para entablar una conversacion!'
+                            )
+                      }
                       title={itm.nombre}
                       description={itm.actividad}
                       key={Math.max(i) + 1}
@@ -210,6 +236,30 @@ class MapComponent extends Component {
                           latitude: element.partidoLatitude,
                           longitude: element.partidoLongitude,
                         }}
+                        onCalloutPress={() =>
+                          firebase.auth().currentUser
+                            ? RootNavigation.navigate('ChatComponent', {
+                                userOneId: firebase.auth().currentUser.uid,
+                                userTwoId: element.idAnuncio,
+                                uuid: element.uuid,
+                              })
+                            : Alert.alert(
+                                'Alerta',
+                                'Por favor ingresa para entablar una conversacion!'
+                              )
+                        }
+                        onPress={() =>
+                          firebase.auth().currentUser
+                            ? RootNavigation.navigate('ChatComponent', {
+                                userOneId: firebase.auth().currentUser.uid,
+                                userTwoId: element.idAnuncio,
+                                uuid: element.uuid,
+                              })
+                            : Alert.alert(
+                                'Alerta',
+                                'Por favor ingresa para entablar una conversacion!'
+                              )
+                        }
                         pinColor={'#fd5d13'}
                         title={element.nombre}
                         description={element.actividad}

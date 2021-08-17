@@ -160,9 +160,7 @@ export default function RegisterPage({ navigation }) {
               height: '100%',
             }}
           />
-          <View
-            style={{ width: '80%', marginTop: 70, bottom: 0 }}
-            keyboardShouldPersistTaps='handled'>
+          <View style={{ width: '80%' }} keyboardShouldPersistTaps='handled'>
             <KeyboardAvoidingView
               behavior={Platform.OS == 'ios' ? 'padding' : 'height'}>
               <Input
@@ -197,39 +195,7 @@ export default function RegisterPage({ navigation }) {
               />
             </KeyboardAvoidingView>
           </View>
-          <View style={{ marginTop: Platform.OS === 'android' ? 20 : 50 }}>
-            <Text style={{ color: '#ffffff', fontWeight: 'bold' }}>
-              Registrate con:
-            </Text>
-          </View>
-          <View
-            style={{
-              flex: 1,
-              flexDirection: 'row',
-              marginTop: Platform.OS === 'android' ? 20 : 30,
-              bottom: 0,
-            }}>
-            <View>
-              <SocialIcon
-                button
-                type='google'
-                style={{ padding: 25 }}
-                onPress={() => signInWithGoogle()}
-              />
-            </View>
-            <View>
-              <Text style={{ color: '#ffffff', marginTop: 25 }}>O</Text>
-            </View>
-            <View>
-              <SocialIcon
-                button
-                type='facebook'
-                style={{ padding: 30 }}
-                onPress={() => signInWithFacebook()}
-              />
-            </View>
-          </View>
-          <View style={{ width: '70%', bottom: 50 }}>
+          <View style={{ width: '70%', marginTop: 25 }}>
             <TouchableHighlight
               onPress={() => RootNavigation.navigate('LoginPage')}>
               <Text

@@ -224,6 +224,11 @@ function MainStackNavigator({ navigation }) {
           options={{ title: 'QuedeOficios!', headerShown: false }}
         />
         <Stack.Screen
+          name='Qdrives'
+          component={Qdrives}
+          options={{ title: 'Qworks!', headerShown: false }}
+        />
+        <Stack.Screen
           name='MessagesScreen'
           component={MessagesScreen}
           options={{ title: 'QuedeOficios!', headerShown: false }}

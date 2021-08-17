@@ -219,6 +219,7 @@ export default function LoginPage({ navigation }) {
                   color: '#fff',
                   marginLeft: 'auto',
                   marginRight: 'auto',
+                  marginBottom: 25,
                 }}>
                 No tienes cuenta? REGISTRATE
               </Text>
