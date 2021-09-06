@@ -1,3 +1,5 @@
+Términos de Condiciones Generales.
+
 Versión vigente 01/08/2021
 
 Este contrato describe los términos y condiciones generales (los "Términos y Condiciones Generales") aplicables al uso de los servicios ofrecidos por Q Works!, ("los Servicios") dentro de la aplicación Q Works! Cualquier persona (en adelante "Usuario" o en plural "Usuarios") que desee acceder y/o usar el sitio o los Servicios podrá hacerlo sujetándose a los Términos y Condiciones Generales respectivos, junto con todas las demás políticas y principios que rigen en Q Works! y que son incorporados al presente por referencia.
