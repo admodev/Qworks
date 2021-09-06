@@ -1,260 +1,52 @@
-* Términos y Condiciones de uso
-*** 1. Condiciones de Acceso y Registración
-Para tener acceso a la aplicación y a la información que compone la base de datos de la misma en
-¡QuedeOficios! ®el Usuario deberá obligatoriamente registrase en el Sitio, conforme se establece en la
-presente cláusula.
-A tales efectos, el Usuario deberá hacer Ingrear en la solapa "Registrarme", debiendo completar el
-Formulario de Registración indicando una dirección de correo electrónico y una contraseña.
-El Usuario se compromete a seleccionar, usar y conservar su contraseña de forma diligente, y a mantener
-todos los datos volcados a la plataforma en secreto y en protección, respecto de terceros.
-La Cuenta es personal, única e intransferible, y está prohibido que un mismo Usuario registre o posea
-más de una Cuenta. En caso que ¡QuedeOficios!® detecte distintas Cuentas que contengan datos
-coincidentes o relacionados, podrá cancelar, suspender o inhabilitarlas.
-Para poder utilizar el Servicio es necesario el previo registro del Usuario, la aceptación de los presentes
-Términos de uso y la Política de privacidad y de cookies. Para la utilización de la plataforma o app, el
-usuario deberá completar un proceso de registro dónde podrá hacer el registro de diferentes formas:
-a. Login with facebook: vienen por defecto otorgados los campos de:
-i. A Email ii. Nombre y apellido iii. Localidad
-iv. Siendo A obligatorio, y el resto editables
-b. Login with Google: vienen por defecto otorgados los campos de:
-i. A Email ii. Nombre
-y
-apellido
-iii.
-Localidad
-iv. Siendo A obligatorio, y el resto editables
-c. Introduciendo de forma correcta y veraz los siguientes campos:
-i. Nombre y apellido
-ii. Email
-iii. Localidad
-¡QuedeOficios! ® ingresa estos datos a la plataforma para proceder con la entrega del servicio.
-El futuro Usuario deberá completar el registro con su información personal de manera exacta, precisa y
-verdadera ("Datos Personales") y asume el compromiso de actualizar los Datos Personales conforme
-resulte necesario. ¡QuedeOficios! ® podrá utilizar diversos medios para identificar a sus Usuarios, pero¡QuedeOficios! ® NO se responsabiliza por la certeza de los Datos Personales provistos por sus Usuarios.
-Los Usuarios se manifiestan en carácter de declaración jurada respecto de la veracidad, exactitud, vigencia
-y autenticidad de los Datos Personales ingresados.
-¡QuedeOficios!® se reserva el derecho de solicitar algún comprobante y/o dato adicional a efectos de
-corroborar los Datos Personales, así como de suspender temporal o definitivamente a aquellos Usuarios
-cuyos datos no hayan podido ser confirmados. En estos casos de inhabilitación, se darán de baja todos
-datos y/o publicaciones, comentarios, recomendaciones, sin que ello genere algún derecho a
-resarcimiento.
-En caso de considerarlo necesario, ¡QuedeOficios!® podrá contactar a los Usuarios en cualquier
-momento y a través de las vías provistas, para confirmar información.
-El Usuario será responsable por todas las operaciones efectuadas en su Cuenta, pues el acceso a la
-misma está restringido al ingreso y uso de su Contraseña, de conocimiento exclusivo del Usuario. El
-Usuario se compromete a notificar a ¡QuedeOficios!® en forma inmediata y por medio idóneo y
-fehaciente, cualquier uso no autorizado de su Cuenta, así como el ingreso por terceros no autorizados a
-la misma.
-Se aclara que está prohibida la venta, cesión o transferencia de la Cuenta (incluyendo calificaciones,
-comentarios y recomendaciones) bajo ningún título.
-¡QuedeOficios!® se reserva el derecho de rechazar cualquier solicitud de registración o de cancelar una
-registración previamente aceptada, sin que esté obligado a comunicar o exponer las razones de su
-decisión y sin que ello genere algún derecho a indemnización o resarcimiento.
-*** 2. Capacidad
-Los Servicios sólo están disponibles para personas físicas o jurídicas que tengan capacidad
-legal para contratar y capacidad legal para trabajar, según la normativa vigente a tales efectos
-en la República Argentina. No podrán utilizar los servicios las personas que no tengan esa
-capacidad, los menores de 18 años de edad o Usuarios de ¡QuedeOficios!® que hayan sido
-suspendidos temporalmente o inhabilitados definitivamente. Si estás
-Registrando/Publicitando una Empresa, debes contar con la representación necesaria
-otorgada por la entidad y, por carácter transitivo, obligar a la misma en los términos de este
-contrato.
-*** 3. Modificaciones del Contrato
-¡QuedeOficios!® podrá modificar los Términos y Condiciones Generales en cualquier
-momento haciendo públicos en el Sitio los términos modificados. Todos los términos
-modificados entrarán en vigor a los 15 (quince) días de su publicación. Dentro de los 10 (diez)
-días siguientes a la publicación de las modificaciones introducidas, el Usuario deberácomunicar por e-mail o medio que se provea a tal fin, si no acepta las mismas; en ese caso
-quedará disuelto el vínculo contractual y será inhabilitado como Usuario siempre que no tenga
-deudas pendientes. Vencido este plazo, se considerará que el Usuario acepta los nuevos
-términos y el contrato continuará vinculando a ambas partes.
-*** 4. Privacidad de la Información
-Para utilizar los Servicios ofrecidos por ¡QuedeOficios!® los Usuarios deberán facilitar
-determinados datos de carácter personal. Su información personal se procesa y almacena en
-servidores o medios magnéticos que mantienen altos estándares de seguridad y protección
-tanto física como tecnológica. Para mayor información sobre la privacidad de los Datos
-Personales y casos en los que será revelada la información personal, se pueden consultar
-nuestras Políticas de Privacidad.
-*** 5. Obligaciones de los Usuarios y Anunciantes
-• A) Obligaciones del USUARIO. Se entiende que el USUARIO contacta a un ANUNCIANTE
-para ejecutar un trabajo real y está dispuesto a contratar cuando el contexto satisfaga
-sus requerimientos. Los USUARIOS que lleguen a contratar algún servicio publicado en
-la plataforma ¡QuedeOficios!® se comprometen a CALIFICAR, de haberse contratado el
-servicio y a de considerarlo, COMENTAR. Así como también de RECOMENDAR, en el
-caso de estar satisfecho, servicio contratado ya que esto hace a la exposición del
-ANUNCIANTE dentro de la plataforma.
-Impuestos. Tal como lo establece la normativa fiscal vigente, el USUARIO debe exigir
-factura o ticket como comprobante de la operación.
-• B) Obligaciones del ANUNCIANTE. El Anunciante debe tener capacidad legal para
-realizar el trabajo para el cual se ofrece y, si bien ¡QuedeOficios!® chequea la
-veracidad de la información hasta el máximo de sus posibilidades, es solo el
-ANUNCIANTE quién puede garantizar su experiencia.
-Dado que ¡QuedeOficios!® es una red social que opera como punto de encuentro
-entre USUARIOS y ANUNCIANTES y no participa de las operaciones que se realizan
-entre ellos, el ANUNCIANTE será responsable por todas las obligaciones y cargas
-impositivas que correspondan por la prestación de sus servicios, sin que pudiera
-imputársele a ¡QuedeOficios!® algún tipo de responsabilidad por incumplimientos en
-tal sentido.Los ANUNCIANTES deben proveer todos los datos que el sistema requiere de la
-manera más clara posible. La competitividad es fundamental, por lo que se necesitan
-perfiles completos y veraces. Cada dato tiene su campo, y estos no pueden estar
-mezclados.
-*** 6. Impuestos
-Como se menciona anteriormente, ¡QuedeOficios! ® sólo pone a disposición de los
-Usuarios un espacio virtual que les permite comunicarse mediante Internet para
-encontrar una forma de vender o comprar bienes y servicios. ¡QuedeOficios! ® no
-tiene participación alguna en el proceso de negociación y perfeccionamiento del
-contrato definitivo entre las partes. Por eso, ¡QuedeOficios! ® no es responsable por el
-efectivo cumplimiento de las obligaciones fiscales o impositivas establecidas por la ley
-vigente para con los USUARIOS/ANUNCIANTES y solo se hará responsable por las
-imputables a sí mismo.
-*** 7. Prohibiciones
-• A) No ingresar o difundir contenidos o propaganda de carácter racista, xenófobo,
-pornográfico, de apología del terrorismo o que atenten contra los derechos humanos.
-• B) No ingresar o difundir en la red programas de datos (virus y software nocivo)
-susceptibles de provocar daños en los sistemas informáticos del proveedor de acceso,
-sus proveedores o terceros usuarios de la red Internet.
-• C) No ingresar, difundir, transmitir o poner a disposición de terceros cualquier tipo de
-información, elemento o contenido que constituya publicidad ilícita o desleal.
-• D) No transmitir publicidad no solicitada o no autorizada, material publicitario, "correo
-basura", "cartas en cadena", "estructuras piramidales", o cualquier otra forma de
-solicitación, excepto en aquellas áreas (tales como espacios comerciales) que hayan
-sido exclusivamente concebidas para ello.• E) No ingresar o difundir cualquier información y contenidos falsos, ambiguos,
-extemporáneos o inexactos de forma que induzca a error a los receptores de la
-información.
-• F) No suplantar a otros Usuarios utilizando sus claves de registro a los distintos
-Servicios del Sitio.
-• G) No introducir o difundir contenidos que sean contrarios al honor, a la intimidad
-personal y familiar o a la propia imagen de las personas.
-• H) No ingresar, difundir, transmitir o poner a disposición de terceros cualquier tipo de
-información, elemento o contenido que suponga una violación de los derechos de
-propiedad intelectual e industrial, patentes, marcas o copyright que correspondan a
-los titulares del Sitio o a terceros.
-• I) No ingresar, difundir, transmitir o poner a disposición de terceros cualquier tipo de
-información, elemento o contenido que suponga una violación del secreto de las
-comunicaciones y la legislación de datos de carácter personal.
-• J) Usar cualquier mecanismo, software o rutina para impedir o intentar impedir el
-adecuado funcionamiento de este Sitio o cualquier actividad que se esté realizando en
-este Sitio.
-• K) No realizar cualquier acción que imponga una carga desproporcionada o
-desmesurada sobre la infraestructura de este Sitio.
-• L) No revelar o compartir su contraseña con terceras personas o usar su contraseña
-para cualquier propósito no autorizado.•
-M) No intentar descifrar, descompilar u obtener el código fuente de cualquier
-programa de software que comprenda o constituya una parte de este Sitio.
-*** 8. Violaciones del Sistema o Bases de Datos
-No está permitida ninguna acción o uso de dispositivo, software, u otro medio
-tendiente a interferir tanto en las actividades y operatoria de ¡QuedeOficios!® como en
-las solicitudes, ofertas, descripciones, cuentas o bases de datos de ¡QuedeOficios!®.
-Cualquier intromisión, tentativa o actividad violatoria o contraria a las leyes sobre
-derecho de propiedad intelectual y/o a las prohibiciones estipuladas en este contrato
-harán pasible a su responsable de las acciones legales pertinentes, y a las sanciones
-previstas por este acuerdo, así como lo hará responsable de indemnizar los daños
-ocasionados.
-*** 9. Sanciones. Suspensión de operaciones
-Sin perjuicio de otras medidas, ¡QuedeOficios!® podrá advertir, suspender en forma temporal
-o inhabilitar definitivamente la Cuenta de un Usuario o un anuncio/publicación, aplicar una
-sanción que impacte negativamente en la reputación de un Anunciante, iniciar las acciones
-que estime pertinentes y/o suspender la prestación de sus Servicios si (a) se quebrantara
-alguna ley, o cualquiera de las estipulaciones de los Términos y Condiciones Generales y
-demás políticas de ¡QuedeOficios!®; (b) si incumpliera sus compromisos como ANUNCIANTE;
-(c) si se incurriera a criterio de ¡QuedeOficios!® en conductas o actos dolosos o fraudulentos;
-(d) no pudiera verificarse la identidad del anunciante o cualquier información proporcionada
-por el mismo fuere errónea; (e) ¡QuedeOficios!® entendiera que las publicaciones u otras
-acciones pueden ser causa de responsabilidad para el USUARIO que las publicó, para
-¡QuedeOficios!® o para terceros. En el caso de la suspensión o inhabilitación de un
-USUARIO/ANUNCIANTE, su o sus PUBLICACIONES/ANUNCIOS serán removidas así como los
-comentarios, calificaciones y recomendaciones de ambas (en tal caso) actividades publicadas y
-en ningún caso se devolverán o bonificarán los cargos de suscripción involucrados ni se
-resarcirá por perjuicio alguno.
-*** 10. Responsabilidad¡QuedeOficios!® sólo pone a disposición de los USUARIOS/ANUNCIANTES un espacio virtual
-que, a modo de red social, les permite ponerse en comunicación mediante Internet para
-conectar a un Usuario que necesita satisfacer una necesidad, con un Anunciante profesional
-idóneo (que ofrece sus servicios) para solucionarla. ¡QuedeOficios!® no es el propietario de los
-servicios ni tiene relación laboral vinculante con los profesionales que los ofrecen.
-¡QuedeOficios!® no interviene en el perfeccionamiento de las operaciones realizadas entre los
-USUARIOS y ANUNCIANTES ni en las condiciones por ellos estipuladas para las mismas, por
-ello no será responsable respecto de la existencia, calidad, cantidad, estado, integridad o
-legitimidad de los servicios ofrecidos, adquiridos o enajenados por los ANUNCIANTES, así
-como de la capacidad para contratar de los USUARIOS o de la veracidad de los Datos
-Personales por ellos ingresados. Cada USUARIO y ANUNCIANTE conoce y acepta ser el
-exclusivo responsable por los servicios que publica y por las ofertas y/o compras que realiza.
-Debido a que ¡QuedeOficios!® no tiene ninguna participación durante todo el tiempo en que
-la publicación del ANUNCIANTE se mantiene de alta, ni en la posterior negociación y
-perfeccionamiento del contrato definitivo entre las partes, no será responsable por el efectivo
-cumplimiento de las obligaciones asumidas por los USUARIOS/ANUNCIANTES en el
-perfeccionamiento de la operación. El USUARIO/ANUNCIANTE conoce y acepta que al realizar
-operaciones con otros USUARIOS/ANUNCIANTES o terceros lo hace bajo su propio riesgo. En
-ningún caso ¡QuedeOficios!®será responsable por lucro cesante, mala práxis o por cualquier
-otro daño y/o perjuicio que haya podido sufrir el Usuario, debido a las operaciones realizadas
-o no realizadas publicadas a través de ¡QuedeOficios!®.
-¡QuedeOficios!® es un canal que vehiculiza un trato entre particulares.
-¡QuedeOficios!® recomienda actuar con prudencia y sentido común al momento de realizar
-operaciones con otros Usuarios y Anunciantes. El USUARIO/ANUNCIANTE debe tener presente,
-además, los riesgos de contratar con menores o con personas que se valgan de una identidad
-falsa. ¡QuedeOficios!® NO será responsable por la realización de ofertas y/u operaciones con
-otros USUARIOS/ANUNCIANTES basadas en la confianza depositada en el sistema o los
-Servicios brindados por ¡QuedeOficios!®.
-¡QuedeOficios!® hace su máximo esfuerzo para que la información sea real y fidedigna, y
-provee una plataforma a través de la cual es la misma comunidad la que califica y realiza
-comentarios sobre la calidad de los trabajo de los prestadores, sancionando de manera
-objetiva a aquellos que ofrecen servicios deficientes y viceversa. Hasta aquí llega la
-responsabilidad de ¡QuedeOficios!®
-En caso que uno o más USUARIOS/ANUNCIANTES o algún tercero inicien cualquier tipo de
-reclamo o acciones legales contra otro u otros USUARIOS/ANUNCIANTES, todos y cada uno de
-los USUARIOS/ANUNCIANTES involucrados en dichos reclamos o acciones eximen de toda
-responsabilidad a ¡QuedeOficios!® y a sus directores, gerentes, empleados, agentes,
-operarios, representantes y apoderados.
-*** 11. Alcance de los servicios de ¡QuedeOficios!®
-Este acuerdo no crea ningún contrato de sociedad, de mandato, de franquicia, o relación
-laboral entre ¡QuedeOficios!® y el Usuario/Anunciante. El Usuario/Anunciante reconoce y
-acepta que ¡QuedeOficios!® no es parte en ninguna operación, ni tiene control alguno sobre la
-calidad, seguridad o legalidad de los servicios anunciados, la veracidad o exactitud de los
-anuncios, la capacidad de los USUARIOS/ANUNCIANTES para vender o comprar servicios.
-¡QuedeOficios!® no puede asegurar que un ANUNCIANTE completará una operación ni podrá
-asegurar la identidad o Datos Personales ingresados por los ANUNCIANTES. ¡QuedeOficios!®
-no garantiza la veracidad de la publicidad de terceros que aparezca en el sitio y no será
-responsable por la correspondencia o contratos que el Anunciante celebre con dichos terceros
-o con otros Usuarios.
-12. Fallas en el sistema
-• A) ¡QuedeOficios!® no se responsabiliza por cualquier daño, perjuicio o pérdida al
-USUARIO/ANUNCIANTE causados por fallas en el sistema, en el servidor o en Internet.
-• B) ¡QuedeOficios!® tampoco será responsable por cualquier virus que pudiera infectar
-el equipo del Usuario como consecuencia del acceso, uso o examen de su sitio web o a
-raíz de cualquier transferencia de datos, archivos, imágenes, textos, o audio
-contenidos en el mismo. Los USUARIOS/ANUNCIANTES NO podrán imputarle
-responsabilidad alguna ni exigir pago por lucro cesante, en virtud de perjuicios
-resultantes de dificultades técnicas o fallas en los sistemas o en Internet.
-• C) ¡QuedeOficios!® no garantiza el acceso y uso continuado o ininterrumpido de su
-sitio. El sistema puede eventualmente no estar disponible debido a dificultades
-técnicas o fallas de Internet, o por cualquier otra circunstancia ajena a
-¡QuedeOficios!®; en tales casos se procurará restablecerlo con la mayor celeridad
-posible sin que por ello pueda imputársele algún tipo de responsabilidad.
-¡QuedeOficios!® no será responsable por ningún error u omisión contenidos en su
-sitio web.13. Tarifas
-La registración en ¡QuedeOficios!® es gratuita así como la búsqueda y el acceso a los perfiles
-publicados, siempre previa Registración en el sitio. La publicación de una actividad de Oficio o
-Profesional es tarifada de forma mensual, trimestral, semestral o anual según cada anunciante
-lo vea necesario.
-Para ofrecer sus servicios en ¡QuedeOficios!® UD. deberá abonar una tarifa, o sea una única
-tarifa mensual.
-El ANUNCIANTE se obliga a abonar a ¡QuedeOficios!® los cargos por publicación o por
-cualquier otro servicio prestado por ¡QuedeOficios!® por el cual haya establecida una tarifa
-vigente.
-¡QuedeOficios!® se reserva el derecho de modificar, cambiar, agregar, o eliminar las tarifas
-vigentes, en cualquier momento, lo cual será notificado a los Prestadores de manera clara y
-pública.
-Sin embargo, ¡QuedeOficios!®podrá modificar temporalmente la Política de Tarifas y las tarifas
-por sus servicios por razón de promociones, siendo efectivas estas modificaciones cuando se
-haga pública la promoción o se realice el anuncio.
-¡QuedeOficios!® se reserva el derecho de tomar las medidas judiciales y extrajudiciales que
-estime pertinentes para obtener el pago del monto debido.
-14. Indemnización
-El USUARIO/ANUNCIANTE indemnizará y mantendrá indemne a ¡QuedeOficios!® sus filiales,
-empresas controladas y/o controlantes, directivos, administradores, representantes y
-empleados, por cualquier reclamo o demanda de otros USUARIOS/ANUNCIANTES o terceros
-por sus actividades en el Sitio o por su incumplimiento los Términos y Condiciones Generales y
-demás Políticas que se entienden incorporadas al presente o por la violación de cualesquiera
-leyes o derechos de terceros, incluyendo los honorarios de abogados en una cantidad
-razonable.
+Versión vigente 01/08/2021
+Este contrato describe los términos y condiciones generales (los "Términos y Condiciones Generales") aplicables al uso de los servicios ofrecidos por Q Works!!® , ("los Servicios") dentro de la aplicación Q Works!!®  Cualquier persona (en adelante "Usuario" o en plural "Usuarios") que desee acceder y/o usar el sitio o los Servicios podrá hacerlo sujetándose a los Términos y Condiciones Generales respectivos, junto con todas las demás políticas y principios que rigen en Q Works!!®  y que son incorporados al presente por referencia.
+CUALQUIER PERSONA QUE NO ACEPTE ESTOS TÉRMINOS Y CONDICIONES GENERALES, LOS CUALES TIENEN UN CARÁCTER OBLIGATORIO Y VINCULANTE, DEBERÁ ABSTENERSE DE UTILIZAR EL SITIO Y/O LOS SERVICIOS.
+El Usuario debe leer, entender y aceptar todas las condiciones establecidas en los Términos y Condiciones Generales y en las Políticas de Privacidad así como en los demás documentos incorporados a los mismos por referencia, previo a su registración como Usuario de Q Works!, optando de forma expresa por recibir los mismos y toda otra información por medios digitales.
+01 - Capacidad
+Los Servicios sólo están disponibles para personas que tengan capacidad legal para contratar. No podrán utilizar los servicios las personas que no tengan esa capacidad o Usuarios de Q works! que hayan sido suspendidos temporalmente o inhabilitados definitivamente. Si estás registrando un Usuario como Empresa, debes tener capacidad para contratar a nombre de tal entidad y de obligar a la misma en los términos de este Acuerdo.
+Los menores de edad, a partir de los 13 años, sólo podrán utilizar su cuenta con autorización del representante legal, quien responderá por todas las acciones y obligaciones que se deriven de la utilización de esa cuenta y quien. También deberá velar por el uso responsable y adecuado de ella en atención a la madurez del menor de edad que autorice. 
+02 - Registración
+Es obligatorio completar el formulario de registración en todos sus campos con datos válidos para poder utilizar los servicios que brinda Q Works! El futuro Usuario deberá completarlo con su información personal de manera exacta, precisa y verdadera ("Datos Personales") y asume el compromiso de actualizar los Datos Personales conforme resulte necesario. El Usuario presta expresa conformidad con que Q  works! utilice diversos medios para identificar sus datos personales, asumiendo el Usuario la obligación de revisarlos y mantenerlos actualizados. Q works! NO se responsabiliza por la certeza de los Datos Personales de los Usuarios. Los Usuarios garantizan y responden, en cualquier caso, de la veracidad, exactitud, vigencia y autenticidad de sus Datos Personales.
+A su exclusiva discreción, Q works! podrá requerir una registración adicional a los Usuarios que operen como concesionarias o inmobiliarias, como requisito para que dichos Usuarios accedan a paquetes especiales de publicaciones. En estos casos, una vez efectuada la registración adicional, las ofertas de venta de automóviles o inmuebles que realicen las concesionarias o inmobiliarias, respectivamente, sólo se publicarán en Q works! a través de alguno de dichos paquetes o bajo las modalidades que Q works!  habilite para este tipo de Usuarios. Q works!  se reserva el derecho de solicitar algún comprobante y/o dato adicional a efectos de corroborar los Datos Personales, así como de suspender temporal o definitivamente a aquellos Usuarios cuyos datos no hayan podido ser confirmados. En estos casos de inhabilitación, se dará de baja todos los artículos publicados, así como las ofertas realizadas, sin que ello genere algún derecho a resarcimiento.
+El Usuario accederá a su cuenta personal ("Cuenta") mediante el ingreso de su dirección de email y clave de seguridad personal elegida ("Clave de Seguridad"). El Usuario se obliga a mantener la confidencialidad de su Clave de Seguridad.
+La Cuenta es personal, única e intransferible, y está prohibido que un mismo Usuario registre o posea más de una Cuenta. En caso que Q works! detecte distintas Cuentas que contengan datos coincidentes o relacionados, podrá cancelar, suspender o inhabilitarlas.
+El Usuario será responsable por todas las operaciones efectuadas en su Cuenta, pues el acceso a la misma está restringido al ingreso y uso de su Clave de Seguridad, de conocimiento exclusivo del Usuario. El Usuario se compromete a notificar a Q works! en forma inmediata y por medio idóneo y fehaciente, cualquier uso no autorizado de su Cuenta, así como el ingreso por terceros no autorizados a la misma. Se aclara que está prohibida la venta, cesión o transferencia de la Cuenta (incluyendo la reputación) bajo ningún título.
+Q works! se reserva el derecho de rechazar cualquier solicitud de registración o de cancelar una registración previamente aceptada, sin que esté obligado a comunicar o exponer las razones de su decisión y sin que ello genere algún derecho a indemnización o resarcimiento.
+03 - Modificaciones del Acuerdo
+Q works! podrá modificar los Términos y Condiciones Generales en cualquier momento haciendo públicos en el Sitio los términos modificados. Todos los términos modificados entrarán en vigor a los 10 (diez) días de su publicación. Dichas modificaciones serán comunicadas por Q works! a los usuarios que en la Configuración de su Cuenta de Q works! hayan indicado que desean recibir notificaciones de los cambios en estos Términos y Condiciones. Todo usuario que no esté de acuerdo con las modificaciones efectuadas por Q works! podrá solicitar la baja de la cuenta.
+El uso del sitio y/o sus servicios implica la aceptación de estos Términos y Condiciones generales de uso de Q works!
+4.1Publicación de bienes y/o servicios
+El Usuario deberá ofrecer publicidad de bienes y promover los servicios en las categorías y subcategorías apropiadas. Las publicaciones podrán incluir textos descriptivos, gráficos, fotografías y otros contenidos y condiciones pertinentes para la publicidad del bien o la promoción del servicio, siempre que no violen ninguna disposición de este acuerdo o demás políticas de Q works! El bien o servicio publicitado por el Usuario debe ser exactamente descrito en cuanto a sus condiciones y características relevantes. Se entiende y presume que mediante la inclusión del bien o servicio en Q works! el Usuario acepta que tiene la intención y el derecho de publicitar el bien y/o el servicio referido, o está facultado para ello por su titular. Asimismo, el Usuario acepta que tiene disponible el bien publicado para su entrega inmediata o para el plazo especificado en la publicación, así como el servicio para su prestación en el plazo acordado. Se establece que los precios sugeridos de los bienes o servicios publicados deberán ser expresados con IVA incluido cuando corresponda la aplicación del mismo, y en moneda de curso legal. Q works! podrá remover cualquier publicación cuyo precio sugerido no sea expresado de esta forma para evitar confusiones o malos entendidos en cuanto al precio sugerido del bien o servicio.
+4.1 Anuncios/publicaciones Prohibidos
+Sólo podrán ser ingresados en las listas de bienes y servicios ofrecidos, aquellos cuya venta no se encuentre tácita o expresamente prohibida en los Términos y Condiciones Generales y demás políticas de Q works! o por la ley vigente. 
+05 - Privacidad de la Información
+Para utilizar los Servicios ofrecidos por Q works! los Usuarios deberán facilitar determinados datos de carácter personal. Su información personal se procesa y almacena en servidores o medios magnéticos que mantienen altos estándares de seguridad y protección tanto física como tecnológica. Para mayor información sobre la privacidad de los Datos Personales y casos en los que será revelada la información personal, se pueden consultar nuestras Políticas de Privacidad.
+06 - Prohibiciones
+Los usuarios no podrán: (a) manipular los precios de los artículos; (b) dar a conocer sus datos personales o de otros usuarios a través de la sección de Preguntas y Respuestas y/o por algún otro medio (incluyendo pero sin limitar Twitter, Facebook y/ o cualquier otra red social); (c) aceptar datos personales proporcionados por otros usuarios a través de la sección de Preguntas y Respuestas y/o algún otro medio (incluyendo pero sin limitar Twitter, Facebook y/o cualquier otra red social); (e) publicar o vender artículos prohibidos por los Términos y Condiciones Generales, demás políticas de Q works! o leyes vigentes; (f) insultar, discriminar o agredir a otros Usuarios, colaboradores de Q works! o cualquier persona que esté relacionada a los servicios que Q works! presta en su plataforma; (g) utilizar su reputación, calificaciones o comentarios recibidos en el sitio de Q works! en cualquier ámbito fuera de Q works! (h) publicar artículos idénticos en más de una publicación.
+Este tipo de actividades será investigado por Q works! y el infractor podrá ser sancionado con la suspensión o cancelación de la oferta e incluso de su inscripción como usuario de Q works! y/o de cualquier otra forma que estime pertinente, sin perjuicio de las acciones legales a que pueda dar lugar por la configuración de delitos o contravenciones o los perjuicios civiles que pueda causar a los usuarios oferentes.
+07 - Violaciones del Sistema o Bases de Datos
+No está permitida ninguna acción o uso de dispositivo, software, u otro medio tendiente a interferir tanto en las actividades y operatoria de Q works! como en las ofertas, descripciones, cuentas o bases de datos de Q works! Cualquier intromisión, tentativa o actividad violatoria o contraria a las leyes sobre derecho de propiedad intelectual y/o a las prohibiciones estipuladas en este contrato harán pasible a su responsable de las acciones legales pertinentes, y a las sanciones previstas por este acuerdo, así como lo hará responsable de indemnizar los daños ocasionados.
+08 - Sanciones. Suspensión de operaciones
+Sin perjuicio de otras medidas, Q works! podrá advertir, suspender en forma temporal o definitivamente la Cuenta de un Usuario o una publicación, aplicar una sanción que impacte negativamente en la reputación de un Usuario, iniciar las acciones que estime pertinentes y/o suspender la prestación de sus Servicios si (a) se quebrantara alguna ley, o cualquiera de las estipulaciones de los Términos y Condiciones Generales y demás políticas de Q works! ; (b) si incumpliera sus compromisos como Usuario; (c) si se incurriera a criterio de Q works! en conductas o actos dolosos o fraudulentos; (d) no pudiera verificarse la identidad del Usuario o cualquier información proporcionada por el mismo fuere errónea; (e) Q works! entendiera que las publicaciones u otras acciones pueden ser causa de responsabilidad para el Usuario que las publicó, para Q works! o para los demás Usuarios en general. En el caso de la suspensión de un Usuario, sea temporal o definitiva, todos los artículos que tuviera publicados serán removidos del sistema.
+09 - Responsabilidad
+Q works! pone a disposición de los Usuarios un espacio virtual que les permite ponerse en comunicación para ofrecer, Publicitar y/o comunicarse con prestadores de  bienes y servicios. 
+Son los Usuarios Anunciantes quienes utilizan Q works! para publicar sus productos y servicios, y definir las condiciones de su oferta (producto o servicio ofrecido, precio, descripción, fotos, calidad, cantidad, integridad, etc.). 
+En todos los casos, al ser los Usuarios Anunciantes los propietarios de los productos publicados y quienes los ofrecen para su venta, serán responsables por la existencia, calidad, cantidad, integridad o legitimidad de los productos o servicios que ofrecen, y mantendrán indemnes a Q works! por las eventuales acciones o reclamaciones que pudiesen surgir con motivo de una oferta o transacción.
+10 - Alcance de los servicios de Q works!
+Este acuerdo no crea ningún contrato de sociedad, de mandato, de franquicia, o relación laboral entre Q works! y el usuario. El usuario reconoce y acepta que Q works! no es parte en ninguna operación, ni tiene control alguno sobre la calidad, seguridad o legalidad de los bienes y servicios anunciados, la veracidad o exactitud de los anuncios, la capacidad de los Usuarios para publicitar/anunciar y comunicarse. Q works! no puede asegurar que un usuario completará una operación ni podrá verificar la identidad o datos personales ingresados por los usuarios. Q works! no garantiza la veracidad de la publicidad de terceros que aparezca en el sitio y no será responsable por la correspondencia o contratos que el usuario celebre con dichos terceros o con otros usuarios.
+11 - Fallas en el sistema
+Q works! no se responsabiliza por cualquier daño, perjuicio o pérdida al usuario causados por fallas en el sistema, en el servidor o en Internet. Q works! tampoco será responsable por cualquier virus que pudiera infectar el equipo del usuario como consecuencia del acceso, uso o examen de su sitio web o a raíz de cualquier transferencia de datos, archivos, imágenes, textos, o audio contenidos en el mismo. Los usuarios NO podrán imputarle responsabilidad alguna ni exigir pago por lucro cesante, en virtud de perjuicios resultantes de dificultades técnicas o fallas en los sistemas o en Internet. Q works! no garantiza el acceso y uso continuado o ininterrumpido de su sitio. El sistema puede eventualmente no estar disponible debido a dificultades técnicas o fallas de Internet, o por cualquier otra circunstancia ajena a Q works!; en tales casos se procurará restablecerlo con la mayor celeridad posible sin que por ello pueda imputársele algún tipo de responsabilidad. Q works! no será responsable por ningún error u omisión contenidos en su sitio web.
+12 - Sistema de reputación
+Debido a que la verificación de la identidad de los Usuarios en Internet es difícil, Q works! no puede confirmar ni confirma la identidad pretendida de cada Usuario. Por ello el Usuario Vendedor cuenta con un sistema de reputación de Usuarios que es actualizado periódicamente en base a datos vinculados con su actividad en el sitio. Este sistema de reputación, además constará de un espacio donde los Usuarios compradores podrán hacer comentarios sobre la experiencia de compra. Dichos comentarios serán incluidos bajo exclusiva responsabilidad de los Usuarios que los emitan.
+Q works! no tiene obligación de verificar la veracidad o exactitud de los mismos y NO se responsabiliza por los dichos allí vertidos por cualquier Usuario, por las ofertas de compras o ventas que los Usuarios realicen teniéndolos en cuenta o por la confianza depositada en las opiniones de los compradores o por cualquier otro comentario expresado dentro del sitio o a través de cualquier otro medio incluido el correo electrónico. Q works! se reserva el derecho de editar y/o eliminar aquellos comentarios que sean considerados inadecuados u ofensivos. Q works! mantiene el derecho de excluir a aquellos Usuarios que sean objeto de comentarios negativos provenientes de fuentes distintas. 
+13 - Propiedad intelectual - Licencia - Enlaces
+Q works! y/o sus sociedades controlantes, controladas, filiales o subsidiarias se reservan todos los derechos, incluyendo los derechos de propiedad intelectual e industrial, asociados con los servicios de Q works! sus sitios web, los contenidos de sus pantallas, programas, bases de datos, redes, códigos, desarrollo, software, arquitectura, hardware, contenidos, información, tecnología, fases de integración, funcionalidades, dominios, archivos que permiten al Usuario acceder y crear su Cuenta, herramientas de venta, marcas, patentes, derechos de autor, diseños y modelos industriales, nombres comerciales, entre otros, y declara que están protegidos por leyes nacionales e internacionales vigentes.
+En ningún caso se entenderá que el Usuario tendrá algún tipo de derecho sobre los mismos excepto para utilizar el servicio de Q works! conforme a lo previsto en estos Términos y Condiciones Generales. El uso indebido o contrario a la normativa vigente de los derechos de propiedad intelectual e industrial de Q works! , así como su reproducción total o parcial, queda prohibido, salvo autorización expresa y por escrito de Q works!
+Los Usuarios tampoco podrán comunicar que los productos o servicios que ofrecen son patrocinados, promovidos, producidos, ofrecidos y/o vendidos por Q works! y deberán abstenerse de realizar cualquier acto que pudiera causar un daño, pérdida de reputación, o disminución del valor de los derechos de propiedad intelectual e industrial de Q works!
+El sitio puede contener enlaces a sitios web de terceros. En virtud que Q works! no tiene control sobre tales sitios, no será responsable por los contenidos, materiales, acciones y/o servicios prestados por los mismos, ni por daños o pérdidas ocasionadas por la utilización de éstos, causados directa o indirectamente. La presencia de enlaces a otros sitios web no implica una sociedad, relación, aprobación, respaldo de Q works! con dichos sitios y sus contenidos.
+14 - Indemnidad
+El Usuario mantendrá indemne a Q works!  así como a sus filiales, empresas controladas y/o controlantes, funcionarios, directivos, sucesores, administradores, representantes y empleados, por cualquier reclamo iniciado por otros Usuarios, terceros o por cualquier Organismo, relacionado con sus actividades en el Sitio, el cumplimiento y/o el incumplimiento de los Términos y Condiciones Generales o demás Políticas, así como respecto de cualquier violación de leyes o derechos de terceros.
+A tal fin, el Usuario faculta a Q works!  a: i) intervenir y representarlo en dichos reclamos, pudiendo celebrar los acuerdos transaccionales que considere oportunos y que tiendan a evitar mayores costos y/o evitar eventuales contingencias sin limitación, en su nombre y representación.
 15. Jurisdicción y Ley Aplicable
 Este acuerdo estará regido en todos sus puntos por las leyes vigentes en la República
 Argentina. Cualquier controversia derivada del presente acuerdo, su existencia, validez,
@@ -262,5 +54,5 @@ interpretación, alcance o cumplimiento, será sometida al arbitraje del Centro 
 Mediación y Arbitraje, de acuerdo con la reglamentación vigente de dicho tribunal. La sede de
 dicho arbitraje será la Ciudad Autónoma de Buenos Aires y los procedimientos se llevarán a
 cabo en idioma castellano. En caso de disputas legales, se utilizarán los tribunales ordinarios
-de la Ciudad Autónoma de Buenos Aires. Si tenes alguna duda sobre los Términos yCondiciones Generales o demás políticas y principios que rigen a ¡QuedeOficios!® puede
-escribirnos a consultas@quedeoficios.com.ar
+de la Ciudad Autónoma de Buenos Aires. Si tenes alguna duda sobre los Términos yCondiciones Generales o demás políticas y principios que rigen a Q works!® puede
+escribirnos a consultas@qiuworks.com
