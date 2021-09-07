@@ -22,10 +22,14 @@
       "supportsTablet": true,
       "bundleIdentifier": "com.admodev.qworks",
       "buildNumber": "1.0.0",
-      "icon": "./assets/icon.png"
+      "icon": "./assets/icon.png",
+      "infoPlist": {
+        "NSCameraUsageDescription": "This app uses the camera to let user put a photo in his profile page."
+      }
     },
     "android": {
-      "versionCode": 5,
+      "permissions": ["CAMERA", "WRITE_EXTERNAL_STORAGE", "CAMERA_ROLL"],
+      "versionCode": 10,
       "useNextNotificationsApi": true,
       "package": "com.admodev.qworks",
       "icon": "./assets/icon.png"
